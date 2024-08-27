@@ -1,10 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-.yarn
-
-# Swap the comments on the following lines if you wish to use zero-installs
-# Documentation here: https://yarnpkg.com/features/zero-installs
-#!.yarn/cache
 .pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # dependencies
 /node_modules
