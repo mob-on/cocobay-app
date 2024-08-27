@@ -1,2 +1,9 @@
 @import "./theme.module.scss";
-@import "bootstrap/scss/bootstrap.scss";
+// @import "bootstrap/scss/bootstrap.scss";
+@import "./fonts.scss";
+
+body {
+    background-color: $body-bg;
+    color: $color-white;
+    font-family: 'D-DIN Pro', sans-serif;
+}

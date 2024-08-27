@@ -1,16 +1,23 @@
-@import "bootstrap/scss/_functions.scss";
+// dimensions
+$padding: 14px;
+$padding-menu: 11px;
+$menu-bottom: 34px;
+
+
+// colors
+$color-menu: #515172;
+$color-menu-active: #8181B1;
+$color-white: #fff;
+
 
 $primary: #f9b804;
 $primary-color-lighter: #fad305;
 $primary-color-darker: #f58531;
 $secondary: #5aace8;
-$body-bg: #000;
+$body-bg: #1e1e2b;
 $input-bg: #fff;
 $accordion-bg: #fff;
 $body-color: #444444;
 $link-color: $primary-color-darker;
 $link-shade-percentage: 20%;
 $link-hover-color: $primary-color-lighter;
-$link-disabled-color: lighten($body-color, 65%);
-
-@import "bootstrap/scss/_variables.scss";
