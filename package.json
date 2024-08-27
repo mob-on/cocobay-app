@@ -17,8 +17,6 @@
       "react-app/jest"
     ]
   },
-  "dependencies": {
-  },
   "devDependencies": {
     "prettier": "^2.8.4",
     "ts-node": "^10.9.1",

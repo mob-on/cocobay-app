@@ -3,6 +3,7 @@ import withOptimizedImages from "next-optimized-images";
 
 const nextConfig = {
   reactStrictMode: true,
+  transpilePackages: ['antd-mobile'],
   trailingSlash: true,
   images: {
     disableStaticImages: true,
