@@ -40,6 +40,7 @@
     "@babel/core": "^7.25.2",
     "@babel/plugin-syntax-flow": "^7.24.7",
     "@babel/plugin-transform-react-jsx": "^7.25.2",
+    "@types/glob": "^8.1.0",
     "@types/imagemin": "^9.0.0",
     "@types/imagemin-jpegtran": "^5.0.4",
     "@types/imagemin-svgo": "^10.0.5",

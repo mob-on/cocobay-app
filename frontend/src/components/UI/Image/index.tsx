@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Image as BootstrapImage,
   ImageProps as BootstrapImageProps,
