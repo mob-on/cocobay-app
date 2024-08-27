@@ -1,9 +1,9 @@
 import withPlugins from "next-compose-plugins";
-import withOptimizedImages from "next-optimized-images";
 
 const nextConfig = {
+  output: "export",
   reactStrictMode: true,
-  transpilePackages: ['antd-mobile'],
+  transpilePackages: ["antd-mobile"],
   trailingSlash: true,
   images: {
     disableStaticImages: true,
@@ -13,7 +13,7 @@ const nextConfig = {
 const defaultConfig = {};
 
 const nextConfigWithPlugins = async (phase) =>
-  withPlugins([[withOptimizedImages, {}]], nextConfig)(phase, {
+  withPlugins([[{}]], nextConfig)(phase, {
     defaultConfig,
   });
 
