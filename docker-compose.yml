@@ -1,8 +1,8 @@
 version: "3.3"
 services:
-  web:
+  frontend:
     image: nginx
     volumes:
-      - ./out:/usr/share/nginx/html
+      - ./frontend/out:/usr/share/nginx/html
     ports:
       - "3000:80"
