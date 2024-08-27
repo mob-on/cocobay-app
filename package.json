@@ -6,7 +6,7 @@
     "infrastructure"
   ],
   "scripts": {
-    "dev": "cd frontend && yarn dev",
+    "dev": "yarn workspace frontend dev",
     "docker:up": "yarn workspace frontend build && docker compose up -d",
     "deploy": "NEXT_PUBLIC_ENVIRONMENT=dev yarn export && cd infrastructure && yarn deploy",
     "deploy:prod": "NEXT_PUBLIC_ENVIRONMENT=prod yarn export && cd infrastructure && yarn deploy:prod"
