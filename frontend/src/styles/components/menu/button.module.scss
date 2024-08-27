@@ -1,0 +1,32 @@
+@import "src/styles/theme.module.scss";
+
+.button {
+    height: 56px;
+    width: 76px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    padding-top: 7px;
+    padding-bottom: 4px;
+    border: solid 1.5px $color-menu;
+}
+
+.button.selected {
+    background-color: $color-menu-active;
+    border-color: $color-white;
+}
+
+.button p {
+    margin: 0;
+}
+
+.button {
+    text-decoration: none;
+    color: $color-white;
+}
+
+.icon {
+    height: 30px;
+    margin-bottom: 4px;
+}
