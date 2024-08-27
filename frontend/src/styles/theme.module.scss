@@ -1,0 +1,16 @@
+@import "bootstrap/scss/_functions.scss";
+
+$primary: #f9b804;
+$primary-color-lighter: #fad305;
+$primary-color-darker: #f58531;
+$secondary: #5aace8;
+$body-bg: #000;
+$input-bg: #fff;
+$accordion-bg: #fff;
+$body-color: #444444;
+$link-color: $primary-color-darker;
+$link-shade-percentage: 20%;
+$link-hover-color: $primary-color-lighter;
+$link-disabled-color: lighten($body-color, 65%);
+
+@import "bootstrap/scss/_variables.scss";
