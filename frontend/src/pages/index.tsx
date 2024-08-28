@@ -32,6 +32,6 @@ export default function Home() {
     //     </footer>
     //   </section>
     // </TapsContext.Provider>
-    <></>
+    <div>Home</div>
   );
 }

@@ -1,19 +1,12 @@
-import AOS from "aos";
-import "aos/dist/aos.css";
+// import AOS from "aos";
+// import "aos/dist/aos.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useEffect } from "react";
 import Layout from "../layouts/Layout";
 import "../styles/globals.scss";
-import init from "./_main";
+// import init from "./_main";
 
 export default function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap");
-    AOS.init();
-    init();
-  }, []);
-
   return (
     <Layout>
       <Head>

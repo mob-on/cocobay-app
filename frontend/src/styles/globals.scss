@@ -2,6 +2,18 @@
 // @import "bootstrap/scss/bootstrap.scss";
 @import "./fonts.scss";
 
+html, body, #__next {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    // this will probably be required for prod, to make sure we never have an overflow and a scrollbar
+    // overflow: hidden;
+}
+
+#__main {
+    height: calc(100% - $header-height);
+}
+
 body {
     background-color: $body-bg;
     color: $color-white;
