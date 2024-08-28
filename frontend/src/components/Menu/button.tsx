@@ -1,19 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from 'src/styles/components/menu/button.module.scss';
+import Image from 'next/image';
 
 interface IMenuButtonProps {
     text: string;
     path: string;
-    Icon: React.FC<React.SVGProps<SVGSVGElement>>;
+    iconPath: string;
     isSelected: boolean;
 }
 
 const MenuButton: React.FC<IMenuButtonProps> = (props: IMenuButtonProps) => {
-    const { Icon } = props;
+    const { iconPath } = props;
     return (
         <Link href={props.path} className={styles.button + ` ${props.isSelected ? styles.selected : ''}`}>
-            <Icon className={styles.icon} />
+            <Image src={iconPath} alt={props.text} width="29" height="29" className={styles.icon} />
             <p>{props.text}</p>
         </Link>
     );

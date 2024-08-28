@@ -1,4 +1,5 @@
 import withPlugins from "next-compose-plugins";
+import withImages from "next-images";
 
 const nextConfig = {
   output: "export",
@@ -8,26 +9,28 @@ const nextConfig = {
   images: {
     disableStaticImages: true,
   },
-  webpack(config) {
-    config.module.rules.push(
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: '@svgr/webpack',
-            options: {},
-          },
-        ]
-      }
-    );
-    return config;
-  },
+  // webpack(config) {
+  //   config.module.rules.push(
+  //     {
+  //       test: /\.svg$/,
+  //       use: [
+  //         {
+  //           loader: '@svgr/webpack',
+  //           options: {
+
+  //           },
+  //         },
+  //       ]
+  //     }
+  //   );
+  //   return config;
+  // },
 };
 
 const defaultConfig = {};
 
 const nextConfigWithPlugins = async (phase) =>
-  withPlugins([[{}]], nextConfig)(phase, {
+  withPlugins([[withImages()]], nextConfig)(phase, {
     defaultConfig,
   });
 
