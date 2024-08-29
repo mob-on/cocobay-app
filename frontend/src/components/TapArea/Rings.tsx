@@ -1,5 +1,5 @@
 import React from "react";
-import styles from 'src/styles/components/cocoTap/rings.module.scss';
+import styles from 'src/styles/components/tapArea/rings.module.scss';
 
 
 /**

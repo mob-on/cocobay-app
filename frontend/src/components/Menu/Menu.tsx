@@ -44,11 +44,11 @@ const Menu: React.FC = () => {
   
   return (
     <div className={styles.main}>
-    <div className={styles.menu}>
-    {buttons.map(button => 
-      <Button isSelected={!isRoot ? pathname === button.path : pathname.startsWith(button.path)} key={button.text} {...button} />
-    )}
-    </div>
+      <div className={styles.menu}>
+        {buttons.map(button => 
+          <Button isSelected={!isRoot ? pathname === button.path : pathname.startsWith(button.path)} key={button.text} {...button} />
+        )}
+      </div>
     </div>
   );
 };

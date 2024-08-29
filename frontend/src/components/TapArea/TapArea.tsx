@@ -1,16 +1,16 @@
-import React, { MouseEvent, useCallback, useContext, useEffect, useState } from "react";
-import styles from 'src/styles/components/cocoTap/cocoTap.module.scss';
-import Coco from 'public/media/coco/coco-pink-swag.svg';
+import React, { MouseEvent, useCallback, useEffect, useState } from "react";
+import styles from 'src/styles/components/tapArea/tapArea.module.scss';
+import Hero from 'public/media/coco/coco-pink-swag.svg';
 import Rings from "./Rings";
 import { v4 as uuidv4 } from 'uuid';
-import { TAP_EFFECTS_TIMEOUT, useTaps } from "src/shared/context/tapEffectsContext";
+import { TAP_EFFECTS_THROTTLE, TAP_EFFECTS_TIMEOUT, useTaps } from "src/shared/context/tapEffectsContext";
 import Image from "next/image";
 
 export interface ITapEvent {
-  id: string; // Unique identifier
-  x: number; // X coordinate
-  y: number; // Y coordinate
-  time: number; // Timestamp
+  id: string;
+  x: number;
+  y: number;
+  time: DOMHighResTimeStamp; // Timestamp with high precision
   timeoutId?: NodeJS.Timeout; // Timeout ID for cancellation (timeout removes the event from the list of taps)
 }
 
@@ -21,7 +21,7 @@ export interface ITapEvent {
  *
  * @return {JSX.Element} Component that displays a Coco image and triggers tap feedback.
  */
-const CocoTap: React.FC = () => {
+const TapArea: React.FC = () => {
   const [ isClassApplied, setIsClassApplied ] = useState(false);
   const [ classTimeoutId, setClassTimeoutId ] = useState<NodeJS.Timeout>(null);
 
@@ -34,7 +34,7 @@ const CocoTap: React.FC = () => {
     const timeoutId = setTimeout(() => {
       setIsClassApplied(false);
       setClassTimeoutId(null);
-    }, 50);
+    }, TAP_EFFECTS_THROTTLE);
 
     // Store timeout ID for potential cancellation
     setClassTimeoutId(timeoutId);
@@ -91,13 +91,12 @@ const CocoTap: React.FC = () => {
   
   const touchEvent = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    
   }
 
-  return <div className={styles.main + ' ' + ( isClassApplied ? styles.tapped : '')} onClick={useCallback(handleClick, [handleClick])}>
+  return <div className={styles.main + ' ' + ( isClassApplied ? styles.tapped : '')} onClick={useCallback(handleClick, [])}>
     <Rings />
-    <Image src={Coco} alt="coco" width="100" height="100" className={styles.coco} />
+    <Image src={Hero} alt="Hero" width="100" height="100" className={styles.hero} />
   </div>;
 };
 
-export default CocoTap;
+export default TapArea;
