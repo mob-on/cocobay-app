@@ -19,6 +19,7 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
+    "ahooks": "3.7.2",
     "next-images": "^1.8.5"
   }
 }
