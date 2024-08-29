@@ -1,0 +1,33 @@
+@import "src/styles/theme.module.scss";
+
+
+.main {
+    position: relative;
+    left: 0;
+    right: 0;
+    height: $tap-ring-diameter + $tap-ring-width * 2;
+    width: 100%;
+}
+
+.tapped { 
+    // Using globals is not perfect, but that is the simplest solution I can think of at the moment.
+    // If we limit globals to occasional ids, if shoudln't be a problem.
+    :global(#tap-ring3), :global(#tap-ring2) {
+        transform: translate(-50%, -50%);
+        transition: none;
+        opacity: .5;
+    }
+    :global(#tap-ring2) {
+        opacity: 1;
+    }
+}
+
+.hero {
+    z-index: 10;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: $coco-size;
+    height: $coco-size;
+}

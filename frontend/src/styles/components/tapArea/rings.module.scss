@@ -1,0 +1,60 @@
+@import "src/styles/theme.module.scss";
+@import './tapArea.module.scss';
+
+.ringsMain {
+    z-index: -1;
+}
+
+.ring1, .ring2, .ring3, .ringBg, .bg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    border-radius: 50%;
+}
+
+.bg {
+    width: calc($tap-ring-diameter - $tap-ring-width);
+    height: calc($tap-ring-diameter - $tap-ring-width);
+    z-index: 5;
+    background: $tap-background;
+}
+
+.ringBg {
+    width: calc($tap-ring-diameter - $tap-ring-width);
+    height: calc($tap-ring-diameter - $tap-ring-width);
+    background-color: $body-bg;
+    z-index: 4;
+}
+
+.ring1 {
+    background-color: $tap-ring1-color;
+    width: $tap-ring-diameter;
+    height: $tap-ring-diameter;
+    z-index: 3;
+    &.main:hover & {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+.ring2 {
+    background-color: $tap-ring2-color;
+    width: calc($tap-ring-diameter + $tap-ring-width);
+    height: calc($tap-ring-diameter + $tap-ring-width);
+    z-index: 2;
+}
+
+.ring3 {
+    background-color: $tap-ring3-color;
+    width: calc($tap-ring-diameter + $tap-ring-width * 2);
+    height: calc($tap-ring-diameter + $tap-ring-width * 2);
+    z-index: 1;
+}
+
+.ring2, .ring3 {
+    transition: transform $tap-transition-time ease, opacity $tap-transition-time * 2 ease;
+    transform: translate(-50%, -50%) scale(.94);
+    opacity: .2;
+}
