@@ -1,0 +1,49 @@
+@import "src/styles/theme.scss";
+
+.boosts {
+    display: flex;
+    flex-direction: column;
+    padding: $padding;
+    padding-bottom: $padding + $menu-height + $menu-bottom;
+    user-select: none;
+}
+
+.boost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $padding;
+    padding: $padding 0;
+    background-color: $color-menu;
+    border-radius: 5px;
+    width: calc(50% - $padding);
+}
+
+.boost:active {
+    background-color: lighten($color-menu, 10%);
+}
+
+.boostList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $padding;
+    justify-content: space-between;
+}
+
+.cost {
+    display: flex;
+    align-items: center;
+    gap: $padding / 2;
+}
+
+.boostPopup {
+    box-sizing: border-box;
+    padding: $padding;
+    width: 100%;
+    min-height: 40vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
