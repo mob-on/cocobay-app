@@ -1,8 +1,8 @@
-@import "src/styles/theme.module.scss";
+@import "src/styles/theme.scss";
 
 .fixedWrapper {
     position: relative;
-    height: 97px;
+    height: $header-height;
 }
 
 .main {
@@ -15,6 +15,7 @@
     left: 0;
     right: 0;
     padding: 0 $padding;
+    overflow: hidden;
 }
 
 .back {
