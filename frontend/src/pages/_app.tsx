@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Layout from "../layouts/Layout";
 import "../styles/globals.scss";
+import { TapCounterProvider } from "src/shared/context/TapCounterContext";
 // import init from "./_main";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -34,7 +35,9 @@ export default function App({ Component, pageProps }: AppProps) {
           content="summary_large_image"
         />
       </Head>
-      <Component {...pageProps} />
+      <TapCounterProvider>
+        <Component {...pageProps} />
+      </TapCounterProvider>
     </Layout>
   );
 }
