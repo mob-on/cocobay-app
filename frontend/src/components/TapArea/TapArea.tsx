@@ -5,6 +5,7 @@ import Rings from "./Rings";
 import { v4 as uuidv4 } from 'uuid';
 import { TAP_EFFECTS_THROTTLE, TAP_EFFECTS_TIMEOUT, useTaps } from "src/shared/context/tapEffectsContext";
 import Image from "next/image";
+import { useTapCounter } from "src/shared/context/TapCounterContext";
 
 export interface ITapEvent {
   id: string;
@@ -50,6 +51,7 @@ const TapArea: React.FC = () => {
     }
   };
   const { taps = [], setTaps } = useTaps();
+  const { incrementData } = useTapCounter();
 
   /**
    * Handles a click event by adding the event information to the tap list,
@@ -57,6 +59,7 @@ const TapArea: React.FC = () => {
    * and triggering a tap animation.
    */
   const handleClick = (event: MouseEvent) => {
+    incrementData();
     throttledHandleTapFeedback();
     const tapId = uuidv4();
     const tapEvent: ITapEvent = {
