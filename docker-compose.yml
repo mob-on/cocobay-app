@@ -1,8 +1,9 @@
-version: "3.3"
+version: "3.4"
 services:
   frontend:
-    image: nginx
-    volumes:
-      - ./frontend/out:/usr/share/nginx/html
+    build:
+      context: .
+      target: frontend
+    container_name: cocobay-app-frontend
     ports:
       - "3000:80"

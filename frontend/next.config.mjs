@@ -8,6 +8,7 @@ const nextConfig = {
   trailingSlash: true,
   images: {
     disableStaticImages: true,
+    unoptimized: true, //required by next output:export
   },
   // webpack(config) {
   //   config.module.rules.push(
