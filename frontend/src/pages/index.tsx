@@ -12,30 +12,29 @@ import TapCounter from "src/components/TapCounter";
 
 export default function Home() {
   return (
-    <TapsEffectsContextProvider>
-      <>
-        <TapEffects />
-        <section id="home" className={styles.home}>
-          {/* <div className="bar">
-            <SetOutline />
-          </div> */}
-          <div className={styles.avatar}>
-            <HomeAvatar />
-          </div>
-          <div className={styles.tapCounterWrapper}>
-            <TapCounter />
-          </div>
-          <div className={styles.tap}>
-            <TapArea />
-          </div>
-          <footer className={styles.footer}>
-            <LevelingContextProvider>
-              <Leveling />
-            </LevelingContextProvider>
-            <Stamina />
-          </footer>
-        </section>
-      </>
-    </TapsEffectsContextProvider>
+    <>
+      <TapsEffectsContextProvider>
+        <>
+          <TapEffects />
+          <section id="home" className={styles.home}>
+            <div className={styles.avatar}>
+              <HomeAvatar />
+            </div>
+            <div className={styles.tapCounterWrapper}>
+              <TapCounter />
+            </div>
+            <div className={styles.tap}>
+              <TapArea />
+            </div>
+          </section>
+        </>
+      </TapsEffectsContextProvider>
+      <footer className={styles.footer}>
+        <LevelingContextProvider>
+          <Leveling />
+        </LevelingContextProvider>
+        <Stamina />
+      </footer>
+    </>
   );
 }
