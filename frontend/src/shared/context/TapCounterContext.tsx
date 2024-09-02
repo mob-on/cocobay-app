@@ -41,11 +41,10 @@ export const TapCounterProvider = ({ children }: { children: React.JSX.Element }
     else {
       timeoutId = setTimeout(() => updateTimeout(now), UPDATE_INTERVAL - timeDrift);
     }
-  }
+  };
 
   useEffect(() => {
     // first call shouldn't have previousUpdateTime set
-    console.log(2, "should be called once");
     updateTimeout(null);
   }, []);
 
