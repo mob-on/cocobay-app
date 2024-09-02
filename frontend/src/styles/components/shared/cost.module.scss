@@ -1,0 +1,12 @@
+@import "src/styles/theme.scss";
+
+.cost {
+    display: flex;
+    align-items: center;
+}
+
+.coin {
+    width: 16px;
+    height: 16px;
+    margin-right: $padding / 4;
+}

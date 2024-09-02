@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import styles from 'src/styles/components/boosts/boostPopup.module.scss';
 import Image from "next/image";
-import coin from 'public/media/coco-coin.svg';
 import { Button } from "antd-mobile";
 import { IBoost } from "./Boosts";
+import Cost from "../shared/Cost";
 
 const BoostPopup: React.FC<{ boost: IBoost, onAction: (id: number) => void }>  = memo(({ boost, onAction }) => {
   if(!boost) return <></>
@@ -19,11 +19,10 @@ const BoostPopup: React.FC<{ boost: IBoost, onAction: (id: number) => void }>  =
           isLastLevel ? (
             <p>You've reached the last level!</p>
           ) : (
-            <div className={styles.cost}>
-              <Image src={coin} alt="coin" width={16} height={16} />
-              <span>{boost.cost} to Level {boost.level + 1}</span>
-            </div>
-          )
+            <Cost cost={boost.cost} >
+              <span> to Level {boost.level + 1}</span>
+            </Cost>
+        )
         ) : (
           <span>
             { leftToday > 0 ? `Left today: ${leftToday}` : 'You\'ve used all your daily boosts! Come tomorrow!' }
