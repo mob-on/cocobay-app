@@ -1,4 +1,4 @@
-import React, { MouseEvent, useCallback, useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import styles from 'src/styles/components/tapArea/tapArea.module.scss';
 import Hero from 'public/media/coco/coco-pink-swag.svg';
 import Rings from "./Rings";
@@ -25,6 +25,7 @@ export interface ITapEvent {
 const TapArea: React.FC = () => {
   const [ isClassApplied, setIsClassApplied ] = useState(false);
   const [ classTimeoutId, setClassTimeoutId ] = useState<NodeJS.Timeout>(null);
+  const tapAreaRef = useRef<HTMLDivElement>(null);
 
   /**
    * Handles tap feedback by flashing ring animation for 50ms
@@ -59,15 +60,43 @@ const TapArea: React.FC = () => {
    * and triggering a tap animation.
    */
   const handleClick = (event: MouseEvent) => {
-    incrementData();
-    throttledHandleTapFeedback();
+    
+  };
+
+  useEffect(() => {
+    const element = tapAreaRef.current;
+    element.addEventListener('touchstart', handleTouchStart, { passive: false });
+    // cleanup
+    return () => {
+      element.removeEventListener('touchstart', handleTouchStart);
+      taps.forEach((tap) => clearTimeout(tap.timeoutId));
+      setTaps([]);
+      clearTimeout(classTimeoutId);
+      setClassTimeoutId(null);
+    };
+  }, []);
+  
+  const handleTouchStart = (e: TouchEvent) => {
+    // this makes us able to prevent taps from any unwanted actions
+    // however, it also prevents us from using mouse events.
+    // If we want mouse events, we should preventDefault() in the first touchmove event instead.
+    e.cancelable && e.preventDefault();
+    const touches = e.changedTouches;
+
+    // since it's the touchstart event, we only expect one touch to be changed.
+    const touch = touches[0];
+    const { clientX, clientY } = touch;
+
     const tapId = uuidv4();
     const tapEvent: ITapEvent = {
       id: tapId,
-      x: event.clientX,
-      y: event.clientY,
+      x: clientX,
+      y: clientY,
       time: performance.now(),
     };
+
+    incrementData();
+    throttledHandleTapFeedback();
 
     setTaps(oldTaps => [...oldTaps, tapEvent]);
 
@@ -81,22 +110,7 @@ const TapArea: React.FC = () => {
     tapEvent.timeoutId = timeoutId;
   };
 
-  useEffect(() => {
-    // Cleanup function to cancel timeouts when component unmounts
-    return () => {
-      if(!taps.length) return;
-      taps.forEach((tap) => clearTimeout(tap.timeoutId));
-      setTaps([]);
-      clearTimeout(classTimeoutId);
-      setClassTimeoutId(null);
-    };
-  }, []);
-  
-  const touchEvent = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  }
-
-  return <div className={styles.main + ' ' + ( isClassApplied ? styles.tapped : '')} onClick={useCallback(handleClick, [])}>
+  return <div className={styles.main + ' ' + ( isClassApplied ? styles.tapped : '')} ref={tapAreaRef} >
     <Rings />
     <Image src={Hero} alt="Hero" width="100" height="100" className={styles.hero} />
   </div>;

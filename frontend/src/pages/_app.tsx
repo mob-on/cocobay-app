@@ -34,6 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
           key="twitter-card"
           content="summary_large_image"
         />
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
       <TapCounterProvider>
         <Component {...pageProps} />

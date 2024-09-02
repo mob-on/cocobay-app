@@ -13,8 +13,8 @@ export interface ITapCounterContext {
 }
 
 const defaultTapCounterData: ITapCounterData = {
-  tapCount: 10000000000,
-  passiveIncome: 5,
+  tapCount: 0,
+  passiveIncome: 0,
   perTap: 1,
 }
 
@@ -41,11 +41,10 @@ export const TapCounterProvider = ({ children }: { children: React.JSX.Element }
     else {
       timeoutId = setTimeout(() => updateTimeout(now), UPDATE_INTERVAL - timeDrift);
     }
-  }
+  };
 
   useEffect(() => {
     // first call shouldn't have previousUpdateTime set
-    console.log(2, "should be called once");
     updateTimeout(null);
   }, []);
 
