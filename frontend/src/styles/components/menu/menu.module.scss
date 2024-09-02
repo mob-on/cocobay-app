@@ -1,4 +1,4 @@
-@import "src/styles/theme.module.scss";
+@import "src/styles/theme.scss";
 
 .main {
     width: 100%;
@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
-    width: 100%;
+    width: 90%;
     background: $body-bg;
     justify-content: center;
     align-items: center;

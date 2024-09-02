@@ -1,50 +1,40 @@
-import { SetOutline } from "antd-mobile-icons";
 import React from "react";
-import TapArea, { ITapEvent } from "src/components/TapArea";
+import TapArea from "src/components/TapArea";
 import TapEffects from "src/components/TapEffects";
 import styles from "src/styles/pages/index.module.scss";
-import TapEffectsContext from "src/shared/context/tapEffectsContext";
-import BoostsIcon from 'public/media/icons/boosts.png';
-import Image from 'next/image';
-import ProgressBar from "src/components/ProgressBar";
+import { TapsEffectsContextProvider } from "src/shared/context/tapEffectsContext";
+import { LevelingContextProvider } from "src/shared/context/levelingContext";
+import Leveling from "src/components/Leveling";
+import Stamina from "src/components/Stamina";
+import HomeAvatar from "src/components/HomeAvatar";
+import TapCounter from "src/components/TapCounter";
+
 
 export default function Home() {
-  const [ taps, setTaps ] = React.useState<ITapEvent[]>([]);
-
-  const currentExp = 25;
-  const targetExp = 100;
-  const level = 1;
-  const totalLevels = 10;
-  const levelingPercent = Math.round((currentExp / targetExp) * 100);
-  const levelName = "Mega Coco";
-
   return (
-    <TapEffectsContext.Provider value={{ taps, setTaps: (taps: ITapEvent[]) => {
-      setTaps(taps)
-    }}}>
-    <TapEffects />
-    <section id="home" className={styles.home}>
-        <div className="bar">
-          <SetOutline />
-        </div>
-        <div className={styles.coco}>
-          <TapArea />
-        </div>
+    <>
+      <TapsEffectsContextProvider>
+        <>
+          <TapEffects />
+          <section id="home" className={styles.home}>
+            <div className={styles.avatar}>
+              <HomeAvatar />
+            </div>
+            <div className={styles.tapCounterWrapper}>
+              <TapCounter />
+            </div>
+            <div className={styles.tap}>
+              <TapArea />
+            </div>
+          </section>
+        </>
+      </TapsEffectsContextProvider>
       <footer className={styles.footer}>
-        <div className={styles.levelInfo}>
-          <h3>Next level</h3>
-          <ProgressBar progress={levelingPercent} />
-          <div className={styles.level}>
-            <span>{ levelName }</span>
-            <span>{ level }/{ totalLevels }</span>
-          </div>
-        </div>
-        <div className={styles.boosts}>
-          <Image src={BoostsIcon} alt="boosts" width="32" height="32"/>
-        </div>
+        <LevelingContextProvider>
+          <Leveling />
+        </LevelingContextProvider>
+        <Stamina />
       </footer>
-    </section>
-    </TapEffectsContext.Provider>
-
+    </>
   );
 }

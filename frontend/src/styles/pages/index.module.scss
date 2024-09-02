@@ -1,11 +1,12 @@
-@import "src/styles/theme.module.scss";
+@import "src/styles/theme.scss";
 
 .home {
     position: relative;
-    height: calc(100vh - $header-height);
+    height: calc(100%);
+    top: -$header-height;
 }
 
-.coco {
+.tap {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -16,7 +17,7 @@
 
 .footer {
     position: absolute;
-    bottom: $menu-height + $menu-bottom + $padding;
+    bottom: calc($padding + $menu-bottom + $menu-height);
     left: 0;
     right: 0;
     padding: $padding;
@@ -26,19 +27,15 @@
     margin-bottom: $padding;
 }
 
-.levelInfo {
-    display: flex;
-    min-width: 250px;
-    flex-direction: column;
+.avatar {
+    position: relative;
+    top: $header-height;
+    padding: $padding;
 }
 
-.levelInfo h3 {
-    margin-bottom: $padding / 2;
-    font-size: 18px;
-}
-
-.level {
-    margin-top: $padding / 2;
-    display: flex;
-    justify-content: space-between;
+.tapCounterWrapper {
+    position: absolute;
+    height: $tap-ring-diameter + $tap-ring-width * $tap-rings-number;
+    text-align: center;
+    width: 100%;
 }

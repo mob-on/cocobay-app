@@ -6,10 +6,10 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
-if(progress < 0 || progress > 100) {
-    console.error(`Invalid progress value: ${progress}%`);
-}
-const progressValid = progress < 0 ? 0 : Math.min(100, progress);
+  if(progress < 0 || progress > 100) {
+      console.error(`Invalid progress value: ${progress}%`);
+  }
+  const progressValid = progress < 0 ? 0 : Math.min(100, progress);
 
   return (
     <div className={styles.progressBar}>
