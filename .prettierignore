@@ -3,3 +3,5 @@ out
 .git
 infrastructure/cdk.out
 .yarn
+.next
+yarn.lock
