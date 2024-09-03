@@ -11,7 +11,7 @@ const ButtonComponent: React.FC<{
   className?: string;
   children?: React.ReactNode;
   value?: string;
-  fill: "solid" | "outline";
+  fill?: "solid" | "outline";
 }> = ({ onClick, className, children, color = "primary", fill = "solid" }) => {
   return (
     <Button
