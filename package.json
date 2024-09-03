@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "dev": "yarn workspace frontend dev",
-    "docker:up": "yarn workspace frontend build && docker compose up -d",
+    "build": "yarn workspace frontend build",
+    "docker:up": "yarn build && docker compose up -d",
     "deploy": "NEXT_PUBLIC_ENVIRONMENT=dev yarn export && cd infrastructure && yarn deploy",
     "deploy:prod": "NEXT_PUBLIC_ENVIRONMENT=prod yarn export && cd infrastructure && yarn deploy:prod"
   },
@@ -17,9 +18,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
-  "packageManager": "yarn@3.4.1",
-  "dependencies": {
-    "ahooks": "3.7.2",
-    "next-images": "^1.8.5"
-  }
+  "packageManager": "yarn@3.4.1"
 }
