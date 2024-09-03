@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 // Component to store tap data
 export interface ITapsData {
@@ -11,6 +11,10 @@ export interface ITapsDataContext {
   setData: (data: ITapsData | ((data: ITapsData) => ITapsData)) => void;
 }
 
-const TapsDataContext = createContext({ data: { passiveRate: 0 }, setData: () => {}, setTaps: () => {}} as ITapsDataContext);
+const TapsDataContext = createContext({
+  data: { passiveRate: 0 },
+  setData: () => {},
+  setTaps: () => {},
+} as ITapsDataContext);
 export const useTapsData = () => useContext(TapsDataContext);
 export default TapsDataContext;

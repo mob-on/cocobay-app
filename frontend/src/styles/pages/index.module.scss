@@ -1,41 +1,41 @@
 @import "src/styles/theme.scss";
 
 .home {
-    position: relative;
-    height: calc(100%);
-    top: -$header-height;
+  position: relative;
+  height: calc(100%);
+  top: -$header-height;
 }
 
 .tap {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: $tap-ring-diameter + $tap-ring-width * $tap-rings-number;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: $tap-ring-diameter + $tap-ring-width * $tap-rings-number;
 }
 
 .footer {
-    position: absolute;
-    bottom: calc($padding + $menu-bottom + $menu-height);
-    left: 0;
-    right: 0;
-    padding: $padding;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: $padding;
+  position: absolute;
+  bottom: calc($padding + $menu-bottom + $menu-height);
+  left: 0;
+  right: 0;
+  padding: $padding;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $padding;
 }
 
 .avatar {
-    position: relative;
-    top: $header-height;
-    padding: $padding;
+  position: relative;
+  top: $header-height;
+  padding: $padding;
 }
 
 .tapCounterWrapper {
-    position: absolute;
-    height: $tap-ring-diameter + $tap-ring-width * $tap-rings-number;
-    text-align: center;
-    width: 100%;
+  position: absolute;
+  height: $tap-ring-diameter + $tap-ring-width * $tap-rings-number;
+  text-align: center;
+  width: 100%;
 }

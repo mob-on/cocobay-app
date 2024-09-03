@@ -1,10 +1,9 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 interface ITapCounterData {
-  tapCount: number,
-  passiveIncome: number,
-  perTap: number, // how many taps we count per one tap
+  tapCount: number;
+  passiveIncome: number;
+  perTap: number; // how many taps we count per one tap
 }
 
 export interface ITapCounterContext {
@@ -16,30 +15,42 @@ const defaultTapCounterData: ITapCounterData = {
   tapCount: 0,
   passiveIncome: 0,
   perTap: 1,
-}
+};
 
 const UPDATE_INTERVAL = 1000;
 
-const TapCounterContext = createContext<ITapCounterContext>({ data: defaultTapCounterData, incrementData: () => {}});
-  
+const TapCounterContext = createContext<ITapCounterContext>({
+  data: defaultTapCounterData,
+  incrementData: () => {},
+});
+
 export const useTapCounter = () => useContext(TapCounterContext);
 export default TapCounterContext;
 
-export const TapCounterProvider = ({ children }: { children: React.JSX.Element }) => {
+export const TapCounterProvider = ({
+  children,
+}: {
+  children: React.JSX.Element;
+}) => {
   const [tapCounter, setTapCounter] = useState(defaultTapCounterData);
-  
+
   let timeoutId: NodeJS.Timeout = null;
   // Service to increment tap count every second. Corrects itself to not drift over time.
   const updateTimeout = (previousUpdateTime: DOMHighResTimeStamp) => {
     clearTimeout(timeoutId);
     const now = performance.now();
     const timeDrift = now - previousUpdateTime - UPDATE_INTERVAL;
-    setTapCounter(prevCount => ({ ...prevCount, tapCount: prevCount.tapCount + tapCounter.passiveIncome }));
-    if(!previousUpdateTime) {
+    setTapCounter((prevCount) => ({
+      ...prevCount,
+      tapCount: prevCount.tapCount + tapCounter.passiveIncome,
+    }));
+    if (!previousUpdateTime) {
       timeoutId = setTimeout(() => updateTimeout(now), UPDATE_INTERVAL);
-    }
-    else {
-      timeoutId = setTimeout(() => updateTimeout(now), UPDATE_INTERVAL - timeDrift);
+    } else {
+      timeoutId = setTimeout(
+        () => updateTimeout(now),
+        UPDATE_INTERVAL - timeDrift,
+      );
     }
   };
 
@@ -49,12 +60,17 @@ export const TapCounterProvider = ({ children }: { children: React.JSX.Element }
   }, []);
 
   const incrementTapCount = () => {
-    setTapCounter(prevCount => ({ ...prevCount, tapCount: prevCount.tapCount + tapCounter.perTap }));
+    setTapCounter((prevCount) => ({
+      ...prevCount,
+      tapCount: prevCount.tapCount + tapCounter.perTap,
+    }));
   };
 
   return (
-    <TapCounterContext.Provider value={{ data: tapCounter, incrementData: incrementTapCount }}>
-      { children }
+    <TapCounterContext.Provider
+      value={{ data: tapCounter, incrementData: incrementTapCount }}
+    >
+      {children}
     </TapCounterContext.Provider>
   );
 };

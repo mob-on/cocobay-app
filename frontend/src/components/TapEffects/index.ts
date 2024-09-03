@@ -1,1 +1,1 @@
-export { default } from './TapEffects';
+export { default } from "./TapEffects";

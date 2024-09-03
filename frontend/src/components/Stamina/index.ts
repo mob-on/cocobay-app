@@ -1,1 +1,1 @@
-export { default } from './Stamina';
+export { default } from "./Stamina";

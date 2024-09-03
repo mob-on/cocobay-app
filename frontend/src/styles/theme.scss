@@ -7,41 +7,52 @@ $menu-height: 83px;
 $header-height: 0;
 $padding-coin: 4px;
 
-
 // colors
 $color-menu: #515172;
-$color-menu-active: #8181B1;
+$color-menu-active: #8181b1;
 $color-white: #fff;
 $body-bg: #1e1e2b;
-$color-purple-primary: #C7A0FD;
+$color-purple-primary: #c7a0fd;
 
 // other
 $popup-b-radius: 15px 15px 0 0;
 
 // Home page specific
-$tap-background: radial-gradient(circle, #9797d3 0%, $body-bg 70%); // gradient behind the coco
+$tap-background: radial-gradient(
+  circle,
+  #9797d3 0%,
+  $body-bg 70%
+); // gradient behind the coco
 $tap-ring-diameter: 340px;
 $tap-ring-width: 10px;
-$tap-ring1-color: #88D912;
-$tap-ring2-color: #CDFF83;
-$tap-ring3-color: #F5FFE7;
+$tap-ring1-color: #88d912;
+$tap-ring2-color: #cdff83;
+$tap-ring3-color: #f5ffe7;
 $tap-ring-scale: calc(1 + 100 / 340); // 1 + scale width in pixels / diameter
 $tap-rings-number: 2; // number of rings, used only in tap height calculation
 $tap-transition-time: 0.05s;
 $coco-size: 239px;
 $tap-coin-size: 24px;
 
-$color-grad-start: #9E71FF;
-$color-grad-mid: #5F9DFC;
-$color-grad-end: #1FC8F7;
+$color-grad-start: #9e71ff;
+$color-grad-mid: #5f9dfc;
+$color-grad-end: #1fc8f7;
 
 // Cards specific
 $card-bg-color: $color-menu;
 $card-bg-color-active: lighten($card-bg-color, 10%);
 $card-b-radius: 15px;
-$card-border: 0px solid #FFF;
-$card-gradient: linear-gradient(93deg, $color-grad-start 1.77%, $color-grad-end 98.75%);
-$card-gradient-active: linear-gradient(93deg, lighten($color-grad-start, 5%) 1.77%, lighten($color-grad-end, 5%) 98.75%);
+$card-border: 0px solid #fff;
+$card-gradient: linear-gradient(
+  93deg,
+  $color-grad-start 1.77%,
+  $color-grad-end 98.75%
+);
+$card-gradient-active: linear-gradient(
+  93deg,
+  lighten($color-grad-start, 5%) 1.77%,
+  lighten($color-grad-end, 5%) 98.75%
+);
 
 // Build page specific
 $build-card-height: 64px;

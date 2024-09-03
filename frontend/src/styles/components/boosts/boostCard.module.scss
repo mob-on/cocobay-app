@@ -1,22 +1,22 @@
 @import "src/styles/theme.scss";
 
 .boost {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $padding-inner / 2;
-    padding: $padding-inner 0;
-    background-color: $card-bg-color;
-    border-radius: $card-b-radius;
-    width: calc(50% - $padding-inner / 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $padding-inner / 2;
+  padding: $padding-inner 0;
+  background-color: $card-bg-color;
+  border-radius: $card-b-radius;
+  width: calc(50% - $padding-inner / 2);
 }
 
 .boost:active {
-    background-color: $card-bg-color-active;
+  background-color: $card-bg-color-active;
 }
 
 .boostList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $padding-inner / 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $padding-inner / 2;
 }

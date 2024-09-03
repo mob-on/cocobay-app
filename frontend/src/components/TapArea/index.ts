@@ -1,2 +1,2 @@
-export { default } from './TapArea';
-export type ITapEvent = import ('./TapArea').ITapEvent;
+export { default } from "./TapArea";
+export type ITapEvent = import("./TapArea").ITapEvent;
