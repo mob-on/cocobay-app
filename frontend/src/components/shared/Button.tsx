@@ -13,7 +13,6 @@ const ButtonComponent: React.FC<{
   value?: string;
   fill: "solid" | "outline";
 }> = ({ onClick, className, children, color = "primary", fill = "solid" }) => {
-  console.log("rendering button!");
   return (
     <Button
       onClick={onClick}
