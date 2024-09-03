@@ -1,37 +1,34 @@
 @import "src/styles/theme.scss";
 
-
 .buildCard {
-    height: $build-card-height;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: $padding-inner;
-    padding: $padding-inner 0;
-    cursor: pointer;
-    background: $card-gradient;
-    border-radius: $card-b-radius;
-    margin-bottom: $padding-inner;
-    user-select: none;
-    border: $card-border;
+  height: $build-card-height;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: $padding-inner;
+  padding: $padding-inner 0;
+  cursor: pointer;
+  background: $card-gradient;
+  border-radius: $card-b-radius;
+  margin-bottom: $padding-inner;
+  user-select: none;
+  border: $card-border;
 }
 
 .buildCard:active {
-    background: $card-gradient-active;
+  background: $card-gradient-active;
 }
 
 .buildInfo {
-    margin-left: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding: 0 $padding-inner;
-    height: 100%;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 $padding-inner;
+  height: 100%;
 }
 
-
-
 .buildInfo p {
-    margin: 0;
+  margin: 0;
 }
