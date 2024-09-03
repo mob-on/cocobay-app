@@ -5,7 +5,7 @@ import FriendsIcon from "public/media/icons/friends.svg";
 // import AirdropIcon from 'public/media/icons/airdrop.svg';
 
 import styles from "src/styles/components/menu/menu.module.scss";
-import Button from "./Button";
+import MenuButton from "./MenuButton";
 import { useRouter } from "next/router";
 
 /**
@@ -46,7 +46,7 @@ const Menu: React.FC = () => {
     <div className={styles.main}>
       <div className={styles.menu}>
         {buttons.map((button) => (
-          <Button
+          <MenuButton
             isSelected={
               !isRoot
                 ? pathname === button.path

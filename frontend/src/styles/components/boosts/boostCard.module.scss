@@ -7,6 +7,7 @@
   gap: $padding-inner / 2;
   padding: $padding-inner 0;
   background-color: $card-bg-color;
+  background: $card-bg;
   border-radius: $card-b-radius;
   width: calc(50% - $padding-inner / 2);
 }

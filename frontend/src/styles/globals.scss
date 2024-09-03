@@ -24,6 +24,8 @@ body,
 
 #__main {
   height: 100%;
+  max-width: $max-page-width;
+  position: relative;
 }
 
 body {
