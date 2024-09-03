@@ -9,17 +9,22 @@
   touch-action: none;
 }
 
+$scale-ring-2: 1 + ($tap-ring-width / $tap-ring-diameter);
+$scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
+
 .tapped {
   // Using globals is not perfect, but that is the simplest solution I can think of at the moment.
   // If we limit globals to occasional ids, if shoudln't be a problem.
   :global(#tap-ring3),
   :global(#tap-ring2) {
-    transform: translate(-50%, -50%);
     transition: none;
     opacity: 0.5;
   }
   :global(#tap-ring2) {
-    opacity: 1;
+    transform: translate(-50%, -50%) scale($scale-ring-2);
+  }
+  :global(#tap-ring3) {
+    transform: translate(-50%, -50%) scale($scale-ring-3);
   }
 }
 
@@ -31,4 +36,27 @@
   transform: translate(-50%, -50%);
   width: $coco-size;
   height: $coco-size;
+}
+
+.moon,
+.cloud1,
+.cloud2 {
+  position: absolute;
+  z-index: 10;
+}
+
+.moon {
+  right: $padding;
+  top: 0;
+  transform: translateY(-75%);
+}
+
+.cloud1 {
+  right: 75%;
+  width: 256px;
+}
+
+.cloud2 {
+  left: $tap-ring-diameter;
+  top: 50%;
 }

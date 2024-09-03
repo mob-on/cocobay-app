@@ -104,7 +104,6 @@ export default function Boosts() {
     (id: number) => {
       hideBoostPopup();
       const boost = findBoost(id);
-      console.log(1, boosts);
       if (boost) {
         setBoosts(
           boosts.map((boost) =>

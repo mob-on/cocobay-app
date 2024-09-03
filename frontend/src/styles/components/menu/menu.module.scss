@@ -21,12 +21,10 @@
   justify-content: space-between;
   align-items: center;
   background-color: $color-menu;
-  // max-width: 410px;
-  // border: 1.5px solid $body-bg;
-  // border-bottom: 2.5px solid $body-bg;
   border-radius: 10px;
   height: $menu-height;
   box-sizing: border-box;
+  max-width: calc($max-page-width - $padding-menu * 2);
 }
 
 .menu {

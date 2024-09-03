@@ -2,8 +2,9 @@ import React from "react";
 import styles from "src/styles/components/tapEffects/tapEffects.module.scss";
 import { ITapEvent } from "../TapArea";
 import { useTaps } from "src/shared/context/tapEffectsContext";
-import CocoCoin from "public/media//coco-coin.svg";
 import Image from "next/image";
+
+import CocoCoin from "public/media/coco-coin.svg";
 
 interface ITapEffectProps {
   tap: ITapEvent;
@@ -26,8 +27,8 @@ const TapEffect: React.FC<ITapEffectProps> = ({ tap }) => {
       <Image
         src={CocoCoin}
         alt="coin"
-        width="24"
-        height="24"
+        width={24}
+        height={24}
         className={styles.coin}
       />
     </div>

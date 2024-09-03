@@ -11,6 +11,10 @@ import {
 import Image from "next/image";
 import { useTapCounter } from "src/shared/context/TapCounterContext";
 
+import moon from "public/media/moon.svg";
+import cloud1 from "public/media/cloud1.svg";
+import cloud2 from "public/media/cloud2.svg";
+
 export interface ITapEvent {
   id: string;
   x: number;
@@ -120,6 +124,30 @@ const TapArea: React.FC = () => {
       ref={tapAreaRef}
     >
       <Rings />
+      <Image
+        src={moon}
+        width={96}
+        height={96}
+        alt="Decoration"
+        className={styles.moon}
+        id="__moon"
+      />
+      <Image
+        src={cloud1}
+        width={96}
+        height={96}
+        alt="Decoration"
+        className={styles.cloud1}
+        id="__cloud1"
+      />
+      <Image
+        src={cloud2}
+        width={96}
+        height={96}
+        alt="Decoration"
+        className={styles.cloud2}
+        id="_cloud2"
+      />
       <Image
         src={Hero}
         alt="Hero"

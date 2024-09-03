@@ -4,21 +4,28 @@ import coin from "public/media/coco-coin.svg";
 import { ReactElement } from "react";
 import numberTransform from "src/shared/lib/numberTransform";
 
-// Draws a coin next to the passed element
-const Cost: React.FC<{ cost: number; children?: ReactElement }> = ({
-  cost,
-  children,
-}) => {
+// Draws a coin next to the passed element, with the optional cost number.
+const Cost: React.FC<{
+  cost?: number;
+  children?: ReactElement;
+  size: number;
+  className?: string;
+}> = ({ cost, children, size = 16, className }) => {
   return (
     <span className={styles.cost}>
       <Image
-        className={styles.coin}
+        style={{ width: size, height: size }}
+        className={styles.coin + ` ${className || ""}`}
         src={coin}
         alt="coin"
-        width={16}
-        height={16}
+        width={size}
+        height={size}
       />
-      <span>{numberTransform(cost)}</span>&nbsp;
+      {cost && (
+        <>
+          <span>{numberTransform(cost)}</span>&nbsp;
+        </>
+      )}
       {children || ""}
     </span>
   );

@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import styles from "src/styles/components/build/buildPopup.module.scss";
 import Image from "next/image";
-import { Button } from "antd-mobile";
 import { IBuild } from "./Build";
 import Cost from "../shared/Cost";
+import Button from "../shared/Button";
 
 // TODO: This component is extremely similar to BoostPopup, we should look into combining them.
 // I don't want to do this right now, because we might have other similar components
@@ -28,9 +28,7 @@ const buildPopup: React.FC<{ build: IBuild; onAction: (id: number) => void }> =
         <Button
           onClick={() => onAction(build.id)}
           className={styles.onUpgrade}
-          block
-          color="primary"
-          fill="solid"
+          color="gradient"
         >
           {isLastLevel ? "Okay" : "Upgrade"}
         </Button>

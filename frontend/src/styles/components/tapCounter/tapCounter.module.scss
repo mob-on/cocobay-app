@@ -1,9 +1,17 @@
+@import "src/styles/theme.scss";
+
 .tapCounter {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
 .tapCounter h1 {
   font-size: 35px;
+  margin-bottom: $padding-inner;
+}
+
+.tapCounter p {
+  margin-top: 0;
 }

@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import styles from "src/styles/components/boosts/boostPopup.module.scss";
 import Image from "next/image";
-import { Button } from "antd-mobile";
 import { IBoost } from "./Boosts";
 import Cost from "../shared/Cost";
+import Button from "../shared/Button";
 
 const BoostPopup: React.FC<{ boost: IBoost; onAction: (id: number) => void }> =
   memo(({ boost, onAction }) => {
@@ -34,9 +34,7 @@ const BoostPopup: React.FC<{ boost: IBoost; onAction: (id: number) => void }> =
         <Button
           onClick={() => onAction(boost.id)}
           className={styles.onUpgrade}
-          block
-          color="primary"
-          fill="solid"
+          color="gradient"
         >
           {boost.type === "daily"
             ? leftToday > 0

@@ -1,0 +1,22 @@
+@import "src/styles/theme.scss";
+
+.gradient {
+  background: $color-button-gradient;
+  border: none;
+}
+
+.gradient:active {
+  background: $color-button-gradient-active;
+}
+
+.primary {
+  background: $color-button-primary;
+}
+
+.primary:active {
+  background-color: $color-button-primary-active;
+}
+
+.button {
+  border-radius: $button-b-radius;
+}

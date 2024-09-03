@@ -9,6 +9,9 @@
   --adm-color-text: #{$color-white} !important;
   --adm-font-family: "D-DIN Pro", sans-serif !important;
   --adm-font-size-2: 16px !important;
+  .adm-progress-bar-fill {
+    background: $gradient-primary !important;
+  }
 }
 
 html,
@@ -24,6 +27,19 @@ body,
 
 #__main {
   height: 100%;
+  max-width: $max-page-width;
+  position: relative;
+}
+
+#__grid {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  opacity: 0.5;
+  z-index: -1;
 }
 
 body {

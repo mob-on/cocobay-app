@@ -12,3 +12,12 @@
   src: url("../../public/fonts/ddinpro/D-DIN-PRO-400-Regular.otf")
     format("opentype");
 }
+
+// A font for the tap counter. We specifically need to use a monospace font,
+// to prevent the number from jumping around when the tap count changes.
+@font-face {
+  font-family: "MartianMono";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../../public/fonts/martian/MartianMono-Bold.ttf") format("truetype");
+}
