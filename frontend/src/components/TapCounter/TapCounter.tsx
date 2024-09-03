@@ -8,8 +8,14 @@ const TapCounter: React.FC = () => {
   const { data } = useTapCounter();
 
   const numberFormatter = new Intl.NumberFormat("en-US");
-  const formattedTapCount = useMemo(() => numberFormatter.format(data.tapCount), [data.tapCount]);
-  const formattedPassiveIncome = useMemo(() => numberTransform(data.passiveIncome * 3600), [data.passiveIncome]);
+  const formattedTapCount = useMemo(
+    () => numberFormatter.format(data.tapCount),
+    [data.tapCount],
+  );
+  const formattedPassiveIncome = useMemo(
+    () => numberTransform(data.passiveIncome * 3600),
+    [data.passiveIncome],
+  );
   return (
     <div className={styles.tapCounter}>
       <h1 style={{ fontSize: 30, fontFamily: "MartianMono" }}>
@@ -17,9 +23,7 @@ const TapCounter: React.FC = () => {
           <span>{formattedTapCount}</span>
         </Cost>
       </h1>
-      <p>
-        {formattedPassiveIncome} per hour
-      </p>
+      <p>{formattedPassiveIncome} per hour</p>
     </div>
   );
 };

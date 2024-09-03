@@ -38,7 +38,9 @@ $scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
   height: $coco-size;
 }
 
-.moon, .cloud1, .cloud2 {
+.moon,
+.cloud1,
+.cloud2 {
   position: absolute;
   z-index: 10;
 }

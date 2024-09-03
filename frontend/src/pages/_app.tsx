@@ -7,7 +7,7 @@ import "../styles/globals.scss";
 import { TapCounterProvider } from "src/shared/context/TapCounterContext";
 import Image from "next/image";
 // import init from "./_main";
-import grid from 'public/media/grid.svg';
+import grid from "public/media/grid.svg";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
