@@ -1,28 +1,27 @@
-
 import React, { useEffect, useState } from "react";
-import styles from 'src/styles/components/leveling/leveling.module.scss';
+import styles from "src/styles/components/leveling/leveling.module.scss";
 import Image from "next/image";
 import { ProgressBar } from "antd-mobile";
-import BoostsIcon from 'public/media/icons/boosts.svg';
+import BoostsIcon from "public/media/icons/boosts.svg";
 
 export interface ILevelingData {
-  level: number,
-  levelName: string,
-  targetExp: number,
-  currentExp: number,
-  maxLevel: number,
+  level: number;
+  levelName: string;
+  targetExp: number;
+  currentExp: number;
+  maxLevel: number;
 }
 
 const defaultLevelingData: ILevelingData = {
   level: 1,
-  levelName: 'Coco',
+  levelName: "Coco",
   targetExp: 100,
   currentExp: 0,
   maxLevel: 10,
-}
+};
 
 const Leveling: React.FC = () => {
-  const [ data, setData ] = useState(defaultLevelingData)
+  const [data, setData] = useState(defaultLevelingData);
   const { currentExp, targetExp, level, levelName, maxLevel } = data;
   const percent = Math.round((currentExp / targetExp) * 100);
 
@@ -32,21 +31,25 @@ const Leveling: React.FC = () => {
       level: 2,
       targetExp: 1000,
       currentExp: 425,
-      levelName: 'Super Coco',
+      levelName: "Super Coco",
       maxLevel: 10,
-    })
+    });
   }, []);
 
-  return <>
-    <div className={styles.levelInfo}>
+  return (
+    <>
+      <div className={styles.levelInfo}>
         <h3>Next level</h3>
         <ProgressBar percent={percent} />
         <div className={styles.level}>
-        <span>{ levelName }</span>
-        <span>{ level }/{ maxLevel }</span>
+          <span>{levelName}</span>
+          <span>
+            {level}/{maxLevel}
+          </span>
         </div>
-    </div>
-  </>;
+      </div>
+    </>
+  );
 };
 
 export default Leveling;

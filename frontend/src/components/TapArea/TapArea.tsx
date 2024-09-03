@@ -1,9 +1,13 @@
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
-import styles from 'src/styles/components/tapArea/tapArea.module.scss';
-import Hero from 'public/media/coco/coco-pink-swag.svg';
+import styles from "src/styles/components/tapArea/tapArea.module.scss";
+import Hero from "public/media/coco/coco-pink-swag.svg";
 import Rings from "./Rings";
-import { v4 as uuidv4 } from 'uuid';
-import { TAP_EFFECTS_THROTTLE, TAP_EFFECTS_TIMEOUT, useTaps } from "src/shared/context/tapEffectsContext";
+import { v4 as uuidv4 } from "uuid";
+import {
+  TAP_EFFECTS_THROTTLE,
+  TAP_EFFECTS_TIMEOUT,
+  useTaps,
+} from "src/shared/context/tapEffectsContext";
 import Image from "next/image";
 import { useTapCounter } from "src/shared/context/TapCounterContext";
 
@@ -23,8 +27,8 @@ export interface ITapEvent {
  * @return {JSX.Element} Component that displays a Coco image and triggers tap feedback.
  */
 const TapArea: React.FC = () => {
-  const [ isClassApplied, setIsClassApplied ] = useState(false);
-  const [ classTimeoutId, setClassTimeoutId ] = useState<NodeJS.Timeout>(null);
+  const [isClassApplied, setIsClassApplied] = useState(false);
+  const [classTimeoutId, setClassTimeoutId] = useState<NodeJS.Timeout>(null);
   const tapAreaRef = useRef<HTMLDivElement>(null);
 
   /**
@@ -59,23 +63,23 @@ const TapArea: React.FC = () => {
    * setting a timeout to remove the tap from the list after 5 seconds,
    * and triggering a tap animation.
    */
-  const handleClick = (event: MouseEvent) => {
-    
-  };
+  const handleClick = (event: MouseEvent) => {};
 
   useEffect(() => {
     const element = tapAreaRef.current;
-    element.addEventListener('touchstart', handleTouchStart, { passive: false });
+    element.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
     // cleanup
     return () => {
-      element.removeEventListener('touchstart', handleTouchStart);
+      element.removeEventListener("touchstart", handleTouchStart);
       taps.forEach((tap) => clearTimeout(tap.timeoutId));
       setTaps([]);
       clearTimeout(classTimeoutId);
       setClassTimeoutId(null);
     };
   }, []);
-  
+
   const handleTouchStart = (e: TouchEvent) => {
     // this makes us able to prevent taps from any unwanted actions
     // however, it also prevents us from using mouse events.
@@ -98,22 +102,33 @@ const TapArea: React.FC = () => {
     incrementData();
     throttledHandleTapFeedback();
 
-    setTaps(oldTaps => [...oldTaps, tapEvent]);
+    setTaps((oldTaps) => [...oldTaps, tapEvent]);
 
     // TODO: Check performance implications of this method. I would assume running Array.filter() on every click is inefficient.
     // Possible solution would be to group all completed taps into a single array and then filter the completed taps from the list.
     const timeoutId = setTimeout(() => {
-      setTaps(oldTaps => oldTaps.filter((tap) => tap.id !== tapId));
+      setTaps((oldTaps) => oldTaps.filter((tap) => tap.id !== tapId));
     }, TAP_EFFECTS_TIMEOUT);
 
     // Store timeout ID for potential cancellation
     tapEvent.timeoutId = timeoutId;
   };
 
-  return <div className={styles.main + ' ' + ( isClassApplied ? styles.tapped : '')} ref={tapAreaRef} >
-    <Rings />
-    <Image src={Hero} alt="Hero" width="100" height="100" className={styles.hero} />
-  </div>;
+  return (
+    <div
+      className={styles.main + " " + (isClassApplied ? styles.tapped : "")}
+      ref={tapAreaRef}
+    >
+      <Rings />
+      <Image
+        src={Hero}
+        alt="Hero"
+        width="100"
+        height="100"
+        className={styles.hero}
+      />
+    </div>
+  );
 };
 
 export default TapArea;

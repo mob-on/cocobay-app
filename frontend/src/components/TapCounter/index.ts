@@ -1,1 +1,1 @@
-export { default } from './TapCounter';
+export { default } from "./TapCounter";

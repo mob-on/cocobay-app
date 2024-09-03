@@ -1,1 +1,1 @@
-export type { IBoost } from './Boosts';
+export type { IBoost } from "./Boosts";

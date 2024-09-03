@@ -9,7 +9,6 @@ import Stamina from "src/components/Stamina";
 import HomeAvatar from "src/components/HomeAvatar";
 import TapCounter from "src/components/TapCounter";
 
-
 export default function Home() {
   return (
     <>

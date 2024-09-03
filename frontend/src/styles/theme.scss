@@ -6,21 +6,24 @@ $menu-height: 83px;
 $header-height: 0;
 $padding-coin: 4px;
 
-
 // colors
 $color-menu: #15151b;
-$color-menu-active: #8181B1;
+$color-menu-active: #8181b1;
 $color-white: #fff;
 $body-bg: #1e1e2b;
-$color-purple-primary: #C7A0FD;
+$color-purple-primary: #c7a0fd;
 
 // Home page specific
-$tap-background: radial-gradient(circle, #9797d3 0%, $body-bg 70%); // gradient behind the coco
+$tap-background: radial-gradient(
+  circle,
+  #9797d3 0%,
+  $body-bg 70%
+); // gradient behind the coco
 $tap-ring-diameter: 340px;
 $tap-ring-width: 10px;
-$tap-ring1-color: #88D912;
-$tap-ring2-color: #CDFF83;
-$tap-ring3-color: #F5FFE7;
+$tap-ring1-color: #88d912;
+$tap-ring2-color: #cdff83;
+$tap-ring3-color: #f5ffe7;
 $tap-ring-scale: calc(1 + 100 / 340); // 1 + scale width in pixels / diameter
 $tap-rings-number: 2; // number of rings, used only in tap height calculation
 $tap-transition-time: 0.05s;

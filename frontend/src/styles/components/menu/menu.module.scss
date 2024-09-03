@@ -1,33 +1,33 @@
 @import "src/styles/theme.scss";
 
 .main {
-    width: 100%;
-    left: 0;
-    right: 0;
-    position: fixed;
-    bottom: $menu-bottom;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  left: 0;
+  right: 0;
+  position: fixed;
+  bottom: $menu-bottom;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu {
-    padding: $padding-menu / 2 $padding-menu;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    width: 90%;
-    background: $body-bg;
-    justify-content: center;
-    align-items: center;
-    background-color: $color-menu;
-    max-width: 410px;
-    border: 1.5px solid $color-white;
-    border-bottom: 2.5px solid $color-white;
-    border-radius: 10px;
-    height: $menu-height;
+  padding: $padding-menu / 2 $padding-menu;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 90%;
+  background: $body-bg;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-menu;
+  max-width: 410px;
+  border: 1.5px solid $color-white;
+  border-bottom: 2.5px solid $color-white;
+  border-radius: 10px;
+  height: $menu-height;
 }
 
 .menu {
-    user-select: none;
+  user-select: none;
 }

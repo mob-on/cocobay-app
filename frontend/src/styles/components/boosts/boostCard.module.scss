@@ -1,28 +1,28 @@
 @import "src/styles/theme.scss";
 
 .boost {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $padding;
-    padding: $padding 0;
-    background-color: $color-menu;
-    border-radius: 5px;
-    width: calc(50% - $padding / 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $padding;
+  padding: $padding 0;
+  background-color: $color-menu;
+  border-radius: 5px;
+  width: calc(50% - $padding / 2);
 }
 
 .boost:active {
-    background-color: lighten($color-menu, 10%);
+  background-color: lighten($color-menu, 10%);
 }
 
 .boostList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $padding;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $padding;
 }
 
 .cost {
-    display: flex;
-    align-items: center;
-    gap: $padding / 4;
+  display: flex;
+  align-items: center;
+  gap: $padding / 4;
 }

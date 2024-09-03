@@ -1,19 +1,19 @@
 @import "src/styles/theme.scss";
 
 .levelInfo {
-    display: flex;
-    min-width: 250px;
-    flex-direction: column;
-    color: $color-white;
+  display: flex;
+  min-width: 250px;
+  flex-direction: column;
+  color: $color-white;
 }
 
 .levelInfo h3 {
-    margin-bottom: $padding / 2;
-    font-size: 18px;
+  margin-bottom: $padding / 2;
+  font-size: 18px;
 }
 
 .level {
-    margin-top: $padding / 2;
-    display: flex;
-    justify-content: space-between;
+  margin-top: $padding / 2;
+  display: flex;
+  justify-content: space-between;
 }
