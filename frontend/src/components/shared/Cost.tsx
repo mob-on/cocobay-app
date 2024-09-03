@@ -23,7 +23,7 @@ const Cost: React.FC<{
       />
       {cost && (
         <>
-          <span>{numberTransform(cost)}</span>&nbsp
+          <span>{numberTransform(cost)}</span>&nbsp;
         </>
       )}
       {children || ""}
