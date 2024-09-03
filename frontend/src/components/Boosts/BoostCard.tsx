@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "src/styles/components/boosts/boostCard.module.scss";
 import Image from "next/image";
-import coin from "public/media/coco-coin.svg";
 import { IBoost } from "./Boosts";
+import Cost from "../shared/Cost";
 
 const BoostCard: React.FC<{
   boost: IBoost;
@@ -20,12 +20,9 @@ const BoostCard: React.FC<{
         (isLastLevel ? (
           <span>Level {boost.level} - maximum</span>
         ) : (
-          <div className={styles.cost}>
-            <Image src={coin} alt="coin" width={16} height={16} />
-            <span>
-              {boost.cost} - Level {boost.level}
-            </span>
-          </div>
+          <Cost cost={boost.cost}>
+            <span> - Level {boost.level}</span>
+          </Cost>
         ))}
     </div>
   );

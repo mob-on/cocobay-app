@@ -1,17 +1,21 @@
 // dimensions
-$padding: 20px;
-$padding-menu: 11px;
+$padding: 30px;
+$padding-inner: 20px;
+$padding-menu: $padding;
 $menu-bottom: 34px;
 $menu-height: 83px;
 $header-height: 0;
 $padding-coin: 4px;
 
 // colors
-$color-menu: #15151b;
+$color-menu: #515172;
 $color-menu-active: #8181b1;
 $color-white: #fff;
 $body-bg: #1e1e2b;
 $color-purple-primary: #c7a0fd;
+
+// other
+$popup-b-radius: 15px 15px 0 0;
 
 // Home page specific
 $tap-background: radial-gradient(
@@ -30,13 +34,25 @@ $tap-transition-time: 0.05s;
 $coco-size: 239px;
 $tap-coin-size: 24px;
 
-$primary: #f9b804;
-$primary-color-lighter: #fad305;
-$primary-color-darker: #f58531;
-$secondary: #5aace8;
-$input-bg: #fff;
-$accordion-bg: #fff;
-$body-color: #444444;
-$link-color: $primary-color-darker;
-$link-shade-percentage: 20%;
-$link-hover-color: $primary-color-lighter;
+$color-grad-start: #9e71ff;
+$color-grad-mid: #5f9dfc;
+$color-grad-end: #1fc8f7;
+
+// Cards specific
+$card-bg-color: $color-menu;
+$card-bg-color-active: lighten($card-bg-color, 10%);
+$card-b-radius: 15px;
+$card-border: 0px solid #fff;
+$card-gradient: linear-gradient(
+  93deg,
+  $color-grad-start 1.77%,
+  $color-grad-end 98.75%
+);
+$card-gradient-active: linear-gradient(
+  93deg,
+  lighten($color-grad-start, 5%) 1.77%,
+  lighten($color-grad-end, 5%) 98.75%
+);
+
+// Build page specific
+$build-card-height: 64px;
