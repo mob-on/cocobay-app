@@ -37,3 +37,24 @@ $scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
   width: $coco-size;
   height: $coco-size;
 }
+
+.moon, .cloud1, .cloud2 {
+  position: absolute;
+  z-index: 10;
+}
+
+.moon {
+  right: $padding;
+  top: 0;
+  transform: translateY(-75%);
+}
+
+.cloud1 {
+  right: 75%;
+  width: 256px;
+}
+
+.cloud2 {
+  left: $tap-ring-diameter;
+  top: 50%;
+}
