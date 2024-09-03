@@ -1,1 +1,1 @@
-export type { IBuild } from './Build';
+export type { IBuild } from "./Build";
