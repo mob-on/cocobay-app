@@ -1,0 +1,51 @@
+@import "src/styles/theme.scss";
+
+.dailyCombo {
+    background-color: $color-menu-active;
+    border-radius: $card-b-radius;
+    padding: $padding-inner;
+}
+
+.dailyCombo h3 {
+    margin-top: 0;
+}
+
+.combos {
+    display: flex;
+    gap: $padding-inner / 2;
+    align-items: flex-end;
+}
+
+.hero {
+    margin-right: auto;
+}
+
+.singleCombo:nth-child(3n - 1) {
+    background-color: $color-grad-start;
+}
+
+.singleCombo:nth-child(3n - 3) {
+    background-color: $color-grad-mid;
+}
+
+.singleCombo:nth-child(3n - 2) {
+    background-color: $color-grad-end;
+}
+
+.singleCombo {
+    // box-shadow: -3px -3px 0px 0px $color-white inset;
+    border-radius: 15px;
+    position: relative;
+    width: 75px;
+    height: 75px;
+    border: $card-border;
+    box-sizing: border-box;
+}
+
+.singleComboImage {
+    width: 70%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
