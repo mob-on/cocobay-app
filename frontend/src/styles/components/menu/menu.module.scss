@@ -12,20 +12,21 @@
 }
 
 .menu {
-    padding: $padding-menu / 2 $padding-menu;
+    padding: $padding-menu;
     display: flex;
     flex-direction: row;
     gap: 10px;
-    width: 90%;
+    width: calc(100% - $padding-menu * 2);
     background: $body-bg;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     background-color: $color-menu;
-    max-width: 410px;
-    border: 1.5px solid $color-white;
-    border-bottom: 2.5px solid $color-white;
+    // max-width: 410px;
+    // border: 1.5px solid $body-bg;
+    // border-bottom: 2.5px solid $body-bg;
     border-radius: 10px;
     height: $menu-height;
+    box-sizing: border-box;
 }
 
 .menu {
