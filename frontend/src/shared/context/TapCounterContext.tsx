@@ -13,7 +13,8 @@ export interface ITapCounterContext {
 
 const defaultTapCounterData: ITapCounterData = {
   tapCount: 0,
-  passiveIncome: 0,
+  // for testing purposes
+  passiveIncome: 1,
   perTap: 1,
 };
 
