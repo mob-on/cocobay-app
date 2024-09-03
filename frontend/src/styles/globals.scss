@@ -28,6 +28,17 @@ body,
   position: relative;
 }
 
+#__grid {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  opacity: .5;
+  z-index: -1;
+}
+
 body {
   background-color: $body-bg;
   color: $color-white;

@@ -5,7 +5,9 @@ import Head from "next/head";
 import Layout from "../layouts/Layout";
 import "../styles/globals.scss";
 import { TapCounterProvider } from "src/shared/context/TapCounterContext";
+import Image from "next/image";
 // import init from "./_main";
+import grid from 'public/media/grid.svg';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -36,6 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
+      <Image id="__grid" src={grid} width={1} height={1} alt="Grid" />
       <TapCounterProvider>
         <Component {...pageProps} />
       </TapCounterProvider>

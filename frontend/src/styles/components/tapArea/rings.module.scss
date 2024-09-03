@@ -16,6 +16,9 @@
   transform: translate(-50%, -50%);
   transform-origin: center center;
   border-radius: 50%;
+  box-sizing: border-box;
+  width: $tap-ring-diameter;
+  height: $tap-ring-diameter;
 }
 
 .bg {
@@ -28,14 +31,11 @@
 .ringBg {
   width: calc($tap-ring-diameter - $tap-ring-width);
   height: calc($tap-ring-diameter - $tap-ring-width);
-  background-color: $body-bg;
   z-index: 4;
 }
 
 .ring1 {
-  background-color: $tap-ring1-color;
-  width: $tap-ring-diameter;
-  height: $tap-ring-diameter;
+  border: $tap-ring-width $tap-ring1-color solid;
   z-index: 3;
   &.main:hover & {
     transform: translate(-50%, -50%);
@@ -44,16 +44,12 @@
 }
 
 .ring2 {
-  background-color: $tap-ring2-color;
-  width: calc($tap-ring-diameter + $tap-ring-width);
-  height: calc($tap-ring-diameter + $tap-ring-width);
+  border: $tap-ring-width $tap-ring2-color solid;
   z-index: 2;
 }
 
 .ring3 {
-  background-color: $tap-ring3-color;
-  width: calc($tap-ring-diameter + $tap-ring-width * 2);
-  height: calc($tap-ring-diameter + $tap-ring-width * 2);
+  border: $tap-ring-width $tap-ring3-color solid;
   z-index: 1;
 }
 
@@ -62,6 +58,5 @@
   transition:
     transform $tap-transition-time ease,
     opacity $tap-transition-time * 2 ease;
-  transform: translate(-50%, -50%) scale(0.94);
-  opacity: 0.2;
+  opacity: 1;
 }
