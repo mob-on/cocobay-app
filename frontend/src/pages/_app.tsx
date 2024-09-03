@@ -35,6 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
           content="summary_large_image"
         />
         <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
       </Head>
       <TapCounterProvider>
         <Component {...pageProps} />
