@@ -16,6 +16,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
 
     steps:
       - name: Set version number
@@ -25,29 +27,77 @@ jobs:
           images: cocobay-app-frontend
           tags: |
             type=raw,value={{date 'YYYYMMDDHHmmSS'}}
+
       - name: Login to docker registry
         uses: docker/login-action@v3
         with:
           registry: ${{ vars.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-      - uses: actions/checkout@v4
+
+      - name: Checkout branch
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
+
       - name: Build docker image
         run: |
           docker build . --file Dockerfile --target frontend \
             -t ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }} --pull=true
+
       - name: Smoke test
         id: run_docker_smoke_test
         run: |
-          docker run -d -p 3000:80 --name cocobay-app-frontend \
+          docker run -d -p 80 --name cocobay-app-frontend \
             ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }}
-          curl --retry 3 --retry-delay 5 --fail http://localhost:3000/
+          docker run --network container:cocobay-app-frontend appropriate/curl --retry 5 --retry-connrefused http://localhost
+
+      - name: Tear down smoke test
+        if: always()
+        run: |
           docker stop cocobay-app-frontend
           docker rm cocobay-app-frontend
-      - name: Tag build for release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+      - name: Push image to repository
         run: |
-          docker tag ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }} \
-            ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:latest
+          docker push ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }}
+
+  stage-release:
+    #TODO: Release process should not depend on build process, should be just a tagging exercise
+    name: Staging release
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - name: Login to docker registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: Tag build for staging release
+        run: |
+          docker tag ${{ vars.DOCKER_REGISTRY }}/${{ needs.build.outputs.tags }} \
+            ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging && \
+          docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
+
+  production-release:
+    #TODO: Release process should not depend on build process, should be just a tagging exercise
+    name: Production release
+    runs-on: ubuntu-latest
+    needs: build
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    steps:
+      - name: Login to docker registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: Tag build for production release
+        run: |
+          docker tag ${{ vars.DOCKER_REGISTRY }}/${{ needs.build.outputs.tags }} \
+            ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:latest && \
+          docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:latest
