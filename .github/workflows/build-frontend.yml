@@ -3,22 +3,23 @@ name: Build frontend
 on:
   push:
     branches: ["main"]
+    paths:
+      - "frontend/**"
+      - "infrastructure/**"
   pull_request:
     branches: ["main"]
+    paths:
+      - "frontend/**"
+      - "infrastructure/**"
   workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to build"
-        required: true
-        default: "main"
+  workflow_call:
 
 jobs:
-  build:
-    name: Build
+  check-build-exists:
+    name: Checking if build exists
     runs-on: ubuntu-latest
     outputs:
-      tags: ${{ steps.meta.outputs.tags }}
-
+      exists: ${{ steps.check-build-exists.outputs.exists }}
     steps:
       - name: Set version number
         id: meta
@@ -26,7 +27,41 @@ jobs:
         with:
           images: cocobay-app-frontend
           tags: |
-            type=raw,value={{date 'YYYYMMDDHHmmSS'}}
+            type=sha,prefix=,format=long
+
+      - name: Check if already built
+        id: "check-build-exists"
+        run: |
+          echo "Checking if version ${{ steps.meta.outputs.version }} exists"
+          (curl -u "${{ secrets.DOCKER_REGISTRY_USERNAME }}:${{ secrets.DOCKER_REGISTRY_PASSWORD }}" \
+            "https://${{ vars.DOCKER_REGISTRY }}/v2/cocobay-app-frontend/tags/list" | \
+            grep -q "\"${{ steps.meta.outputs.version }}\"" && \
+            echo "Build ${{ steps.meta.outputs.version }} already exists in registry, no need to rebuild" && \
+            echo "::set-output name=exists::true"
+          ) || \
+          echo "Build ${{ steps.meta.outputs.version }} does not exist yet"
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: check-build-exists
+    if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Set version number
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: cocobay-app-frontend
+          tags: |
+            type=sha,prefix=,format=long
 
       - name: Login to docker registry
         uses: docker/login-action@v3
@@ -34,11 +69,6 @@ jobs:
           registry: ${{ vars.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-
-      - name: Checkout branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.branch }}
 
       - name: Build docker image
         run: |
@@ -61,43 +91,3 @@ jobs:
       - name: Push image to repository
         run: |
           docker push ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }}
-
-  stage-release:
-    #TODO: Release process should not depend on build process, should be just a tagging exercise
-    name: Staging release
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref != 'refs/heads/main'
-    steps:
-      - name: Login to docker registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ vars.DOCKER_REGISTRY }}
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-
-      - name: Tag build for staging release
-        run: |
-          docker tag ${{ vars.DOCKER_REGISTRY }}/${{ needs.build.outputs.tags }} \
-            ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging && \
-          docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
-
-  production-release:
-    #TODO: Release process should not depend on build process, should be just a tagging exercise
-    name: Production release
-    runs-on: ubuntu-latest
-    needs: build
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-    steps:
-      - name: Login to docker registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ vars.DOCKER_REGISTRY }}
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-
-      - name: Tag build for production release
-        run: |
-          docker tag ${{ vars.DOCKER_REGISTRY }}/${{ needs.build.outputs.tags }} \
-            ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:latest && \
-          docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:latest
