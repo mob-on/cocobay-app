@@ -6,6 +6,7 @@ import { Popup, Toast } from "antd-mobile";
 import { IBoost } from "src/components/Boosts";
 import Card from "src/components/shared/Card";
 import BoostPopup from "src/components/Boosts/BoostPopup";
+import usePopup from "src/shared/hooks/usePopup";
 
 const defaultBoosts: IBoost[] = [
   {
@@ -49,15 +50,7 @@ const defaultBoosts: IBoost[] = [
 
 export default function Boosts() {
   const [boosts, setBoosts] = useState(defaultBoosts);
-  const [showBoost, setShowBoost] = useState({ show: false, id: 0 });
-  const hideBoostPopup = useCallback(
-    () => setShowBoost({ show: false, id: showBoost.id }),
-    [],
-  );
-  const showBoostPopup = useCallback(
-    (id: number) => setShowBoost({ show: true, id }),
-    [],
-  );
+  const [boostPopupState, showBoostPopup, hideBoostPopup] = usePopup();
 
   const findBoost = (id: number) => {
     return boosts.find((boost) => boost.id === id);
@@ -79,8 +72,8 @@ export default function Boosts() {
 
   const boostToShow = useMemo(() => {
     // we don't care if `show` is true or false to prevent flickering
-    return findBoost(showBoost.id);
-  }, [boosts, showBoost]);
+    return findBoost(boostPopupState.id);
+  }, [boosts, boostPopupState]);
 
   useEffect(() => {
     // fetch data and put it into the state.
@@ -188,7 +181,7 @@ export default function Boosts() {
         )}
       </section>
       <Popup
-        visible={showBoost.show}
+        visible={boostPopupState.show}
         position="bottom"
         onMaskClick={hideBoostPopup}
         onClose={hideBoostPopup}

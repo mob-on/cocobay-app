@@ -9,6 +9,7 @@ import Card from "src/components/shared/Card";
 import BuildPopup from "src/components/Build/BuildPopup";
 import DailyCombo from "src/components/Build/DailyCombo";
 import Button from "src/components/shared/Button";
+import usePopup from "src/shared/hooks/usePopup";
 
 const defaultBuilds: IBuild[] = [
   {
@@ -140,23 +141,21 @@ const tabs = [
 export default function Boosts() {
   const [builds, setBuilds] = useState(defaultBuilds);
   const [currentTab, setCurrentTab] = useState(tabs[0].key);
-  const [showBuild, setShowBuild] = useState({ show: false, id: 0 });
-  const hideBuildPopup = useCallback(
-    () => setShowBuild({ show: false, id: showBuild.id }),
-    [],
-  );
-  const showBuildPopup = useCallback(
-    (id: number) => setShowBuild({ show: true, id }),
-    [],
-  );
+  const [popupState, _showPopup, hidePopup] = usePopup();
 
-  const [showCombo, setShowCombo] = useState(false);
-  const showComboPopup = useCallback(() => setShowCombo(true), []);
-  const hideComboPopup = useCallback(() => setShowCombo(false), []);
+  const [comboPopupState, _showComboPopup, hideComboPopup] = usePopup();
+  const showComboPopup = useCallback(() => _showComboPopup(), []);
 
-  const findBuild = (id: number) => {
-    return builds.find((build) => build.id === id);
-  };
+  const currentBuild = useMemo(() => {
+    return builds.find((task) => task.id === popupState.id) || {} as IBuild;
+  }, [builds, popupState.id]);
+
+  const showPopup = useCallback(
+    (id: number) => {
+      _showPopup(id);
+    },
+    [currentBuild.id],
+  );
 
   const categorizedBuilds = useMemo(() => {
     return builds.reduce<{
@@ -172,20 +171,14 @@ export default function Boosts() {
     );
   }, [builds]);
 
-  const buildToShow = useMemo(() => {
-    // we don't care if `show` is true or false to prevent flickering
-    return findBuild(showBuild.id);
-  }, [builds, showBuild]);
-
   useEffect(() => {
     // fetch data and put it into the state.
   }, []);
 
   const onUpgrade = useCallback(
     (id: number) => {
-      hideBuildPopup();
-      const build = findBuild(id);
-      if (build) {
+      hidePopup();
+      if (currentBuild) {
         // TODO: when implementing business logic, think about how we can reuse this logic.
         setBuilds(
           builds.map((build) =>
@@ -201,7 +194,7 @@ export default function Boosts() {
         });
       }
     },
-    [builds],
+    [builds, currentBuild.id],
   );
 
   return (
@@ -231,22 +224,22 @@ export default function Boosts() {
               key={build.id}
               type="build"
               data={build}
-              onClick={showBuildPopup}
+              onClick={showPopup}
             />
           ))}
         </div>
       </section>
       <Popup
-        visible={showBuild.show}
+        visible={popupState.show}
         position="bottom"
-        onMaskClick={hideBuildPopup}
-        onClose={hideBuildPopup}
+        onMaskClick={hidePopup}
+        onClose={hidePopup}
         bodyClassName={styles.buildPopup}
       >
-        <BuildPopup build={buildToShow} onAction={onUpgrade} />
+        <BuildPopup build={currentBuild} onAction={onUpgrade} />
       </Popup>
       <Popup
-        visible={showCombo}
+        visible={comboPopupState.show}
         position="bottom"
         onMaskClick={hideComboPopup}
         onClose={hideComboPopup}
@@ -257,7 +250,7 @@ export default function Boosts() {
         <Button
           onClick={hideComboPopup}
           className={styles.onUpgrade}
-          color="primary"
+          color="gradient"
         >
           Okay!
         </Button>
