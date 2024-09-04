@@ -1,4 +1,11 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { IBuild } from "../../Build";
 import { IBoost } from "../../Boosts";
 import BuildCard from "./BuildCard";
@@ -15,8 +22,9 @@ const Card: React.FC<{
   data?: IBuild | IBoost; // for type="build" and type="boost"
   onClick: (id: number) => void;
   type: ICardType;
+  secondary?: boolean;
   children?: JSX.Element; // for type="custom"
-}> = memo(({ data, onClick, type, children }) => {
+}> = memo(({ data = {}, onClick, type, children, secondary = false }) => {
   const [cooldown, setCooldown] = useState(0);
   const { cooldownUntil } = data;
   const cooldownTimestamp = cooldownUntil?.getTime() ?? 0;
@@ -39,7 +47,17 @@ const Card: React.FC<{
   }, [data.cooldownUntil]);
 
   return (
-    <div className={styles.card}>
+    <div
+      onClick={
+        type === "custom"
+          ? useCallback(() => onClick(data.id), [data.id])
+          : null
+      }
+      className={
+        styles.card +
+        ` ${cooldown > 0 ? styles.cardOnCooldown : ""} ${secondary ? styles.cardSecondary : ""}`
+      }
+    >
       {type === "build" && (
         <BuildCard build={data as IBuild} onClick={onClick} />
       )}

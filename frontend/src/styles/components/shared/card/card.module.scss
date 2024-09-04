@@ -1,9 +1,51 @@
 @import "src/styles/theme";
 
+@keyframes shake-no {
+  0%, 50%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 60%, 80% {
+    transform: translateX(-3px);
+  }
+  20%, 40%, 70%, 90% {
+    transform: translateX(3px);
+  }
+}
+
 .card {
   position: relative;
   overflow: hidden;
   border-radius: $card-b-radius;
+  background-color: $card-bg-color;
+  background: $card-gradient;
+  padding: $padding-inner;
+  display: flex;
+  gap: $padding-inner;
+  border: $card-border;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.card.cardSecondary {
+  background: $card-gradient-secondary;
+}
+
+.card.cardSecondary:active {
+  background: $card-gradient-secondary;
+}
+
+.card.cardOnCooldown:active {
+  background: $card-gradient;
+  animation: shake-no 0.5s;
+}
+
+.card.cardSecondary.card.cardOnCooldown:active {
+  background: $card-gradient-secondary;
+}
+
+.card:active {
+  background: $card-gradient-active;
 }
 
 .cooldown {
@@ -18,6 +60,5 @@
   align-items: center;
   cursor: not-allowed;
   backdrop-filter: blur(4px);
-  // transform: scale(2);
-  // overflow: hidden;
+  user-select: none;
 }

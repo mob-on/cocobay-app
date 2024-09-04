@@ -18,6 +18,9 @@ $color-primary: #c7a0fd;
 $color-grad-start: #9e71ff;
 $color-grad-mid: #5f9dfc;
 $color-grad-end: #1fc8f7;
+$color-grad2-start: #9e71ff;
+$color-grad2-end: #ff7999;
+
 $gradient-primary: linear-gradient(
   93deg,
   $color-grad-start 1.77%,
@@ -27,6 +30,17 @@ $gradient-primary-light: linear-gradient(
   93deg,
   lighten($color-grad-start, 5%) 1.77%,
   lighten($color-grad-end, 5%) 98.75%
+);
+
+$gradient-secondary: linear-gradient(
+  152deg,
+  $color-grad2-start 31.93%,
+  $color-grad2-end 97.94%
+);
+$gradient-secondary-light: linear-gradient(
+  152deg,
+  lighten($color-grad2-start, 5%) 31.93%,
+  lighten($color-grad2-end, 5%) 97.94%
 );
 
 // other
@@ -57,6 +71,8 @@ $card-border: 0px solid #fff;
 $card-gradient: $gradient-primary;
 $card-gradient-active: $gradient-primary-light;
 $card-bg: $gradient-primary;
+$card-gradient-secondary: $gradient-secondary;
+$card-gradient-secondary-active: $gradient-secondary-light;
 
 // Build page specific
 $build-card-height: 64px;
