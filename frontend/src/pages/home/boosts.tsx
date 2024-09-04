@@ -1,10 +1,10 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "src/styles/pages/home/boosts.module.scss";
 
 import energy from "public/media/icons/energy.svg";
 import { Popup, Toast } from "antd-mobile";
 import { IBoost } from "src/components/Boosts";
-import BoostCard from "src/components/Boosts/BoostCard";
+import Card from "src/components/shared/Card";
 import BoostPopup from "src/components/Boosts/BoostPopup";
 
 const defaultBoosts: IBoost[] = [
@@ -19,6 +19,7 @@ const defaultBoosts: IBoost[] = [
     type: "daily",
     usedToday: 5,
     maxToday: 6,
+    cooldownUntil: 0,
   },
   {
     id: 2,
@@ -31,6 +32,7 @@ const defaultBoosts: IBoost[] = [
     usedToday: 0,
     maxToday: Infinity,
     maxLevel: 5,
+    cooldownUntil: 0,
   },
   {
     id: 3,
@@ -43,6 +45,7 @@ const defaultBoosts: IBoost[] = [
     usedToday: 1,
     maxToday: Infinity,
     maxLevel: 5,
+    cooldownUntil: Date.now() + 1000 * 60 * 5, // 5 minutes, for testing
   },
 ];
 
@@ -96,6 +99,7 @@ export default function Boosts() {
         usedToday: 0,
         maxToday: Infinity,
         maxLevel: 5,
+        cooldownUntil: 0,
       },
     ]);
   }, []);
@@ -156,10 +160,11 @@ export default function Boosts() {
             <h3>Daily Boosts</h3>
             <div className={styles.boostList}>
               {daily.map((boost) => (
-                <BoostCard
+                <Card
                   onClick={() => showBoostPopup(boost.id)}
                   key={boost.id}
-                  boost={boost}
+                  data={boost}
+                  type="boost"
                 />
               ))}
             </div>
@@ -172,10 +177,11 @@ export default function Boosts() {
             <h3>Upgrades</h3>
             <div className={styles.boostList}>
               {regular.map((boost) => (
-                <BoostCard
+                <Card
                   onClick={() => showBoostPopup(boost.id)}
                   key={boost.id}
-                  boost={boost}
+                  data={boost}
+                  type="boost"
                 />
               ))}
             </div>

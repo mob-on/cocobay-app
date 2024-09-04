@@ -5,7 +5,7 @@ import energy from "public/media/icons/energy.svg";
 import { Button, Popup, TabBar, Toast } from "antd-mobile";
 import { IBuild } from "src/components/Build";
 import TapCounter from "src/components/TapCounter";
-import BuildCard from "src/components/Build/BuildCard";
+import Card from "src/components/shared/Card";
 import BuildPopup from "src/components/Build/BuildPopup";
 import DailyCombo from "src/components/Build/DailyCombo";
 
@@ -234,7 +234,12 @@ export default function Boosts() {
         </TabBar>
         <div className={styles.builds}>
           {(categorizedBuilds[currentTab] ?? []).map((build) => (
-            <BuildCard key={build.id} build={build} onClick={showBuildPopup} />
+            <Card
+              key={build.id}
+              type="build"
+              data={build}
+              onClick={showBuildPopup}
+            />
           ))}
         </div>
       </section>
