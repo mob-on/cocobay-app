@@ -22,9 +22,10 @@ const usePopup = () => {
     () => setShow((old) => ({ show: false, id: old.id })),
     [],
   );
-  const showPopup = (id: number) => setShow({ show: true, id });
 
-  return [show, showPopup, hidePopup ] as [IPopupState, (id: number) => void, () => void];
+  const showPopup = (id?: number) => setShow({ show: true, id });
+
+  return [show, showPopup, hidePopup ] as [IPopupState, (id?: number) => void, () => void];
 };
 
 export default usePopup;
