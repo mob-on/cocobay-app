@@ -11,13 +11,21 @@
     "build": "yarn workspace frontend build",
     "docker:up": "yarn build && docker compose up -d",
     "deploy": "NEXT_PUBLIC_ENVIRONMENT=dev yarn export && cd infrastructure && yarn deploy",
-    "deploy:prod": "NEXT_PUBLIC_ENVIRONMENT=prod yarn export && cd infrastructure && yarn deploy:prod"
+    "deploy:prod": "NEXT_PUBLIC_ENVIRONMENT=prod yarn export && cd infrastructure && yarn deploy:prod",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/node": "^22.5.0",
+    "husky": "^8.0.0",
+    "husky-init": "^8.0.0",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
+    "pretty-quick": "^4.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,md,json}": "prettier --write"
   },
   "packageManager": "yarn@3.4.1"
 }
