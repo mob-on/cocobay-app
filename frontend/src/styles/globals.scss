@@ -48,6 +48,22 @@ body {
   font-family: "D-DIN Pro", sans-serif;
 }
 
+p, h1, h2, h3, h4, h5, h6 {
+  margin: $padding-inner 0;
+}
+
 p {
   font-size: 16px;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
 }

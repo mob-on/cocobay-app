@@ -1,22 +1,13 @@
 @import "src/styles/theme.scss";
 
 .buildCard {
-  height: $build-card-height;
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: $padding-inner;
-  padding: $padding-inner;
   cursor: pointer;
-  background: $card-gradient;
-  border-radius: $card-b-radius;
-  margin-bottom: 0;
   user-select: none;
-  border: $card-border;
-}
-
-.buildCard:active {
-  background: $card-gradient-active;
 }
 
 .buildInfo {
