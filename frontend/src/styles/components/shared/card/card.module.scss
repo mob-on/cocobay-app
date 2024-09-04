@@ -1,0 +1,23 @@
+@import "src/styles/theme";
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: $card-b-radius;
+}
+
+.cooldown {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($body-bg, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: not-allowed;
+  backdrop-filter: blur(4px);
+  // transform: scale(2);
+  // overflow: hidden;
+}

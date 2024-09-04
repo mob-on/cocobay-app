@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useContext, useMemo } from "react";
+import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
 
 interface ITapCounterData {
   tapCount: number;
@@ -34,31 +35,17 @@ export const TapCounterProvider = ({
   children: React.JSX.Element;
 }) => {
   const [tapCounter, setTapCounter] = useState(defaultTapCounterData);
-
-  let timeoutId: NodeJS.Timeout = null;
-  // Service to increment tap count every second. Corrects itself to not drift over time.
-  const updateTimeout = (previousUpdateTime: DOMHighResTimeStamp) => {
-    clearTimeout(timeoutId);
-    const now = performance.now();
-    const timeDrift = now - previousUpdateTime - UPDATE_INTERVAL;
-    setTapCounter((prevCount) => ({
-      ...prevCount,
-      tapCount: prevCount.tapCount + tapCounter.passiveIncome,
-    }));
-    if (!previousUpdateTime) {
-      timeoutId = setTimeout(() => updateTimeout(now), UPDATE_INTERVAL);
-    } else {
-      timeoutId = setTimeout(
-        () => updateTimeout(now),
-        UPDATE_INTERVAL - timeDrift,
-      );
-    }
-  };
-
-  useEffect(() => {
-    // first call shouldn't have previousUpdateTime set
-    updateTimeout(null);
-  }, []);
+  useSelfCorrectingTimeout(
+    useMemo(() => {
+      return () => {
+        setTapCounter((prevCount) => ({
+          ...prevCount,
+          tapCount: prevCount.tapCount + tapCounter.passiveIncome,
+        }));
+      };
+    }, [tapCounter.passiveIncome]),
+    UPDATE_INTERVAL,
+  );
 
   const incrementTapCount = () => {
     setTapCounter((prevCount) => ({

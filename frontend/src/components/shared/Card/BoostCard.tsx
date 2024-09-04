@@ -1,16 +1,19 @@
 import React from "react";
-import styles from "src/styles/components/boosts/boostCard.module.scss";
+import styles from "src/styles/components/shared/card/boostCard.module.scss";
 import Image from "next/image";
-import { IBoost } from "./Boosts";
-import Cost from "../shared/Cost";
+import Cost from "../Cost";
+import { IBoost } from "src/components/Boosts";
 
 const BoostCard: React.FC<{
   boost: IBoost;
-  onClick: React.EventHandler<React.MouseEvent>;
-}> = React.memo(({ boost, onClick }) => {
+  onClick: (id: number) => void;
+}> = ({ boost, onClick }) => {
   const isLastLevel = boost.level === boost.maxLevel;
   return (
-    <div onClick={isLastLevel ? null : onClick} className={styles.boost}>
+    <div
+      onClick={isLastLevel ? null : () => onClick(boost.id)}
+      className={styles.boost}
+    >
       <Image src={boost.iconSrc} alt={boost.name} width={64} height={64} />
       <p>{boost.name}</p>
       {boost.type === "daily" && (
@@ -26,6 +29,6 @@ const BoostCard: React.FC<{
         ))}
     </div>
   );
-});
+};
 
 export default BoostCard;

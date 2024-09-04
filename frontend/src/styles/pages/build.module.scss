@@ -5,6 +5,12 @@
   padding-bottom: $padding + $menu-height + $menu-bottom;
 }
 
+.builds {
+  display: flex;
+  gap: $padding-inner;
+  flex-direction: column;
+}
+
 .buildPopup {
   box-sizing: border-box;
   padding: $padding;

@@ -7,7 +7,7 @@ export interface IBuild {
   level: number;
   maxLevel: number;
   type: "building" | "event" | "employee";
-  lastBuilt: number; // timestamp
-  cooldownUntil: number; // timestamp
+  lastBuilt: Date;
+  cooldownUntil?: Date;
   income: number;
 }

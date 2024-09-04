@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import styles from "src/styles/components/tapCounter/tapCounter.module.scss";
 import { useTapCounter } from "src/shared/context/TapCounterContext";
 import Cost from "../shared/Cost";
-import numberTransform from "src/shared/lib/numberTransform";
+import NumberFormatter from "src/shared/lib/NumberFormatter";
 
 const TapCounter: React.FC = () => {
   const { data } = useTapCounter();
@@ -13,7 +13,7 @@ const TapCounter: React.FC = () => {
     [data.tapCount],
   );
   const formattedPassiveIncome = useMemo(
-    () => numberTransform(data.passiveIncome * 3600),
+    () => NumberFormatter.format(data.passiveIncome * 3600),
     [data.passiveIncome],
   );
   return (
