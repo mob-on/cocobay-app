@@ -8,7 +8,7 @@ import numberTransform from "src/shared/lib/numberTransform";
 const Cost: React.FC<{
   cost?: number;
   children?: ReactElement;
-  size: number;
+  size?: number;
   className?: string;
 }> = ({ cost, children, size = 16, className }) => {
   return (
