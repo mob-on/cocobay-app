@@ -9,5 +9,5 @@ export interface IBoost {
   type: "daily" | "regular";
   usedToday: number;
   maxToday: number;
-  cooldownUntil: number; // timestamp
+  cooldownUntil?: Date;
 }

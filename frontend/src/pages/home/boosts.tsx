@@ -19,7 +19,6 @@ const defaultBoosts: IBoost[] = [
     type: "daily",
     usedToday: 5,
     maxToday: 6,
-    cooldownUntil: 0,
   },
   {
     id: 2,
@@ -32,7 +31,6 @@ const defaultBoosts: IBoost[] = [
     usedToday: 0,
     maxToday: Infinity,
     maxLevel: 5,
-    cooldownUntil: 0,
   },
   {
     id: 3,
@@ -45,7 +43,7 @@ const defaultBoosts: IBoost[] = [
     usedToday: 1,
     maxToday: Infinity,
     maxLevel: 5,
-    cooldownUntil: Date.now() + 1000 * 60 * 5, // 5 minutes, for testing
+    cooldownUntil: new Date(Date.now() + 1000 * 60 * 5), // 5 minutes, for testing
   },
 ];
 
@@ -99,7 +97,6 @@ export default function Boosts() {
         usedToday: 0,
         maxToday: Infinity,
         maxLevel: 5,
-        cooldownUntil: 0,
       },
     ]);
   }, []);
