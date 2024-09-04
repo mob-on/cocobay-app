@@ -8,10 +8,10 @@
 
 .cooldown {
   position: absolute;
-  left: -2px;
-  top: -2px;
-  right: -2px;
-  bottom: -2px;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   background-color: rgba($body-bg, 0.8);
   display: flex;
   justify-content: center;
