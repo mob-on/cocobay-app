@@ -4,22 +4,24 @@ on:
   push:
     branches: ["main"] #TODO: use a develop branch
     paths:
-      - Dockerfile
+      - Dockerfile*
       - .dockerignore
       - package.json
       - tsconfig.json
       - yarn.lock
       - "frontend/**"
+      - "backend/**"
       - "infrastructure/**"
   pull_request:
     branches: ["main"]
     paths:
-      - Dockerfile
+      - Dockerfile*
       - .dockerignore
       - package.json
       - tsconfig.json
       - yarn.lock
       - "frontend/**"
+      - "backend/**"
       - "infrastructure/**"
   workflow_dispatch:
 

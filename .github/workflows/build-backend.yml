@@ -71,7 +71,7 @@ jobs:
       - name: Smoke test
         id: run_docker_smoke_test
         run: |
-          docker run -d -p 80 --name cocobay-app-backend \
+          docker run -d --env PORT=80 -p 80 --name cocobay-app-backend \
             ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }}
           docker run --network container:cocobay-app-backend appropriate/curl --retry 5 --retry-connrefused http://localhost
 
