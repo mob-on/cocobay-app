@@ -6,11 +6,11 @@
   justify-content: flex-start;
   align-items: center;
   gap: $padding-inner;
-  padding: $padding-inner 0;
+  padding: $padding-inner;
   cursor: pointer;
   background: $card-gradient;
   border-radius: $card-b-radius;
-  margin-bottom: $padding-inner;
+  margin-bottom: 0;
   user-select: none;
   border: $card-border;
 }
@@ -25,7 +25,6 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 0 $padding-inner;
   height: 100%;
 }
 

@@ -2,12 +2,13 @@ import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import styles from "src/styles/pages/build.module.scss";
 
 import energy from "public/media/icons/energy.svg";
-import { Button, Popup, TabBar, Toast } from "antd-mobile";
+import { Popup, TabBar, Toast } from "antd-mobile";
 import { IBuild } from "src/components/Build";
 import TapCounter from "src/components/TapCounter";
-import BuildCard from "src/components/Build/BuildCard";
+import Card from "src/components/shared/Card";
 import BuildPopup from "src/components/Build/BuildPopup";
 import DailyCombo from "src/components/Build/DailyCombo";
+import Button from "src/components/shared/Button";
 
 const defaultBuilds: IBuild[] = [
   {
@@ -19,8 +20,8 @@ const defaultBuilds: IBuild[] = [
     level: 3,
     maxLevel: 5,
     type: "building",
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
+    cooldownUntil: new Date(Date.now() + 1000 * 60 * 5), // 5 minutes, for testing
     income: 5000,
   },
   {
@@ -32,8 +33,7 @@ const defaultBuilds: IBuild[] = [
     level: 3,
     maxLevel: 13,
     type: "building",
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
     income: 5000,
   },
   {
@@ -45,8 +45,7 @@ const defaultBuilds: IBuild[] = [
     level: 3,
     maxLevel: 10,
     type: "building",
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
     income: 5000,
   },
   {
@@ -58,8 +57,7 @@ const defaultBuilds: IBuild[] = [
     level: 3,
     maxLevel: 10,
     type: "building",
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
     income: 5000,
   },
   {
@@ -71,8 +69,7 @@ const defaultBuilds: IBuild[] = [
     level: 3,
     maxLevel: 10,
     type: "building",
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
     income: 5000,
   },
   {
@@ -84,8 +81,7 @@ const defaultBuilds: IBuild[] = [
     level: 3,
     maxLevel: 10,
     type: "building",
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
     income: 5000,
   },
   {
@@ -97,8 +93,7 @@ const defaultBuilds: IBuild[] = [
     level: 3,
     maxLevel: 10,
     type: "building",
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
     income: 5000,
   },
   {
@@ -110,8 +105,7 @@ const defaultBuilds: IBuild[] = [
     level: 5,
     type: "event",
     maxLevel: 5,
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
     income: 354,
   },
   {
@@ -123,8 +117,7 @@ const defaultBuilds: IBuild[] = [
     level: 2,
     type: "employee",
     maxLevel: 5,
-    lastBuilt: 0,
-    cooldownUntil: 0,
+    lastBuilt: new Date(),
     income: 25000,
   },
 ];
@@ -234,7 +227,12 @@ export default function Boosts() {
         </TabBar>
         <div className={styles.builds}>
           {(categorizedBuilds[currentTab] ?? []).map((build) => (
-            <BuildCard key={build.id} build={build} onClick={showBuildPopup} />
+            <Card
+              key={build.id}
+              type="build"
+              data={build}
+              onClick={showBuildPopup}
+            />
           ))}
         </div>
       </section>
@@ -259,9 +257,7 @@ export default function Boosts() {
         <Button
           onClick={hideComboPopup}
           className={styles.onUpgrade}
-          block
           color="primary"
-          fill="solid"
         >
           Okay!
         </Button>
