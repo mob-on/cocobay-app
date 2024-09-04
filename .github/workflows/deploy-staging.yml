@@ -1,7 +1,31 @@
 name: Stage deployment
 
 on:
+  push:
+    branches: ["main"] #TODO: use a develop branch
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - package.json
+      - tsconfig.json
+      - yarn.lock
+      - "frontend/**"
+      - "infrastructure/**"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - package.json
+      - tsconfig.json
+      - yarn.lock
+      - "frontend/**"
+      - "infrastructure/**"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   build-frontend:

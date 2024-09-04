@@ -2,10 +2,16 @@ name: Production deployment
 
 on:
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
   build-frontend:
     name: Front End
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/build-frontend.yml
     secrets: inherit
