@@ -1,13 +1,13 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "src/styles/pages/build.module.scss";
 
-import energy from "public/media/icons/energy.svg";
 import { Button, Popup, TabBar, Toast } from "antd-mobile";
+import energy from "public/media/icons/energy.svg";
 import { IBuild } from "src/components/Build";
-import TapCounter from "src/components/TapCounter";
 import BuildCard from "src/components/Build/BuildCard";
 import BuildPopup from "src/components/Build/BuildPopup";
 import DailyCombo from "src/components/Build/DailyCombo";
+import TapCounter from "src/components/TapCounter";
 
 const defaultBuilds: IBuild[] = [
   {

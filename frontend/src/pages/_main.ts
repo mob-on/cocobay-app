@@ -13,7 +13,7 @@ export const init = () => {
       el.addEventListener("scroll", listener);
     };
 
-    let selectHeader = select("#header");
+    const selectHeader = select("#header");
     if (selectHeader) {
       const headerScrolled = () => {
         if (window.scrollY > 100) {
@@ -26,7 +26,7 @@ export const init = () => {
       onscroll(document, headerScrolled);
     }
 
-    let backtotop = select(".back-to-top");
+    const backtotop = select(".back-to-top");
     if (backtotop) {
       const toggleBacktotop = () => {
         if (window.scrollY > 100) {

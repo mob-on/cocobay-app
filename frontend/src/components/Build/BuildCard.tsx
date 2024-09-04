@@ -1,9 +1,8 @@
+import Image from "next/image";
 import React from "react";
 import styles from "src/styles/components/build/buildCard.module.scss";
-import Image from "next/image";
-import { IBuild } from "./Build";
 import Cost from "../shared/Cost";
-import numberTransform from "src/shared/lib/numberTransform";
+import { IBuild } from "./Build";
 
 const BoostCard: React.FC<{ build: IBuild; onClick: (id: number) => void }> =
   React.memo(({ build, onClick }) => {

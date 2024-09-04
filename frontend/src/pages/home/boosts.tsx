@@ -1,8 +1,8 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "src/styles/pages/home/boosts.module.scss";
 
-import energy from "public/media/icons/energy.svg";
 import { Popup, Toast } from "antd-mobile";
+import energy from "public/media/icons/energy.svg";
 import { IBoost } from "src/components/Boosts";
 import BoostCard from "src/components/Boosts/BoostCard";
 import BoostPopup from "src/components/Boosts/BoostPopup";

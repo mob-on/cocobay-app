@@ -2,22 +2,24 @@
   "name": "cocobay-app",
   "private": true,
   "workspaces": [
+    "backend",
     "frontend",
     "infrastructure"
   ],
   "scripts": {
-    "dev": "yarn workspace frontend dev",
+    "dev": "lerna run dev --parallel --scope '{backend,frontend}'",
+    "dev:frontend": "lerna run dev --scope frontend",
+    "dev:backend": "lerna run dev --scope backend",
     "format": "prettier --write .",
-    "build": "yarn workspace frontend build",
-    "docker:up": "yarn build && docker compose up -d",
-    "deploy": "NEXT_PUBLIC_ENVIRONMENT=dev yarn export && cd infrastructure && yarn deploy",
-    "deploy:prod": "NEXT_PUBLIC_ENVIRONMENT=prod yarn export && cd infrastructure && yarn deploy:prod",
-    "prepare": "husky install"
+    "build": "yarn build:frontend && yarn build:backend",
+    "build:frontend": "yarn workspace frontend build",
+    "build:backend": "yarn workspace backend build"
   },
   "devDependencies": {
     "@types/node": "^22.5.0",
     "husky": "^8.0.0",
     "husky-init": "^8.0.0",
+    "lerna": "^8.1.8",
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "pretty-quick": "^4.0.0",
@@ -26,6 +28,10 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md,json}": "prettier --write"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
   },
   "packageManager": "yarn@3.4.1"
 }

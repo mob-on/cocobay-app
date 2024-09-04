@@ -10,7 +10,7 @@ jobs:
   build-frontend:
     name: Front End
     concurrency:
-      group: ${{ github.workflow }}
+      group: frontend-${{ github.workflow }}
       cancel-in-progress: true
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/build-frontend.yml

@@ -1,8 +1,6 @@
+import { ProgressBar } from "antd-mobile";
 import React, { useEffect, useState } from "react";
 import styles from "src/styles/components/leveling/leveling.module.scss";
-import Image from "next/image";
-import { ProgressBar } from "antd-mobile";
-import BoostsIcon from "public/media/icons/boosts.svg";
 
 export interface ILevelingData {
   level: number;

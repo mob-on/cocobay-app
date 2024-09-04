@@ -1,9 +1,15 @@
+.DS_Store
 .git
+.github
+.husky
 .next
+out/
+dist/
 node_modules
 infrastructure/cdk.out
-docker-compose.yml
-Dockerfile
+docker-compose*.yml
+/Dockerfile.*
+lerna.json
 LICENSE
 README.md
 .prettierrc
