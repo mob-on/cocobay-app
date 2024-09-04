@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "yarn workspace frontend dev",
     "format": "prettier --write .",
+    "format:frontend": "prettier --write frontend/src/*",
     "build": "yarn workspace frontend build",
     "docker:up": "yarn build && docker compose up -d",
     "deploy": "NEXT_PUBLIC_ENVIRONMENT=dev yarn export && cd infrastructure && yarn deploy",
