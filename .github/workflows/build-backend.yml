@@ -1,4 +1,4 @@
-name: Build frontend
+name: Build backend
 
 on:
   workflow_call:
@@ -18,7 +18,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: cocobay-app-frontend
+          images: cocobay-app-backend
           tags: |
             type=sha,prefix=,format=long
 
@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "Checking if version ${{ steps.meta.outputs.version }} exists"
           (curl -u "${{ secrets.DOCKER_REGISTRY_USERNAME }}:${{ secrets.DOCKER_REGISTRY_PASSWORD }}" \
-            "https://${{ vars.DOCKER_REGISTRY }}/v2/cocobay-app-frontend/tags/list" | \
+            "https://${{ vars.DOCKER_REGISTRY }}/v2/cocobay-app-backend/tags/list" | \
             grep -q "\"${{ steps.meta.outputs.version }}\"" && \
             echo "Build ${{ steps.meta.outputs.version }} already exists in registry, no need to rebuild" && \
             echo "::set-output name=exists::true"
@@ -52,7 +52,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: cocobay-app-frontend
+          images: cocobay-app-backend
           tags: |
             type=sha,prefix=,format=long
 
@@ -65,21 +65,21 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build . --file Dockerfile.frontend --target frontend \
+          docker build . --file Dockerfile.backend --target backend \
             -t ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }} --pull=true
 
       - name: Smoke test
         id: run_docker_smoke_test
         run: |
-          docker run -d -p 80 --name cocobay-app-frontend \
+          docker run -d -p 80 --name cocobay-app-backend \
             ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }}
-          docker run --network container:cocobay-app-frontend appropriate/curl --retry 5 --retry-connrefused http://localhost
+          docker run --network container:cocobay-app-backend appropriate/curl --retry 5 --retry-connrefused http://localhost
 
       - name: Tear down smoke test
         if: always()
         run: |
-          docker stop cocobay-app-frontend
-          docker rm cocobay-app-frontend
+          docker stop cocobay-app-backend
+          docker rm cocobay-app-backend
 
       - name: Push image to repository
         run: |

@@ -32,10 +32,17 @@ jobs:
     uses: ./.github/workflows/build-frontend.yml
     secrets: inherit
 
+  build-backend:
+    name: Back End
+    uses: ./.github/workflows/build-backend.yml
+    secrets: inherit
+
   stage-release:
     name: Deploy to staging
     runs-on: ubuntu-latest
-    needs: build-frontend
+    needs:
+      - build-frontend
+      - build-backend
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -59,12 +66,19 @@ jobs:
 
       - name: Tag Front End build for staging release
         run: |
-          docker pull ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }}
-          docker tag ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }} \
+          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend/${{ steps.meta.outputs.version }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend/${{ steps.meta.outputs.version }} \
             ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
           docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
 
-      - name: Trigger Front End Jenkins release job
+      - name: Tag Back End build for staging release
+        run: |
+          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend/${{ steps.meta.outputs.version }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend/${{ steps.meta.outputs.version }} \
+            ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:staging
+          docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:staging
+
+      - name: Trigger Jenkins release job
         run: |
           CRUMB=$(curl --fail -c cookies.txt -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_PASSWORD }}" \
             "${{ secrets.JENKINS_URL }}/crumbIssuer/api/json" | jq --raw-output '.crumb')
