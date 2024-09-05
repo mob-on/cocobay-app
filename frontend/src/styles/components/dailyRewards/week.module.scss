@@ -6,9 +6,9 @@ $WEEKS: 3;
     width: 100% / $WEEKS;
     min-width: 100px;
     flex-direction: column;
-    padding: var(--padding-inner) / 2;
+    padding: calc(var(--padding-inner) / 2);
     justify-content: center;
-    gap: var(--padding-inner) / 2;
+    gap: calc(var(--padding-inner) / 2);
 }
 
 .week.active {

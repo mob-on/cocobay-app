@@ -37,7 +37,7 @@
 
 // flex container inside the tab bar
 .tabBar > div {
-  gap: var(--padding-inner) / 2;
+  gap: calc(var(--padding-inner) / 2);
 }
 
 .tab {
