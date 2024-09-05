@@ -2,8 +2,8 @@
 
 .dailyCombo {
   background-color: $color-menu;
-  border-radius: $card-b-radius;
-  padding: $padding-inner;
+  border-radius: var(--card-b-radius);
+  padding: var(--padding-inner);
 }
 
 .dailyCombo h3 {
@@ -21,15 +21,15 @@
 }
 
 .singleCombo:nth-child(3n - 1) {
-  background-color: $color-grad-start;
+  background-color: $color-grad-primary-start;
 }
 
 .singleCombo:nth-child(3n - 3) {
-  background-color: $color-grad-mid;
+  background-color: $color-grad-primary-mid;
 }
 
 .singleCombo:nth-child(3n - 2) {
-  background-color: $color-grad-end;
+  background-color: $color-grad-primary-end;
 }
 
 .singleCombo {

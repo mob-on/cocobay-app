@@ -7,7 +7,7 @@ export type IButtonColors = "gradient" | "primary";
 // via antd mobile button
 const ButtonComponent: React.FC<{
   onClick: React.EventHandler<React.MouseEvent>;
-  color: IButtonColors;
+  color?: IButtonColors;
   className?: string;
   children?: React.ReactNode;
   value?: string;

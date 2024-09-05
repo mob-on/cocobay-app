@@ -1,0 +1,48 @@
+@import "src/styles/theme";
+
+$WEEKS: 3;
+
+.week {
+  width: 100% / $WEEKS;
+  min-width: 100px;
+  flex-direction: column;
+  padding: calc(var(--padding-inner) / 2);
+  justify-content: center;
+  gap: calc(var(--padding-inner) / 2);
+}
+
+.week.active {
+  border: 2px solid transparent;
+}
+
+.week.active::before {
+  content: "";
+  display: block;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  border-radius: var(--card-b-radius);
+  background: var(--gradient-primary-rotated);
+  z-index: 0;
+}
+
+.week.active::after {
+  content: "";
+  display: block;
+  left: 1px;
+  top: 1px;
+  bottom: 1px;
+  right: 1px;
+  position: absolute;
+  border-radius: var(--card-b-radius);
+  background: var(--body-bg);
+  z-index: 0;
+}
+
+.week h2,
+.week p {
+  margin: 0;
+  z-index: 1;
+}

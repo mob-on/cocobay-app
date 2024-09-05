@@ -3,8 +3,10 @@
 .boosts {
   display: flex;
   flex-direction: column;
-  padding: $padding;
-  padding-bottom: $padding + $menu-height + $menu-bottom;
+  padding: var(--padding);
+  padding-bottom: calc(
+    var(--padding) + var(--menu-height) + var(--menu-bottom)
+  );
   user-select: none;
 }
 
@@ -12,11 +14,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $padding-inner;
-  padding: $padding-inner 0;
-  background-color: $color-menu;
+  gap: var(--padding-inner);
+  padding: var(--padding-inner 0);
+  background-color: var(--color-menu);
   border-radius: 5px;
-  width: calc(50% - $padding-inner);
+  width: calc(50% - var(--padding-inner));
 }
 
 .boost:active {
@@ -26,19 +28,19 @@
 .boostList {
   display: flex;
   flex-wrap: wrap;
-  gap: $padding-inner;
+  gap: var(--padding-inner);
   justify-content: space-between;
 }
 
 .cost {
   display: flex;
   align-items: center;
-  gap: $padding-inner / 2;
+  gap: calc(var(--padding-inner) / 2);
 }
 
 .boostPopup {
   box-sizing: border-box;
-  padding: $padding;
+  padding: var(--padding);
   width: 100%;
   min-height: 40vh;
   display: flex;
@@ -46,5 +48,5 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  border-radius: $popup-b-radius;
+  border-radius: var(--popup-b-radius);
 }

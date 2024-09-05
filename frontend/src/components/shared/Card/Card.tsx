@@ -1,4 +1,11 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { IBuild } from "../../Build";
 import { IBoost } from "../../Boosts";
 import BuildCard from "./BuildCard";
@@ -11,49 +18,77 @@ type ICardType = "build" | "boost" | "custom";
 
 const UPDATE_INTERVAL = 1000;
 
-const Card: React.FC<{
-  data?: IBuild | IBoost; // for type="build" and type="boost"
-  onClick: (id: number) => void;
-  type: ICardType;
+interface ICardProps {
+  data?: IBuild | IBoost | { cooldownUntil?: Date; id?: number }; // for type="build" and type="boost"
+  onClick?: (id: number) => void;
+  type?: ICardType;
+  disabled?: boolean;
+  secondary?: boolean;
   children?: JSX.Element; // for type="custom"
-}> = memo(({ data, onClick, type, children }) => {
-  const [cooldown, setCooldown] = useState(0);
-  const { cooldownUntil } = data;
-  const cooldownTimestamp = cooldownUntil?.getTime() ?? 0;
-  const timeoutId = useRef<NodeJS.Timeout>();
-  const now = Date.now();
-  timeoutId.current = useSelfCorrectingTimeout(
-    useMemo(() => {
-      return cooldownTimestamp > now
-        ? () => {
-            const now = Date.now();
-            setCooldown(cooldownTimestamp - now);
-          }
-        : null;
-    }, []),
-    UPDATE_INTERVAL,
-  );
+  className?: string;
+}
 
-  useEffect(() => {
-    return () => clearTimeout(timeoutId.current);
-  }, [data.cooldownUntil]);
+const Card: React.FC<ICardProps> = memo(
+  ({
+    data = {},
+    onClick,
+    type = "custom",
+    children,
+    secondary = false,
+    disabled = false,
+    className = "",
+  }) => {
+    const [cooldown, setCooldown] = useState(0);
+    const { cooldownUntil } = data;
+    const cooldownTimestamp = cooldownUntil?.getTime() ?? 0;
+    const timeoutId = useRef<NodeJS.Timeout>();
+    const now = Date.now();
+    timeoutId.current = useSelfCorrectingTimeout(
+      useMemo(() => {
+        return cooldownTimestamp > now
+          ? () => {
+              const now = Date.now();
+              setCooldown(cooldownTimestamp - now);
+            }
+          : null;
+      }, []),
+      UPDATE_INTERVAL,
+    );
 
-  return (
-    <div className={styles.card}>
-      {type === "build" && (
-        <BuildCard build={data as IBuild} onClick={onClick} />
-      )}
-      {type === "boost" && (
-        <BoostCard boost={data as IBoost} onClick={onClick} />
-      )}
-      {type === "custom" && children}
-      {cooldown > 0 && (
-        <div suppressHydrationWarning className={styles.cooldown}>
-          <h2>{TimeFormatter.format(cooldown)}</h2>
-        </div>
-      )}
-    </div>
-  );
-});
+    useEffect(() => {
+      return () => clearTimeout(timeoutId.current);
+    }, [data.cooldownUntil]);
+
+    return (
+      <div
+        onClick={
+          type === "custom" && typeof onClick === "function" && !disabled
+            ? useCallback(() => onClick(data?.id), [data?.id])
+            : null // we pass onClick into boost/build cards instead
+        }
+        className={
+          styles.card +
+          ` ${disabled ? styles.cardDisabled : ""}` +
+          ` ${cooldown > 0 ? styles.cardOnCooldown : ""} ${secondary ? styles.cardSecondary : ""}` +
+          ` ${typeof onClick !== "function" ? styles.nonInteractive : ""}` + // no active effects for cards without onClick
+          ` ${className}`
+        }
+      >
+        {type === "build" && (
+          <BuildCard build={data as IBuild} onClick={onClick} />
+        )}
+        {type === "boost" && (
+          <BoostCard boost={data as IBoost} onClick={onClick} />
+        )}
+        {type === "custom" && children}
+        {cooldown > 0 && (
+          <div suppressHydrationWarning className={styles.cooldown}>
+            <h2>{TimeFormatter.format(cooldown)}</h2>
+          </div>
+        )}
+      </div>
+    );
+  },
+);
 
 export default Card;

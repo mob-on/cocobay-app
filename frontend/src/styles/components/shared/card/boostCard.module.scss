@@ -4,17 +4,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $padding-inner / 2;
-  padding: $padding-inner 0;
-  background-color: $card-bg-color;
-  background: $card-bg;
-  border-radius: $card-b-radius;
-  width: calc(50vw - $padding-inner * 2);
+  padding: 0;
+  width: calc(50vw - $padding * 2 - $padding-inner);
   max-width: 470px;
-}
-
-.boost:active {
-  background-color: $card-bg-color-active;
 }
 
 .boostList {

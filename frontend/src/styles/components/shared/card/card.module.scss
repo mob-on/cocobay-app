@@ -1,9 +1,68 @@
 @import "src/styles/theme";
 
+@keyframes shake-no {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  60%,
+  80% {
+    transform: translateX(-3px);
+  }
+  20%,
+  40%,
+  70%,
+  90% {
+    transform: translateX(3px);
+  }
+}
+
 .card {
   position: relative;
   overflow: hidden;
-  border-radius: $card-b-radius;
+  border-radius: var(--card-b-radius);
+  background-color: $card-bg-color;
+  background: $card-gradient;
+  padding: var(--padding-inner);
+  display: flex;
+  gap: var(--padding-inner);
+  border: $card-border;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.card.cardSecondary {
+  background: $card-gradient-secondary;
+}
+
+.card.cardSecondary:active {
+  background: $card-gradient-secondary-active;
+}
+
+.card.cardSecondary.nonInteractive:active {
+  background: $card-gradient-secondary;
+}
+
+.card.cardOnCooldown:active {
+  background: $card-gradient;
+  animation: shake-no 0.5s;
+}
+
+.card.cardSecondary.card.cardOnCooldown:active {
+  background: $card-gradient-secondary;
+}
+
+.card:active {
+  background: $card-gradient-active;
+}
+
+.card.nonInteractive:active {
+  background: $card-gradient;
 }
 
 .cooldown {
@@ -17,7 +76,19 @@
   justify-content: center;
   align-items: center;
   cursor: not-allowed;
-  backdrop-filter: blur(4px);
-  // transform: scale(2);
-  // overflow: hidden;
+  backdrop-filter: blur(1px);
+  user-select: none;
+}
+
+.cardDisabled {
+  background: $body-bg;
+  border: 1px solid $color-white;
+}
+
+.cardDisabled:active {
+  background: $body-bg;
+}
+
+.cardDisabled.card.nonInteractive:active {
+  background: $body-bg;
 }

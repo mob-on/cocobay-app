@@ -1,0 +1,93 @@
+@import "src/styles/theme";
+
+.dailyRewards {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: var(--padding);
+  padding-top: 0;
+  flex-direction: column;
+  width: calc(100% - var(--padding) * 2);
+  padding-bottom: calc(
+    var(--menu-height) + var(--menu-bottom) + var(--padding)
+  );
+  height: calc(
+    100vh - var(--menu-height) - var(--menu-bottom) - var(--padding)
+  ); /* Fallback for older browsers */
+  height: calc(
+    100svh - var(--menu-height) - var(--menu-bottom) - var(--padding)
+  );
+  user-select: none;
+}
+
+.weeks {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: calc(100% + var(--padding-inner));
+  transform: translateX(calc(-1 * var(--padding) - -1 * var(--padding-inner)));
+  gap: var(--padding-inner);
+  margin-bottom: var(--padding-inner);
+  align-self: flex-start;
+}
+
+// white connecting line behind weeks
+.weeks::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-white);
+  top: 50%;
+  position: absolute;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.week h2 {
+  margin: 0;
+}
+
+.rewardList {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--padding-inner) / 2);
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: var(--card-b-radius);
+  background-color: var(--card-bg-color);
+  padding: calc(var(--padding-inner) / 2);
+}
+
+.rewardRow {
+  display: flex;
+  gap: calc(var(--padding-inner) / 2);
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: var(--padding-inner);
+  background-image: $gradient-secondary;
+  padding: var(--padding);
+  border-radius: 0 0 var(--card-b-radius) var(--card-b-radius);
+  backdrop-filter: blur(3px) brightness(1.5);
+}
+
+.button {
+  position: relative;
+  margin-top: auto !important;
+  bottom: 0;
+  width: 100%;
+  height: 75px;
+  font-weight: 700;
+  font-size: 28px;
+}

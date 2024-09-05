@@ -1,8 +1,9 @@
 // dimensions
 $padding: 30px;
 $padding-inner: 20px;
-$padding-menu: $padding;
-$menu-bottom: 34px;
+$padding-menu: 0px;
+$padding-menu-inner: $padding $padding * 2;
+$menu-bottom: 0px;
 $menu-height: 83px;
 $header-height: 0;
 $padding-coin: 4px;
@@ -15,18 +16,38 @@ $color-white: #fff;
 $body-bg: #1e1e2b;
 $color-purple-primary: #c7a0fd;
 $color-primary: #c7a0fd;
-$color-grad-start: #9e71ff;
-$color-grad-mid: #5f9dfc;
-$color-grad-end: #1fc8f7;
+
+$color-grad-primary-start: #9e71ff;
+$color-grad-primary-mid: #5f9dfc;
+$color-grad-primary-end: #1fc8f7;
+$color-grad-secondary-start: #9e71ff;
+$color-grad-secondary-end: #ff7999;
+
 $gradient-primary: linear-gradient(
   93deg,
-  $color-grad-start 1.77%,
-  $color-grad-end 98.75%
+  $color-grad-primary-start 1.77%,
+  $color-grad-primary-end 98.75%
+);
+$gradient-primary-rotated: linear-gradient(
+  45deg,
+  $color-grad-primary-start 1.77%,
+  $color-grad-primary-end 98.75%
 );
 $gradient-primary-light: linear-gradient(
   93deg,
-  lighten($color-grad-start, 5%) 1.77%,
-  lighten($color-grad-end, 5%) 98.75%
+  lighten($color-grad-primary-start, 5%) 1.77%,
+  lighten($color-grad-primary-end, 5%) 98.75%
+);
+
+$gradient-secondary: linear-gradient(
+  152deg,
+  $color-grad-secondary-start 31.93%,
+  $color-grad-secondary-end 97.94%
+);
+$gradient-secondary-light: linear-gradient(
+  152deg,
+  lighten($color-grad-secondary-start, 5%) 31.93%,
+  lighten($color-grad-secondary-end, 5%) 97.94%
 );
 
 // other
@@ -57,6 +78,8 @@ $card-border: 0px solid #fff;
 $card-gradient: $gradient-primary;
 $card-gradient-active: $gradient-primary-light;
 $card-bg: $gradient-primary;
+$card-gradient-secondary: $gradient-secondary;
+$card-gradient-secondary-active: $gradient-secondary-light;
 
 // Build page specific
 $build-card-height: 64px;
