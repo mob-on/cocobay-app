@@ -22,9 +22,9 @@ const defaultDailyRewards: IDailyRewards = {
 const DailyRewards: React.FC = () => {
   const [rewards, setRewards] = useState(defaultDailyRewards);
   useEffect(() => {
+    // temporary data
     const tempRewards: IDailyReward[] = [];
     for (let i = 0; i < DAILY_AWARD_COUNT; i++) {
-      console.log(i, (i + 1) % 7);
       tempRewards.push({
         id: i,
         title: `Day ${i + 1}`,
@@ -64,7 +64,7 @@ const DailyRewards: React.FC = () => {
         </header>
         <div className={styles.weeks}>
           {[1, 2, 3].map((week) => (
-            <Week week={week} isActive={week === currentWeek} key={week} />
+            <Week week={week} isActive={week < currentWeek} key={week} />
           ))}
         </div>
         <div className={styles.rewardList}>

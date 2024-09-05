@@ -4,7 +4,7 @@ $WEEKS: 3;
 $card-week-height: 50px;
 
 .week {
-    width: 100% / ($WEEKS * 2);
+    width: 100% / $WEEKS;
     min-width: 100px;
     height: $card-week-height;
     // flex-direction: column;

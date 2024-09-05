@@ -4,13 +4,15 @@ $REWARDS_PER_ROW: 4;
 
 .dailyRewards {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: $padding;
     padding-top: 0;
     flex-direction: column;
     width: calc(100% - $padding * 2);
     padding-bottom: $menu-height + $menu-bottom + $padding;
+    height: calc(100vh - $menu-height - $menu-bottom - $padding); /* Fallback for older browsers */
+    height: calc(100svh - $menu-height - $menu-bottom - $padding);
 }
 
 .weeks {
@@ -18,11 +20,24 @@ $REWARDS_PER_ROW: 4;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    width: calc(100vw - $padding-inner * 2);
+    transform: translateX(-1 * calc($padding - $padding-inner));
     gap: $padding-inner;
-    width: 100%;
     margin-bottom: $padding-inner;
-    width: auto;
     align-self: flex-start;
+}
+
+.weeks::after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-color: $color-white;
+    top: 50%;
+    position: absolute;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: -1;
 }
 
 .week h2 {
@@ -62,8 +77,9 @@ $REWARDS_PER_ROW: 4;
 }
 
 .button {
-    position: absolute;
-    bottom: $menu-height + $menu-bottom + $padding;
+    position: relative;
+    margin-top: auto !important;
+    bottom: 0;
     width: calc(100% - $padding * 2);
     height: 75px;
     font-weight: 700;
