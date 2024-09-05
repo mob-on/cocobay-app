@@ -27,6 +27,11 @@ $gradient-primary: linear-gradient(
   $color-grad-start 1.77%,
   $color-grad-end 98.75%
 );
+$gradient-primary-rotated: linear-gradient(
+  45deg,
+  $color-grad-start 1.77%,
+  $color-grad-end 98.75%
+);
 $gradient-primary-light: linear-gradient(
   93deg,
   lighten($color-grad-start, 5%) 1.77%,

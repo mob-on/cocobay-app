@@ -64,7 +64,7 @@ const DailyRewards: React.FC = () => {
         </header>
         <div className={styles.weeks}>
           {[1, 2, 3].map((week) => (
-            <Week week={week} isActive={week < currentWeek} key={week} />
+            <Week week={week} isActive={week === currentWeek} isFinished={week < currentWeek} key={week} />
           ))}
         </div>
         <div className={styles.rewardList}>

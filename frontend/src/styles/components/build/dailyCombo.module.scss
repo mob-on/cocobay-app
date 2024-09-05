@@ -2,8 +2,8 @@
 
 .dailyCombo {
   background-color: $color-menu;
-  border-radius: $card-b-radius;
-  padding: $padding-inner;
+  border-radius: var(--card-b-radius);
+  padding: var(--padding-inner);
 }
 
 .dailyCombo h3 {

@@ -2,14 +2,15 @@
 @import "src/styles/theme";
 
 $specialImageSize: 100px;
+$REWARDS_PER_ROW: 4;
 
 .dailyReward {
   width: calc(
-    (100% / $REWARDS_PER_ROW) - ($padding-inner / 2)
+    (100% / $REWARDS_PER_ROW) - calc(var(--padding-inner) / 2)
   ) !important;
   box-sizing: border-box;
   flex-direction: column;
-  padding: $padding-inner $padding-inner / 2;
+  padding: var(--padding-inner) calc(var(--padding-inner) / 2);
   flex-shrink: 0;
   height: 100px;
 }
@@ -17,7 +18,7 @@ $specialImageSize: 100px;
 .dailyReward.special {
   flex-grow: .97;
   flex-direction: row;
-  padding: $padding-inner;
+  padding: var(--padding-inner);
 }
 
 .special > span {

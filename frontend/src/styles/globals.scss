@@ -1,5 +1,19 @@
+@use "./theme.scss" as theme;
+@use "sass:meta";
 @import "./theme.scss";
 @import "./fonts.scss";
+
+@mixin add-css-variables($module) {
+  :root {
+   @each $name, $value in $module {
+     --#{$name}: #{$value};
+   }
+  }
+}
+
+$theme: meta.module-variables('theme');
+@include add-css-variables($theme);
+
 
 /* Antd mobile style overrides */
 :root {

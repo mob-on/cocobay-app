@@ -9,7 +9,7 @@
 
 .tapCounter h1 {
   font-size: 35px;
-  margin-bottom: $padding-inner;
+  margin-bottom: var(--padding-inner);
 }
 
 .tapCounter p {
