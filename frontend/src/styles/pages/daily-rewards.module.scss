@@ -17,6 +17,7 @@
   height: calc(
     100svh - var(--menu-height) - var(--menu-bottom) - var(--padding)
   );
+  user-select: none;
 }
 
 .weeks {
