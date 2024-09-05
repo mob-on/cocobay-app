@@ -10,7 +10,6 @@ import TapCounter from "src/components/TapCounter";
 import Button from "src/components/shared/Button";
 import usePopup from "src/shared/hooks/usePopup";
 import Card from "src/components/shared/Card";
-import usePopup from "src/shared/hooks/usePopup";
 
 const defaultBuilds: IBuild[] = [
   {
