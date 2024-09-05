@@ -5,15 +5,14 @@
 
 @mixin add-css-variables($module) {
   :root {
-   @each $name, $value in $module {
-     --#{$name}: #{$value};
-   }
+    @each $name, $value in $module {
+      --#{$name}: #{$value};
+    }
   }
 }
 
-$theme: meta.module-variables('theme');
+$theme: meta.module-variables("theme");
 @include add-css-variables($theme);
-
 
 /* Antd mobile style overrides */
 :root {
@@ -62,7 +61,13 @@ body {
   font-family: "D-DIN Pro", sans-serif;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: $padding-inner 0;
 }
 

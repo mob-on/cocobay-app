@@ -20,12 +20,16 @@ const DailyReward: React.FC<{
       <>
         <div className={styles.text}>
           <span>{reward.title || `Day ${weekDay}`}</span>
-          { reward.isSpecial && <><br /><span className={styles.description}>{reward.description}</span></>}
+          {reward.isSpecial && (
+            <>
+              <br />
+              <span className={styles.description}>{reward.description}</span>
+            </>
+          )}
         </div>
-        
+
         {reward.isSpecial && (
           <>
-            
             <Image
               src={reward.image}
               alt={reward.title}
@@ -36,7 +40,9 @@ const DailyReward: React.FC<{
             <div className={styles.specialRewardBg} />
           </>
         )}
-        { !reward.isSpecial && <Cost>{NumberFormatter.format(reward.amount)}</Cost>}
+        {!reward.isSpecial && (
+          <Cost>{NumberFormatter.format(reward.amount)}</Cost>
+        )}
       </>
     </Card>
   );
