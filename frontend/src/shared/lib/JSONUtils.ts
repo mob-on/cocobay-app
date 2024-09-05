@@ -4,11 +4,11 @@ const reMsAjax = /^\/Date\((d|-|.*)\)[/|\\]$/;
 
 export const dateParser = (_key: any, value: any) => {
   if (typeof value === "string") {
-    var a = reISO.exec(value);
+    let a = reISO.exec(value);
     if (a) return new Date(value);
     a = reMsAjax.exec(value);
     if (a) {
-      var b = a[1].split(/[-+,.]/);
+      const b = a[1].split(/[-+,.]/);
       return new Date(b[0] ? +b[0] : 0 - +b[1]);
     }
   }

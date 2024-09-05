@@ -1,19 +1,19 @@
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
-import styles from "src/styles/components/tapArea/tapArea.module.scss";
+import Image from "next/image";
 import Hero from "public/media/coco/coco-pink-swag.svg";
-import Rings from "./Rings";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect, useRef, useState } from "react";
+import { useTapCounter } from "src/shared/context/TapCounterContext";
 import {
   TAP_EFFECTS_THROTTLE,
   TAP_EFFECTS_TIMEOUT,
   useTaps,
 } from "src/shared/context/tapEffectsContext";
-import Image from "next/image";
-import { useTapCounter } from "src/shared/context/TapCounterContext";
+import styles from "src/styles/components/tapArea/tapArea.module.scss";
+import { v4 as uuidv4 } from "uuid";
+import Rings from "./Rings";
 
-import moon from "public/media/moon.svg";
 import cloud1 from "public/media/cloud1.svg";
 import cloud2 from "public/media/cloud2.svg";
+import moon from "public/media/moon.svg";
 
 export interface ITapEvent {
   id: string;
@@ -67,7 +67,7 @@ const TapArea: React.FC = () => {
    * setting a timeout to remove the tap from the list after 5 seconds,
    * and triggering a tap animation.
    */
-  const handleClick = (event: MouseEvent) => {};
+  // const handleClick = (event: MouseEvent) => {};
 
   useEffect(() => {
     const element = tapAreaRef.current;
