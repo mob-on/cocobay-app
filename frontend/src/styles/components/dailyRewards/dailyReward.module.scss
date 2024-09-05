@@ -1,0 +1,63 @@
+@import "src/styles/pages/daily-rewards.module.scss";
+@import "src/styles/theme";
+
+$specialImageSize: 100px;
+
+.dailyReward {
+  width: calc(
+    (100% / $REWARDS_PER_ROW) - ($padding-inner / 2)
+  ) !important;
+  box-sizing: border-box;
+  flex-direction: column;
+  padding: $padding-inner $padding-inner / 2;
+  flex-shrink: 0;
+  height: 100px;
+}
+
+.dailyReward.special {
+  flex-grow: .97;
+  flex-direction: row;
+  padding: $padding-inner;
+}
+
+.special > span {
+    z-index: 1;
+    position: relative;
+    align-self: flex-end;
+    margin-left: auto;
+    margin-right: $specialImageSize;
+    max-width: 140px;
+}
+
+.special .text {
+    align-self: flex-start;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    z-index: 2;
+    height: 100%;
+}
+
+.specialRewardImage {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: $specialImageSize;
+    width: $specialImageSize;
+    z-index: 1;
+    overflow: hidden;
+    scale: .8;
+    z-index: 1;
+}
+
+.specialRewardBg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: $specialImageSize * 1.2;
+    background-image: linear-gradient(-90deg, rgba($body-bg, 0) -20%, $body-bg 100%);
+    z-index: 1;
+}
