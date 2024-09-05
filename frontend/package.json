@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "echo No tests implemented yet",
     "dev": "NEXT_PUBLIC_ENVIRONMENT=dev next dev",
     "prebuild": "ts-node scripts/robots/build-robots",
     "build": "yarn prebuild && next build",

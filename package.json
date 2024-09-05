@@ -10,6 +10,7 @@
     "dev": "lerna run dev --parallel --scope '{backend,frontend}'",
     "dev:frontend": "lerna run dev --scope frontend",
     "dev:backend": "lerna run dev --scope backend",
+    "test": "lerna run test --scope '{backend,frontend}'",
     "format": "prettier --write .",
     "build": "yarn build:frontend && yarn build:backend",
     "build:frontend": "yarn workspace frontend build",
