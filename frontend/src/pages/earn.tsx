@@ -13,10 +13,6 @@ import ButtonComponent from "src/components/shared/Button";
 import Cost from "src/components/shared/Cost";
 import NumberFormatter from "src/shared/lib/NumberFormatter";
 
-interface IDailyAwards {
-  current: number;
-  awards: number[];
-}
 
 interface IEarnTask {
   id: number;
@@ -75,7 +71,7 @@ export default function Earn() {
           />
           <h1>Earn more coins</h1>
         </div>
-        <Link href="/earn/daily-reward" className={styles.link}>
+        <Link href="/earn/daily-rewards" className={styles.link}>
           <Card type="custom" onClick={() => {}} secondary>
             <>
               <Image
