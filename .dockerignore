@@ -1,3 +1,5 @@
+load-testing/
+/*/test
 .DS_Store
 .git
 .github

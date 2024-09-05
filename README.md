@@ -2,14 +2,28 @@
 
 ## Requirements
 
-- Node >= 22
-- npm >= 9
+Check the `engines` section of [package.json](package.json) to see the required versions of:
+
+- Node
+- npm
 
 ## Required global packages
 
 You need to install the following global packages to use this repository:
 
 - lerna `npm -i g lerna`
+
+## Running load tests
+
+Execute from the root of the project the following:
+
+`yarn load-test <path to test file>`
+
+Example:
+
+`yarn load-test backend/test/load/healthcheck/healthcheck.load-spec.js`
+
+Tests results are visible on-screen and also through grafana in http://localhost:2000
 
 ## IDEs
 
