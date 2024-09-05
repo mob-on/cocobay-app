@@ -5,6 +5,7 @@ import { Popup, Toast } from "antd-mobile";
 import energy from "public/media/icons/energy.svg";
 import { IBoost } from "src/components/Boosts";
 import BoostPopup from "src/components/Boosts/BoostPopup";
+import usePopup from "src/shared/hooks/usePopup";
 import Card from "src/components/shared/Card";
 import usePopup from "src/shared/hooks/usePopup";
 
