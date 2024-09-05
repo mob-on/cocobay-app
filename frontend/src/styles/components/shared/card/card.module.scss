@@ -1,13 +1,21 @@
 @import "src/styles/theme";
 
 @keyframes shake-no {
-  0%, 50%, 100% {
+  0%,
+  50%,
+  100% {
     transform: translateX(0);
   }
-  10%, 30%, 60%, 80% {
+  10%,
+  30%,
+  60%,
+  80% {
     transform: translateX(-3px);
   }
-  20%, 40%, 70%, 90% {
+  20%,
+  40%,
+  70%,
+  90% {
     transform: translateX(3px);
   }
 }
@@ -25,6 +33,7 @@
   align-items: center;
   justify-content: space-between;
   user-select: none;
+  box-sizing: border-box;
 }
 
 .card.cardSecondary {
@@ -32,6 +41,10 @@
 }
 
 .card.cardSecondary:active {
+  background: $card-gradient-secondary-active;
+}
+
+.card.cardSecondary.nonInteractive:active {
   background: $card-gradient-secondary;
 }
 
@@ -48,6 +61,10 @@
   background: $card-gradient-active;
 }
 
+.card.nonInteractive:active {
+  background: $card-gradient;
+}
+
 .cooldown {
   position: absolute;
   left: 0;
@@ -59,6 +76,19 @@
   justify-content: center;
   align-items: center;
   cursor: not-allowed;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(1px);
   user-select: none;
+}
+
+.cardDisabled {
+  background: $body-bg;
+  border: 1px solid $color-white;
+}
+
+.cardDisabled:active {
+  background: $body-bg;
+}
+
+.cardDisabled.card.nonInteractive:active {
+  background: $body-bg;
 }
