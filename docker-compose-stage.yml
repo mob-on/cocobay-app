@@ -6,3 +6,12 @@ services:
     restart: unless-stopped
     ports:
       - "3001:80"
+
+  backend:
+    image: docker-registry.twinsoft.es/cocobay-app-backend:staging
+    container_name: cocobay-app-backend
+    restart: unless-stopped
+    environment:
+      PORT: "80"
+    ports:
+      - "3002:80"

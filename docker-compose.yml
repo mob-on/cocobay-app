@@ -4,6 +4,18 @@ services:
     build:
       context: .
       target: frontend
+      dockerfile: Dockerfile.frontend
     container_name: cocobay-app-frontend
     ports:
       - "3000:80"
+
+  backend:
+    build:
+      context: .
+      target: backend
+      dockerfile: Dockerfile.backend
+    container_name: cocobay-app-backend
+    environment:
+      PORT: "80"
+    ports:
+      - "3001:80"
