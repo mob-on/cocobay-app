@@ -5,7 +5,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: $padding-inner;
+  gap: var(--padding-inner);
   cursor: pointer;
   user-select: none;
 }

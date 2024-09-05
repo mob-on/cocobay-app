@@ -23,12 +23,12 @@
 .card {
   position: relative;
   overflow: hidden;
-  border-radius: $card-b-radius;
+  border-radius: var(--card-b-radius);
   background-color: $card-bg-color;
   background: $card-gradient;
-  padding: $padding-inner;
+  padding: var(--padding-inner);
   display: flex;
-  gap: $padding-inner;
+  gap: var(--padding-inner);
   border: $card-border;
   align-items: center;
   justify-content: space-between;

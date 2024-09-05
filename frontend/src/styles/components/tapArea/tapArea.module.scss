@@ -46,7 +46,7 @@ $scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
 }
 
 .moon {
-  right: $padding;
+  right: var(--padding);
   top: 0;
   transform: translateY(-75%);
 }
