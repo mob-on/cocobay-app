@@ -21,15 +21,15 @@
 }
 
 .singleCombo:nth-child(3n - 1) {
-  background-color: $color-grad-start;
+  background-color: $color-grad-primary-start;
 }
 
 .singleCombo:nth-child(3n - 3) {
-  background-color: $color-grad-mid;
+  background-color: $color-grad-primary-mid;
 }
 
 .singleCombo:nth-child(3n - 2) {
-  background-color: $color-grad-end;
+  background-color: $color-grad-primary-end;
 }
 
 .singleCombo {

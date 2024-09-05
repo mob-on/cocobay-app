@@ -16,37 +16,38 @@ $color-white: #fff;
 $body-bg: #1e1e2b;
 $color-purple-primary: #c7a0fd;
 $color-primary: #c7a0fd;
-$color-grad-start: #9e71ff;
-$color-grad-mid: #5f9dfc;
-$color-grad-end: #1fc8f7;
-$color-grad2-start: #9e71ff;
-$color-grad2-end: #ff7999;
+
+$color-grad-primary-start: #9e71ff;
+$color-grad-primary-mid: #5f9dfc;
+$color-grad-primary-end: #1fc8f7;
+$color-grad-secondary-start: #9e71ff;
+$color-grad-secondary-end: #ff7999;
 
 $gradient-primary: linear-gradient(
   93deg,
-  $color-grad-start 1.77%,
-  $color-grad-end 98.75%
+  $color-grad-primary-start 1.77%,
+  $color-grad-primary-end 98.75%
 );
 $gradient-primary-rotated: linear-gradient(
   45deg,
-  $color-grad-start 1.77%,
-  $color-grad-end 98.75%
+  $color-grad-primary-start 1.77%,
+  $color-grad-primary-end 98.75%
 );
 $gradient-primary-light: linear-gradient(
   93deg,
-  lighten($color-grad-start, 5%) 1.77%,
-  lighten($color-grad-end, 5%) 98.75%
+  lighten($color-grad-primary-start, 5%) 1.77%,
+  lighten($color-grad-primary-end, 5%) 98.75%
 );
 
 $gradient-secondary: linear-gradient(
   152deg,
-  $color-grad2-start 31.93%,
-  $color-grad2-end 97.94%
+  $color-grad-secondary-start 31.93%,
+  $color-grad-secondary-end 97.94%
 );
 $gradient-secondary-light: linear-gradient(
   152deg,
-  lighten($color-grad2-start, 5%) 31.93%,
-  lighten($color-grad2-end, 5%) 97.94%
+  lighten($color-grad-secondary-start, 5%) 31.93%,
+  lighten($color-grad-secondary-end, 5%) 97.94%
 );
 
 // other
