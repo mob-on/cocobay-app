@@ -6,17 +6,18 @@ $REWARDS_PER_ROW: 4;
 
 .dailyReward {
   width: calc(
-    (100% / $REWARDS_PER_ROW) - calc(var(--padding-inner) / 2)
+    (100% / $REWARDS_PER_ROW) - calc(var(--padding-inner) / 4)
   ) !important;
   box-sizing: border-box;
   flex-direction: column;
-  padding: var(--padding-inner) calc(var(--padding-inner) / 2);
-  flex-shrink: 0;
+  padding: var(--padding-inner) calc(var(--padding-inner) / 4);
   height: 100px;
 }
 
 .dailyReward.special {
-  flex-grow: 0.97;
+  width: calc(
+    ((100% / $REWARDS_PER_ROW) * 2)
+  ) !important;
   flex-direction: row;
   padding: var(--padding-inner);
 }
