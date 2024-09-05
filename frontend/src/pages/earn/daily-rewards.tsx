@@ -10,14 +10,10 @@ import Button from "src/components/shared/Button";
 const DAILY_AWARD_COUNT = 7;
 const REWARDS_PER_ROW = 4;
 
-
-
 const defaultDailyRewards: IDailyRewards = {
   current: 1,
   rewardList: [],
 };
-
-
 
 const DailyRewards: React.FC = () => {
   const [rewards, setRewards] = useState(defaultDailyRewards);
@@ -30,7 +26,7 @@ const DailyRewards: React.FC = () => {
         title: `Day ${i + 1}`,
         amount: 1000 + 5000 * i,
         day: i,
-        isSpecial: ((i + 1) % 7) === 0,
+        isSpecial: (i + 1) % 7 === 0,
         description: `Something special!`,
         image: gift,
       });
@@ -50,21 +46,29 @@ const DailyRewards: React.FC = () => {
     <>
       <section id="daily-rewards" className={styles.dailyRewards}>
         <header className={styles.header}>
-        <div className={styles.headerText}>
-          <h1>Daily Rewards</h1>
-          <p>Claim your daily rewards by logging into the game daily without skipping</p>
-        </div>
-        <Image
-          src={gift}
-          alt="Daily Reward"
-          className={styles.gift}
-          width={96}
-          height={96}
-        />
+          <div className={styles.headerText}>
+            <h1>Daily Rewards</h1>
+            <p>
+              Claim your daily rewards by logging into the game daily without
+              skipping
+            </p>
+          </div>
+          <Image
+            src={gift}
+            alt="Daily Reward"
+            className={styles.gift}
+            width={96}
+            height={96}
+          />
         </header>
         <div className={styles.weeks}>
           {[1, 2, 3].map((week) => (
-            <Week week={week} isActive={week === currentWeek} isFinished={week < currentWeek} key={week} />
+            <Week
+              week={week}
+              isActive={week === currentWeek}
+              isFinished={week < currentWeek}
+              key={week}
+            />
           ))}
         </div>
         <div className={styles.rewardList}>
@@ -74,16 +78,25 @@ const DailyRewards: React.FC = () => {
                 {row.map((reward, j) => {
                   const currentIndex = i * REWARDS_PER_ROW + j;
                   const disabled = currentIndex > rewards.current;
-                  return <DailyReward disabled={disabled} key={j} weekDay={currentIndex + 1 - 7 * j} reward={reward} />;
+                  return (
+                    <DailyReward
+                      disabled={disabled}
+                      key={j}
+                      weekDay={currentIndex + 1 - 7 * j}
+                      reward={reward}
+                    />
+                  );
                 })}
               </div>
             );
           })}
         </div>
-        <Button onClick={() => {}} color="gradient" className={styles.button}>Claim</Button>
+        <Button onClick={() => {}} color="gradient" className={styles.button}>
+          Claim
+        </Button>
       </section>
     </>
   );
-}
+};
 
 export default DailyRewards;

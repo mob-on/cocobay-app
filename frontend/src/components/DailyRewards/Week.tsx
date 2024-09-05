@@ -7,7 +7,11 @@ const Week: React.FC<{
   isFinished: boolean;
 }> = ({ week, isActive, isFinished }) => {
   return (
-    <Card className={styles.week + " " + (isActive ? styles.active : "")} disabled={!isFinished} key={week}>
+    <Card
+      className={styles.week + " " + (isActive ? styles.active : "")}
+      disabled={!isFinished}
+      key={week}
+    >
       <>
         <p>Week</p>
         <h2>{week}</h2>

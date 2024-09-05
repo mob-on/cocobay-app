@@ -147,7 +147,7 @@ export default function Boosts() {
   const showComboPopup = useCallback(() => _showComboPopup(), []);
 
   const currentBuild = useMemo(() => {
-    return builds.find((task) => task.id === popupState.id) || {} as IBuild;
+    return builds.find((task) => task.id === popupState.id) || ({} as IBuild);
   }, [builds, popupState.id]);
 
   const showPopup = useCallback(

@@ -2,7 +2,9 @@
 
 .build {
   padding: var(--padding);
-  padding-bottom: calc(var(--padding) + var(--menu-height) + var(--menu-bottom));
+  padding-bottom: calc(
+    var(--padding) + var(--menu-height) + var(--menu-bottom)
+  );
 }
 
 .builds {

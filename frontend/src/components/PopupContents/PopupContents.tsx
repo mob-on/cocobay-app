@@ -13,7 +13,7 @@ const PopupContents: React.FC<PopupContentsProps> = ({
 }) => {
   return (
     <div
-      className={styles.popupContents + ' ' + className}
+      className={styles.popupContents + " " + className}
       style={{ flexDirection: direction }}
     >
       {children}

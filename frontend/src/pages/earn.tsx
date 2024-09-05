@@ -13,7 +13,6 @@ import ButtonComponent from "src/components/shared/Button";
 import Cost from "src/components/shared/Cost";
 import NumberFormatter from "src/shared/lib/NumberFormatter";
 
-
 interface IEarnTask {
   id: number;
   name: string;
@@ -128,15 +127,13 @@ export default function Earn() {
           <>
             <h2>{currentTask.name}</h2>
             <p>{currentTask.description}</p>
-            {
-              currentTask.completed ? (
-                <p>You already have this!</p>
-              ) : (
-                <Cost>{NumberFormatter.format(currentTask.reward)}</Cost>
-              )
-            }
+            {currentTask.completed ? (
+              <p>You already have this!</p>
+            ) : (
+              <Cost>{NumberFormatter.format(currentTask.reward)}</Cost>
+            )}
             <ButtonComponent onClick={hidePopup} color="gradient">
-              { currentTask.completed ? "Okay" : "Claim" }
+              {currentTask.completed ? "Okay" : "Claim"}
             </ButtonComponent>
           </>
         </PopupContents>
