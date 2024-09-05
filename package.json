@@ -13,7 +13,8 @@
     "format": "prettier --write .",
     "build": "yarn build:frontend && yarn build:backend",
     "build:frontend": "yarn workspace frontend build",
-    "build:backend": "yarn workspace backend build"
+    "build:backend": "yarn workspace backend build",
+    "load-test": "./load-testing/start-test.sh"
   },
   "devDependencies": {
     "@types/node": "^22.5.0",

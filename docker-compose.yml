@@ -15,7 +15,12 @@ services:
       target: backend
       dockerfile: Dockerfile.backend
     container_name: cocobay-app-backend
+    networks:
+      - backend
     environment:
       PORT: "80"
     ports:
       - "3001:80"
+
+networks:
+  backend:
