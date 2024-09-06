@@ -1,0 +1,29 @@
+.friendsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-inner);
+  width: 100%;
+}
+
+.friend {
+  height: var(--friend-card-height);
+}
+
+.name {
+  margin-right: auto;
+}
+
+.friendInfo {
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--padding-inner) / 4);
+}
+
+.friendInfo p {
+  margin: 0;
+}
+
+.reward {
+  font-size: 20px;
+}
