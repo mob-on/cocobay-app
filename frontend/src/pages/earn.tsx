@@ -43,7 +43,7 @@ const defaultTasks: IEarnTask[] = [
 ];
 
 export default function Earn() {
-  const [taskList, setTaskList] = useState(defaultTasks);
+  const [taskList] = useState(defaultTasks);
   const [popupState, _showPopup, hidePopup] = usePopup();
 
   const currentTask = useMemo(() => {
