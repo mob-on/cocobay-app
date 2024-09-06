@@ -71,7 +71,7 @@ export default function Earn() {
           <h1>Earn more coins</h1>
         </div>
         <Link href="/earn/daily-rewards" className={styles.link}>
-          <Card type="custom" onClick={() => {}} secondary>
+          <Card type="custom" onClick={() => {}} variant="special">
             <>
               <Image
                 src={gift}

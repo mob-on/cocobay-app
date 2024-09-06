@@ -36,15 +36,15 @@
   box-sizing: border-box;
 }
 
-.card.cardSecondary {
+.card.special {
   background: $card-gradient-secondary;
 }
 
-.card.cardSecondary:active {
+.card.special:active {
   background: $card-gradient-secondary-active;
 }
 
-.card.cardSecondary.nonInteractive:active {
+.card.special.nonInteractive:active {
   background: $card-gradient-secondary;
 }
 
@@ -53,7 +53,7 @@
   animation: shake-no 0.5s;
 }
 
-.card.cardSecondary.card.cardOnCooldown:active {
+.card.special.card.cardOnCooldown:active {
   background: $card-gradient-secondary;
 }
 

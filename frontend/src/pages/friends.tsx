@@ -9,6 +9,7 @@ import CopyOutlined from "@ant-design/icons/CopyOutlined";
 import Link from "next/link";
 import { defaultFriends } from "src/components/Friends";
 import FriendsList from "src/components/Friends/FriendsList";
+import { ICardVariant } from "src/components/shared/Card/Card";
 
 const FRIENDS_SHOW_LIMIT = 3;
 
@@ -17,7 +18,7 @@ interface ICard {
   imgSrc: string;
   title: string;
   reward: number;
-  secondary?: boolean;
+  variant?: ICardVariant;
 }
 
 const cards: ICard[] = [
@@ -26,14 +27,14 @@ const cards: ICard[] = [
     imgSrc: coco,
     title: "Invite a friend",
     reward: 5000,
-    secondary: false,
+    variant: "default",
   },
   {
     id: 1,
     imgSrc: coco,
     title: "Invite a friend with telegram premium",
     reward: 25000,
-    secondary: true,
+    variant: "special",
   },
 ];
 
@@ -61,7 +62,8 @@ export default function Friends() {
             <Card
               className={styles.card}
               key={card.id}
-              secondary={card.secondary}
+              variant={card.variant}
+              type="custom"
             >
               <>
                 <Image
