@@ -23,7 +23,9 @@ const FriendsList: React.FC<{ friends: IFriend[]; className?: string }> = ({
                 </p>
               </div>
               <Cost position="right" size={20} className={styles.reward}>
-                <h4>+{NumberFormatter.format(friend.reward)}</h4>
+                <span className={styles.rewardText}>
+                  +{NumberFormatter.format(friend.reward)}
+                </span>
               </Cost>
             </>
           </Card>
