@@ -16,8 +16,17 @@ jobs:
     uses: ./.github/workflows/build-frontend.yml
     secrets: inherit
 
-  prod-release-prep:
+  build-backend:
+    name: Back End
+    concurrency:
+      group: backend-${{ github.workflow }}
+      cancel-in-progress: true
+    uses: ./.github/workflows/build-backend.yml
+    secrets: inherit
+
+  deployment:
     name: Deploy to production
+    environment: production
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     needs: build-frontend

@@ -39,8 +39,9 @@ jobs:
     uses: ./.github/workflows/build-backend.yml
     secrets: inherit
 
-  stage-release:
+  deployment:
     name: Deploy to staging
+    environment: staging
     runs-on: ubuntu-latest
     needs:
       - build-frontend
