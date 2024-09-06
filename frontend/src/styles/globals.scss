@@ -1,7 +1,6 @@
 @use "./theme.scss" as theme;
 @use "sass:meta";
 @import "./theme.scss";
-@import "./fonts.scss";
 
 @mixin add-css-variables($module) {
   :root {
@@ -12,10 +11,18 @@
 }
 
 $theme: meta.module-variables("theme");
+/* 
+  Convert sass variables to css variables.
+  CSS Variables are way easier to use than sass variables when it comes to adaptive design,
+  because they are processed at runtime.
+*/
 @include add-css-variables($theme);
 
-/* Antd mobile style overrides */
 :root {
+  /* Global css variables */
+  --page-width: calc(100% - 2 * var(--padding));
+
+  /* Antd mobile style overrides */
   --adm-color-primary: #{$color-purple-primary} !important;
   --adm-color-background: #{$body-bg} !important;
   --adm-font-size-main: 16px;
@@ -68,7 +75,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin: $padding-inner 0;
+  margin: var(--padding-inner) 0;
 }
 
 p {
@@ -85,4 +92,12 @@ h2 {
 
 h3 {
   font-size: 20px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 16px;
 }
