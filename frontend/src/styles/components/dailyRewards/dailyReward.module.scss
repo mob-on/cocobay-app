@@ -15,9 +15,7 @@ $REWARDS_PER_ROW: 4;
 }
 
 .dailyReward.special {
-  width: calc(
-    ((100% / $REWARDS_PER_ROW) * 2)
-  ) !important;
+  width: calc(((100% / $REWARDS_PER_ROW) * 2)) !important;
   flex-direction: row;
   padding: var(--padding-inner);
 }

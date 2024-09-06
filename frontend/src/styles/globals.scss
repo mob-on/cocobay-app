@@ -21,6 +21,9 @@ $theme: meta.module-variables("theme");
 :root {
   /* Global css variables */
   --page-width: calc(100% - 2 * var(--padding));
+  --bottom-margin: calc(
+    var(--padding) + var(--menu-height) + var(--menu-bottom)
+  );
 
   /* Antd mobile style overrides */
   --adm-color-primary: #{$color-purple-primary} !important;

@@ -14,7 +14,9 @@ import styles from "src/styles/components/shared/card/card.module.scss";
 import TimeFormatter from "src/shared/lib/TimeFormatter";
 import useSelfCorrectingTimeout from "src/shared/hooks/useSelfCorrectingTimeout";
 
-type ICardType = "build" | "boost" | "custom";
+export type ICardType = "build" | "boost" | "custom";
+// variants affect the visual look of the card
+export type ICardVariant = "default" | "special";
 
 const UPDATE_INTERVAL = 1000;
 
@@ -26,6 +28,7 @@ interface ICardProps {
   secondary?: boolean;
   children?: JSX.Element; // for type="custom"
   className?: string;
+  variant?: ICardVariant;
 }
 
 const Card: React.FC<ICardProps> = memo(
@@ -34,7 +37,7 @@ const Card: React.FC<ICardProps> = memo(
     onClick,
     type = "custom",
     children,
-    secondary = false,
+    variant = "default",
     disabled = false,
     className = "",
   }) => {
@@ -69,7 +72,7 @@ const Card: React.FC<ICardProps> = memo(
         className={
           styles.card +
           ` ${disabled ? styles.cardDisabled : ""}` +
-          ` ${cooldown > 0 ? styles.cardOnCooldown : ""} ${secondary ? styles.cardSecondary : ""}` +
+          ` ${cooldown > 0 ? styles.cardOnCooldown : ""} ${styles[variant]}` +
           ` ${typeof onClick !== "function" ? styles.nonInteractive : ""}` + // no active effects for cards without onClick
           ` ${className}`
         }

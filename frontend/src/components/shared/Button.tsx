@@ -1,7 +1,7 @@
 import { Button } from "antd-mobile";
 import styles from "src/styles/components/shared/button.module.scss";
 
-export type IButtonColors = "gradient" | "primary";
+export type IButtonColors = "gradient" | "primary" | "secondary";
 
 // Wrap this to have easy access to both standard and custom buttons
 // via antd mobile button

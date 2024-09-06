@@ -89,9 +89,10 @@ $card-gradient-active: $gradient-primary-light;
 $card-bg: $gradient-primary;
 $card-gradient-secondary: $gradient-secondary;
 $card-gradient-secondary-active: $gradient-secondary-light;
+$card-height: 64px;
 
 // Build page specific
-$build-card-height: 64px;
+$build-card-height: $card-height;
 
 // buttons
 $color-button-primary: $color-primary;
@@ -101,3 +102,7 @@ $color-button-secondary-active: lighten($color-button-secondary, 10%);
 $color-button-gradient: $gradient-primary;
 $color-button-gradient-active: $gradient-primary-light;
 $button-b-radius: 8px;
+$button-height: 64px;
+
+// Friends page specific
+$friend-card-height: 75px;
