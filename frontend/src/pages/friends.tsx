@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "src/components/shared/Card";
 import Cost from "src/components/shared/Cost";
 import styles from "src/styles/pages/friends.module.scss";
 import coco from "public/media/coco/coco-pink-swag.svg";
 import Image from "next/image";
 import Button from "src/components/shared/Button";
-import { CopyOutlined } from "@ant-design/icons";
+import CopyOutlined from "@ant-design/icons/CopyOutlined";
 import Link from "next/link";
 import { defaultFriends } from "src/components/Friends";
 import FriendsList from "src/components/Friends/FriendsList";
@@ -39,6 +39,18 @@ const cards: ICard[] = [
 
 export default function Friends() {
   const [friends] = useState(defaultFriends);
+  const [hideLastFriend, setHideLastFriend] = useState(false);
+
+  // If the screen height is less than 890px, hide the last friend.
+  // This is the easiest way to do this, and we don't expect screen to be resized, so it's fine.
+  useEffect(() => {
+    const screenHeight = window.innerHeight;
+    console.log(screenHeight);
+    if (screenHeight < 890) {
+      setHideLastFriend(true);
+    }
+  }, []);
+  const showFriendCount = FRIENDS_SHOW_LIMIT - (hideLastFriend ? 1 : 0);
 
   return (
     <>
@@ -69,9 +81,9 @@ export default function Friends() {
         <div className={styles.friendsListTitle}>
           <h3>
             Your friends{" "}
-            {friends.length > FRIENDS_SHOW_LIMIT && `(${friends.length})`}
+            {friends.length > showFriendCount && `(${friends.length})`}
           </h3>
-          {friends.length > FRIENDS_SHOW_LIMIT && (
+          {friends.length > showFriendCount && (
             <Link href="/friends/all">
               <p>View all</p>
             </Link>
@@ -79,7 +91,7 @@ export default function Friends() {
         </div>
         <FriendsList
           className={styles.friendsList}
-          friends={friends.slice(0, FRIENDS_SHOW_LIMIT)}
+          friends={friends.slice(0, showFriendCount)}
         />
         {!friends.length && (
           <p className={styles.noFriends}>
