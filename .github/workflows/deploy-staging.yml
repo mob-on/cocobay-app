@@ -2,24 +2,26 @@ name: Stage deployment
 
 on:
   push:
-    branches: ["main"] #TODO: use a develop branch
+    branches: ["main", "feature/SFI-34-buildPipeline"] #TODO: use a develop branch
     paths:
       - Dockerfile*
       - .dockerignore
       - package.json
       - tsconfig.json
       - yarn.lock
+      - .yarnrc.yml
       - "frontend/**"
       - "backend/**"
       - "infrastructure/**"
   pull_request:
-    branches: ["main"]
+    branches: ["main", "feature/SFI-34-buildPipeline"]
     paths:
       - Dockerfile*
       - .dockerignore
       - package.json
       - tsconfig.json
       - yarn.lock
+      - .yarnrc.yml
       - "frontend/**"
       - "backend/**"
       - "infrastructure/**"
@@ -27,24 +29,20 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
-  build-frontend:
-    name: Front End
-    uses: ./.github/workflows/build-frontend.yml
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  build-backend:
-    name: Back End
-    uses: ./.github/workflows/build-backend.yml
-    secrets: inherit
-
-  stage-release:
+  deployment:
     name: Deploy to staging
+    environment: staging
     runs-on: ubuntu-latest
     needs:
-      - build-frontend
-      - build-backend
+      - build
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -68,15 +66,15 @@ jobs:
 
       - name: Tag Front End build for staging release
         run: |
-          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend/${{ steps.meta.outputs.version }}
-          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend/${{ steps.meta.outputs.version }} \
+          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ steps.meta.outputs.version }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ steps.meta.outputs.version }} \
             ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
           docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
 
       - name: Tag Back End build for staging release
         run: |
-          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend/${{ steps.meta.outputs.version }}
-          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend/${{ steps.meta.outputs.version }} \
+          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ steps.meta.outputs.version }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ steps.meta.outputs.version }} \
             ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:staging
           docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:staging
 

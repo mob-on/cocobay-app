@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Not enforcing testing across all projects before pushing yet
+# If you frequently push changes that fail testing, you'll need to enable this setting
+# yarn test

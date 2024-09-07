@@ -7,20 +7,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-frontend:
-    name: Front End
-    concurrency:
-      group: frontend-${{ github.workflow }}
-      cancel-in-progress: true
-    if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/build-frontend.yml
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  prod-release-prep:
+  deployment:
     name: Deploy to production
+    environment: production
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: build-frontend
+    needs: build
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4

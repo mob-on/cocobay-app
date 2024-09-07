@@ -4,16 +4,17 @@ FROM node:22 AS frontend-build
 RUN mkdir /app
 WORKDIR /app
 
-COPY --parents package.json yarn.lock .yarnrc.yml .yarn/ */package.json */yarn.lock ./
+#Tell yarn we're building in CI
+ENV CI=true
 
-COPY --from=base /app /app
+COPY --parents package.json yarn.lock .yarnrc.yml .yarn/ packages/*/package.json packages/*/yarn.lock ./
 
 RUN yarn workspace frontend install --immutable
 
 COPY . /app
 
-RUN NEXT_PUBLIC_ENVIRONMENT=prod yarn build:frontend
+RUN NEXT_PUBLIC_ENVIRONMENT=prod yarn workspace frontend build
 
 FROM nginx:alpine AS frontend
 
-COPY --from=frontend-build /app/frontend/out /usr/share/nginx/html
+COPY --from=frontend-build /app/packages/frontend/out /usr/share/nginx/html

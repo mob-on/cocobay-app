@@ -21,7 +21,12 @@
     "**/*.ts",
     "**/*.tsx",
     "**/next.config.mjs",
-    "declarations.d.ts"
+    "declarations.d.ts",
+    "eslint.config.mjs",
+    "__mocks__/svgMock.ts",
+    "setupTests.ts",
+    "babel.config.js",
+    "jest.config.js"
   ],
   "exclude": ["node_modules"]
 }

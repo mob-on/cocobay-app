@@ -7,11 +7,9 @@ Check the `engines` section of [package.json](package.json) to see the required 
 - Node
 - npm
 
-## Required global packages
+### Prepare the repository to work
 
-You need to install the following global packages to use this repository:
-
-- lerna `npm -i g lerna`
+- `yarn prepare` will set up locally things like husky for pre-commit hooks
 
 ## Running load tests
 
