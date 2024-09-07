@@ -127,56 +127,32 @@ jobs:
         if: failure()
         uses: andymckay/cancel-action@0.4
 
-  build:
-    name: Build all
+  backend-build:
+    name: Backend
     if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
-    runs-on: ubuntu-latest
     needs:
       - check-build-exists
       - setup
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    with:
+      docker-build-args: ". --file Dockerfile.backend --target backend"
+      docker-run-args: "--env PORT=80 -p 80"
+      docker-smoke-curl-url: "http://localhost"
+      app-name: cocobay-app-backend
+      version: ${{ needs.setup.outputs.version }}
 
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
-
-      - name: Build Backend docker image
-        run: |
-          docker build . --file Dockerfile.backend --target backend \
-            -t ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ needs.setup.outputs.version }} --pull=true
-
-      - name: Smoke test Backend
-        run: |
-          docker run -d --env PORT=80 -p 80 --name cocobay-app-backend ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ needs.setup.outputs.version }}
-          docker run --network container:cocobay-app-backend appropriate/curl --retry 5 --retry-connrefused http://localhost
-
-      - name: Build Frontend docker image
-        run: |
-          docker build . --file Dockerfile.frontend --target frontend \
-            -t ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ needs.setup.outputs.version }} --pull=true
-
-      - name: Smoke test Frontend
-        run: |
-          docker run -d -p 80 --name cocobay-app-frontend ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ needs.setup.outputs.version }}
-          docker run --network container:cocobay-app-frontend appropriate/curl --retry 5 --retry-connrefused http://localhost
-
-      # - name: Tear down smoke test containers (only needed in persistent self-hosted runners, since Github hosted are ephemeral)
-      #   if: always()
-      #   run: |
-      #     docker kill $(docker ps -a -q) 2>&1 >/dev/null || echo "INFO: Unable to kill some containers"
-      #     docker rm $(docker ps -a -q) 2>&1 >/dev/null || echo "INFO: Unable to remove some containers"
-
-      - name: Login to docker registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ vars.DOCKER_REGISTRY }}
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-
-      - name: Push images to repository
-        run: |
-          docker_images=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep '${{ vars.DOCKER_REGISTRY }}/cocobay-app')
-
-          for image in $docker_images; do
-            echo "Pushing image $image"
-            docker push $image
-          done
+  frontend-build:
+    name: Frontend
+    if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
+    needs:
+      - check-build-exists
+      - setup
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    with:
+      docker-build-args: ". --file Dockerfile.frontend --target frontend"
+      docker-run-args: "-p 80"
+      docker-smoke-curl-url: "http://localhost"
+      app-name: cocobay-app-frontend
+      version: ${{ needs.setup.outputs.version }}

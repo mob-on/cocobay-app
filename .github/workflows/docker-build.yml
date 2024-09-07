@@ -1,0 +1,71 @@
+name: Docker Build
+
+on:
+  workflow_call:
+    inputs:
+      docker-build-args:
+        type: string
+        description: Arguments for docker build, example => ". --file Dockerfile.backend --target backend"
+        required: true
+      docker-run-args:
+        type: string
+        description: Extra arguments for docker run, example => "--env PORT=80 -p 80"
+      docker-smoke-curl-url:
+        type: string
+        description: Which url to hit durign the smoke test, example => http://localhost
+        required: true
+      app-name:
+        type: string
+        description: Application name, used for docker-repository tagging
+        required: true
+      version:
+        type: string
+        description: Build version used for docker tagging
+        required: true
+
+jobs:
+  build:
+    name: ${{ inputs.app-name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Build docker image ${{ inputs.app-name }}
+        shell: bash
+        run: |
+          docker build ${{ inputs.docker-build-args }} \
+            -t ${{ vars.DOCKER_REGISTRY }}/${{ inputs.app-name }}:${{ inputs.version }}
+
+      - name: Smoke test ${{ inputs.app-name }}
+        shell: bash
+        run: |
+          docker run -d ${{ inputs.docker-run-args }} --name ${{ inputs.app-name }} ${{ vars.DOCKER_REGISTRY }}/${{ inputs.app-name }}:${{ inputs.version }}
+          docker run --network container:${{ inputs.app-name }} appropriate/curl --retry 5 --retry-connrefused ${{ inputs.docker-smoke-curl-url }}
+
+      # - name: Tear down smoke test containers (only needed in persistent self-hosted runners, since Github hosted are ephemeral)
+      #   if: always()
+      #   run: |
+      #     docker kill $(docker ps -a -q) 2>&1 >/dev/null || echo "INFO: Unable to kill some containers"
+      #     docker rm $(docker ps -a -q) 2>&1 >/dev/null || echo "INFO: Unable to remove some containers"
+
+      - name: Login to docker registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: Push image to registry
+        shell: bash
+        run: |
+          docker_images=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep '${{ vars.DOCKER_REGISTRY }}/${{ inputs.app-name }}')
+
+          for image in $docker_images; do
+            echo "Pushing image $image"
+            docker push $image
+          done
+
+      - name: Cancel workflow if failed
+        if: failure()
+        uses: andymckay/cancel-action@0.4
