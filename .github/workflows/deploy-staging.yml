@@ -2,7 +2,7 @@ name: Stage deployment
 
 on:
   push:
-    branches: ["develop"]
+    branches: [develop]
     paths:
       - Dockerfile*
       - .dockerignore
