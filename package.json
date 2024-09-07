@@ -2,16 +2,15 @@
   "name": "cocobay-app",
   "private": true,
   "workspaces": [
-    "backend",
-    "frontend",
-    "infrastructure"
+    "packages/*"
   ],
   "scripts": {
     "prepare": "husky install",
     "dev": "lerna run dev --parallel --scope \"{backend,frontend}\"",
     "dev:frontend": "lerna run dev --scope frontend",
     "dev:backend": "lerna run dev --scope backend",
-    "test": "lerna run test --scope \"frontend\" && lerna run test:cov --scope \"backend\"",
+    "test": "lerna run test --scope frontend && lerna run test:cov --scope backend",
+    "test:e2e": "lerna run test:e2e --scope \"backend\"",
     "lint": "lerna run lint --scope \"{backend,frontend}\"",
     "lint:check": "lerna run lint:check --scope \"{backend,frontend}\"",
     "build": "lerna run build --scope \"{backend,frontend}\"",
@@ -23,8 +22,6 @@
     "husky-init": "^8.0.0",
     "lerna": "^8.1.8",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3",
-    "pretty-quick": "^4.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },

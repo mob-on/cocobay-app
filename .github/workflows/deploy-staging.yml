@@ -2,24 +2,26 @@ name: Stage deployment
 
 on:
   push:
-    branches: ["main"] #TODO: use a develop branch
+    branches: ["main", "feature/SFI-34-buildPipeline"] #TODO: use a develop branch
     paths:
       - Dockerfile*
       - .dockerignore
       - package.json
       - tsconfig.json
       - yarn.lock
+      - .yarnrc.yml
       - "frontend/**"
       - "backend/**"
       - "infrastructure/**"
   pull_request:
-    branches: ["main"]
+    branches: ["main", "feature/SFI-34-buildPipeline"]
     paths:
       - Dockerfile*
       - .dockerignore
       - package.json
       - tsconfig.json
       - yarn.lock
+      - .yarnrc.yml
       - "frontend/**"
       - "backend/**"
       - "infrastructure/**"
@@ -27,16 +29,12 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
-  build-frontend:
-    name: Front End
-    uses: ./.github/workflows/build-frontend.yml
-    secrets: inherit
-
-  build-backend:
-    name: Back End
-    uses: ./.github/workflows/build-backend.yml
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
     secrets: inherit
 
   deployment:
@@ -44,8 +42,7 @@ jobs:
     environment: staging
     runs-on: ubuntu-latest
     needs:
-      - build-frontend
-      - build-backend
+      - build
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4

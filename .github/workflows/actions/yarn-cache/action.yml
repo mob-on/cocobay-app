@@ -1,0 +1,31 @@
+name: Yarn Cached Install
+description: Cache the results of yarn (v2, v3) install in a project
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get yarn cache directory paths
+      shell: bash
+      id: yarn-config
+      run: |
+        echo "cache-folder=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+        echo "install-state-path=$(yarn config get installStatePath)" >> $GITHUB_OUTPUT
+
+    - name: Restore yarn install cache
+      uses: actions/cache@v4
+      id: yarn-cache
+      with:
+        path: "**/node_modules"
+        key: yarn-install-cache-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}
+        restore-keys: |
+          yarn-install-cache-
+
+    - name: Install dependencies
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        yarn install --immutable
+      env:
+        YARN_ENABLE_GLOBAL_CACHE: "false"
+        YARN_NM_MODE: "hardlinks-local"
+        YARN_INSTALL_STATE_PATH: ${{ steps.yarn-config.outputs.cache-folder }}/install-state.gz
