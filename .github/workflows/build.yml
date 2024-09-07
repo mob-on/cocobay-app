@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   check-build-exists:
-    name: Checking if build exists
+    name: Skip build if exists
     runs-on: ubuntu-latest
     outputs:
       exists: ${{ steps.check-build-exists.outputs.exists }}

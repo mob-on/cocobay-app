@@ -66,15 +66,15 @@ jobs:
 
       - name: Tag Front End build for staging release
         run: |
-          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend/${{ steps.meta.outputs.version }}
-          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend/${{ steps.meta.outputs.version }} \
+          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ steps.meta.outputs.version }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ steps.meta.outputs.version }} \
             ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
           docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
 
       - name: Tag Back End build for staging release
         run: |
-          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend/${{ steps.meta.outputs.version }}
-          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend/${{ steps.meta.outputs.version }} \
+          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ steps.meta.outputs.version }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ steps.meta.outputs.version }} \
             ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:staging
           docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:staging
 
