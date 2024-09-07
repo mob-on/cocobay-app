@@ -20,7 +20,7 @@ describe("HealthController (e2e)", () => {
     await app.close();
   });
 
-  it("GET /health", () => {
+  it("GET /health endpoint", () => {
     return request(app.getHttpServer()).get("/health").expect(200).expect({
       status: "OK",
     });
