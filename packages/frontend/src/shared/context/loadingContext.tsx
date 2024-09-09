@@ -30,7 +30,7 @@ const LoadingContext = createContext({} as ILoadingContext);
 
 const requestData = async (path: string) => {
   const mockRequest = await new Promise((resolve) => {
-    setTimeout(() => resolve({}), 2000);
+    setTimeout(() => resolve({}), 1000);
   });
 
   return mockRequest;
