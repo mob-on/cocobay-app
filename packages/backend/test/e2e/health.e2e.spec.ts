@@ -1,27 +1,23 @@
-import { INestApplication } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
-
-import { HealthModule } from "../../src/healthcheck/health.module";
-import * as request from "supertest";
+import { HealthModule } from "src/healthcheck/health.module";
+import TestAgent from "supertest/lib/agent";
+import { setupEndToEnd, TestControl } from "./setup";
 
 describe("HealthController (e2e)", () => {
-  let app: INestApplication;
+  let tests: TestControl;
+  let api: TestAgent;
 
   beforeAll(async () => {
-    const moduleFixture = await Test.createTestingModule({
+    ({ control: tests, api } = await setupEndToEnd({
       imports: [HealthModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+    }));
   });
 
   afterAll(async () => {
-    await app.close();
+    await tests.stop();
   });
 
-  it("GET /health", () => {
-    return request(app.getHttpServer()).get("/health").expect(200).expect({
+  it("GET /v1/health", () => {
+    return api.get("/v1/health").expect(200).expect({
       status: "OK",
     });
   });
