@@ -6,7 +6,7 @@ import FriendsIcon from "public/media/icons/friends.svg";
 import styles from "src/styles/components/menu/menu.module.scss";
 import MenuButton from "./MenuButton";
 import { useRouter } from "next/router";
-import { useLoading } from '../../shared/context/loadingContext';
+import { useLoading } from "../../shared/context/loadingContext";
 
 /**
  * Renders a menu with buttons for each page. The current page button is highlighted.
@@ -39,7 +39,10 @@ const Menu: React.FC = () => {
   ];
 
   return (
-    <div style={{ display: allLoaded ? "flex" : "none" }} className={styles.main}>
+    <div
+      style={{ display: allLoaded ? "flex" : "none" }}
+      className={styles.main}
+    >
       <div className={styles.menu}>
         {buttons.map((button) => (
           <MenuButton

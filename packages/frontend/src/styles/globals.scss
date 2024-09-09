@@ -54,7 +54,8 @@ body,
   position: relative;
 }
 
-#__grid, #__grid-loading {
+#__grid,
+#__grid-loading {
   height: 100%;
   width: 100%;
   position: fixed;
@@ -67,7 +68,7 @@ body,
 
 #__grid-loading {
   z-index: 0;
-  filter:invert(1) brightness(0.6);
+  filter: invert(1) brightness(0.6);
 }
 
 body {

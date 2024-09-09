@@ -18,7 +18,7 @@ const LoadingScreenWrapper: React.FC<ILoadingScreenWrapperProps> = ({
   pageProps,
 }) => {
   const { allLoaded } = useLoading();
-  
+
   return allLoaded ? (
     <Component {...pageProps} />
   ) : (

@@ -19,27 +19,45 @@ const LoadingScreen: React.FC = () => {
         height="256"
       />
       <Image
-          src={Logo}
-          alt="logo"
-          width="258"
-          height="35"
-          className={styles.logo}
-        />
+        src={Logo}
+        alt="logo"
+        width="258"
+        height="35"
+        className={styles.logo}
+      />
       <h1 className={styles.slogan}>We came to play</h1>
       <SpinLoading className={styles.loading} color="primary" />;
       <Image
-          priority
-          id="__grid-loading"
-          src={grid}
-          width={1}
-          height={1}
-          alt="Grid"
+        priority
+        id="__grid-loading"
+        src={grid}
+        width={1}
+        height={1}
+        alt="Grid"
+      />
+      <div className={styles.clouds}>
+        <Image
+          className={styles.cloud + " " + styles.cloud1}
+          src={cloud1}
+          alt="Cloud"
+          width={64}
+          height={64}
         />
-        <div className={styles.clouds}>
-          <Image className={styles.cloud + " " + styles.cloud1} src={cloud1} alt="Cloud" width={64} height={64} />
-          <Image className={styles.cloud + " " + styles.cloud2} src={cloud2} alt="Cloud" width={64} height={64} />
-          <Image className={styles.cloud + " " + styles.cloud3} src={cloud3} alt="Cloud" width={64} height={64} />
-        </div>
+        <Image
+          className={styles.cloud + " " + styles.cloud2}
+          src={cloud2}
+          alt="Cloud"
+          width={64}
+          height={64}
+        />
+        <Image
+          className={styles.cloud + " " + styles.cloud3}
+          src={cloud3}
+          alt="Cloud"
+          width={64}
+          height={64}
+        />
+      </div>
     </div>
   );
 };

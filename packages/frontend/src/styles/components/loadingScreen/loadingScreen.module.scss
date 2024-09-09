@@ -25,7 +25,8 @@
   z-index: 0;
 }
 
-.hero, .clouds {
+.hero,
+.clouds {
   position: absolute;
   left: 50%;
   top: calc(var(--padding) * 2);
@@ -47,7 +48,7 @@
 .loading {
   width: 75px;
   height: 75px;
-  margin-top: auto; 
+  margin-top: auto;
 }
 
 .slogan {
