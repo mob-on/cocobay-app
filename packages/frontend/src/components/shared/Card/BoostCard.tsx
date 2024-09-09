@@ -14,7 +14,13 @@ const BoostCard: React.FC<{
       onClick={isLastLevel ? null : () => onClick(boost.id)}
       className={styles.boost}
     >
-      <Image src={boost.iconSrc} alt={boost.name} width={64} height={64} />
+      <Image
+        priority
+        src={boost.iconSrc}
+        alt={boost.name}
+        width={64}
+        height={64}
+      />
       <p>{boost.name}</p>
       {boost.type === "daily" && (
         <span>Left today: {boost.maxToday - boost.usedToday}</span>
