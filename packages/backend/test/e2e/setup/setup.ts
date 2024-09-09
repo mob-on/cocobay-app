@@ -20,7 +20,7 @@ import { setupMockDatabase } from "../fixtures/mongodb";
 
 export interface TestControl {
   app: INestApplication<any>;
-  mockDb: { stop: () => Promise<void> };
+  mockDb: { stop: (models: MockModels) => Promise<void> };
   stop: () => Promise<void>;
 }
 
@@ -87,7 +87,7 @@ export const setupEndToEnd = async (
         app,
         mockDb,
         stop: async () => {
-          await Promise.all([mockDb.stop(), app.close()]);
+          await Promise.all([mockDb.stop(models), app.close()]);
         },
       },
       api: request(app.getHttpServer()),

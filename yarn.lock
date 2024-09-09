@@ -102,56 +102,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@automock/adapters.nestjs@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@automock/adapters.nestjs@npm:2.1.0"
-  dependencies:
-    "@automock/common": ^3.1.0
-    "@automock/types": ^2.0.1
-    reflect-metadata: ^0.1.13
-  checksum: 65b5bcf92b84ad50319e5415d40b913cb4622ff766c2c897f74f92a9a1ce91e2193d8bcb79d9e56183cc5995e83b07b84c2d22117db69d879ee831c4fd659237
-  languageName: node
-  linkType: hard
-
-"@automock/common@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@automock/common@npm:3.1.0"
-  dependencies:
-    "@automock/types": ^2.0.1
-  checksum: 690560403a53db6557df8e510f6e6c952f23fd08144da308ddc6dae2721310f894a045f573237c18bbde4b74b654312232b9cf48150f15f70acb07b2cd438f9a
-  languageName: node
-  linkType: hard
-
-"@automock/core@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@automock/core@npm:2.1.0"
-  dependencies:
-    "@automock/common": ^3.1.0
-    "@automock/types": ^2.0.1
-    lodash.isequal: ^4.5.0
-  checksum: 087efcbfb550aa3b37e0f907cc1de6f662c10d12747f8874daac49fcb5a1d0792476842d096b73b7e3841ff2dc5e58f408b801d86344f850b313973033bd9ddb
-  languageName: node
-  linkType: hard
-
-"@automock/jest@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@automock/jest@npm:2.1.0"
-  dependencies:
-    "@automock/core": ^2.1.0
-    "@automock/types": ^2.0.1
-  peerDependencies:
-    jest: ^26 || ^27 || ^28 || ^29
-  checksum: 2246996f6a36e3acf8573a7824fa4106b3361df4607e48ce88bc92d13f0e3936faec21186bc95f6bead751ec234d628e141a2c1394374995f1526cb1683ba511
-  languageName: node
-  linkType: hard
-
-"@automock/types@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@automock/types@npm:2.0.1"
-  checksum: 2259a1996c5097e6876f0701553c78275ead4e1144441bc4f8cb17f6f3c7a4849e5a40df951d788178d372a3e5a9a25cdc01c798049bc131f8d27a70b43640b5
-  languageName: node
-  linkType: hard
-
 "@aws-cdk/asset-awscli-v1@npm:^2.2.202":
   version: 2.2.202
   resolution: "@aws-cdk/asset-awscli-v1@npm:2.2.202"
@@ -5480,8 +5430,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backend@workspace:packages/backend"
   dependencies:
-    "@automock/adapters.nestjs": ^2.1.0
-    "@automock/jest": ^2.1.0
     "@faker-js/faker": ^9.0.0
     "@nestjs/cli": ^10.3.1
     "@nestjs/common": ^10.3.2
@@ -11115,13 +11063,6 @@ __metadata:
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: a3f527d22c548f43ae31c861ada88b2637eb48ac6aa3eb56e82d44917971b8aa96fbb37aa60efea674dc4ee8c42074f90f7b1f772e9db375435f6c83a19b3bc6
-  languageName: node
-  linkType: hard
-
-"lodash.isequal@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.isequal@npm:4.5.0"
-  checksum: da27515dc5230eb1140ba65ff8de3613649620e8656b19a6270afe4866b7bd461d9ba2ac8a48dcc57f7adac4ee80e1de9f965d89d4d81a0ad52bb3eec2609644
   languageName: node
   linkType: hard
 

@@ -32,9 +32,7 @@ describe("UserController", () => {
     it("should return a 404 when the user does not exist", async () => {
       const userId = faker.number.int();
 
-      const req = api.get(`/v1/user/${userId}`);
-
-      return req.expect(404);
+      return api.get(`/v1/user/${userId}`).expect(404);
     });
 
     it("should return a valid user when the user exists", async () => {
@@ -43,13 +41,14 @@ describe("UserController", () => {
         id: userId,
       });
 
-      const req = api.get(`/v1/user/${userId}`);
-
-      return req.expect(200).expect((res) =>
-        expect(res.body).toMatchObject({
-          id: userId,
-        }),
-      );
+      return api
+        .get(`/v1/user/${userId}`)
+        .expect(200)
+        .then((res) =>
+          expect(res.body).toMatchObject({
+            id: userId,
+          }),
+        );
     });
   });
 });

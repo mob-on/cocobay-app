@@ -1,8 +1,8 @@
+import { ReturnModelType } from "@typegoose/typegoose";
 import { HealthModule } from "src/healthcheck/health.module";
+import { User } from "src/model/user.model";
 import TestAgent from "supertest/lib/agent";
 import { setupEndToEnd, TestControl } from "./setup/setup";
-import { ReturnModelType } from "@typegoose/typegoose";
-import { User } from "src/model/user.model";
 
 describe("HealthController (e2e)", () => {
   let tests: TestControl;
@@ -24,12 +24,11 @@ describe("HealthController (e2e)", () => {
   });
 
   beforeEach(async () => {
-    console.log("User model collection name", userModel.collection.name);
     await userModel.deleteMany({});
   });
 
-  it("GET /v1/health", () => {
-    return api.get("/v1/health").expect(200).expect({
+  it("GET /v1/health", async () => {
+    await api.get("/v1/health").expect(200).expect({
       status: "OK",
     });
   });
