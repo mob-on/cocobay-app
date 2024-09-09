@@ -54,6 +54,7 @@ $scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
 .cloud1 {
   right: 75%;
   width: 256px;
+  height: auto;
 }
 
 .cloud2 {

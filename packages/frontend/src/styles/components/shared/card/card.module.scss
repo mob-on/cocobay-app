@@ -83,12 +83,12 @@
   user-select: none;
 }
 
-.cardDisabled {
+.card.cardDisabled {
   background: $body-bg;
   border: 1px solid $color-white;
 }
 
-.cardDisabled:active {
+.card.cardDisabled:active {
   background: $body-bg;
 }
 
