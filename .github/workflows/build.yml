@@ -106,7 +106,7 @@ jobs:
 
       - name: Run all unit tests
         run: |
-          yarn test
+          yarn test:cov
 
       - name: Cancel workflow if failed
         if: failure()
@@ -130,7 +130,7 @@ jobs:
 
       - name: Run all e2e tests
         run: |
-          yarn test:e2e
+          yarn test:e2e-cov
 
       - name: Cancel workflow if failed
         if: failure()

@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { ReturnModelType } from "@typegoose/typegoose";
 import { InjectModel } from "nestjs-typegoose";
+import { UserDto } from "src/dto/user.dto";
+
 import { User } from "src/model/user.model";
 
 @Injectable()
@@ -10,11 +12,13 @@ export class UserService {
     private readonly userModel: ReturnModelType<typeof User>,
   ) {}
 
-  async findById(id: number) {
-    return this.userModel
-      .findOne({
-        id,
-      })
-      .exec();
+  async findById(id: number): Promise<UserDto> {
+    return UserDto.fromUser(
+      await this.userModel
+        .findOne({
+          id,
+        })
+        .exec(),
+    );
   }
 }

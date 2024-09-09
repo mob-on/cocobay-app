@@ -1,25 +1,23 @@
 import { faker } from "@faker-js/faker";
 import { Test, TestingModule } from "@nestjs/testing";
 import { HealthService } from "./health.service";
-import { HealthController } from "./health.controller";
 
-describe("HealthController", () => {
+describe("HealthService", () => {
   let app: TestingModule;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      controllers: [HealthController],
       providers: [HealthService],
     }).compile();
   });
 
-  describe("GET /health", () => {
+  describe("getHealth", () => {
     it("should return minimal information to know the application is healthy", () => {
       const version = faker.string.alphanumeric(16);
       process.env.APP_VERSION = version;
-      const healthController = app.get(HealthController);
+      const healthService = app.get(HealthService);
 
-      const health = healthController.health();
+      const health = healthService.getHealth();
 
       expect(health).toMatchObject({
         status: "OK",

@@ -1,18 +1,23 @@
 export default {
   moduleFileExtensions: ["js", "json", "ts"],
-  rootDir: "src",
-  testRegex: ".*\\.spec\\.ts$",
+  rootDir: "./",
+  testRegex: "src/.*/.*\\.spec\\.ts$",
   transform: {
     "^.+\\.(t|j)s$": "ts-jest",
   },
   collectCoverageFrom: [
-    "**/*.(t|j)s",
-    "!**/*.module.(t|j)s",
-    "!main.ts",
-    "!main-api-bootstrap-config.ts",
-    "!**/*.model.(t|j)s",
-    "!test/**",
+    "src/**/*.(t|j)s",
+    "!src/**/*.module.(t|j)s",
+    "!src/main.ts",
+    "!src/main-api-bootstrap-config.ts",
+    "!src/**/*.model.(t|j)s",
+    "!src/**/*.dto.(t|j)s",
+    "!src/**/*.controller.(t|j)s",
+    "!src/**/*.spec.(t|j)s",
   ],
+  moduleNameMapper: {
+    "^src/(.*)$": "<rootDir>/src/$1",
+  },
   coverageThreshold: {
     global: {
       branches: 20,
@@ -21,6 +26,6 @@ export default {
       statements: 50,
     },
   },
-  coverageDirectory: "../coverage",
+  coverageDirectory: "./coverage",
   testEnvironment: "node",
 };

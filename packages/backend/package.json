@@ -11,9 +11,10 @@
     "lint:check": "eslint \"{src,apps,libs,test}/**/*.{js,ts}\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:cov": "yarn test --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.config.ts"
+    "test:e2e": "jest --config ./test/jest-e2e.config.ts",
+    "test:e2e-cov": "yarn test:e2e --coverage"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.2",
