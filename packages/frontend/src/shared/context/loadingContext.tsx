@@ -28,6 +28,7 @@ interface ResourceToLoad {
 
 const LoadingContext = createContext({} as ILoadingContext);
 
+// @ts-ignore TODO: remove this when we implement the logic.
 const requestData = async (path: string) => {
   const mockRequest = await new Promise((resolve) => {
     setTimeout(() => resolve({}), 1000);
@@ -37,7 +38,6 @@ const requestData = async (path: string) => {
 };
 
 export const LoadingProvider = ({ children }) => {
-  const logger = useLogger("LoadingProvider");
   const [isDataRequested, setIsDataRequested] = useState(false);
   const [resources, setResources] = useState<ILoadingContextResources>({}); // { resource1: 'pending', resource2: 'loaded', ... }
 
@@ -62,7 +62,7 @@ export const LoadingProvider = ({ children }) => {
       return acc;
     }, {});
     setResources(initialResources);
-    for (let resource of resourceList) {
+    for (const resource of resourceList) {
       requestData(resource.path).then((data) => {
         updateResourceStatus(resource.name, "loaded", data);
       });
