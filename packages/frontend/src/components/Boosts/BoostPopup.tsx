@@ -12,7 +12,13 @@ const BoostPopup: React.FC<{ boost: IBoost; onAction: (id: number) => void }> =
     const leftToday = boost.maxToday - boost.usedToday;
     return (
       <>
-        <Image src={boost.iconSrc} alt={boost.name} width={128} height={128} />
+        <Image
+          src={boost.iconSrc}
+          alt={boost.name}
+          width={128}
+          height={128}
+          priority
+        />
         <h2>{boost.name}</h2>
         <h3>{boost.description}</h3>
         {boost.type === "regular" ? (

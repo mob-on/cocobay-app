@@ -30,6 +30,7 @@ const TapEffect: React.FC<ITapEffectProps> = ({ tap }) => {
         width={24}
         height={24}
         className={styles.coin}
+        priority
       />
     </div>
   );

@@ -67,6 +67,7 @@ export default function Earn() {
             className={styles.coin}
             width={128}
             height={128}
+            priority
           />
           <h1>Earn more coins</h1>
         </div>
@@ -79,6 +80,7 @@ export default function Earn() {
                 className={styles.gift}
                 height={96}
                 width={96}
+                priority
               />
               <h2>Daily reward</h2>
               <RightOutline width={24} height={24} />
@@ -103,6 +105,7 @@ export default function Earn() {
                     className={styles.gift}
                     height={64}
                     width={64}
+                    priority
                   />
                   <h3 style={{ marginRight: "auto" }}>{task.name}</h3>
                   {task.completed ? (

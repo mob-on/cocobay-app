@@ -59,6 +59,7 @@ const DailyRewards: React.FC = () => {
             className={styles.gift}
             width={96}
             height={96}
+            priority
           />
         </header>
         <div className={styles.weeks}>

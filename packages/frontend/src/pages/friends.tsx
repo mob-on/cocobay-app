@@ -72,6 +72,7 @@ export default function Friends() {
                   alt={card.title}
                   width={96}
                   height={96}
+                  priority
                 />
                 <h5 className={styles.cardTitle}>{card.title}</h5>
                 <Cost className={styles.cardReward} cost={card.reward} />
