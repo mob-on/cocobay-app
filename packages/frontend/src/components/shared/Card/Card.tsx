@@ -87,7 +87,7 @@ const Card: React.FC<ICardProps> = memo(
             build={data as IBuild}
             onClick={(id: number) => {
               WebApp?.HapticFeedback?.impactOccurred("light");
-              onClick(data?.id);
+              onClick(id);
             }}
           />
         )}
@@ -96,7 +96,7 @@ const Card: React.FC<ICardProps> = memo(
             boost={data as IBoost}
             onClick={(id: number) => {
               WebApp?.HapticFeedback?.impactOccurred("light");
-              onClick(data?.id);
+              onClick(id);
             }}
           />
         )}
