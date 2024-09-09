@@ -11,6 +11,8 @@ jobs:
     name: Build
     uses: ./.github/workflows/build.yml
     secrets: inherit
+    with:
+      env: production
 
   deployment:
     name: Deploy to production
