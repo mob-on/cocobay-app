@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "./scripts/prepare",
     "dev": "lerna run dev --parallel --scope \"{backend,frontend}\"",
     "dev:frontend": "lerna run dev --scope frontend",
     "dev:backend": "lerna run dev --scope backend",

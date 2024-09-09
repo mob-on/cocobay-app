@@ -1,0 +1,4 @@
+#!/bin/sh
+husky install
+echo "Frontend config - please configure packages/frontend/config/local.ts"
+test -f packages/frontend/config/local.ts || cp packages/frontend/config/local.template.ts packages/frontend/config/local.ts

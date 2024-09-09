@@ -8292,6 +8292,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-jsdom: ^29.7.0
     lint-staged: ^15.2.10
+    lodash: ^4.17.21
     next: ^14.2.6
     next-compose-plugins: ^2.2.1
     next-images: ^1.8.5
