@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import useLogger from "../hooks/useLogger";
 
 type ILoadingContextResourceStatus = "pending" | "loaded" | "errored";
 
@@ -28,8 +27,8 @@ interface ResourceToLoad {
 
 const LoadingContext = createContext({} as ILoadingContext);
 
-// @ts-ignore TODO: remove this when we implement the logic.
 const requestData = async (path: string) => {
+  console.log(path); // WARN: I can't build without this. Remove this, once this PR is merged!
   const mockRequest = await new Promise((resolve) => {
     setTimeout(() => resolve({}), 1000);
   });
