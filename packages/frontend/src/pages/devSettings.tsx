@@ -1,30 +1,34 @@
 import { Button, Form, Input } from "antd-mobile";
-import { CheckCircleOutline } from "antd-mobile-icons";
-import { useEffect, useState } from "react";
+import { CheckCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useMainApi } from "src/shared/api/main/useMainApi";
-import { useLocalStorage } from "src/shared/hooks/useLocalStorage";
-import { LocalStorage } from "src/shared/LocalStorage";
+import { useStoredApiUrl } from "src/shared/context/LocalStorageContext";
+import styles from "src/styles/pages/devSettings.module.scss";
 
 const DevScreen = () => {
-  const [mainApiBaseUrl, setMainApiBaseUrl] = useLocalStorage<string>(
-    LocalStorage.MAIN_API_BASE_URL,
-  );
+  const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredApiUrl();
 
   const [mainApiBaseUrlValue, setMainApiBaseUrlValue] = useState("");
-  //   const mainApi = useMainApi();
+  const api = useMainApi(mainApiBaseUrlValue);
   const [mainApiOk, setMainApiOk] = useState<boolean>(null);
 
   useEffect(() => {
     if (mainApiBaseUrl) {
       setMainApiBaseUrlValue(mainApiBaseUrl);
-
-      //   mainApi.isHealthy().then(setMainApiOk);
     }
   }, [mainApiBaseUrl]);
 
   const save = () => {
     setMainApiBaseUrl(mainApiBaseUrlValue);
   };
+
+  const testApi = useCallback(() => {
+    setMainApiOk(null);
+    api
+      .isHealthy()
+      .then(setMainApiOk)
+      .catch(() => setMainApiOk(false));
+  }, [mainApiBaseUrlValue, api]);
 
   return (
     <Form
@@ -38,22 +42,13 @@ const DevScreen = () => {
           value={mainApiBaseUrlValue}
           onChange={setMainApiBaseUrlValue}
         />
-        <Button
-          onClick={(e) => {
-            setMainApiOk(null);
-            setMainApiBaseUrl(mainApiBaseUrlValue);
-          }}
-        >
-          Test
-        </Button>
-        {mainApiOk !== null && (
-          <CheckCircleOutline
-            style={{
-              marginLeft: "1rem",
-              color: mainApiOk ? "green" : "red",
-            }}
-          />
-        )}
+        <Button onClick={testApi}>Test</Button>
+        {mainApiOk !== null &&
+          (mainApiOk ? (
+            <CheckCircleOutline color="green" className={styles.statusIcon} />
+          ) : (
+            <CloseCircleOutline color="red" className={styles.statusIcon} />
+          ))}
       </Form.Item>
     </Form>
   );

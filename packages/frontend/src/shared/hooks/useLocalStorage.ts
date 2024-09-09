@@ -28,27 +28,30 @@ export function useLocalStorage<T>(
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      console.log(error);
+    } catch (error: unknown) {
+      console.error("Unable to retrieve value from local storage", error);
       return initialValue;
     }
   };
 
   const [storageLoaded, setStorageLoaded] = useState(false);
   const [storedValue, setStoredValue] = useState(initialValue);
+  useEffect(() => {
+  }, [storedValue]);
 
   const setValue: Dispatch<SetStateAction<T>> = (value) => {
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
 
-      setStoredValue(value);
+      setStoredValue((prev) => {
+        return valueToStore;
+      });
 
       if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
-      console.log(error);
       return initialValue;
     }
   };
@@ -57,24 +60,6 @@ export function useLocalStorage<T>(
     const storageValue = getLocalStorageValue();
     setStoredValue(storageValue);
     setStorageLoaded(true);
-  }, []);
-
-  const onStorageUpdate = (e: any) => {
-    if (e.key === key) {
-      try {
-        const storageItem = e.newValue;
-        setStoredValue(storageItem ? storageItem : initialValue);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("storage", onStorageUpdate);
-    return () => {
-      window.removeEventListener("storage", onStorageUpdate);
-    };
   }, []);
 
   return [storedValue, setValue, storageLoaded];

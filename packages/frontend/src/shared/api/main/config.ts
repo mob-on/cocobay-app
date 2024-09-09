@@ -1,28 +1,14 @@
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 import Config from "config";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
+import { useStoredApiUrl } from "src/shared/context/LocalStorageContext";
 
-import { useLocalStorage } from "src/shared/hooks/useLocalStorage";
 import { Feature } from "src/shared/lib/FeatureFlags";
-import { LocalStorage } from "src/shared/LocalStorage";
 
-export const useMainApiConfig = () => {
-  const [axiosWrapper, setAxiosWrapper] = useState<any>();
+export const useMainApiConfig = (baseUrl?: string) => {
+  const [storageApiUrl] = useStoredApiUrl();
+  const apiUrl =
+    baseUrl ?? (Feature.DEV_MODE ? storageApiUrl : Config.apis.main.baseUrl);
 
-  const [apiUrl] = Feature.DEV_MODE
-    ? useLocalStorage(LocalStorage.MAIN_API_BASE_URL, Config.apis.main.baseUrl)
-    : [Config.apis.main.baseUrl, () => {}];
-
-  useEffect(() => {
-    if (apiUrl) {
-      const axiosInstance = axios.create({
-        baseURL: apiUrl,
-      });
-
-      console.log(axiosInstance);
-      setAxiosWrapper({});
-    }
-  }, [apiUrl]);
-
-  return [axiosWrapper];
+  return [useMemo(() => axios.create({ baseURL: apiUrl }), [apiUrl])];
 };

@@ -8,6 +8,7 @@ import { TapCounterProvider } from "src/shared/context/TapCounterContext";
 import Image from "next/image";
 // import init from "./_main";
 import grid from "public/media/grid.svg";
+import { LocalStorageContextProvider } from "src/shared/context/LocalStorageContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -39,9 +40,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
       <Image id="__grid" src={grid} width={1} height={1} alt="Grid" />
-      <TapCounterProvider>
-        <Component {...pageProps} />
-      </TapCounterProvider>
+      <LocalStorageContextProvider>
+        <TapCounterProvider>
+          <Component {...pageProps} />
+        </TapCounterProvider>
+      </LocalStorageContextProvider>
     </Layout>
   );
 }
