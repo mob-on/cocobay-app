@@ -1,17 +1,28 @@
-// import AOS from "aos";
-// import "aos/dist/aos.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Layout from "../layouts/Layout";
 import "../styles/globals.scss";
 import { TapCounterProvider } from "src/shared/context/TapCounterContext";
 import Image from "next/image";
-// import init from "./_main";
 import grid from "public/media/grid.svg";
+import { LoadingProvider } from "../shared/context/loadingContext";
+import LoadingScreenWrapper from "../components/LoadingScreen/LoadingScreenWrapper";
+import Script from "next/script";
+
+import { Telegram } from "@twa-dev/types";
+declare global {
+  interface Window {
+    Telegram: Telegram;
+  }
+}
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Layout>
+      <Script
+        id="TelegramWebApp"
+        src="https://telegram.org/js/telegram-web-app.js"
+      />
       <Head>
         <title>Mob On - Blockchain and Web3 Development</title>
         <meta
@@ -38,10 +49,12 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
-      <Image id="__grid" src={grid} width={1} height={1} alt="Grid" />
-      <TapCounterProvider>
-        <Component {...pageProps} />
-      </TapCounterProvider>
+      <Image priority id="__grid" src={grid} width={1} height={1} alt="Grid" />
+      <LoadingProvider>
+        <TapCounterProvider>
+          <LoadingScreenWrapper Component={Component} pageProps={pageProps} />
+        </TapCounterProvider>
+      </LoadingProvider>
     </Layout>
   );
 }
