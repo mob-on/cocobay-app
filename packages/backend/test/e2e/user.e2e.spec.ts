@@ -3,7 +3,7 @@ import { ReturnModelType } from "@typegoose/typegoose";
 import { User } from "src/model/user.model";
 import { UserModule } from "src/user/user.module";
 import TestAgent from "supertest/lib/agent";
-import { setupEndToEnd, TestControl } from "./setup";
+import { setupEndToEnd, TestControl } from "./setup/setup";
 
 describe("UserController", () => {
   let tests: TestControl;

@@ -1,18 +1,21 @@
 import { MongoMemoryReplSet } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
-export const setupMockDatabase = async () => {
-  const mongod = await MongoMemoryReplSet.create();
-  await mongoose.connect(mongod.getUri());
-  await mongod.waitUntilRunning();
-  console.debug(`In-memory MongoDB server initialised at: ${mongod.getUri()}`);
+export const setupMockDatabase = async (globalInit?: boolean) => {
+  let mongod: MongoMemoryReplSet;
+  if (globalInit) {
+    mongod = await MongoMemoryReplSet.create();
+    await mongod.waitUntilRunning();
+    process.env.MONGODB_TEST_URI = mongod.getUri();
+  }
+
+  await mongoose.connect(process.env.MONGODB_TEST_URI);
 
   return {
-    uri: mongod.getUri(),
+    uri: process.env.MONGODB_TEST_URI,
     stop: async () => {
       await mongoose.connection.dropDatabase();
       await mongoose.connection.close();
-      await mongod.stop();
     },
   };
 };
