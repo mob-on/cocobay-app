@@ -1,6 +1,6 @@
 import axios from "axios";
 import Config from "config";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useStoredApiUrl } from "src/shared/context/LocalStorageContext";
 
 import { Feature } from "src/shared/lib/FeatureFlags";

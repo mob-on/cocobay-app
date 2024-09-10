@@ -1,18 +1,19 @@
+import useLogger from "src/shared/hooks/useLogger";
 import { useMainApiConfig } from "./config";
+import { useAxios } from "./useAxios";
 
 export const useMainApi = (baseUrl?: string) => {
-  const [axios] = useMainApiConfig(baseUrl);
+  const { get } = useAxios(baseUrl);
 
   return {
     isHealthy: async () => {
-      console.log("Checking API health...");
+      const logger = useLogger("isHealthy");
+      logger.debug("Checking API health...");
       try {
-        const response = await axios.get("/v1/health", {
-          timeout: 1000,
-        });
+        const response = await get("/v1/health");
         return response.status === 200;
       } catch (e: unknown) {
-        console.error("Unable to get API health", e);
+        logger.error("Unable to get API health", e);
       }
 
       return false;
