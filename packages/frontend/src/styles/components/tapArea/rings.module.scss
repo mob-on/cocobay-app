@@ -37,7 +37,8 @@
   background-color: var(--$body-bg);
 }
 
-.bg, .ringBg {
+.bg,
+.ringBg {
   max-width: calc(var(--tap-ring-diameter-max) - var(--tap-ring-width));
   max-height: calc(var(--tap-ring-diameter-max) - var(--tap-ring-width));
 }
