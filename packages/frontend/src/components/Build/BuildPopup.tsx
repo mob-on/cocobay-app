@@ -14,7 +14,13 @@ const buildPopup: React.FC<{ build: IBuild; onAction: (id: number) => void }> =
 
     return (
       <>
-        <Image src={build.iconSrc} alt={build.name} width={128} height={128} />
+        <Image
+          priority
+          src={build.iconSrc}
+          alt={build.name}
+          width={128}
+          height={128}
+        />
         <h2>{build.name}</h2>
         <h3>{build.description}</h3>
         {isLastLevel ? (

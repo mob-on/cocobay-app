@@ -3,7 +3,7 @@
 .home {
   position: relative;
   height: calc(100%);
-  top: -$header-height;
+  top: calc(-1 * var(--header-height));
 }
 
 .tap {
@@ -12,15 +12,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  height: $tap-ring-diameter + $tap-ring-width * $tap-rings-number;
+  height: calc(
+    var(--tap-ring-diameter) + var(--tap-ring-width) * var(--tap-rings-number)
+  );
 }
 
 .footer {
   position: absolute;
-  bottom: calc($padding-inner + $menu-bottom + $menu-height);
+  bottom: calc(var(--padding-inner) + var(--menu-bottom) + var(--menu-height));
   left: 0;
   right: 0;
-  padding: 0 $padding;
+  padding: 0 var(--padding);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,13 +30,15 @@
 
 .avatar {
   position: relative;
-  top: $header-height;
-  padding: $padding;
+  top: var(--header-height);
+  padding: var(--padding);
 }
 
 .tapCounterWrapper {
   position: absolute;
-  height: $tap-ring-diameter + $tap-ring-width * $tap-rings-number;
+  height: calc(
+    var(--tap-ring-diameter) + var(--tap-ring-width) * var(--tap-rings-number)
+  );
   text-align: center;
   width: 100%;
 }

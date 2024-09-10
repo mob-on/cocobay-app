@@ -4,13 +4,13 @@
   position: relative;
   left: 0;
   right: 0;
-  height: $tap-ring-diameter + $tap-ring-width * 2;
+  height: calc(var(--tap-ring-diameter) + var(--tap-ring-width) * 2);
   width: 100%;
   touch-action: none;
+  --scale-ring-2: var(--tap-ring-scale);
+  --scale-ring-3: calc(var(--tap-ring-scale) + var(--tap-ring-scale) - 1);
+  --scale-background: 1;
 }
-
-$scale-ring-2: 1 + ($tap-ring-width / $tap-ring-diameter);
-$scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
 
 .tapped {
   // Using globals is not perfect, but that is the simplest solution I can think of at the moment.
@@ -21,10 +21,10 @@ $scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
     opacity: 0.5;
   }
   :global(#tap-ring2) {
-    transform: translate(-50%, -50%) scale($scale-ring-2);
+    transform: translate(-50%, -50%) scale(var(--scale-ring-2));
   }
   :global(#tap-ring3) {
-    transform: translate(-50%, -50%) scale($scale-ring-3);
+    transform: translate(-50%, -50%) scale(var(--scale-ring-3));
   }
 }
 
@@ -34,8 +34,10 @@ $scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: $coco-size;
-  height: $coco-size;
+  width: var(--coco-size);
+  height: var(--coco-size);
+  max-width: var(--coco-size-max);
+  max-height: var(--coco-size-max);
 }
 
 .moon,
@@ -43,6 +45,7 @@ $scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
 .cloud2 {
   position: absolute;
   z-index: 10;
+  transform: scale(var(--scale-background));
 }
 
 .moon {
@@ -54,9 +57,16 @@ $scale-ring-3: 1 + (($tap-ring-width * 2) / $tap-ring-diameter);
 .cloud1 {
   right: 75%;
   width: 256px;
+  height: auto;
 }
 
 .cloud2 {
-  left: $tap-ring-diameter;
+  left: var(--tap-ring-diameter);
   top: 50%;
+}
+
+@media screen and (max-width: 425px) {
+  .main {
+    --scale-background: 0.5;
+  }
 }

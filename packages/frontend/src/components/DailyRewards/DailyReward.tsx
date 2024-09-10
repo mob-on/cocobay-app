@@ -36,6 +36,7 @@ const DailyReward: React.FC<{
               width={64}
               height={64}
               className={styles.specialRewardImage}
+              priority
             />
             <div className={styles.specialRewardBg} />
           </>
