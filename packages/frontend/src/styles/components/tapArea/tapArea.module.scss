@@ -9,6 +9,7 @@
   touch-action: none;
   --scale-ring-2: var(--tap-ring-scale);
   --scale-ring-3: calc(var(--tap-ring-scale) + var(--tap-ring-scale) - 1);
+  --scale-background: 1;
 }
 
 .tapped {
@@ -44,6 +45,7 @@
 .cloud2 {
   position: absolute;
   z-index: 10;
+  transform: scale(var(--scale-background));
 }
 
 .moon {
@@ -61,4 +63,10 @@
 .cloud2 {
   left: var(--tap-ring-diameter);
   top: 50%;
+}
+
+@media screen and (max-width: 425px) {
+  .main {
+    --scale-background: 0.5;
+  }
 }

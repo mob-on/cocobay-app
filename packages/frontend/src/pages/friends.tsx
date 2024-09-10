@@ -46,7 +46,7 @@ export default function Friends() {
   // This is the easiest way to do this, and we don't expect screen to be resized, so it's fine.
   useEffect(() => {
     const screenHeight = window.innerHeight;
-    if (screenHeight < 890) {
+    if (screenHeight < 930) {
       setHideLastFriend(true);
     }
   }, []);

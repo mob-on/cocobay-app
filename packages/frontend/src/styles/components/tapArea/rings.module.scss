@@ -19,6 +19,8 @@
   box-sizing: border-box;
   width: var(--tap-ring-diameter);
   height: var(--tap-ring-diameter);
+  max-width: var(--tap-ring-diameter-max);
+  max-height: var(--tap-ring-diameter-max);
 }
 
 .bg {
@@ -33,6 +35,11 @@
   height: calc(var(--tap-ring-diameter) - var(--tap-ring-width));
   z-index: 4;
   background-color: var(--$body-bg);
+}
+
+.bg, .ringBg {
+  max-width: calc(var(--tap-ring-diameter-max) - var(--tap-ring-width));
+  max-height: calc(var(--tap-ring-diameter-max) - var(--tap-ring-width));
 }
 
 .ring1 {
