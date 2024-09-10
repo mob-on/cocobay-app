@@ -1,6 +1,6 @@
+import { InjectModel } from "@m8a/nestjs-typegoose";
 import { Injectable } from "@nestjs/common";
 import { ReturnModelType } from "@typegoose/typegoose";
-import { InjectModel } from "nestjs-typegoose";
 import { UserDto } from "src/dto/user.dto";
 
 import { User } from "src/model/user.model";

@@ -2184,6 +2184,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@m8a/nestjs-typegoose@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "@m8a/nestjs-typegoose@npm:12.0.0"
+  dependencies:
+    is-class: 0.0.9
+  peerDependencies:
+    "@nestjs/common": ^10.0.0
+    "@nestjs/core": ^10.0.0
+    "@typegoose/typegoose": ^12.0.0
+    mongoose: ^8.0.1
+  checksum: ab00c51de71756c593ae80e388197406e3807aeb72d5595faba4f988beae5b59aa781d9212a4e1ce7418340c74d23117b0fea3a5d46f0806d54a79892186f967
+  languageName: node
+  linkType: hard
+
 "@mole-inc/bin-wrapper@npm:^8.0.1":
   version: 8.0.1
   resolution: "@mole-inc/bin-wrapper@npm:8.0.1"
@@ -5431,6 +5445,7 @@ __metadata:
   resolution: "backend@workspace:packages/backend"
   dependencies:
     "@faker-js/faker": ^9.0.0
+    "@m8a/nestjs-typegoose": ^12.0.0
     "@nestjs/cli": ^10.3.1
     "@nestjs/common": ^10.3.2
     "@nestjs/core": ^10.3.2
@@ -5448,6 +5463,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.21.0
     "@typescript-eslint/parser": ^6.21.0
     class-validator: ^0.14.1
+    dotenv: ^16.4.5
     eslint: ^8.56.0
     eslint-config-prettier: ^9.1.0
     eslint-plugin-prettier: ^5.1.3
@@ -5455,7 +5471,6 @@ __metadata:
     lint-staged: ^15.2.10
     mongodb-memory-server: ^10.0.0
     mongoose: ^8.6.1
-    nestjs-typegoose: ^7.1.38
     nx: ^19.6.5
     prettier: ^3.2.5
     reflect-metadata: ^0.2.1
@@ -7076,7 +7091,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.4.4, dotenv@npm:~16.4.5":
+"dotenv@npm:^16.4.4, dotenv@npm:^16.4.5, dotenv@npm:~16.4.5":
   version: 16.4.5
   resolution: "dotenv@npm:16.4.5"
   checksum: 301a12c3d44fd49888b74eb9ccf9f07a1f5df43f489e7fcb89647a2edcd84c42d6bc349dc8df099cd18f07c35c7b04685c1a4f3e6a6a9e6b30f8d48c15b7f49c
@@ -9515,7 +9530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-class@npm:^0.0.9":
+"is-class@npm:0.0.9":
   version: 0.0.9
   resolution: "is-class@npm:0.0.9"
   checksum: 4b93ec642f4d9300213399a8ac19f4e629bb676c31cc5d982ce7d94752625c8c3b7c6f911d77e1af446e74068de1f74ae849512d46fe06441257c43176ad4270
@@ -11895,21 +11910,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nestjs-typegoose@npm:^7.1.38":
-  version: 7.1.38
-  resolution: "nestjs-typegoose@npm:7.1.38"
-  dependencies:
-    is-class: ^0.0.9
-    reflect-metadata: ^0.1.13
-  peerDependencies:
-    "@nestjs/common": ^6.10.1 || ^7.0.0
-    "@nestjs/core": ^6.10.1 || ^7.0.0
-    "@typegoose/typegoose": ^6.2.1 || ^7.0.0
-    mongoose: ^5.10.6
-  checksum: 83389513fe0b8bc7fec0d4da84c944838478f9570aa424801a94670c90e90621ee326967684bc4ceaf20d44b6ddd0137d308acbd7e335a4c59ce5e76ad5c67f9
-  languageName: node
-  linkType: hard
-
 "new-find-package-json@npm:^2.0.0":
   version: 2.0.0
   resolution: "new-find-package-json@npm:2.0.0"
@@ -13624,13 +13624,6 @@ __metadata:
     indent-string: ^4.0.0
     strip-indent: ^3.0.0
   checksum: fa1ef20404a2d399235e83cc80bd55a956642e37dd197b4b612ba7327bf87fa32745aeb4a1634b2bab25467164ab4ed9c15be2c307923dd08b0fe7c52431ae6b
-  languageName: node
-  linkType: hard
-
-"reflect-metadata@npm:^0.1.13":
-  version: 0.1.14
-  resolution: "reflect-metadata@npm:0.1.14"
-  checksum: 155ad339319cec3c2d9d84719f730f8b6a6cd2a074733ec29dbae6c89d48a2914c7d07a2350212594f3aae160fa4da4f903e6512f27ceaf968443a7c692bcad0
   languageName: node
   linkType: hard
 

@@ -1,9 +1,9 @@
 import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
-import { getModelToken } from "nestjs-typegoose";
 import { User } from "src/model/user.model";
 import { UserService } from "./user.service";
 import { faker } from "@faker-js/faker";
+import { getModelToken } from "@m8a/nestjs-typegoose";
 
 const mockUser = {
   _id: faker.database.mongodbObjectId(),

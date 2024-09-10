@@ -7,11 +7,11 @@ import {
 } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { ReturnModelType } from "@typegoose/typegoose";
-import { InjectModel, TypegooseModule } from "nestjs-typegoose";
+import { InjectModel, TypegooseModule } from "@m8a/nestjs-typegoose";
 import {
   TypegooseClass,
   TypegooseClassWithOptions,
-} from "nestjs-typegoose/dist/typegoose-class.interface";
+} from "@m8a/nestjs-typegoose/dist/typegoose-class.interface";
 import { configureMainApiNestApp } from "src/main-api-bootstrap-config";
 import { User } from "src/model/user.model";
 import * as request from "supertest";
