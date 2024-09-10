@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { ReturnModelType } from "@typegoose/typegoose";
+import { UserDto } from "src/dto/user.dto";
 import { User } from "src/model/user.model";
 import { UserModule } from "src/user/user.module";
 import TestAgent from "supertest/lib/agent";
@@ -49,6 +50,25 @@ describe("UserController", () => {
             id: userId,
           }),
         );
+    });
+  });
+
+  describe("POST /v1/user", () => {
+    it("should return a 400 when no valid body is provided", async () => {
+      return api.post(`/v1/user`).send({}).expect(400);
+    });
+
+    it("should return a 201 when a valid user is created", async () => {
+      return api
+        .post(`/v1/user`)
+        .send(new UserDto({ id: faker.number.int() }))
+        .expect(201);
+    });
+
+    it("should return a 400 when trying to create a user that already exists", async () => {
+      const user = new UserDto({ id: faker.number.int() });
+      await api.post(`/v1/user`).send(user).expect(201);
+      return api.post(`/v1/user`).send(user).expect(400);
     });
   });
 });

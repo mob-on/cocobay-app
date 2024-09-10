@@ -21,4 +21,8 @@ export class UserService {
         .exec(),
     );
   }
+
+  async create(userDto: UserDto): Promise<void> {
+    await this.userModel.create(userDto.toUser());
+  }
 }

@@ -1,11 +1,11 @@
 import { useMainApiConfig } from "./config";
+import { UserDto } from "./dto/user.dto";
 
 export const useMainApi = (baseUrl?: string) => {
   const [axios] = useMainApiConfig(baseUrl);
 
   return {
     isHealthy: async () => {
-      console.log("Checking API health...");
       try {
         const response = await axios.get("/v1/health", {
           timeout: 1000,
@@ -16,6 +16,30 @@ export const useMainApi = (baseUrl?: string) => {
       }
 
       return false;
+    },
+    user: {
+      get: async (userId: number) => {
+        try {
+          const response = await axios.get(`/v1/user/${userId}`);
+          if (response.status !== 200) {
+            throw new Error("Server responded with unexpected status code");
+          }
+          return response.data as UserDto;
+        } catch (e: unknown) {
+          throw new Error("Unable to retrieve user data", e);
+        }
+      },
+      register: async (user: UserDto) => {
+        try {
+          const response = await axios.post(`/v1/user/`, user);
+          if (response.status !== 201) {
+            throw new Error("Server responded with unexpected status code");
+          }
+          return response.data as UserDto;
+        } catch (e: unknown) {
+          throw new Error("Unable to create user", e);
+        }
+      },
     },
   };
 };

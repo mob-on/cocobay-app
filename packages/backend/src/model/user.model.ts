@@ -1,8 +1,9 @@
 import { prop } from "@typegoose/typegoose";
-import { IsString } from "class-validator";
+import { IsNotEmpty, IsPositive, IsString } from "class-validator";
 
 export class User {
   @prop({ required: true, index: true })
+  @IsPositive()
   id: number;
 
   @IsString()
