@@ -23,6 +23,7 @@ const MenuButton: React.FC<IMenuButtonProps> = (props: IMenuButtonProps) => {
         width="29"
         height="29"
         className={styles.icon}
+        priority
       />
       <p>{props.text}</p>
     </Link>

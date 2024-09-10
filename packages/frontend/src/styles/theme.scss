@@ -68,15 +68,17 @@ $tap-background: radial-gradient(
   #9797d3 0%,
   transparent 70%
 ); // gradient behind the coco
-$tap-ring-diameter: 360px;
+$tap-ring-diameter: 75vw;
+$tap-ring-diameter-max: 360px;
 $tap-ring-width: 10px;
 $tap-ring1-color: #88d912;
 $tap-ring2-color: #cdff83;
 $tap-ring3-color: #f5ffe7;
-$tap-ring-scale: calc(1 + 100 / 340); // 1 + scale width in pixels / diameter
+$tap-ring-scale: calc(1.03); // 1 + scale width in pixels / diameter
 $tap-rings-number: 2; // number of rings, used only in tap height calculation
 $tap-transition-time: 0.05s;
-$coco-size: 239px;
+$coco-size: 50%;
+$coco-size-max: 239px;
 $tap-coin-size: 24px;
 
 // Cards specific

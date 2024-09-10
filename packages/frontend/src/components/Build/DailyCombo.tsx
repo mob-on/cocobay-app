@@ -11,6 +11,7 @@ const SingleCombo: React.FC<{ src: string }> = ({ src }) => {
         alt="hero"
         width={96}
         height={96}
+        priority
       />
     </div>
   );
@@ -27,6 +28,7 @@ const DailyCombo: React.FC<{ onClick: () => void }> = ({ onClick }) => {
           alt="hero"
           width={96}
           height={96}
+          priority
         />
         <SingleCombo src={hero} />
         <SingleCombo src={hero} />

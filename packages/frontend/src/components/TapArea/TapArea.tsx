@@ -14,6 +14,7 @@ import Rings from "./Rings";
 import cloud1 from "public/media/cloud1.svg";
 import cloud2 from "public/media/cloud2.svg";
 import moon from "public/media/moon.svg";
+import useTelegram from "src/shared/hooks/useTelegram";
 
 export interface ITapEvent {
   id: string;
@@ -39,6 +40,8 @@ const TapArea: React.FC = () => {
    * Handles tap feedback by flashing ring animation for 50ms
    */
   const handleTapFeedback = () => {
+    const [WebApp] = useTelegram();
+    WebApp?.HapticFeedback?.impactOccurred("medium");
     setIsClassApplied(true);
 
     const timeoutId = setTimeout(() => {
@@ -131,6 +134,7 @@ const TapArea: React.FC = () => {
         alt="Decoration"
         className={styles.moon}
         id="__moon"
+        priority
       />
       <Image
         src={cloud1}
@@ -139,6 +143,7 @@ const TapArea: React.FC = () => {
         alt="Decoration"
         className={styles.cloud1}
         id="__cloud1"
+        priority
       />
       <Image
         src={cloud2}
@@ -147,13 +152,15 @@ const TapArea: React.FC = () => {
         alt="Decoration"
         className={styles.cloud2}
         id="_cloud2"
+        priority
       />
       <Image
         src={Hero}
         alt="Hero"
-        width="100"
-        height="100"
+        width={100}
+        height={100}
         className={styles.hero}
+        priority
       />
     </div>
   );

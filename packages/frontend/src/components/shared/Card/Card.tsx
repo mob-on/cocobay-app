@@ -13,6 +13,7 @@ import BoostCard from "./BoostCard";
 import styles from "src/styles/components/shared/card/card.module.scss";
 import TimeFormatter from "src/shared/lib/TimeFormatter";
 import useSelfCorrectingTimeout from "src/shared/hooks/useSelfCorrectingTimeout";
+import useTelegram from "src/shared/hooks/useTelegram";
 
 export type ICardType = "build" | "boost" | "custom";
 // variants affect the visual look of the card
@@ -42,6 +43,7 @@ const Card: React.FC<ICardProps> = memo(
     className = "",
   }) => {
     const [cooldown, setCooldown] = useState(0);
+    const [WebApp] = useTelegram();
     const { cooldownUntil } = data;
     const cooldownTimestamp = cooldownUntil?.getTime() ?? 0;
     const timeoutId = useRef<NodeJS.Timeout>();
@@ -66,7 +68,10 @@ const Card: React.FC<ICardProps> = memo(
       <div
         onClick={
           type === "custom" && typeof onClick === "function" && !disabled
-            ? useCallback(() => onClick(data?.id), [data?.id])
+            ? useCallback(() => {
+                WebApp?.HapticFeedback?.impactOccurred("light");
+                onClick(data?.id);
+              }, [data?.id])
             : null // we pass onClick into boost/build cards instead
         }
         className={
@@ -78,10 +83,22 @@ const Card: React.FC<ICardProps> = memo(
         }
       >
         {type === "build" && (
-          <BuildCard build={data as IBuild} onClick={onClick} />
+          <BuildCard
+            build={data as IBuild}
+            onClick={(id: number) => {
+              WebApp?.HapticFeedback?.impactOccurred("light");
+              onClick(id);
+            }}
+          />
         )}
         {type === "boost" && (
-          <BoostCard boost={data as IBoost} onClick={onClick} />
+          <BoostCard
+            boost={data as IBoost}
+            onClick={(id: number) => {
+              WebApp?.HapticFeedback?.impactOccurred("light");
+              onClick(id);
+            }}
+          />
         )}
         {type === "custom" && children}
         {cooldown > 0 && (

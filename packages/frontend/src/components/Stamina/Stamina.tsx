@@ -32,7 +32,7 @@ const Leveling: React.FC = () => {
   return (
     <div className={styles.stamina}>
       <Link href="/home/boosts/">
-        <Image src={BoostsIcon} alt="boosts" width="64" height="64" />
+        <Image src={BoostsIcon} alt="boosts" width="64" height="64" priority />
       </Link>
       <p>
         <span>

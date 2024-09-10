@@ -13,6 +13,9 @@ const nextConfig = {
     disableStaticImages: true,
     unoptimized: true, //required by next output:export
   },
+  experimental: {
+    serverComponentsExternalPackages: ["pino", "pino-pretty"],
+  },
   // webpack(config) {
   //   config.module.rules.push(
   //     {

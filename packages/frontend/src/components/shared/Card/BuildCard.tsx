@@ -14,7 +14,13 @@ const BuildCard: React.FC<{ build: IBuild; onClick: (id: number) => void }> = ({
       onClick={isLastLevel ? null : () => onClick(build.id)}
       className={styles.buildCard}
     >
-      <Image src={build.iconSrc} alt={build.name} width={64} height={64} />
+      <Image
+        src={build.iconSrc}
+        alt={build.name}
+        width={64}
+        height={64}
+        priority
+      />
       <p>{build.name}</p>
       <div className={styles.buildInfo}>
         <p>Lv {build.level}</p>

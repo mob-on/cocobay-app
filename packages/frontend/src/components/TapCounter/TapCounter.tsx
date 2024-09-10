@@ -18,7 +18,7 @@ const TapCounter: React.FC = () => {
   );
   return (
     <div className={styles.tapCounter}>
-      <h1 style={{ fontSize: 30, fontFamily: "MartianMono" }}>
+      <h1 style={{ fontSize: 30 }}>
         <Cost size={32}>
           <span>{formattedTapCount}</span>
         </Cost>
