@@ -28,7 +28,6 @@ interface ResourceToLoad {
 const LoadingContext = createContext({} as ILoadingContext);
 
 const requestData = async (path: string) => {
-  console.log(path); // WARN: I can't build without this. Remove this, once this PR is merged!
   const mockRequest = await new Promise((resolve) => {
     setTimeout(() => resolve({}), 1000);
   });
