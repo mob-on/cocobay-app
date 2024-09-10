@@ -14,9 +14,13 @@ export interface ITaps {
 const QUERY_KEY = "taps";
 const UPDATE_INTERVAL = 1000;
 
-const useTapsService: TUseService<ITaps> = () => {
+interface IMethods {
+  startTapCounter: () => void;
+  stopTapCounter: () => void;
+}
+
+const useTapsService: TUseService<ITaps, IMethods> = () => {
   const { data, setTapData } = useTapCounter();
-  const timeoutId = useRef<NodeJS.Timeout>();
 
   const timeoutCallback = useCallback(() => {
     setTapData((prevData) => ({
@@ -24,23 +28,15 @@ const useTapsService: TUseService<ITaps> = () => {
       tapCount: prevData.tapCount + data.passiveIncome,
     }));
   }, [data.passiveIncome]);
-  timeoutId.current = useSelfCorrectingTimeout(
-    timeoutCallback,
-    UPDATE_INTERVAL,
-  );
-
-  useEffect(() => {
-    return () => {
-      if (timeoutId.current) {
-        clearTimeout(timeoutId.current);
-      }
-    };
-  }, []);
+  const timeout = useSelfCorrectingTimeout(timeoutCallback, UPDATE_INTERVAL);
 
   const { getTaps } = useTapApi();
   const query = useQuery<ITaps>({ queryKey: [QUERY_KEY], queryFn: getTaps });
 
-  return [query, {}];
+  return [
+    query,
+    { startTapCounter: timeout.start, stopTapCounter: timeout.stop },
+  ];
 };
 
 export default useTapsService;

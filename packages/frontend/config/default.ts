@@ -1,6 +1,6 @@
 const config = {
   features: {
-    devMode: false,
+    devMode: true,
   },
   apis: {
     main: {

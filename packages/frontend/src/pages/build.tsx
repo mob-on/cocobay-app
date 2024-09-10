@@ -10,6 +10,7 @@ import TapCounter from "src/components/TapCounter";
 import Button from "src/components/shared/Button";
 import usePopup from "src/shared/hooks/usePopup";
 import Card from "src/components/shared/Card";
+import useTapsService from "src/shared/services/useTapsService";
 
 const defaultBuilds: IBuild[] = [
   {
@@ -170,10 +171,6 @@ export default function Boosts() {
       { building: [], event: [], employee: [] },
     );
   }, [builds]);
-
-  useEffect(() => {
-    // fetch data and put it into the state.
-  }, []);
 
   const onUpgrade = useCallback(
     (id: number) => {

@@ -41,6 +41,7 @@ export const TapCounterProvider = ({
   };
 
   const setTapData = (newData: ITaps | ((prev: ITaps) => ITaps)) => {
+    console.log("setTapData", newData);
     setTapCounter(newData);
   };
 

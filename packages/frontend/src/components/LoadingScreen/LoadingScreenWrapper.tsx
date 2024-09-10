@@ -2,6 +2,8 @@ import { NextComponentType, NextPageContext } from "next";
 import { useLoading } from "src/shared/context/loadingContext";
 import LoadingScreen from "./LoadingScreen";
 import dynamic from "next/dynamic";
+import useTapsService from "src/shared/services/useTapsService";
+import { useEffect } from "react";
 
 const BuildPage = dynamic(() => import("src/pages/build"));
 const BoostsPage = dynamic(() => import("src/pages/home/boosts"));
@@ -18,6 +20,10 @@ const LoadingScreenWrapper: React.FC<ILoadingScreenWrapperProps> = ({
   pageProps,
 }) => {
   const { allLoaded } = useLoading();
+  const [, { startTapCounter }] = useTapsService();
+  useEffect(() => {
+    startTapCounter();
+  }, []);
 
   return allLoaded ? (
     <Component {...pageProps} />

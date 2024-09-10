@@ -6,7 +6,7 @@ import NumberFormatter from "src/shared/lib/NumberFormatter";
 
 const TapCounter: React.FC = () => {
   const { data } = useTapCounter();
-
+  console.log(1, data);
   const numberFormatter = new Intl.NumberFormat("en-US");
   const formattedTapCount = useMemo(
     () => numberFormatter.format(data.tapCount),
