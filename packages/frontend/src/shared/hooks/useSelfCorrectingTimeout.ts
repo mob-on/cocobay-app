@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import useLogger from "./useLogger";
 
 /**
@@ -26,8 +26,24 @@ const useSelfCorrectingTimeout = (
     }
   };
 
+  const startTimeout = () => {
+    updateTimeout();
+  };
+
+  const calculateNextInterval = (previousUpdateTime: DOMHighResTimeStamp) => {
+    const now = performance.now();
+    const timeDrift = previousUpdateTime
+      ? now - previousUpdateTime - UPDATE_INTERVAL
+      : 0;
+    const nextInterval = Math.min(
+      UPDATE_INTERVAL,
+      Math.max(UPDATE_INTERVAL - timeDrift, 0),
+    );
+    return nextInterval;
+  };
+
   // Service to increment or execute the function, correcting time drift.
-  const updateTimeout = async () => {
+  const updateTimeout = useCallback(async () => {
     if (timeoutIdRef.current) {
       clearTimeout(timeoutIdRef.current);
     }
@@ -44,30 +60,24 @@ const useSelfCorrectingTimeout = (
       }
     }
 
-    const timeDrift = previousUpdateTime
-      ? now - previousUpdateTime - UPDATE_INTERVAL
-      : 0;
-    const nextInterval = Math.max(UPDATE_INTERVAL - timeDrift, 0);
-
-    timeoutIdRef.current = setTimeout(updateTimeout, Math.max(0, nextInterval));
-  };
+    const nextInterval = calculateNextInterval(previousUpdateTime);
+    timeoutIdRef.current = setTimeout(updateTimeout, nextInterval);
+  }, [fn, UPDATE_INTERVAL]);
 
   useEffect(() => {
-    // if fn changes or UPDATE_INTERVAL changes, stop the timeout.
-    // NOTE: this could potentially break things, if we don't restart it, if the fn changes.
-    // This hook is very important, so we need to pay attention when implementing it.
-    // This is done for performance/optimization reasons and better control.
-    stopTimeout();
+    const previousUpdateTime = previousTimeRef.current;
+
+    // if we already have a timeout started, in case our variables change, we restart it.
+    if (timeoutIdRef.current) {
+      const nextInterval = calculateNextInterval(previousUpdateTime);
+      timeoutIdRef.current = setTimeout(updateTimeout, nextInterval);
+    }
     return stopTimeout;
   }, [fn, UPDATE_INTERVAL]);
 
   return {
-    start: () => {
-      if (fn) {
-        updateTimeout();
-      }
-    },
     stop: stopTimeout,
+    start: startTimeout,
     timeoutIdRef: timeoutIdRef,
     fn,
   };

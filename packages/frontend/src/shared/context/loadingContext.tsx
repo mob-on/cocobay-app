@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { USER_QUERY_KEY } from "../services/useUserService";
 
 type ILoadingContextResourceStatus = "pending" | "loaded" | "errored";
 
-export interface ILoadingContextResource {
+export interface ILoadingContextResource<T> {
   status: ILoadingContextResourceStatus;
-  data?: any; // might not be necessary
+  data?: T;
 }
 
 export interface ILoadingContext {
@@ -17,22 +18,20 @@ export interface ILoadingContext {
 }
 
 export interface ILoadingContextResources {
-  [key: string]: ILoadingContextResource;
+  [key: string]: ILoadingContextResource<any>;
 }
 
-interface ResourceToLoad {
+interface ResourceToLoad<T> {
   name: string;
-  path: string;
+  fn: () => Promise<T>;
 }
 
 const LoadingContext = createContext({} as ILoadingContext);
 
-const requestData = async (path: string) => {
-  const mockRequest = await new Promise((resolve) => {
-    setTimeout(() => resolve({}), 1000);
-  });
-
-  return mockRequest;
+const getUser = async () => {
+  // mock user data fetching
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return { name: "Coco" };
 };
 
 export const LoadingProvider = ({ children }) => {
@@ -54,26 +53,36 @@ export const LoadingProvider = ({ children }) => {
     }));
   };
 
-  const initializeResources = (resourceList: ResourceToLoad[]) => {
+  const initializeResources = async (resourceList: ResourceToLoad<any>[]) => {
     const initialResources = resourceList.reduce((acc, resource) => {
-      acc[resource.name] = "pending";
+      acc[resource.name] = {
+        status: "pending",
+        data: null,
+      };
       return acc;
-    }, {});
+    }, {} as ILoadingContextResources);
+
     setResources(initialResources);
-    for (const resource of resourceList) {
-      requestData(resource.path).then((data) => {
+
+    // Iterate through resourceList (which contains the fn)
+    resourceList.forEach(async (resource) => {
+      try {
+        const data = await resource.fn();
         updateResourceStatus(resource.name, "loaded", data);
-      });
-    }
+      } catch (error) {
+        updateResourceStatus(resource.name, "errored", null);
+      }
+    });
   };
 
   useEffect(() => {
-    const apiToLoad: ResourceToLoad[] = [{ path: "/test", name: "test" }];
+    const apiToLoad: ResourceToLoad<any>[] = [
+      { fn: getUser, name: USER_QUERY_KEY },
+    ];
     // Initialize all resources we know for sure we'll need.
     initializeResources(apiToLoad);
     setIsDataRequested(true);
   }, []);
-
   // if we haven't requested the data to load yet, our resource list might be empty.
   const allLoaded =
     isDataRequested &&

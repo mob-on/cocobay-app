@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import TapArea from "src/components/TapArea";
 import TapEffects from "src/components/TapEffects";
 import styles from "src/styles/pages/index.module.scss";
-import { TapsEffectsContextProvider } from "src/shared/context/tapEffectsContext";
-import { LevelingContextProvider } from "src/shared/context/levelingContext";
+import { TapsEffectsContextProvider } from "src/shared/context/TapEffectsContext";
+import { LevelingContextProvider } from "src/shared/context/LevelingContext";
 import Leveling from "src/components/Leveling";
 import Stamina from "src/components/Stamina";
 import HomeAvatar from "src/components/HomeAvatar";
 import TapCounter from "src/components/TapCounter";
-import useTapsService from "src/shared/services/useTapsService";
 
 export default function Home() {
   return (

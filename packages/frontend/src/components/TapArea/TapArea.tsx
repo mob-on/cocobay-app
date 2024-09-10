@@ -6,7 +6,7 @@ import {
   TAP_EFFECTS_THROTTLE,
   TAP_EFFECTS_TIMEOUT,
   useTaps,
-} from "src/shared/context/tapEffectsContext";
+} from "src/shared/context/TapEffectsContext";
 import styles from "src/styles/components/tapArea/tapArea.module.scss";
 import { v4 as uuidv4 } from "uuid";
 import Rings from "./Rings";
@@ -15,7 +15,6 @@ import cloud1 from "public/media/cloud1.svg";
 import cloud2 from "public/media/cloud2.svg";
 import moon from "public/media/moon.svg";
 import useTelegram from "src/shared/hooks/useTelegram";
-import useTapsService from "src/shared/services/useTapsService";
 
 export interface ITapEvent {
   id: string;
@@ -36,7 +35,6 @@ const TapArea: React.FC = () => {
   const [isClassApplied, setIsClassApplied] = useState(false);
   const [classTimeoutId, setClassTimeoutId] = useState<NodeJS.Timeout>(null);
   const tapAreaRef = useRef<HTMLDivElement>(null);
-  const [, { startTapCounter }] = useTapsService();
 
   /**
    * Handles tap feedback by flashing ring animation for 50ms

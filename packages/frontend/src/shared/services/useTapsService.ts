@@ -1,9 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { TUseService } from "./types";
 import { useTapApi } from "../api/useTapApi";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback } from "react";
 import { useTapCounter } from "../context/TapCounterContext";
 import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
+import useLogger from "../hooks/useLogger";
 
 export interface ITaps {
   tapCount: number;
@@ -15,28 +16,37 @@ const QUERY_KEY = "taps";
 const UPDATE_INTERVAL = 1000;
 
 interface IMethods {
-  startTapCounter: () => void;
-  stopTapCounter: () => void;
+  startTimeout: () => void;
 }
 
 const useTapsService: TUseService<ITaps, IMethods> = () => {
+  const logger = useLogger("useTapsService");
+  const queryClient = useQueryClient();
   const { data, setTapData } = useTapCounter();
-
+  const { passiveIncome } = data;
+  const { getTaps: apiGetTaps } = useTapApi();
   const timeoutCallback = useCallback(() => {
     setTapData((prevData) => ({
       ...prevData,
-      tapCount: prevData.tapCount + data.passiveIncome,
+      tapCount: prevData.tapCount + passiveIncome,
     }));
-  }, [data.passiveIncome]);
+  }, [passiveIncome]);
   const timeout = useSelfCorrectingTimeout(timeoutCallback, UPDATE_INTERVAL);
 
-  const { getTaps } = useTapApi();
-  const query = useQuery<ITaps>({ queryKey: [QUERY_KEY], queryFn: getTaps });
+  // load taps initally.
+  const getTaps = useCallback(async () => {
+    try {
+      const tapData = await queryClient.fetchQuery<ITaps>({
+        queryKey: [QUERY_KEY],
+        queryFn: apiGetTaps,
+      });
+      setTapData(tapData);
+    } catch (error) {
+      logger.error("Error syncing taps:", error);
+    }
+  }, [apiGetTaps, setTapData, queryClient]);
 
-  return [
-    query,
-    { startTapCounter: timeout.start, stopTapCounter: timeout.stop },
-  ];
+  return [data, { startTimeout: timeout.start, getTaps }];
 };
 
 export default useTapsService;

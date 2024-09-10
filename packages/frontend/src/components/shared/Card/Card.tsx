@@ -42,10 +42,11 @@ const Card: React.FC<ICardProps> = memo(
     disabled = false,
     className = "",
   }) => {
-    const [cooldown, setCooldown] = useState(0);
-    const [WebApp] = useTelegram();
     const { cooldownUntil } = data;
     const cooldownTimestamp = cooldownUntil?.getTime() ?? 0;
+    const [cooldown, setCooldown] = useState(cooldownTimestamp - Date.now());
+    const [WebApp] = useTelegram();
+
     const now = Date.now();
 
     const updateCooldown = useMemo(() => {

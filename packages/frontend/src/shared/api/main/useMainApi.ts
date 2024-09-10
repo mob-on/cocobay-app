@@ -1,5 +1,4 @@
 import useLogger from "src/shared/hooks/useLogger";
-import { useMainApiConfig } from "./config";
 import { useAxios } from "./useAxios";
 
 export const useMainApi = (baseUrl?: string) => {

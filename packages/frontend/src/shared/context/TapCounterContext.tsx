@@ -1,5 +1,4 @@
-import React, { createContext, useState, useContext, useMemo } from "react";
-import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
+import React, { createContext, useState, useContext } from "react";
 import { ITaps } from "../services/useTapsService";
 
 export interface ITapCounterContext {
@@ -14,8 +13,6 @@ const defaultTapCounterData: ITaps = {
   passiveIncome: 1,
   perTap: 1,
 };
-
-const UPDATE_INTERVAL = 1000;
 
 const TapCounterContext = createContext<ITapCounterContext>({
   data: defaultTapCounterData,
@@ -41,7 +38,6 @@ export const TapCounterProvider = ({
   };
 
   const setTapData = (newData: ITaps | ((prev: ITaps) => ITaps)) => {
-    console.log("setTapData", newData);
     setTapCounter(newData);
   };
 

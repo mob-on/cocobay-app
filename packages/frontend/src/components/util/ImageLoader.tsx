@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLoading } from "src/shared/context/loadingContext";
+import { useLoading } from "src/shared/context/LoadingContext";
 import useLogger from "src/shared/hooks/useLogger";
 
 interface IImageLoaderProps {
