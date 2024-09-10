@@ -21,3 +21,5 @@ jobs:
     name: Build
     uses: ./.github/workflows/build.yml
     secrets: inherit
+    with:
+      env: staging

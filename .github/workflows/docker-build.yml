@@ -3,16 +3,12 @@ name: Docker package
 on:
   workflow_call:
     inputs:
+      env:
+        type: string
+        required: true
       docker-build-args:
         type: string
         description: Arguments for docker build, example => ". --file Dockerfile.backend --target backend"
-        required: true
-      docker-run-args:
-        type: string
-        description: Extra arguments for docker run, example => "--env PORT=80 -p 80"
-      docker-smoke-curl-url:
-        type: string
-        description: Which url to hit durign the smoke test, example => http://localhost
         required: true
       app-name:
         type: string
@@ -27,6 +23,7 @@ jobs:
   build:
     name: ${{ inputs.app-name }}
     runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -39,9 +36,11 @@ jobs:
 
       - name: Smoke test ${{ inputs.app-name }}
         shell: bash
+        env:
+          DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+          APP_VERSION: ${{ inputs.version }}
         run: |
-          docker run -d ${{ inputs.docker-run-args }} --name ${{ inputs.app-name }} ${{ vars.DOCKER_REGISTRY }}/${{ inputs.app-name }}:${{ inputs.version }}
-          docker run --network container:${{ inputs.app-name }} appropriate/curl --retry 5 --retry-connrefused ${{ inputs.docker-smoke-curl-url }}
+          docker compose -f docker-compose-smoke-test.yml run smoke-test-${{ inputs.app-name }}
 
       # - name: Tear down smoke test containers (only needed in persistent self-hosted runners, since Github hosted are ephemeral)
       #   if: always()

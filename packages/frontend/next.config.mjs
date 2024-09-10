@@ -2,6 +2,9 @@ import withPlugins from "next-compose-plugins";
 import withImages from "next-images";
 
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   output: "export",
   reactStrictMode: true,
   transpilePackages: ["antd-mobile"],

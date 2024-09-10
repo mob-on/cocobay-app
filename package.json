@@ -5,12 +5,14 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "./scripts/prepare",
     "dev": "lerna run dev --parallel --scope \"{backend,frontend}\"",
     "dev:frontend": "lerna run dev --scope frontend",
     "dev:backend": "lerna run dev --scope backend",
-    "test": "lerna run test --scope frontend && lerna run test:cov --scope backend",
+    "test": "lerna run test --scope frontend && lerna run test --scope backend",
+    "test:cov": "lerna run test --scope frontend && lerna run test:cov --scope backend",
     "test:e2e": "lerna run test:e2e --scope \"backend\"",
+    "test:e2e-cov": "lerna run test:e2e-cov --scope \"backend\"",
     "lint": "lerna run lint --scope \"{backend,frontend}\"",
     "lint:check": "lerna run lint:check --scope \"{backend,frontend}\"",
     "build": "lerna run build --scope \"{backend,frontend}\"",

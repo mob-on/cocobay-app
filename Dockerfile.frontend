@@ -12,8 +12,10 @@ COPY --parents package.json yarn.lock .yarnrc.yml .yarn/ packages/*/package.json
 RUN yarn workspace frontend install --immutable
 
 COPY . /app
+RUN mv packages/frontend/config/local.template.ts packages/frontend/config/local.ts
 
-RUN NEXT_PUBLIC_ENVIRONMENT=prod yarn workspace frontend build
+ARG ENV
+RUN NEXT_PUBLIC_ENVIRONMENT=${ENV} yarn workspace frontend build
 
 FROM nginx:alpine AS frontend
 

@@ -1,28 +1,45 @@
-import { INestApplication } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
-
-import { HealthModule } from "../../src/healthcheck/health.module";
-import * as request from "supertest";
+import { ReturnModelType } from "@typegoose/typegoose";
+import { HealthModule } from "src/healthcheck/health.module";
+import { User } from "src/model/user.model";
+import TestAgent from "supertest/lib/agent";
+import { setupEndToEnd, TestControl } from "./setup/setup";
+import { faker } from "@faker-js/faker";
 
 describe("HealthController (e2e)", () => {
-  let app: INestApplication;
+  let tests: TestControl;
+  let api: TestAgent;
+  let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
-    const moduleFixture = await Test.createTestingModule({
+    ({
+      control: tests,
+      api,
+      userModel,
+    } = await setupEndToEnd({
       imports: [HealthModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+    }));
   });
 
   afterAll(async () => {
-    await app.close();
+    await tests.stop();
   });
 
-  it("GET /health", () => {
-    return request(app.getHttpServer()).get("/health").expect(200).expect({
-      status: "OK",
-    });
+  beforeEach(async () => {
+    await userModel.deleteMany({});
+  });
+
+  it("GET /v1/health", async () => {
+    const version = faker.string.alphanumeric(16);
+    process.env.APP_VERSION = version;
+
+    await api
+      .get("/v1/health")
+      .expect(200)
+      .expect((res) =>
+        expect(res.body).toMatchObject({
+          status: "OK",
+          version,
+        }),
+      );
   });
 });

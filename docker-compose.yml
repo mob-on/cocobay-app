@@ -17,10 +17,22 @@ services:
     container_name: cocobay-app-backend
     networks:
       - backend
+    links:
+      - mongodb
     environment:
       PORT: "80"
+      MONGODB_URI: "mongodb://root:example@mongodb:27017/"
     ports:
       - "3001:80"
+
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
 
 networks:
   backend:

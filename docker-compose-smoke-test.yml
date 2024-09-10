@@ -1,0 +1,55 @@
+version: "3.4"
+services:
+  smoke-test-cocobay-app-backend:
+    image: appropriate/curl
+    networks:
+      - backend
+    links:
+      - backend
+    command: "--retry 5 --retry-connrefused http://backend/v1/health"
+  
+  smoke-test-cocobay-app-frontend:
+    image: appropriate/curl
+    networks:
+      - frontend
+    links:
+      - frontend
+    command: "--retry 5 --retry-connrefused http://frontend"
+
+  frontend:
+    image: ${DOCKER_REGISTRY}/cocobay-app-frontend:${APP_VERSION}
+    container_name: cocobay-app-frontend
+    restart: unless-stopped
+    networks:
+      - frontend
+    ports:
+      - "80"
+
+  backend:
+    image: ${DOCKER_REGISTRY}/cocobay-app-backend:${APP_VERSION}
+    container_name: cocobay-app-backend
+    restart: unless-stopped
+    networks:
+      - backend
+    links:
+      - mongodb
+    environment:
+      PORT: "80"
+      MONGODB_URI: "mongodb://root:example@mongodb:27017/"
+    ports:
+      - "80"
+
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017"
+
+networks:
+  frontend:
+  backend:
