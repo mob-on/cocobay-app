@@ -148,8 +148,6 @@ jobs:
       env: ${{ inputs.env }}
       docker-build-args: ". --file Dockerfile.backend --target backend \
         --build-arg ENV=${{ vars.ENV }} --build-arg APP_VERSION=${{ needs.setup.outputs.version }}"
-      docker-run-args: "--env PORT=80 -p 80"
-      docker-smoke-curl-url: "http://localhost/v1/health"
       app-name: cocobay-app-backend
       version: ${{ needs.setup.outputs.version }}
 
@@ -165,7 +163,5 @@ jobs:
       env: ${{ inputs.env }}
       docker-build-args: ". --file Dockerfile.frontend --target frontend \
         --build-arg ENV=${{ vars.ENV }} --build-arg APP_VERSION=${{ needs.setup.outputs.version }}"
-      docker-run-args: "-p 80"
-      docker-smoke-curl-url: "http://localhost"
       app-name: cocobay-app-frontend
       version: ${{ needs.setup.outputs.version }}

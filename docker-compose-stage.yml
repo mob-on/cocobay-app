@@ -22,7 +22,7 @@ services:
       - "3002:80"
 
   mongodb:
-    image: mongo
+    image: mongo:latest
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
