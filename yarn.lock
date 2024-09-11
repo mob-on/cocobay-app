@@ -5478,6 +5478,7 @@ __metadata:
     "@types/supertest": ^6.0.2
     "@typescript-eslint/eslint-plugin": ^6.21.0
     "@typescript-eslint/parser": ^6.21.0
+    class-transformer: ^0.5.1
     class-validator: ^0.14.1
     dotenv: ^16.4.5
     eslint: ^8.56.0
@@ -5972,6 +5973,13 @@ __metadata:
   version: 1.4.0
   resolution: "cjs-module-lexer@npm:1.4.0"
   checksum: 3dda638a7f31dfee3879a71eff7fe02eb53d887a983ae25918dcc3d804b9fa1fe23acc4d6b4b1d3e1aa1c2cacfa168524db8dfb28e2859cf9be2e4b7f7450d89
+  languageName: node
+  linkType: hard
+
+"class-transformer@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "class-transformer@npm:0.5.1"
+  checksum: f191c8b4cc4239990f5efdd790cabdd852c243ed66248e39f6616a349c910c6eed2d9fd1fbf7ee6ea89f69b4f1d0b493b27347fe0cd0ae26b47c3745a805b6d3
   languageName: node
   linkType: hard
 

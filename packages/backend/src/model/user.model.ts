@@ -1,16 +1,13 @@
 import { prop } from "@typegoose/typegoose";
-import { IsNotEmpty, IsPositive, IsString } from "class-validator";
+import { IsPositive, IsString } from "class-validator";
 
 export class User {
-  @prop({ required: true, index: true })
+  @prop({ required: true, index: true, unique: true })
   @IsPositive()
   id: number;
 
   @IsString()
   firstName: string;
-
-  @IsString()
-  lastName: string;
 
   @IsString()
   username: string;

@@ -4,16 +4,20 @@ import {
   Controller,
   Get,
   HttpCode,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
   Param,
   Post,
 } from "@nestjs/common";
-import { validateSync } from "class-validator";
+import { MongoError } from "mongodb";
 import { UserDto } from "src/dto/user.dto";
 import { UserService } from "./user.service";
 
 @Controller("/user")
 export class UserController {
+  private logger = new Logger(UserController.name);
+
   constructor(private readonly userService: UserService) {}
 
   @Get("/:id")
@@ -27,10 +31,14 @@ export class UserController {
   @HttpCode(201)
   async createUser(@Param("id") id: number, @Body() userDto: UserDto) {
     try {
-      validateSync(userDto);
       await this.userService.create(userDto);
     } catch (e: unknown) {
-      throw new BadRequestException(e, "Unable to create user");
+      if ((e as MongoError)?.code === 11000) {
+        throw new BadRequestException(e, "Unable to create user");
+      }
+
+      this.logger.error("Unexpected error when creating user", e);
+      throw new InternalServerErrorException(e, "Unable to create user");
     }
   }
 }

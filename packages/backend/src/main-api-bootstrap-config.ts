@@ -1,4 +1,8 @@
-import { INestApplication, VersioningType } from "@nestjs/common";
+import {
+  INestApplication,
+  ValidationPipe,
+  VersioningType,
+} from "@nestjs/common";
 import { Application as ExpressApplication } from "express";
 
 export const configureMainApiNestApp = (app: INestApplication) => {
@@ -11,6 +15,8 @@ export const configureMainApiNestApp = (app: INestApplication) => {
     prefix: "v",
     defaultVersion: "1",
   });
+
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   app.enableCors();
 

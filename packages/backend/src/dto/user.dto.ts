@@ -1,28 +1,18 @@
-import { IsPositive, validateSync } from "class-validator";
+import { IsPositive } from "class-validator";
 import { User } from "src/model/user.model";
 
 export class UserDto {
   @IsPositive()
   id: number;
   firstName?: string;
-  lastName?: string;
   username?: string;
   languageCode?: string;
 
-  constructor({
-    id,
-    firstName,
-    lastName,
-    username,
-    languageCode,
-  }: Partial<UserDto>) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.username = username;
-    this.languageCode = languageCode;
-
-    validateSync(this);
+  constructor(dto: Partial<UserDto>) {
+    this.id = dto?.id;
+    this.firstName = dto?.firstName;
+    this.username = dto?.username;
+    this.languageCode = dto?.languageCode;
   }
 
   static fromUser(user: User): UserDto {
@@ -31,7 +21,6 @@ export class UserDto {
     return new UserDto({
       id: user.id,
       firstName: user.firstName,
-      lastName: user.lastName,
       username: user.username,
       languageCode: user.languageCode,
     });
@@ -41,7 +30,6 @@ export class UserDto {
     return {
       id: this.id,
       firstName: this.firstName,
-      lastName: this.lastName,
       username: this.username,
       languageCode: this.languageCode,
     };
