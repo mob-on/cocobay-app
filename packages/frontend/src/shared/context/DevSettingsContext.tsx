@@ -1,6 +1,7 @@
 import SettingOutlined from "@ant-design/icons/SettingOutlined";
 import { createContext, useContext, useState } from "react";
 import DevScreen from "src/pages/devSettings";
+import { Feature } from "../lib/FeatureFlags";
 
 export interface IDevSettingsContext {
   showDevSettings: () => void;
@@ -15,6 +16,7 @@ export const DevSettingsContextProvider: React.FC<{
   children: React.JSX.Element;
 }> = ({ children }) => {
   const [shouldShowDevSettings, setShouldShowDevSettings] = useState(false);
+  const devMode = Feature.DEV_MODE;
   return (
     <DevSettingsContext.Provider
       value={{
@@ -23,21 +25,27 @@ export const DevSettingsContextProvider: React.FC<{
         },
       }}
     >
-      {shouldShowDevSettings && <DevScreen />}
-      {!shouldShowDevSettings && children}
-      {
-        <SettingOutlined
-          width={96}
-          height={96}
-          style={{
-            position: "fixed",
-            right: "var(--padding)",
-            bottom: "var(--padding)",
-            zIndex: 1000,
-          }}
-          onClick={() => setShouldShowDevSettings((value) => !value)}
-        />
-      }
+      {devMode ? (
+        <>
+          {shouldShowDevSettings && <DevScreen />}
+          {!shouldShowDevSettings && children}
+          {
+            <SettingOutlined
+              width={96}
+              height={96}
+              style={{
+                position: "fixed",
+                right: "var(--padding)",
+                bottom: "var(--padding)",
+                zIndex: 1000,
+              }}
+              onClick={() => setShouldShowDevSettings((value) => !value)}
+            />
+          }
+        </>
+      ) : (
+        children
+      )}
     </DevSettingsContext.Provider>
   );
 };
