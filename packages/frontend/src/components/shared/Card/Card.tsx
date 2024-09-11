@@ -1,19 +1,13 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { IBuild } from "../../Build";
-import { IBoost } from "../../Boosts";
-import BuildCard from "./BuildCard";
-import BoostCard from "./BoostCard";
-import styles from "src/styles/components/shared/card/card.module.scss";
-import TimeFormatter from "src/shared/lib/TimeFormatter";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import useSelfCorrectingTimeout from "src/shared/hooks/useSelfCorrectingTimeout";
 import useTelegram from "src/shared/hooks/useTelegram";
+import TimeFormatter from "src/shared/lib/TimeFormatter";
+import styles from "src/styles/components/shared/card/card.module.scss";
+
+import { IBoost } from "../../Boosts";
+import { IBuild } from "../../Build";
+import BoostCard from "./BoostCard";
+import BuildCard from "./BuildCard";
 
 export type ICardType = "build" | "boost" | "custom";
 // variants affect the visual look of the card
@@ -103,7 +97,7 @@ const Card: React.FC<ICardProps> = memo(
         {type === "custom" && children}
         {cooldown > 0 && (
           <div suppressHydrationWarning className={styles.cooldown}>
-            <h2>{TimeFormatter.format(cooldown)}</h2>
+            {/* <h2>{TimeFormatter.format(cooldown)}</h2> */}
           </div>
         )}
       </div>

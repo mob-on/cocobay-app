@@ -1,4 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+
+import { useUserApi } from "../api/useUserApi";
+import useLogger from "../hooks/useLogger";
+import useTelegram from "../hooks/useTelegram";
 import { USER_QUERY_KEY } from "../services/useUserService";
 
 type ILoadingContextResourceStatus = "pending" | "loaded" | "errored";
@@ -28,15 +32,35 @@ interface ResourceToLoad<T> {
 
 const LoadingContext = createContext({} as ILoadingContext);
 
-const getUser = async () => {
-  // mock user data fetching
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return { name: "Coco" };
+const getUser = () => {
+  const [WebApp] = useTelegram();
+  const logger = useLogger("LoadingProvider/getUser");
+  logger.info(1);
+  const userApi = useUserApi();
+  const initDataUnsafe = WebApp?.initDataUnsafe;
+  const initData = WebApp?.initData;
+  const { user, hash } = initDataUnsafe;
+  return new Promise(async (resolve, reject) => {
+    // mock user data fetching
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // const user = JSON.stringify(initDataUnsafe);
+    try {
+      logger.info("Getting user");
+      const appUser = await userApi.get(user.id);
+      resolve(appUser);
+    } catch (err) {
+      logger.error(err);
+      reject(err);
+    }
+  });
 };
 
 export const LoadingProvider = ({ children }) => {
+  console.log(2);
+  return <></>;
   const [isDataRequested, setIsDataRequested] = useState(false);
   const [resources, setResources] = useState<ILoadingContextResources>({}); // { resource1: 'pending', resource2: 'loaded', ... }
+  const logger = useLogger("LoadingProvider");
 
   const updateResourceStatus = (
     resourceName: string,
@@ -70,12 +94,14 @@ export const LoadingProvider = ({ children }) => {
         const data = await resource.fn();
         updateResourceStatus(resource.name, "loaded", data);
       } catch (error) {
+        logger.error(error);
         updateResourceStatus(resource.name, "errored", null);
       }
     });
   };
 
   useEffect(() => {
+    console.log(1);
     const apiToLoad: ResourceToLoad<any>[] = [
       { fn: getUser, name: USER_QUERY_KEY },
     ];

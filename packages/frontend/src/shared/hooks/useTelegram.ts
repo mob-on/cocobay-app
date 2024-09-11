@@ -1,4 +1,4 @@
-import { WebApp, Telegram } from "@twa-dev/types";
+import { Telegram, WebApp } from "@twa-dev/types";
 
 const useTelegram = (): [WebApp, Telegram] => {
   // No telegram web app when doing SSR

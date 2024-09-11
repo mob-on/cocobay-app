@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
+
 import { ITaps } from "../services/useTapsService";
 
 export interface ITapCounterContext {
