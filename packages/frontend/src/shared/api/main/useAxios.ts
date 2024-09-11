@@ -1,7 +1,7 @@
 import { useMainApiConfig } from "./config";
 import { AxiosInstance, AxiosResponse } from "axios";
 
-const TIMEOUT = 5000; // TODO: move it to config
+const TIMEOUT = 30000; // TODO: move it to config
 
 const get = async <T>(
   url: string,

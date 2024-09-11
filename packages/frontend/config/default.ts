@@ -4,7 +4,7 @@ const config = {
   },
   apis: {
     main: {
-      baseUrl: "https://cocoapp-api.twinsoft.es",
+      baseUrl: "https://cocobay-api.ngrok.dev",
     },
   },
 };

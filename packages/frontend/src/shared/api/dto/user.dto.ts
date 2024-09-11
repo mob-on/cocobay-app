@@ -1,7 +1,7 @@
 export class UserDto {
   id: number;
-  firstName?: string;
+  firstName: string;
   lastName?: string;
-  username?: string;
-  languageCode?: string;
+  username: string;
+  languageCode: string;
 }

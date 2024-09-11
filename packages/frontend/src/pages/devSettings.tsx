@@ -5,7 +5,7 @@ import { useMainApi } from "src/shared/api/main/useMainApi";
 import { useStoredApiUrl } from "src/shared/context/LocalStorageContext";
 import styles from "src/styles/pages/devSettings.module.scss";
 
-const DevScreen = () => {
+export const DevScreen = () => {
   const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredApiUrl();
 
   const [mainApiBaseUrlValue, setMainApiBaseUrlValue] = useState("");
