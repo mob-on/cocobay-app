@@ -1,4 +1,5 @@
 import useLogger from "frontend/src/shared/hooks/useLogger";
+
 import { useAxios } from "./useAxios";
 
 export const useMainApi = (baseUrl?: string) => {
