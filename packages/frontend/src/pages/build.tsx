@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import styles from "frontend/src/styles/pages/build.module.scss";
+import styles from "src//styles/pages/build.module.scss";
 
 import { Popup, TabBar, Toast } from "antd-mobile";
-import energy from "frontend/public/media/icons/energy.svg";
-import { IBuild } from "frontend/src/components/Build";
-import BuildPopup from "frontend/src/components/Build/BuildPopup";
-import DailyCombo from "frontend/src/components/Build/DailyCombo";
-import TapCounter from "frontend/src/components/TapCounter";
-import Button from "frontend/src/components/shared/Button";
-import usePopup from "frontend/src/shared/hooks/usePopup";
-import Card from "frontend/src/components/shared/Card";
-import useTapsService from "frontend/src/shared/services/useTapsService";
+import energy from "/public/media/icons/energy.svg";
+import { IBuild } from "src//components/Build";
+import BuildPopup from "src//components/Build/BuildPopup";
+import DailyCombo from "src//components/Build/DailyCombo";
+import TapCounter from "src//components/TapCounter";
+import Button from "src//components/shared/Button";
+import usePopup from "src//shared/hooks/usePopup";
+import Card from "src//components/shared/Card";
+import useTapsService from "src//shared/services/useTapsService";
 
 const defaultBuilds: IBuild[] = [
   {

@@ -1,5 +1,5 @@
-import styles from "frontend/src/styles/components/build/dailyCombo.module.scss";
-import hero from "frontend/public/media/coco/coco-pink-swag.svg";
+import styles from "src//styles/components/build/dailyCombo.module.scss";
+import hero from "/public/media/coco/coco-pink-swag.svg";
 import Image from "next/image";
 
 const SingleCombo: React.FC<{ src: string }> = ({ src }) => {

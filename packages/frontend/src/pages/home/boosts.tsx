@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import styles from "frontend/src/styles/pages/home/boosts.module.scss";
+import styles from "src//styles/pages/home/boosts.module.scss";
 
 import { Popup, Toast } from "antd-mobile";
-import energy from "frontend/public/media/icons/energy.svg";
-import { IBoost } from "frontend/src/components/Boosts";
-import BoostPopup from "frontend/src/components/Boosts/BoostPopup";
-import usePopup from "frontend/src/shared/hooks/usePopup";
-import Card from "frontend/src/components/shared/Card";
+import energy from "/public/media/icons/energy.svg";
+import { IBoost } from "src//components/Boosts";
+import BoostPopup from "src//components/Boosts/BoostPopup";
+import usePopup from "src//shared/hooks/usePopup";
+import Card from "src//components/shared/Card";
 
 const defaultBoosts: IBoost[] = [
   {

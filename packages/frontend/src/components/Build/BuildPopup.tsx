@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import styles from "frontend/src/styles/components/build/buildPopup.module.scss";
+import styles from "src//styles/components/build/buildPopup.module.scss";
 import Image from "next/image";
 import { IBuild } from "./Build";
 import Cost from "../shared/Cost";

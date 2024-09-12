@@ -1,7 +1,7 @@
 import { Avatar } from "antd-mobile";
-import Hero from "frontend/public/media/coco/coco-pink-swag.svg";
+import Hero from "/public/media/coco/coco-pink-swag.svg";
 import React, { useState } from "react";
-import styles from "frontend/src/styles/components/main/homeAvatar.module.scss";
+import styles from "src//styles/components/main/homeAvatar.module.scss";
 
 export interface IHomeAvatarData {
   src: string;

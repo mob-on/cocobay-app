@@ -1,5 +1,5 @@
 import { Button } from "antd-mobile";
-import styles from "frontend/src/styles/components/shared/button.module.scss";
+import styles from "src//styles/components/shared/button.module.scss";
 
 export type IButtonColors = "gradient" | "primary" | "secondary";
 

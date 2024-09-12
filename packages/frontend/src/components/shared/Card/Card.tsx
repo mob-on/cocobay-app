@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import useSelfCorrectingTimeout from "frontend/src/shared/hooks/useSelfCorrectingTimeout";
-import useTelegram from "frontend/src/shared/hooks/useTelegram";
-import TimeFormatter from "frontend/src/shared/lib/TimeFormatter";
-import styles from "frontend/src/styles/components/shared/card/card.module.scss";
+import useSelfCorrectingTimeout from "src//shared/hooks/useSelfCorrectingTimeout";
+import useTelegram from "src//shared/hooks/useTelegram";
+import TimeFormatter from "src//shared/lib/TimeFormatter";
+import styles from "src//styles/components/shared/card/card.module.scss";
 
 import { IBoost } from "../../Boosts";
 import { IBuild } from "../../Build";

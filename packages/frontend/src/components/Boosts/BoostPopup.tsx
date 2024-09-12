@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import styles from "frontend/src/styles/components/boosts/boostPopup.module.scss";
+import styles from "src//styles/components/boosts/boostPopup.module.scss";
 import Image from "next/image";
 import { IBoost } from "./Boosts";
 import Cost from "../shared/Cost";

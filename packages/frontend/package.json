@@ -10,7 +10,7 @@
     "build": "yarn prebuild && next build",
     "start": "next start",
     "lint": "lint-staged",
-    "lint:check": "eslint"
+    "lint:check": "eslint \"{src,apps,libs,test}/**/*.{js,ts,md}\""
   },
   "lint-staged": {
     "*.{js,ts,md}": [

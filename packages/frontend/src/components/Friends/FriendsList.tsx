@@ -1,9 +1,9 @@
 import { Avatar } from "antd-mobile";
 import Card from "../shared/Card";
 import { IFriend } from "./Friends";
-import styles from "frontend/src/styles/components/friends/friendsList.module.scss";
+import styles from "src//styles/components/friends/friendsList.module.scss";
 import Cost from "../shared/Cost";
-import NumberFormatter from "frontend/src/shared/lib/NumberFormatter";
+import NumberFormatter from "src//shared/lib/NumberFormatter";
 
 const FriendsList: React.FC<{ friends: IFriend[]; className?: string }> = ({
   friends,

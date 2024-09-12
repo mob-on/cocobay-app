@@ -1,12 +1,12 @@
 import { NextComponentType, NextPageContext } from "next";
-import { useLoading } from "frontend/src/shared/context/LoadingContext";
+import { useLoading } from "src//shared/context/LoadingContext";
 import LoadingScreen from "./LoadingScreen";
 import dynamic from "next/dynamic";
 
-const BuildPage = dynamic(() => import("frontend/src/pages/build"));
-const BoostsPage = dynamic(() => import("frontend/src/pages/home/boosts"));
-const EarnPage = dynamic(() => import("frontend/src/pages/earn"));
-const FriendsPage = dynamic(() => import("frontend/src/pages/friends"));
+const BuildPage = dynamic(() => import("src//pages/build"));
+const BoostsPage = dynamic(() => import("src//pages/home/boosts"));
+const EarnPage = dynamic(() => import("src//pages/earn"));
+const FriendsPage = dynamic(() => import("src//pages/friends"));
 
 interface ILoadingScreenWrapperProps {
   Component: NextComponentType<NextPageContext, any, any>;

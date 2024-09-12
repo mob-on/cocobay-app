@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "frontend/src/styles/components/shared/card/boostCard.module.scss";
+import styles from "src//styles/components/shared/card/boostCard.module.scss";
 import Image from "next/image";
 import Cost from "../Cost";
-import { IBoost } from "frontend/src/components/Boosts";
+import { IBoost } from "src//components/Boosts";
 
 const BoostCard: React.FC<{
   boost: IBoost;

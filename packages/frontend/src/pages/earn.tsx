@@ -1,17 +1,17 @@
 import React, { useCallback, useMemo, useState } from "react";
-import Card from "frontend/src/components/shared/Card";
-import styles from "frontend/src/styles/pages/earn.module.scss";
+import Card from "src//components/shared/Card";
+import styles from "src//styles/pages/earn.module.scss";
 import Image from "next/image";
-import gift from "frontend/public/media/gift.svg";
+import gift from "/public/media/gift.svg";
 import { CheckCircleFill, RightOutline } from "antd-mobile-icons";
 import Link from "next/link";
-import coin from "frontend/public/media/coco-coin.svg";
+import coin from "/public/media/coco-coin.svg";
 import { Popup } from "antd-mobile";
-import usePopup from "frontend/src/shared/hooks/usePopup";
-import PopupContents from "frontend/src/components/PopupContents";
-import ButtonComponent from "frontend/src/components/shared/Button";
-import Cost from "frontend/src/components/shared/Cost";
-import NumberFormatter from "frontend/src/shared/lib/NumberFormatter";
+import usePopup from "src//shared/hooks/usePopup";
+import PopupContents from "src//components/PopupContents";
+import ButtonComponent from "src//components/shared/Button";
+import Cost from "src//components/shared/Cost";
+import NumberFormatter from "src//shared/lib/NumberFormatter";
 
 interface IEarnTask {
   id: number;

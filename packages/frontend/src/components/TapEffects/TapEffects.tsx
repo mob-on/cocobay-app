@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "frontend/src/styles/components/tapEffects/tapEffects.module.scss";
+import styles from "src//styles/components/tapEffects/tapEffects.module.scss";
 import { ITapEvent } from "../TapArea";
-import { useTaps } from "frontend/src/shared/context/TapEffectsContext";
+import { useTaps } from "src//shared/context/TapEffectsContext";
 import Image from "next/image";
 
-import CocoCoin from "frontend/public/media/coco-coin.svg";
+import CocoCoin from "/public/media/coco-coin.svg";
 
 interface ITapEffectProps {
   tap: ITapEvent;

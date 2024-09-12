@@ -1,4 +1,4 @@
-import useLogger from "frontend/src/shared/hooks/useLogger";
+import useLogger from "src//shared/hooks/useLogger";
 import { useMainApiConfig } from "./config";
 
 export const useMainApi = (baseUrl?: string) => {
