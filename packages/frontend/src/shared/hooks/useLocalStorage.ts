@@ -36,8 +36,6 @@ export function useLocalStorage<T>(
 
   const [storageLoaded, setStorageLoaded] = useState(false);
   const [storedValue, setStoredValue] = useState(initialValue);
-  useEffect(() => {
-  }, [storedValue]);
 
   const setValue: Dispatch<SetStateAction<T>> = (value) => {
     try {
