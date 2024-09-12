@@ -31,8 +31,5 @@
     "node": ">=22",
     "npm": ">=10"
   },
-  "packageManager": "yarn@3.4.1",
-  "dependencies": {
-    "@tanstack/react-query": "^5.55.4"
-  }
+  "packageManager": "yarn@3.4.1"
 }
