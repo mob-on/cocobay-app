@@ -6239,7 +6239,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "cocobay-app@workspace:."
   dependencies:
-    "@tanstack/react-query": ^5.55.4
     "@types/node": ^22.5.0
     husky: ^8.0.0
     husky-init: ^8.0.0
