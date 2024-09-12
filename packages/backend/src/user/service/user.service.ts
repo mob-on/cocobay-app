@@ -2,9 +2,11 @@ import { InjectModel } from "@m8a/nestjs-typegoose";
 import { Injectable } from "@nestjs/common";
 import { ReturnModelType } from "@typegoose/typegoose";
 import { MongoError } from "mongodb";
-import { EntityAlreadyExists } from "../common/exception/db/EntityAlreadyExists.exception";
-import { UserDto } from "./user.dto";
-import { User } from "./user.model";
+
+import { EntityAlreadyExists } from "src/common/exception/db/EntityAlreadyExists.exception";
+
+import { UserDto } from "../dto/user.dto";
+import { User } from "../model/user.model";
 
 @Injectable()
 export class UserService {

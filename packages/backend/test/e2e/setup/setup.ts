@@ -1,25 +1,28 @@
 import { faker } from "@faker-js/faker";
-import {
-  INestApplication,
-  Injectable,
-  Module,
-  ModuleMetadata,
-} from "@nestjs/common";
-import { Test } from "@nestjs/testing";
-import { ReturnModelType } from "@typegoose/typegoose";
 import { InjectModel, TypegooseModule } from "@m8a/nestjs-typegoose";
 import {
   TypegooseClass,
   TypegooseClassWithOptions,
 } from "@m8a/nestjs-typegoose/dist/typegoose-class.interface";
+import {
+  INestApplication,
+  Injectable,
+  Logger,
+  Module,
+  ModuleMetadata,
+} from "@nestjs/common";
+import { Test } from "@nestjs/testing";
+import { ReturnModelType } from "@typegoose/typegoose";
 import * as request from "supertest";
 import TestAgent from "supertest/lib/agent";
-import { setupMockDatabase } from "../fixtures/mongodb";
-import { User } from "backend/src/user/user.model";
+
 import { configureMainApiNestApp } from "backend/src/main-api-bootstrap-config";
+import { User } from "backend/src/user/model/user.model";
+
+import { setupMockDatabase } from "../fixtures/mongodb";
 
 export interface TestControl {
-  app: INestApplication<any>;
+  app: INestApplication<unknown>;
   mockDb: { stop: (models: MockModels) => Promise<void> };
   stop: () => Promise<void>;
 }
@@ -54,6 +57,8 @@ const getUniqueModel = <T extends TypegooseClass>(
     },
   };
 };
+
+const log = new Logger("E2ETestSetup");
 
 export const setupEndToEnd = async (
   metadata?: ModuleMetadata,
@@ -94,7 +99,7 @@ export const setupEndToEnd = async (
       userModel: models.userModel,
     };
   } catch (e: unknown) {
-    console.error(
+    log.error(
       "Unable to start e2e environment in preparation for integration tests, check error details:",
       e,
     );

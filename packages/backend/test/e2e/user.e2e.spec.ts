@@ -1,9 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
-import { UserDto } from "../../src/user/user.dto";
-import { User } from "../../src/user/user.model";
+
+import { UserDto } from "../../src/user/dto/user.dto";
+import { User } from "../../src/user/model/user.model";
 import { UserModule } from "../../src/user/user.module";
+
 import { setupEndToEnd, TestControl } from "./setup/setup";
 
 describe("UserController", () => {

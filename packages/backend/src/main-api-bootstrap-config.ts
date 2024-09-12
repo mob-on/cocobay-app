@@ -6,7 +6,7 @@ import {
 import { Application as ExpressApplication } from "express";
 
 export const configureMainApiNestApp = (app: INestApplication) => {
-  const expressApp = app.getHttpAdapter() as any as ExpressApplication;
+  const expressApp = app.getHttpAdapter() as unknown as ExpressApplication;
 
   expressApp.disable("x-powered-by");
 

@@ -8,7 +8,7 @@
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "lint": "lint-staged",
-    "lint:check": "eslint \"{src,apps,libs,test}/**/*.{js,ts}\"",
+    "lint:check": "eslint .",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "yarn test --coverage",

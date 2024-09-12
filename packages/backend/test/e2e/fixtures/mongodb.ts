@@ -1,5 +1,6 @@
 import { MongoMemoryReplSet } from "mongodb-memory-server";
 import mongoose from "mongoose";
+
 import { MockModels } from "../setup/setup";
 
 export const setupMockDatabase = async (globalInit?: boolean) => {
@@ -15,7 +16,7 @@ export const setupMockDatabase = async (globalInit?: boolean) => {
   return {
     uri: process.env.MONGODB_TEST_URI,
     stop: async (models: MockModels) => {
-      const dbDropCollections: Promise<any>[] = [];
+      const dbDropCollections: Promise<unknown>[] = [];
       for (const key of Object.keys(models)) {
         dbDropCollections.push(
           mongoose.connection.dropCollection(models[key].collection.name),

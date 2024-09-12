@@ -8,9 +8,10 @@ import {
   Param,
   Post,
 } from "@nestjs/common";
-import { UserDto } from "./user.dto";
-import { UserService } from "./user.service";
-import { EntityAlreadyExists } from "../common/exception/db/EntityAlreadyExists.exception";
+
+import { EntityAlreadyExists } from "../../common/exception/db/EntityAlreadyExists.exception";
+import { UserDto } from "../dto/user.dto";
+import { UserService } from "../service/user.service";
 
 @Controller("/user")
 export class UserController {

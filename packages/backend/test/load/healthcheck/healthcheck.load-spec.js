@@ -1,5 +1,6 @@
 import { group } from "k6";
 import http from "k6/http";
+
 import { loadConfig } from "../config.js";
 
 export const options = {

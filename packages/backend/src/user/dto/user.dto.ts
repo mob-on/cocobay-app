@@ -1,5 +1,6 @@
 import { IsPositive } from "class-validator";
-import { User } from "./user.model";
+
+import { User } from "../model/user.model";
 
 export class UserDto {
   @IsPositive()
