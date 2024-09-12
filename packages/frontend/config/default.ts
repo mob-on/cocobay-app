@@ -1,10 +1,10 @@
 const config = {
   features: {
-    devMode: true,
+    devMode: false,
   },
   apis: {
     main: {
-      baseUrl: "https://cocobay-api.ngrok.dev",
+      baseUrl: "https://cocoapp-api.twinsoft.es",
     },
   },
 };
