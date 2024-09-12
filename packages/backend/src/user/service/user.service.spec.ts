@@ -2,27 +2,14 @@ import { faker } from "@faker-js/faker";
 import { getModelToken } from "@m8a/nestjs-typegoose";
 import { Test, TestingModule } from "@nestjs/testing";
 
+import { createValidUser } from "test/fixtures/model/user.data";
+
 import { UserDto } from "../dto/user.dto";
 import { User } from "../model/user.model";
 
 import { UserService } from "./user.service";
 
-const mockUser = {
-  _id: faker.database.mongodbObjectId(),
-  id: faker.number.int(),
-  firstName: faker.datatype.boolean({ probability: 0.5 })
-    ? faker.string.alphanumeric(16)
-    : undefined,
-  lastName: faker.datatype.boolean({ probability: 0.5 })
-    ? faker.string.alphanumeric(16)
-    : undefined,
-  languageCode: faker.datatype.boolean({ probability: 0.5 })
-    ? `${faker.string.alpha(2)}-${faker.string.alpha(2)}`
-    : undefined,
-  username: faker.datatype.boolean({ probability: 0.5 })
-    ? faker.string.alphanumeric(16)
-    : undefined,
-} as User;
+const mockUser = createValidUser();
 const mockIdError = -1;
 
 class MockedUserModel {

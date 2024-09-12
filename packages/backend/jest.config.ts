@@ -17,7 +17,7 @@ export default {
     "!src/**/*.spec.(t|j)s",
   ],
   moduleNameMapper: {
-    "^(.*/?)src/(.*)$": "<rootDir>/$1/src/$2",
+    "^(.*/?)(src|test)/(.*)$": "<rootDir>/$1/$2/$3",
   },
   coverageThreshold: {
     global: {

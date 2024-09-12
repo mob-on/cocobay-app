@@ -16,8 +16,8 @@ import { ReturnModelType } from "@typegoose/typegoose";
 import * as request from "supertest";
 import TestAgent from "supertest/lib/agent";
 
-import { configureMainApiNestApp } from "backend/src/main-api-bootstrap-config";
-import { User } from "backend/src/user/model/user.model";
+import { configureMainApiNestApp } from "src/main-api-bootstrap-config";
+import { User } from "src/user/model/user.model";
 
 import { setupMockDatabase } from "../fixtures/mongodb";
 
