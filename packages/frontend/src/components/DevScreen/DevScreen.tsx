@@ -3,7 +3,7 @@ import { CheckCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
 import { useCallback, useEffect, useState } from "react";
 import { useMainApi } from "frontend/src/shared/api/main/useMainApi";
 import { useStoredApiUrl } from "frontend/src/shared/context/LocalStorageContext";
-import styles from "frontend/src/styles/pages/devSettings.module.scss";
+import styles from "frontend/src/styles/components/devSettings/devSettings.module.scss";
 
 export const DevScreen = () => {
   const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredApiUrl();
