@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
+import useLogger from "./useLogger";
+
 type LocalStorageType<T> = [
   value: T,
   setValue: Dispatch<SetStateAction<T>>,
@@ -20,6 +22,7 @@ export function useLocalStorage<T>(
   key: string,
   initialValue?: T,
 ): LocalStorageType<T> {
+  const logger = useLogger("useLocalStorage");
   const getLocalStorageValue = (): T => {
     if (typeof window === "undefined") {
       return initialValue;
@@ -29,7 +32,7 @@ export function useLocalStorage<T>(
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (error: unknown) {
-      console.error("Unable to retrieve value from local storage", error);
+      logger.error("Unable to retrieve value from local storage", error);
       return initialValue;
     }
   };

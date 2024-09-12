@@ -1,10 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { TUseService } from "./types";
-import { useTapApi } from "../api/useTapApi";
 import { useCallback } from "react";
+
+import { useTapApi } from "../api/useTapApi";
 import { useTapCounter } from "../context/TapCounterContext";
-import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
 import useLogger from "../hooks/useLogger";
+import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
+import { TUseService } from "./types";
 
 export interface ITaps {
   tapCount: number;

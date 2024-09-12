@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { TUseService } from "./types";
 
 export interface IUser {

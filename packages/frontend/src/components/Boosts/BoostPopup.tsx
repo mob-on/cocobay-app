@@ -1,9 +1,10 @@
+import Image from "next/image";
 import React, { memo } from "react";
 import styles from "src//styles/components/boosts/boostPopup.module.scss";
-import Image from "next/image";
-import { IBoost } from "./Boosts";
-import Cost from "../shared/Cost";
+
 import Button from "../shared/Button";
+import Cost from "../shared/Cost";
+import { IBoost } from "./Boosts";
 
 const BoostPopup: React.FC<{ boost: IBoost; onAction: (id: number) => void }> =
   memo(({ boost, onAction }) => {
