@@ -1,4 +1,4 @@
-import { useTapCounter } from "../context/TapCounterContext";
+import { useGameState } from "../context/GameStateContext";
 import useLogger from "../hooks/useLogger";
 import { ITaps } from "../services/useTapsService";
 import { useMainApiConfig } from "./main/config";
@@ -26,7 +26,7 @@ const getTaps = (): Promise<ITaps> => {
 
 const syncTaps = (): Promise<boolean> => {
   const [axios] = useMainApiConfig();
-  const { data: taps, setTapData } = useTapCounter();
+  const { taps, dispatchGameState } = useGameState();
   const timestamp = new Date();
   const logger = useLogger("syncTaps");
 
@@ -40,13 +40,10 @@ const syncTaps = (): Promise<boolean> => {
           const serverData: ITaps | undefined = response?.data;
           if (serverData) {
             const { passiveIncome } = serverData;
-            setTapData(
-              (current: ITaps) =>
-                ({
-                  ...current,
-                  passiveIncome: passiveIncome,
-                }) as ITaps,
-            );
+            dispatchGameState({
+              type: "TAPS_SET_PASSIVE_INCOME",
+              payload: passiveIncome,
+            });
           }
           return resolve(true);
         } catch (error) {

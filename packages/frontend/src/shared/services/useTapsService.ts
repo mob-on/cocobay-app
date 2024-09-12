@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useTapApi } from "../api/useTapApi";
-import { useTapCounter } from "../context/TapCounterContext";
+import { useGameState } from "../context/GameStateContext";
 import useLogger from "../hooks/useLogger";
 import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
 import { TUseService } from "./types";
@@ -23,15 +23,12 @@ interface IMethods {
 const useTapsService: TUseService<ITaps, IMethods> = () => {
   const logger = useLogger("useTapsService");
   const queryClient = useQueryClient();
-  const { data, setTapData } = useTapCounter();
-  const { passiveIncome } = data;
+  const { dispatchGameState, taps, stamina } = useGameState();
   const { getTaps: apiGetTaps } = useTapApi();
   const timeoutCallback = useCallback(() => {
-    setTapData((prevData) => ({
-      ...prevData,
-      tapCount: prevData.tapCount + passiveIncome,
-    }));
-  }, [passiveIncome]);
+    dispatchGameState({ type: "TAPS_APPLY_PASSIVE_INCOME" });
+    dispatchGameState({ type: "STAMINA_REGEN" });
+  }, [taps.passiveIncome]);
   const timeout = useSelfCorrectingTimeout(timeoutCallback, UPDATE_INTERVAL);
 
   // load taps initally.
@@ -41,13 +38,13 @@ const useTapsService: TUseService<ITaps, IMethods> = () => {
         queryKey: [QUERY_KEY],
         queryFn: apiGetTaps,
       });
-      setTapData(tapData);
+      dispatchGameState({ type: "TAPS_UPDATE", payload: tapData });
     } catch (error) {
       logger.error("Error syncing taps:", error);
     }
-  }, [apiGetTaps, setTapData, queryClient]);
+  }, [apiGetTaps, dispatchGameState, queryClient]);
 
-  return [data, { startTimeout: timeout.start, getTaps }];
+  return [taps, { startTimeout: timeout.start, getTaps }];
 };
 
 export default useTapsService;
