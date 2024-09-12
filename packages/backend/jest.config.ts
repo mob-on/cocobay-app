@@ -12,11 +12,12 @@ export default {
     "!src/main-api-bootstrap-config.ts",
     "!src/**/*.model.(t|j)s",
     "!src/**/*.dto.(t|j)s",
+    "!src/**/*.exception.(t|j)s",
     "!src/**/*.controller.(t|j)s",
     "!src/**/*.spec.(t|j)s",
   ],
   moduleNameMapper: {
-    "^src/(.*)$": "<rootDir>/src/$1",
+    "^(.*/?)src/(.*)$": "<rootDir>/$1/src/$2",
   },
   coverageThreshold: {
     global: {

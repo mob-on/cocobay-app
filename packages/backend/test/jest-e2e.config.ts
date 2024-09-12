@@ -7,8 +7,7 @@ export default {
     globalSetup: "./test/e2e/setup/global-start.ts",
     globalTeardown: "./test/e2e/setup/global-teardown.ts",
     moduleNameMapper: {
-      "^src/(.*)$": "<rootDir>/src/$1",
-      "^test/(.*)$": "<rootDir>/test/$1",
+      "^(.*/?)(src|test)/(.*)$": "<rootDir>/../$1$2/$3",
     },
     collectCoverageFrom: [
       ...defaultJestConfig.default.collectCoverageFrom,

@@ -15,10 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": [
-    "frontend/next-env.d.ts",
-    "**/*.ts",
-    "**/frontend/next.config.mjsonfig.mjs"
-  ],
+  "include": ["**/*.ts"],
   "exclude": ["node_modules"]
 }

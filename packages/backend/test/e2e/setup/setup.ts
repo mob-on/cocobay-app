@@ -12,11 +12,11 @@ import {
   TypegooseClass,
   TypegooseClassWithOptions,
 } from "@m8a/nestjs-typegoose/dist/typegoose-class.interface";
-import { configureMainApiNestApp } from "src/main-api-bootstrap-config";
-import { User } from "src/model/user.model";
 import * as request from "supertest";
 import TestAgent from "supertest/lib/agent";
 import { setupMockDatabase } from "../fixtures/mongodb";
+import { User } from "backend/src/user/user.model";
+import { configureMainApiNestApp } from "backend/src/main-api-bootstrap-config";
 
 export interface TestControl {
   app: INestApplication<any>;

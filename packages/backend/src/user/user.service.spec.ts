@@ -1,8 +1,9 @@
 import { faker } from "@faker-js/faker";
 import { getModelToken } from "@m8a/nestjs-typegoose";
 import { Test, TestingModule } from "@nestjs/testing";
-import { UserDto } from "src/dto/user.dto";
-import { User } from "src/model/user.model";
+
+import { UserDto } from "./user.dto";
+import { User } from "./user.model";
 import { UserService } from "./user.service";
 
 const mockUser = {

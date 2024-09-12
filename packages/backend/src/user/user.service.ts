@@ -1,9 +1,10 @@
 import { InjectModel } from "@m8a/nestjs-typegoose";
 import { Injectable } from "@nestjs/common";
 import { ReturnModelType } from "@typegoose/typegoose";
-import { UserDto } from "src/dto/user.dto";
-
-import { User } from "src/model/user.model";
+import { MongoError } from "mongodb";
+import { EntityAlreadyExists } from "../common/exception/db/EntityAlreadyExists.exception";
+import { UserDto } from "./user.dto";
+import { User } from "./user.model";
 
 @Injectable()
 export class UserService {
@@ -23,6 +24,14 @@ export class UserService {
   }
 
   async create(userDto: UserDto): Promise<void> {
-    await this.userModel.create(userDto.toUser());
+    try {
+      await this.userModel.create(userDto.toUser());
+    } catch (e: unknown) {
+      if ((e as MongoError)?.code == 11000) {
+        throw new EntityAlreadyExists();
+      }
+
+      throw e;
+    }
   }
 }
