@@ -11,7 +11,6 @@ import TapCounterTimer from "src/components/util/TapCounterTimer";
 import { DevSettingsContextProvider } from "src/shared/context/DevSettingsContext";
 import { ErrorContextProvider } from "src/shared/context/ErrorContext";
 import { LocalStorageContextProvider } from "src/shared/context/LocalStorageContext";
-import { TapCounterProvider } from "src/shared/context/TapCounterContext";
 import { UserContextProvider } from "src/shared/context/UserContext";
 import useTelegram from "src/shared/hooks/useTelegram";
 
@@ -19,6 +18,7 @@ import grid from "/public/media/grid.svg";
 
 import LoadingScreenWrapper from "../components/LoadingScreen/LoadingScreenWrapper";
 import Layout from "../layouts/Layout";
+import { GameStateContextProvider } from "../shared/context/GameStateContext";
 import { LoadingProvider } from "../shared/context/LoadingContext";
 
 declare global {
@@ -55,7 +55,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <ErrorContextProvider>
               <QueryClientProvider client={queryClient}>
                 <LoadingProvider>
-                  <TapCounterProvider>
+                  <GameStateContextProvider>
                     <Layout>
                       <Head>
                         <title>Cocobay</title>
@@ -114,7 +114,7 @@ export default function App({ Component, pageProps }: AppProps) {
                         />
                       </UserContextProvider>
                     </Layout>
-                  </TapCounterProvider>
+                  </GameStateContextProvider>
                 </LoadingProvider>
               </QueryClientProvider>
             </ErrorContextProvider>

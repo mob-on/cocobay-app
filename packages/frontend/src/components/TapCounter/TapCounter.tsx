@@ -1,20 +1,20 @@
 import React, { useMemo } from "react";
-import { useTapCounter } from "src/shared/context/TapCounterContext";
+import { useGameState } from "src/shared/context/GameStateContext";
 import NumberFormatter from "src/shared/lib/NumberFormatter";
 import styles from "src/styles/components/tapCounter/tapCounter.module.scss";
 
 import Cost from "../shared/Cost";
 
 const TapCounter: React.FC = () => {
-  const { data } = useTapCounter();
+  const { taps } = useGameState();
   const numberFormatter = new Intl.NumberFormat("en-US");
   const formattedTapCount = useMemo(
-    () => numberFormatter.format(data.tapCount),
-    [data.tapCount],
+    () => numberFormatter.format(taps.tapCount),
+    [taps.tapCount],
   );
   const formattedPassiveIncome = useMemo(
-    () => NumberFormatter.format(data.passiveIncome * 3600),
-    [data.passiveIncome],
+    () => NumberFormatter.format(taps.passiveIncome * 3600),
+    [taps.passiveIncome],
   );
   return (
     <div className={styles.tapCounter}>
