@@ -6,6 +6,7 @@ import useTelegram from "../hooks/useTelegram";
 import { USER_QUERY_KEY } from "../services/useUserService";
 import { UserDto } from "../api/dto/user.dto";
 import { useStoredApiUrl } from "./LocalStorageContext";
+import { useErrorContext } from "./ErrorContext";
 
 const MAX_TRIES = 3;
 
@@ -37,6 +38,7 @@ interface ResourceToLoad<T> {
 const LoadingContext = createContext({} as ILoadingContext);
 
 export const LoadingProvider = ({ children }) => {
+  const errorContext = useErrorContext();
   const [mainApiBaseUrl] = useStoredApiUrl();
   const [isDataRequested, setIsDataRequested] = useState(false);
   const [resources, setResources] = useState<ILoadingContextResources>({}); // { resource1: 'pending', resource2: 'loaded', ... }
@@ -46,6 +48,9 @@ export const LoadingProvider = ({ children }) => {
 
   const login = async (tries = 1) => {
     if (tries > MAX_TRIES) {
+      errorContext.showErrorScreen({
+        message: "Wasn't able to log in/register",
+      });
       throw new Error("Too many tries");
     }
     logger.info("Trying to log in", tries);

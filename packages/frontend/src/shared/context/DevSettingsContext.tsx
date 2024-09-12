@@ -35,9 +35,9 @@ export const DevSettingsContextProvider: React.FC<{
               height={96}
               style={{
                 position: "fixed",
+                top: "var(--padding)",
                 right: "var(--padding)",
-                bottom: "var(--padding)",
-                zIndex: 1000,
+                zIndex: 10000,
               }}
               onClick={() => setShouldShowDevSettings((value) => !value)}
             />

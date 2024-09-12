@@ -71,6 +71,18 @@ body,
   filter: invert(1) brightness(0.6);
 }
 
+.__error-popup {
+  padding: var(--padding-inner);
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--padding-inner);
+  box-sizing: border-box;
+  z-index: 100;
+}
+
 body {
   background-color: $body-bg;
   color: $color-white;
