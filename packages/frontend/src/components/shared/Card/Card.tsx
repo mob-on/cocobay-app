@@ -97,7 +97,7 @@ const Card: React.FC<ICardProps> = memo(
         {type === "custom" && children}
         {cooldown > 0 && (
           <div suppressHydrationWarning className={styles.cooldown}>
-            {/* <h2>{TimeFormatter.format(cooldown)}</h2> */}
+            <h2>{TimeFormatter.format(cooldown)}</h2>
           </div>
         )}
       </div>
