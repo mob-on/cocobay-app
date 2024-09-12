@@ -1,20 +1,20 @@
 import Image from "next/image";
 import Hero from "public/media/coco/coco-pink-swag.svg";
 import React, { useEffect, useRef, useState } from "react";
-import { useTapCounter } from "src/shared/context/TapCounterContext";
+import { useTapCounter } from "frontend/src/shared/context/TapCounterContext";
 import {
   TAP_EFFECTS_THROTTLE,
   TAP_EFFECTS_TIMEOUT,
   useTaps,
-} from "src/shared/context/TapEffectsContext";
-import styles from "src/styles/components/tapArea/tapArea.module.scss";
+} from "frontend/src/shared/context/TapEffectsContext";
+import styles from "frontend/src/styles/components/tapArea/tapArea.module.scss";
 import { v4 as uuidv4 } from "uuid";
 import Rings from "./Rings";
 
 import cloud1 from "public/media/cloud1.svg";
 import cloud2 from "public/media/cloud2.svg";
 import moon from "public/media/moon.svg";
-import useTelegram from "src/shared/hooks/useTelegram";
+import useTelegram from "frontend/src/shared/hooks/useTelegram";
 
 export interface ITapEvent {
   id: string;

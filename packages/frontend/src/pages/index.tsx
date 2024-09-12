@@ -1,14 +1,14 @@
 import React from "react";
-import HomeAvatar from "src/components/HomeAvatar";
-import Leveling from "src/components/Leveling";
-import Stamina from "src/components/Stamina";
-import TapArea from "src/components/TapArea";
-import TapCounter from "src/components/TapCounter";
-import TapEffects from "src/components/TapEffects";
-import { LevelingContextProvider } from "src/shared/context/LevelingContext";
-import { TapsEffectsContextProvider } from "src/shared/context/TapEffectsContext";
-import useTelegram from "src/shared/hooks/useTelegram";
-import styles from "src/styles/pages/index.module.scss";
+import HomeAvatar from "frontend/src/components/HomeAvatar";
+import Leveling from "frontend/src/components/Leveling";
+import Stamina from "frontend/src/components/Stamina";
+import TapArea from "frontend/src/components/TapArea";
+import TapCounter from "frontend/src/components/TapCounter";
+import TapEffects from "frontend/src/components/TapEffects";
+import { LevelingContextProvider } from "frontend/src/shared/context/LevelingContext";
+import { TapsEffectsContextProvider } from "frontend/src/shared/context/TapEffectsContext";
+import useTelegram from "frontend/src/shared/hooks/useTelegram";
+import styles from "frontend/src/styles/pages/index.module.scss";
 
 export default function Home() {
   return (

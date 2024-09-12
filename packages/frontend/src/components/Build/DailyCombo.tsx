@@ -1,4 +1,4 @@
-import styles from "src/styles/components/build/dailyCombo.module.scss";
+import styles from "frontend/src/styles/components/build/dailyCombo.module.scss";
 import hero from "public/media/coco/coco-pink-swag.svg";
 import Image from "next/image";
 

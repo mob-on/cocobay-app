@@ -8,17 +8,17 @@ import Image from "next/image";
 import Script from "next/script";
 import grid from "public/media/grid.svg";
 import { useEffect, useState } from "react";
-import TapCounterTimer from "src/components/util/TapCounterTimer";
-import { LocalStorageContextProvider } from "src/shared/context/LocalStorageContext";
-import { TapCounterProvider } from "src/shared/context/TapCounterContext";
-import { UserContextProvider } from "src/shared/context/UserContext";
-import useTelegram from "src/shared/hooks/useTelegram";
+import TapCounterTimer from "frontend/src/components/util/TapCounterTimer";
+import { LocalStorageContextProvider } from "frontend/src/shared/context/LocalStorageContext";
+import { TapCounterProvider } from "frontend/src/shared/context/TapCounterContext";
+import { UserContextProvider } from "frontend/src/shared/context/UserContext";
+import useTelegram from "frontend/src/shared/hooks/useTelegram";
 
 import LoadingScreenWrapper from "../components/LoadingScreen/LoadingScreenWrapper";
 import Layout from "../layouts/Layout";
 import { LoadingProvider } from "../shared/context/LoadingContext";
-import { DevSettingsContextProvider } from "src/shared/context/DevSettingsContext";
-import { ErrorContextProvider } from "src/shared/context/ErrorContext";
+import { DevSettingsContextProvider } from "frontend/src/shared/context/DevSettingsContext";
+import { ErrorContextProvider } from "frontend/src/shared/context/ErrorContext";
 
 declare global {
   interface Window {

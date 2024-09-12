@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "src/styles/components/tapArea/rings.module.scss";
+import styles from "frontend/src/styles/components/tapArea/rings.module.scss";
 
 /**
  * Component that renders rings and background gradients around the Coco image.

@@ -3,8 +3,8 @@ import BuildIcon from "public/media/icons/build.svg";
 import EarnIcon from "public/media/icons/earn.svg";
 import FriendsIcon from "public/media/icons/friends.svg";
 import HomeIcon from "public/media/icons/home.svg";
-import { useLoading } from "src/shared/context/LoadingContext";
-import styles from "src/styles/components/menu/menu.module.scss";
+import { useLoading } from "frontend/src/shared/context/LoadingContext";
+import styles from "frontend/src/styles/components/menu/menu.module.scss";
 
 import MenuButton from "./MenuButton";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import styles from "src/styles/components/menu/button.module.scss";
+import styles from "frontend/src/styles/components/menu/button.module.scss";
 import Image from "next/image";
 
 interface IMenuButtonProps {

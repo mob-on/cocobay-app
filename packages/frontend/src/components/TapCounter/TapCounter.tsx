@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
-import styles from "src/styles/components/tapCounter/tapCounter.module.scss";
-import { useTapCounter } from "src/shared/context/TapCounterContext";
+import styles from "frontend/src/styles/components/tapCounter/tapCounter.module.scss";
+import { useTapCounter } from "frontend/src/shared/context/TapCounterContext";
 import Cost from "../shared/Cost";
-import NumberFormatter from "src/shared/lib/NumberFormatter";
+import NumberFormatter from "frontend/src/shared/lib/NumberFormatter";
 
 const TapCounter: React.FC = () => {
   const { data } = useTapCounter();

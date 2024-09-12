@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "src/styles/components/main/stamina.module.scss";
+import styles from "frontend/src/styles/components/main/stamina.module.scss";
 import Image from "next/image";
 import BoostsIcon from "public/media/icons/boosts.svg";
 import Link from "next/link";

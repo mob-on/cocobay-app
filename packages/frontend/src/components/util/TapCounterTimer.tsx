@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useTapsService from "src/shared/services/useTapsService";
+import useTapsService from "frontend/src/shared/services/useTapsService";
 
 /**
  * Component that starts the tap counter when mounted. It's only purpose is to

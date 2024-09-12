@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Card from "src/components/shared/Card";
-import Cost from "src/components/shared/Cost";
-import styles from "src/styles/pages/friends.module.scss";
+import Card from "frontend/src/components/shared/Card";
+import Cost from "frontend/src/components/shared/Cost";
+import styles from "frontend/src/styles/pages/friends.module.scss";
 import coco from "public/media/coco/coco-pink-swag.svg";
 import Image from "next/image";
-import Button from "src/components/shared/Button";
+import Button from "frontend/src/components/shared/Button";
 import CopyOutlined from "@ant-design/icons/CopyOutlined";
 import Link from "next/link";
-import { defaultFriends } from "src/components/Friends";
-import FriendsList from "src/components/Friends/FriendsList";
-import { ICardVariant } from "src/components/shared/Card/Card";
+import { defaultFriends } from "frontend/src/components/Friends";
+import FriendsList from "frontend/src/components/Friends/FriendsList";
+import { ICardVariant } from "frontend/src/components/shared/Card/Card";
 
 const FRIENDS_SHOW_LIMIT = 3;
 
