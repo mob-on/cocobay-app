@@ -1,12 +1,12 @@
-import { useAxios } from "./main/useAxios";
 import { UserDto } from "./dto/user.dto";
+import { useMainApiConfig } from "./main/config";
 
-export const useUserApi = (baseUrl?: string) => {
-  const { get, post } = useAxios(baseUrl);
+export const useUserApi = () => {
+  const [axios] = useMainApiConfig();
   return {
     get: async (userId: number) => {
       try {
-        const response = await get(`/v1/user/${userId}`);
+        const response = await axios.get(`/v1/user/${userId}`);
         if (response.status !== 200) {
           throw new Error("Server responded with unexpected status code");
         }
@@ -17,7 +17,7 @@ export const useUserApi = (baseUrl?: string) => {
     },
     register: async (user: UserDto) => {
       try {
-        const response = await post(`/v1/user/`, user);
+        const response = await axios.post(`/v1/user/`, user);
         if (response.status !== 201) {
           throw new Error("Server responded with unexpected status code");
         }

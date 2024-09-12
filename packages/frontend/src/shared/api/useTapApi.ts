@@ -2,7 +2,6 @@ import { useTapCounter } from "../context/TapCounterContext";
 import useLogger from "../hooks/useLogger";
 import { ITaps } from "../services/useTapsService";
 import { useMainApiConfig } from "./main/config";
-import { useAxios } from "./main/useAxios";
 
 // Function to calculate passive income during request time
 const calculatePassiveIncome = (
@@ -15,17 +14,18 @@ const calculatePassiveIncome = (
 };
 
 const getTaps = (): Promise<ITaps> => {
-  const { get } = useAxios();
+  const [axios] = useMainApiConfig();
 
   return new Promise(async (resolve, reject) => {
-    await get<ITaps>("/v1/tap")
+    await axios
+      .get<ITaps>("/v1/tap")
       .then((taps) => resolve(taps.data))
       .catch(reject);
   });
 };
 
 const syncTaps = (): Promise<boolean> => {
-  const { axios } = useAxios();
+  const [axios] = useMainApiConfig();
   const { data: taps, setTapData } = useTapCounter();
   const timestamp = new Date();
   const logger = useLogger("syncTaps");
