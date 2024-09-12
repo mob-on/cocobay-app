@@ -1,13 +1,8 @@
 import Config from "config";
 import { createContext, useContext, useMemo } from "react";
+
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import {
-  IStorage,
-  IStorageContext,
-  LocalStorage,
-  IFeatures,
-  TFeatureType,
-} from "../LocalStorage";
+import { IFeatures, IStorageContext, LocalStorage } from "../LocalStorage";
 
 const LocalStorageContext = createContext({} as IStorageContext);
 

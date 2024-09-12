@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { ITapEvent } from "src/components/TapArea";
+import { ITapEvent } from "src//components/TapArea";
 
 export const TAP_EFFECTS_TIMEOUT = 1000; // remove taps from list after this time
 export const TAP_EFFECTS_THROTTLE = 50; // min time before triggering ring animation

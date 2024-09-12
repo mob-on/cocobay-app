@@ -1,29 +1,24 @@
-import React, { createContext, useState, useContext, useMemo } from "react";
-import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
+import React, { createContext, useContext, useState } from "react";
 
-interface ITapCounterData {
-  tapCount: number;
-  passiveIncome: number;
-  perTap: number; // how many taps we count per one tap
-}
+import { ITaps } from "../services/useTapsService";
 
 export interface ITapCounterContext {
-  data: ITapCounterData;
+  data: ITaps;
   incrementData: () => void;
+  setTapData: (newData: ITaps | ((prev: ITaps) => ITaps)) => void;
 }
 
-const defaultTapCounterData: ITapCounterData = {
+const defaultTapCounterData: ITaps = {
   // for testing purposes
   tapCount: 1000592,
   passiveIncome: 1,
   perTap: 1,
 };
 
-const UPDATE_INTERVAL = 1000;
-
 const TapCounterContext = createContext<ITapCounterContext>({
   data: defaultTapCounterData,
   incrementData: () => {},
+  setTapData: () => {},
 });
 
 export const useTapCounter = () => useContext(TapCounterContext);
@@ -35,17 +30,6 @@ export const TapCounterProvider = ({
   children: React.JSX.Element;
 }) => {
   const [tapCounter, setTapCounter] = useState(defaultTapCounterData);
-  useSelfCorrectingTimeout(
-    useMemo(() => {
-      return () => {
-        setTapCounter((prevCount) => ({
-          ...prevCount,
-          tapCount: prevCount.tapCount + tapCounter.passiveIncome,
-        }));
-      };
-    }, [tapCounter.passiveIncome]),
-    UPDATE_INTERVAL,
-  );
 
   const incrementTapCount = () => {
     setTapCounter((prevCount) => ({
@@ -54,9 +38,13 @@ export const TapCounterProvider = ({
     }));
   };
 
+  const setTapData = (newData: ITaps | ((prev: ITaps) => ITaps)) => {
+    setTapCounter(newData);
+  };
+
   return (
     <TapCounterContext.Provider
-      value={{ data: tapCounter, incrementData: incrementTapCount }}
+      value={{ data: tapCounter, incrementData: incrementTapCount, setTapData }}
     >
       {children}
     </TapCounterContext.Provider>

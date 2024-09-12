@@ -1,8 +1,9 @@
+import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styles from "src/styles/components/main/stamina.module.scss";
-import Image from "next/image";
-import BoostsIcon from "public/media/icons/boosts.svg";
-import Link from "next/link";
+
+import BoostsIcon from "/public/media/icons/boosts.svg";
 
 export interface IStaminaData {
   stamina: number;

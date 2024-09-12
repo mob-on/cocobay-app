@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
-import styles from "src/styles/components/tapCounter/tapCounter.module.scss";
 import { useTapCounter } from "src/shared/context/TapCounterContext";
-import Cost from "../shared/Cost";
 import NumberFormatter from "src/shared/lib/NumberFormatter";
+import styles from "src/styles/components/tapCounter/tapCounter.module.scss";
+
+import Cost from "../shared/Cost";
 
 const TapCounter: React.FC = () => {
   const { data } = useTapCounter();
-
   const numberFormatter = new Intl.NumberFormat("en-US");
   const formattedTapCount = useMemo(
     () => numberFormatter.format(data.tapCount),

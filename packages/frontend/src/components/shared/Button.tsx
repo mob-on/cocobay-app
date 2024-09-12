@@ -11,13 +11,22 @@ const ButtonComponent: React.FC<{
   className?: string;
   children?: React.ReactNode;
   value?: string;
+  style?: React.CSSProperties;
   fill?: "solid" | "outline";
-}> = ({ onClick, className, children, color = "primary", fill = "solid" }) => {
+}> = ({
+  onClick,
+  className,
+  children,
+  color = "primary",
+  fill = "solid",
+  style,
+}) => {
   return (
     <Button
       onClick={onClick}
       className={className + ` ${styles[color]} ${styles.button}`}
       block
+      style={style}
       fill={fill}
     >
       {children}

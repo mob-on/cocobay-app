@@ -10,7 +10,7 @@
     "build": "yarn prebuild && next build",
     "start": "next start",
     "lint": "lint-staged",
-    "lint:check": "eslint"
+    "lint:check": "eslint \"{src,apps,libs,test}/**/*.{js,ts,md}\""
   },
   "lint-staged": {
     "*.{js,ts,md}": [
@@ -20,6 +20,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
     "@popperjs/core": "^2.11.8",
+    "@tanstack/react-query": "^5.55.4",
     "@twa-dev/sdk": "^7.8.0",
     "@types/node": "^22.5.0",
     "@types/react": "^18.3.4",
@@ -45,6 +46,7 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@svgr/webpack": "^8.1.0",
+    "@tanstack/eslint-plugin-query": "^5.53.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
