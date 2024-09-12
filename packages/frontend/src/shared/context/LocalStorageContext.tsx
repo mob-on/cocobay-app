@@ -1,4 +1,4 @@
-import Config from "config";
+import Config from "frontend/config";
 import { createContext, useContext, useMemo } from "react";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";

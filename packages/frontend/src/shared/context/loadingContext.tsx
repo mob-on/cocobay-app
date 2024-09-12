@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+import { UserDto } from "../api/dto/user.dto";
 import { useUserApi } from "../api/useUserApi";
 import useLogger from "../hooks/useLogger";
 import useTelegram from "../hooks/useTelegram";
 import { USER_QUERY_KEY } from "../services/useUserService";
-import { UserDto } from "../api/dto/user.dto";
-import { useStoredApiUrl } from "./LocalStorageContext";
 import { useErrorContext } from "./ErrorContext";
+import { useStoredApiUrl } from "./LocalStorageContext";
 
 const MAX_TRIES = 3;
 
