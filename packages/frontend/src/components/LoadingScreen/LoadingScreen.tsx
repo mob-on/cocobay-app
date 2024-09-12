@@ -1,12 +1,12 @@
 import { SpinLoading } from "antd-mobile";
-import hero from "public/media/coco/coco-pink-swag.svg";
+import hero from "frontend/public/media/coco/coco-pink-swag.svg";
 import styles from "frontend/src/styles/components/loadingScreen/loadingScreen.module.scss";
 import Image from "next/image";
-import Logo from "public/media/logo.svg";
-import grid from "public/media/grid.svg";
-import cloud1 from "public/media/cloud-white1.svg";
-import cloud2 from "public/media/cloud-white2.svg";
-import cloud3 from "public/media/cloud-white3.svg";
+import Logo from "frontend/public/media/logo.svg";
+import grid from "frontend/public/media/grid.svg";
+import cloud1 from "frontend/public/media/cloud-white1.svg";
+import cloud2 from "frontend/public/media/cloud-white2.svg";
+import cloud3 from "frontend/public/media/cloud-white3.svg";
 
 const LoadingScreen: React.FC = () => {
   return (

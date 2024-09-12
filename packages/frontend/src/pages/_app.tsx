@@ -13,7 +13,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Image from "next/image";
 import Script from "next/script";
-import grid from "public/media/grid.svg";
+import grid from "frontend/public/media/grid.svg";
 import { useEffect, useState } from "react";
 
 import LoadingScreenWrapper from "../components/LoadingScreen/LoadingScreenWrapper";

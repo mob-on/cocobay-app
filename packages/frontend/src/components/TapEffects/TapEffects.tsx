@@ -4,7 +4,7 @@ import { ITapEvent } from "../TapArea";
 import { useTaps } from "frontend/src/shared/context/TapEffectsContext";
 import Image from "next/image";
 
-import CocoCoin from "public/media/coco-coin.svg";
+import CocoCoin from "frontend/public/media/coco-coin.svg";
 
 interface ITapEffectProps {
   tap: ITapEvent;

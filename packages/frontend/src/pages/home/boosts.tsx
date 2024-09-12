@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "frontend/src/styles/pages/home/boosts.module.scss";
 
 import { Popup, Toast } from "antd-mobile";
-import energy from "public/media/icons/energy.svg";
+import energy from "frontend/public/media/icons/energy.svg";
 import { IBoost } from "frontend/src/components/Boosts";
 import BoostPopup from "frontend/src/components/Boosts/BoostPopup";
 import usePopup from "frontend/src/shared/hooks/usePopup";

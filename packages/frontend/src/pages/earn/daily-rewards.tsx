@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import gift from "public/media/gift.svg";
+import gift from "frontend/public/media/gift.svg";
 import Image from "next/image";
 import styles from "frontend/src/styles/pages/daily-rewards.module.scss";
 import Week from "frontend/src/components/DailyRewards/Week";

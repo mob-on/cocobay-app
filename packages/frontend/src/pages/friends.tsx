@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "frontend/src/components/shared/Card";
 import Cost from "frontend/src/components/shared/Cost";
 import styles from "frontend/src/styles/pages/friends.module.scss";
-import coco from "public/media/coco/coco-pink-swag.svg";
+import coco from "frontend/public/media/coco/coco-pink-swag.svg";
 import Image from "next/image";
 import Button from "frontend/src/components/shared/Button";
 import CopyOutlined from "@ant-design/icons/CopyOutlined";

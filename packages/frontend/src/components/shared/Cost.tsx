@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "frontend/src/styles/components/shared/cost.module.scss";
-import coin from "public/media/coco-coin.svg";
+import coin from "frontend/public/media/coco-coin.svg";
 import { ReactElement } from "react";
 import NumberFormatter from "frontend/src/shared/lib/NumberFormatter";
 

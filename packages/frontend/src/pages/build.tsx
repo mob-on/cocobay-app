@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "frontend/src/styles/pages/build.module.scss";
 
 import { Popup, TabBar, Toast } from "antd-mobile";
-import energy from "public/media/icons/energy.svg";
+import energy from "frontend/public/media/icons/energy.svg";
 import { IBuild } from "frontend/src/components/Build";
 import BuildPopup from "frontend/src/components/Build/BuildPopup";
 import DailyCombo from "frontend/src/components/Build/DailyCombo";
