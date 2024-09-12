@@ -1,5 +1,6 @@
+import styles from "src/styles/components/dailyRewards/week.module.scss";
+
 import Card from "../shared/Card";
-import styles from "src//styles/components/dailyRewards/week.module.scss";
 
 const Week: React.FC<{
   week: number;

@@ -1,9 +1,10 @@
-import React, { memo } from "react";
-import styles from "src//styles/components/build/buildPopup.module.scss";
 import Image from "next/image";
-import { IBuild } from "./Build";
-import Cost from "../shared/Cost";
+import React, { memo } from "react";
+import styles from "src/styles/components/build/buildPopup.module.scss";
+
 import Button from "../shared/Button";
+import Cost from "../shared/Cost";
+import { IBuild } from "./Build";
 
 // TODO: This component is extremely similar to BoostPopup, we should look into combining them.
 // I don't want to do this right now, because we might have other similar components

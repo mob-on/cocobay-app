@@ -1,8 +1,9 @@
-import { createContext, useContext, useMemo, useState } from "react";
-import { Feature } from "../lib/FeatureFlags";
 import { Popup, Space } from "antd-mobile";
 import { CloseCircleFill, CloseOutline } from "antd-mobile-icons";
-import Button from "src//components/shared/Button";
+import { createContext, useContext, useMemo, useState } from "react";
+import Button from "src/components/shared/Button";
+
+import { Feature } from "../lib/FeatureFlags";
 
 export interface IErrorContext {
   showErrorScreen: (error: IAppError) => void;

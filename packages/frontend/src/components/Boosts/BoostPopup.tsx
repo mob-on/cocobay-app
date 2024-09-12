@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { memo } from "react";
-import styles from "src//styles/components/boosts/boostPopup.module.scss";
+import styles from "src/styles/components/boosts/boostPopup.module.scss";
 
 import Button from "../shared/Button";
 import Cost from "../shared/Cost";

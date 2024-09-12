@@ -1,4 +1,4 @@
-import useLogger from "src//shared/hooks/useLogger";
+import useLogger from "src/shared/hooks/useLogger";
 
 import { useMainApiConfig } from "./config";
 

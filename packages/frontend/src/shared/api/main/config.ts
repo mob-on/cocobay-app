@@ -1,8 +1,8 @@
 import axios from "axios";
 import Config from "config";
 import { useMemo } from "react";
-import { useStoredApiUrl } from "src//shared/context/LocalStorageContext";
-import { Feature } from "src//shared/lib/FeatureFlags";
+import { useStoredApiUrl } from "src/shared/context/LocalStorageContext";
+import { Feature } from "src/shared/lib/FeatureFlags";
 
 export const useMainApiConfig = (baseUrl?: string) => {
   const [storageApiUrl] = useStoredApiUrl();

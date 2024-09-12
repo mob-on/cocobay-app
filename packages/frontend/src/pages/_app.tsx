@@ -2,19 +2,20 @@ import "../styles/globals.scss";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Telegram } from "@twa-dev/types";
-import TapCounterTimer from "src//components/util/TapCounterTimer";
-import { DevSettingsContextProvider } from "src//shared/context/DevSettingsContext";
-import { ErrorContextProvider } from "src//shared/context/ErrorContext";
-import { LocalStorageContextProvider } from "src//shared/context/LocalStorageContext";
-import { TapCounterProvider } from "src//shared/context/TapCounterContext";
-import { UserContextProvider } from "src//shared/context/UserContext";
-import useTelegram from "src//shared/hooks/useTelegram";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Image from "next/image";
 import Script from "next/script";
-import grid from "/public/media/grid.svg";
 import { useEffect, useState } from "react";
+import TapCounterTimer from "src/components/util/TapCounterTimer";
+import { DevSettingsContextProvider } from "src/shared/context/DevSettingsContext";
+import { ErrorContextProvider } from "src/shared/context/ErrorContext";
+import { LocalStorageContextProvider } from "src/shared/context/LocalStorageContext";
+import { TapCounterProvider } from "src/shared/context/TapCounterContext";
+import { UserContextProvider } from "src/shared/context/UserContext";
+import useTelegram from "src/shared/hooks/useTelegram";
+
+import grid from "/public/media/grid.svg";
 
 import LoadingScreenWrapper from "../components/LoadingScreen/LoadingScreenWrapper";
 import Layout from "../layouts/Layout";

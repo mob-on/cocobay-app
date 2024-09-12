@@ -1,8 +1,9 @@
-import React from "react";
-import styles from "src//styles/components/shared/card/buildCard.module.scss";
 import Image from "next/image";
+import React from "react";
+import { IBuild } from "src/components/Build";
+import styles from "src/styles/components/shared/card/buildCard.module.scss";
+
 import Cost from "../Cost";
-import { IBuild } from "src//components/Build";
 
 const BuildCard: React.FC<{ build: IBuild; onClick: (id: number) => void }> = ({
   build,

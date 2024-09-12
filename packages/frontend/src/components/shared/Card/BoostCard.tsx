@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import { IBoost } from "src//components/Boosts";
-import styles from "src//styles/components/shared/card/boostCard.module.scss";
+import { IBoost } from "src/components/Boosts";
+import styles from "src/styles/components/shared/card/boostCard.module.scss";
 
 import Cost from "../Cost";
 

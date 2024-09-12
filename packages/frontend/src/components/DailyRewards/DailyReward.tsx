@@ -1,9 +1,10 @@
-import Card from "../shared/Card";
 import Image from "next/image";
-import { IDailyReward } from "./DailyRewards";
-import styles from "src//styles/components/dailyRewards/dailyReward.module.scss";
+import NumberFormatter from "src/shared/lib/NumberFormatter";
+import styles from "src/styles/components/dailyRewards/dailyReward.module.scss";
+
+import Card from "../shared/Card";
 import Cost from "../shared/Cost";
-import NumberFormatter from "src//shared/lib/NumberFormatter";
+import { IDailyReward } from "./DailyRewards";
 
 const DailyReward: React.FC<{
   reward: IDailyReward;
