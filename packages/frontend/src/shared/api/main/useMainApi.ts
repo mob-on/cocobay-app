@@ -1,3 +1,5 @@
+import useLogger from "src/shared/hooks/useLogger";
+
 import { useMainApiConfig } from "./config";
 import { UserDto } from "./dto/user.dto";
 
@@ -6,13 +8,12 @@ export const useMainApi = (baseUrl?: string) => {
 
   return {
     isHealthy: async () => {
+      const logger = useLogger("isHealthy");
       try {
-        const response = await axios.get("/v1/health", {
-          timeout: 1000,
-        });
+        const response = await axios.get("/v1/health");
         return response.status === 200;
       } catch (e: unknown) {
-        console.error("Unable to get API health", e);
+        logger.error("Unable to get API health", e);
       }
 
       return false;

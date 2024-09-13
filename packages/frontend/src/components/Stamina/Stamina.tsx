@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styles from "src/styles/components/main/stamina.module.scss";
 import Image from "next/image";
-import BoostsIcon from "public/media/icons/boosts.svg";
 import Link from "next/link";
+import React from "react";
+import { useGameState } from "src/shared/context/GameStateContext";
+import styles from "src/styles/components/main/stamina.module.scss";
+
+import BoostsIcon from "/public/media/icons/boosts.svg";
 
 export interface IStaminaData {
   stamina: number;
@@ -17,17 +19,8 @@ const defaultLevelingData: IStaminaData = {
 };
 
 const Leveling: React.FC = () => {
-  const [data, setData] = useState(defaultLevelingData);
-  const { stamina, maxStamina } = data;
-
-  useEffect(() => {
-    // fetch data and put it into the state.
-    setData({
-      stamina: 1000,
-      maxStamina: 1000,
-      passiveGain: 10,
-    });
-  }, []);
+  const { stamina } = useGameState();
+  const { current, max } = stamina;
 
   return (
     <div className={styles.stamina}>
@@ -36,7 +29,7 @@ const Leveling: React.FC = () => {
       </Link>
       <p>
         <span>
-          {stamina} / {maxStamina}
+          {current} / {max}
         </span>
       </p>
     </div>

@@ -1,7 +1,8 @@
 import { NextComponentType, NextPageContext } from "next";
-import { useLoading } from "src/shared/context/loadingContext";
-import LoadingScreen from "./LoadingScreen";
 import dynamic from "next/dynamic";
+import { useLoading } from "src/shared/context/LoadingContext";
+
+import LoadingScreen from "./LoadingScreen";
 
 const BuildPage = dynamic(() => import("src/pages/build"));
 const BoostsPage = dynamic(() => import("src/pages/home/boosts"));

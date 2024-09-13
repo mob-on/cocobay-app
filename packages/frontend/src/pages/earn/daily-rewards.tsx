@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
-import gift from "public/media/gift.svg";
 import Image from "next/image";
-import styles from "src/styles/pages/daily-rewards.module.scss";
-import Week from "src/components/DailyRewards/Week";
+import React, { useEffect, useMemo, useState } from "react";
 import { IDailyReward, IDailyRewards } from "src/components/DailyRewards";
 import DailyReward from "src/components/DailyRewards/DailyReward";
+import Week from "src/components/DailyRewards/Week";
 import Button from "src/components/shared/Button";
+import styles from "src/styles/pages/daily-rewards.module.scss";
+
+import gift from "/public/media/gift.svg";
 
 const DAILY_AWARD_COUNT = 7;
 const REWARDS_PER_ROW = 4;

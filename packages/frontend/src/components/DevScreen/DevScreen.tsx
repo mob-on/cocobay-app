@@ -1,11 +1,11 @@
 import { Button, Form, Input } from "antd-mobile";
 import { CheckCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMainApi } from "src/shared/api/main/useMainApi";
 import { useStoredApiUrl } from "src/shared/context/LocalStorageContext";
-import styles from "src/styles/pages/devSettings.module.scss";
+import styles from "src/styles/components/devSettings/devSettings.module.scss";
 
-const DevScreen = () => {
+export const DevScreen = () => {
   const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredApiUrl();
 
   const [mainApiBaseUrlValue, setMainApiBaseUrlValue] = useState("");

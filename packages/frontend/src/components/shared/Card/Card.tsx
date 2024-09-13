@@ -1,19 +1,13 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { IBuild } from "../../Build";
-import { IBoost } from "../../Boosts";
-import BuildCard from "./BuildCard";
-import BoostCard from "./BoostCard";
-import styles from "src/styles/components/shared/card/card.module.scss";
-import TimeFormatter from "src/shared/lib/TimeFormatter";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import useSelfCorrectingTimeout from "src/shared/hooks/useSelfCorrectingTimeout";
 import useTelegram from "src/shared/hooks/useTelegram";
+import TimeFormatter from "src/shared/lib/TimeFormatter";
+import styles from "src/styles/components/shared/card/card.module.scss";
+
+import { IBoost } from "../../Boosts";
+import { IBuild } from "../../Build";
+import BoostCard from "./BoostCard";
+import BuildCard from "./BuildCard";
 
 export type ICardType = "build" | "boost" | "custom";
 // variants affect the visual look of the card
@@ -42,27 +36,27 @@ const Card: React.FC<ICardProps> = memo(
     disabled = false,
     className = "",
   }) => {
-    const [cooldown, setCooldown] = useState(0);
-    const [WebApp] = useTelegram();
     const { cooldownUntil } = data;
     const cooldownTimestamp = cooldownUntil?.getTime() ?? 0;
-    const timeoutId = useRef<NodeJS.Timeout>();
+    const [cooldown, setCooldown] = useState(cooldownTimestamp - Date.now());
+    const [WebApp] = useTelegram();
+
     const now = Date.now();
-    timeoutId.current = useSelfCorrectingTimeout(
-      useMemo(() => {
-        return cooldownTimestamp > now
-          ? () => {
-              const now = Date.now();
-              setCooldown(cooldownTimestamp - now);
-            }
-          : null;
-      }, []),
-      UPDATE_INTERVAL,
-    );
+
+    const updateCooldown = useMemo(() => {
+      return cooldownTimestamp > now
+        ? () => {
+            const now = Date.now();
+            setCooldown(cooldownTimestamp - now);
+          }
+        : null;
+    }, []);
+
+    const timeout = useSelfCorrectingTimeout(updateCooldown, UPDATE_INTERVAL);
 
     useEffect(() => {
-      return () => clearTimeout(timeoutId.current);
-    }, [data.cooldownUntil]);
+      timeout.start();
+    }, []);
 
     return (
       <div

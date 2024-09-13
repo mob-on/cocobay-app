@@ -1,9 +1,10 @@
 import { LeftOutline } from "antd-mobile-icons";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Logo from "public/media/logo.svg";
 import React from "react";
 import styles from "src/styles/components/header.module.scss";
+
+import Logo from "/public/media/logo.svg";
 
 // We don't really need this, because telegram does it's own header, but maybe it would be useful down the line
 const Header: React.FC = () => {
