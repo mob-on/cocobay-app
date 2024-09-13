@@ -4,13 +4,13 @@ import { UserDto } from "./user.dto";
 describe("User Validation", () => {
   let validationPipe: ValidationPipe;
 
-    beforeEach(() => {
-      validationPipe = new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-      });
+  beforeEach(() => {
+    validationPipe = new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
     });
-    
+  });
+
   it("should throw a BadRequestException for invalid DTO data", async () => {
     const invalidUserDto = {
       id: "",
@@ -18,7 +18,7 @@ describe("User Validation", () => {
       username: ["test"],
       languageCode: { lang: "en" },
     };
-  
+
     try {
       await validationPipe.transform(invalidUserDto, {
         type: "body",
@@ -35,4 +35,3 @@ describe("User Validation", () => {
     }
   });
 });
-

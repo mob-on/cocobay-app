@@ -1,20 +1,22 @@
 import { faker } from "@faker-js/faker";
 import { Types } from "mongoose";
 import { UserDto } from "src/user/dto/user.dto";
-import { User } from "src/user/model/user.model";
-
-const { maybe } = faker.helpers;
+import { MinimalUser, User } from "src/user/model/user.model";
+import { maybeAssign } from "../maybe-assign";
 
 export const createValidUser = (user?: Partial<User>) => {
-  return {
-    id: faker.string.numeric(16),
-    firstName: maybe(() => faker.string.alphanumeric(16)),
-    languageCode: maybe(
-      () => `${faker.string.alpha(2)}-${faker.string.alpha(2)}`,
-    ),
-    username: maybe(() => faker.string.alphanumeric(16)),
-    ...user,
-  } as User;
+  const validUser = maybeAssign(
+    {
+      id: faker.string.numeric(16),
+    },
+    {
+      firstName: faker.person.firstName(),
+      languageCode: `${faker.string.alpha(2)}-${faker.string.alpha(2)}`,
+      username: faker.internet.userName(),
+    },
+  ) as MinimalUser;
+
+  return { ...validUser, ...user } as MinimalUser;
 };
 
 export const createValidUserWithIdAndTimestamp = (
@@ -30,11 +32,5 @@ export const createValidUserWithIdAndTimestamp = (
 
 export const createValidUserDto = (user?: Partial<User>): UserDto => {
   const validUser = createValidUser(user);
-  const userDto = new UserDto({
-    id: validUser.id,
-    firstName: validUser.firstName,
-    username: validUser.username,
-    languageCode: validUser.languageCode,
-  });
-  return userDto;
-}
+  return UserDto.fromUser(validUser);
+};

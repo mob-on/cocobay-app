@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { ReturnModelType } from "@typegoose/typegoose";
 import { ExceptionMapper } from "src/common/database/exception-mapper";
 import { UniqueViolation } from "src/common/exception/db/unique-violation.exception";
-import { User } from "../model/user.model";
+import { MinimalUser, User } from "../model/user.model";
 
 @Injectable()
 export class UserRepository {
@@ -34,7 +34,7 @@ export class UserRepository {
    * @returns A promise that resolves to the created user.
    * @throws {UniqueViolation} If there is a unique key violation.
    */
-  async create(user: Partial<User>): Promise<User> {
+  async create(user: MinimalUser): Promise<User> {
     try {
       return (await this.userModel.create(user)).save();
     } catch (e: unknown) {

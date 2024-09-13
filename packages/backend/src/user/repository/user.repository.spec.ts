@@ -1,4 +1,4 @@
-import { ReturnModelType } from "@typegoose/typegoose";
+import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
 import { ExceptionMapper } from "src/common/database/exception-mapper";
 import { UniqueViolation } from "src/common/exception/db/unique-violation.exception";
 import { createValidUser } from "test/fixtures/model/user.data";
@@ -19,7 +19,7 @@ describe("UserRepository", () => {
       imports: [UserRepositoryModule],
     });
 
-    userModel = setup.models.user();
+    userModel = getModelForClass(User);
 
     repository = new UserRepository(
       userModel,

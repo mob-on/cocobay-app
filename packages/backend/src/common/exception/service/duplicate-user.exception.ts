@@ -1,3 +1,3 @@
 import { ServiceException } from "./service.exception";
 
-export class DuplicateUserException extends ServiceException {}
+export class DuplicateEntityException extends ServiceException {}

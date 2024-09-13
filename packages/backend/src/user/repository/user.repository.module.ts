@@ -14,5 +14,6 @@ import { UserRepository } from "./user.repository";
       useClass: MongoExceptionMapper,
     },
   ],
+  exports: [UserRepository, ExceptionMapper],
 })
 export class UserRepositoryModule {}

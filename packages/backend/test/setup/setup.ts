@@ -1,43 +1,21 @@
 import { faker } from "@faker-js/faker";
-import {
-  getModelToken,
-  InjectModel,
-  TypegooseModule,
-} from "@m8a/nestjs-typegoose";
+import { TypegooseModule } from "@m8a/nestjs-typegoose";
 import {
   TypegooseClass,
   TypegooseClassWithOptions,
 } from "@m8a/nestjs-typegoose/dist/typegoose-class.interface";
-import {
-  INestApplication,
-  Injectable,
-  Logger,
-  Module,
-  ModuleMetadata,
-} from "@nestjs/common";
+import { INestApplication, Logger, ModuleMetadata } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
-import { ReturnModelType } from "@typegoose/typegoose";
+import { getModelForClass } from "@typegoose/typegoose";
 import * as request from "supertest";
 import TestAgent from "supertest/lib/agent";
 import { configureMainApiNestApp } from "src/main-api-bootstrap-config";
-import { User } from "src/user/model/user.model";
 import { setupMockDatabase } from "./mongodb";
-
-@Injectable()
-export class MockModels {
-  constructor(
-    @InjectModel(User)
-    public readonly userModel: ReturnModelType<typeof User>,
-  ) {}
-}
 
 export interface DBSetup {
   stop: () => Promise<void>;
   clearModels: () => void;
   module: TestingModule;
-  models: {
-    user: () => ReturnModelType<typeof User>;
-  };
 }
 
 export interface ApiSetup extends DBSetup {
@@ -49,33 +27,26 @@ export interface ApiSetup extends DBSetup {
  * Gets a unique Model representation with an auto-generated suffix
  * to ensure parallel tests don't share the same collection name
  *
- * @param model The Typegoose model
+ * @template T - The type of the model.
+ * @param {T} model - The model to retrieve.
+ * @returns {TypegooseClassWithOptions} - The unique model with schema options.
  */
-const getUniqueModel = <T extends TypegooseClass>(
+const getUniqueModel = <T extends TypegooseClass | TypegooseClassWithOptions>(
   model: T,
 ): TypegooseClassWithOptions => {
+  let typegooseClass;
+  if (model.hasOwnProperty("typegooseClass")) {
+    ({ typegooseClass } = model as TypegooseClassWithOptions);
+  } else {
+    typegooseClass = model;
+  }
+
   return {
-    typegooseClass: model,
+    typegooseClass: typegooseClass,
     schemaOptions: {
-      collection: `${model.name}_${faker.string.alphanumeric(32)}`,
+      collection: `${typegooseClass.name}_${faker.string.alphanumeric(32)}`,
     },
   };
-};
-
-export const getDBMockModule = <T extends TypegooseClass>(
-  modelDefinitions: T[],
-  dbUri: string,
-) => {
-  @Module({
-    imports: [
-      TypegooseModule.forRoot(dbUri),
-      TypegooseModule.forFeature(modelDefinitions.map(getUniqueModel)),
-    ],
-    providers: [MockModels],
-  })
-  class MockModule {}
-
-  return MockModule;
 };
 
 const log = new Logger("TestSetup");
@@ -91,25 +62,29 @@ const setupNest = async <T extends TypegooseClass>(
     if (!moduleMetadata) {
       moduleMetadata = {};
     }
-    moduleMetadata.providers = [...(moduleMetadata.providers ?? [])];
-
     moduleMetadata.imports = [
-      getDBMockModule(modelDefinitions, mockDb.uri),
+      TypegooseModule.forRoot(mockDb.uri),
       ...(moduleMetadata.imports ?? []),
     ];
 
-    const module = await Test.createTestingModule(moduleMetadata).compile();
+    const creatingTestModule = Test.createTestingModule(moduleMetadata);
+
+    //Typegoose name overrides
+    const module = await modelDefinitions
+      .reduce((testModule, model) => {
+        return testModule
+          .overrideModule(TypegooseModule.forFeature([model]))
+          .useModule(TypegooseModule.forFeature([getUniqueModel(model)]));
+      }, creatingTestModule)
+      .compile();
 
     const models = [];
     for (const model of modelDefinitions) {
-      models.push(module.get(getModelToken(model.name)));
+      models.push(getModelForClass(model));
     }
 
     let result: DBSetup | ApiSetup = {
       module,
-      models: {
-        user: () => module.get(MockModels).userModel,
-      },
       clearModels: () => models.forEach((m) => m.deleteMany({})),
       stop: async () => {
         await mockDb.stop();

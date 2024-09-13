@@ -1,11 +1,11 @@
-import {
-  BadRequestException,
-  NotFoundException,
-} from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
-import { UniqueViolation } from "src/common/exception/db/unique-violation.exception";
-import { createValidUser, createValidUserDto } from "test/fixtures/model/user.data";
+import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
+import {
+  createValidUser,
+  createValidUserDto,
+} from "test/fixtures/model/user.data";
 import { UserDto } from "../dto/user.dto";
 import { UserService } from "../service/user.service";
 import { UserController } from "./user.controller";
@@ -29,7 +29,9 @@ describe("UserController", () => {
               id === mockUser.id
                 ? Promise.resolve(mockUser)
                 : Promise.reject(new EntityNotFoundException()),
-            create: (userDto: UserDto) => Promise.resolve(userDto.toUser()),
+            create: (userDto: UserDto) => {
+              return Promise.resolve(UserDto.toUser(userDto));
+            },
           },
         },
       ],
@@ -37,6 +39,10 @@ describe("UserController", () => {
 
     userController = app.get(UserController);
     service = app.get(UserService);
+  });
+
+  afterAll(async () => {
+    await app?.close();
   });
 
   describe("getUser", () => {
@@ -67,14 +73,13 @@ describe("UserController", () => {
     it("should call the service and return the result", async () => {
       const spyCreate = jest.spyOn(service, "create");
 
-      const createdUser = await userController.createUser(mockUserDto);
+      await userController.createUser(mockUserDto);
       expect(spyCreate).toHaveBeenCalledWith(mockUserDto);
-      expect(createdUser).toMatchObject(mockUser);
     });
 
     it("should throw a BadRequestException when user already exists", async () => {
       jest.spyOn(service, "create").mockImplementation(() => {
-        return Promise.reject(new UniqueViolation());
+        return Promise.reject(new DuplicateEntityException());
       });
 
       await expect(userController.createUser(mockUserDto)).rejects.toThrow(
@@ -92,9 +97,5 @@ describe("UserController", () => {
         error,
       );
     });
-  });
-  
-  afterAll(async () => {
-    await app?.close();
   });
 });

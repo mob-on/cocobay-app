@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
-import { DuplicateUserException } from "src/common/exception/service/duplicate-user.exception";
+import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
 import { createValidUser } from "test/fixtures/model/user.data";
 import { UserDto } from "../dto/user.dto";
 import { User } from "../model/user.model";
@@ -25,7 +25,7 @@ class MockedUserRepository {
   static createdUserIds: Set<string> = new Set();
   static create = jest.fn().mockImplementation((user: Partial<User>) => {
     if (this.createdUserIds.has(user.id)) {
-      throw new DuplicateUserException("");
+      throw new DuplicateEntityException("");
     }
     this.createdUserIds.add(user.id);
     return { _id: faker.string.numeric(16), ...user };
@@ -71,7 +71,7 @@ describe("UserService", () => {
   });
 
   it("should create a valid user when provided with the correct information", async () => {
-    const userDto = new UserDto({
+    const userDto = UserDto.fromUser({
       id: faker.string.uuid(),
       firstName: faker.string.alphanumeric(16),
     });
@@ -86,7 +86,7 @@ describe("UserService", () => {
     await service.create(mockUserDto);
 
     await expect(service.create(mockUserDto)).rejects.toThrow(
-      DuplicateUserException,
+      DuplicateEntityException,
     );
   });
 });

@@ -9,7 +9,7 @@ import {
   Post,
 } from "@nestjs/common";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
-import { UniqueViolation } from "../../common/exception/db/unique-violation.exception";
+import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
 import { UserDto } from "../dto/user.dto";
 import { UserService } from "../service/user.service";
 
@@ -34,9 +34,9 @@ export class UserController {
   @HttpCode(201)
   async createUser(@Body() userDto: UserDto) {
     try {
-      return await this.userService.create(userDto);
+      await this.userService.create(userDto);
     } catch (e: unknown) {
-      if (e instanceof UniqueViolation) {
+      if (e instanceof DuplicateEntityException) {
         throw new BadRequestException(
           "Unable to create user, user with provided details already exists",
         );

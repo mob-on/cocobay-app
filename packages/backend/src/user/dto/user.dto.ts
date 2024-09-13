@@ -1,44 +1,57 @@
-import { IsNotEmpty, IsString } from "class-validator";
-import { User } from "../model/user.model";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { MinimalUser, User } from "../model/user.model";
+
+const assignExisting = <T extends object>(
+  to: T,
+  from: Record<string, unknown>,
+): T => {
+  const out = { ...to };
+  for (const key in from) {
+    if (from[key]) {
+      out[key] = from[key];
+    }
+  }
+  return out;
+};
 
 export class UserDto {
   @IsString()
   @IsNotEmpty()
   id: string;
 
+  @IsOptional()
   @IsString()
   firstName?: string;
 
+  @IsOptional()
   @IsString()
   username?: string;
 
+  @IsOptional()
   @IsString()
   languageCode?: string;
 
-  constructor(dto: Partial<UserDto>) {
-    this.id = dto?.id;
-    this.firstName = dto?.firstName;
-    this.username = dto?.username;
-    this.languageCode = dto?.languageCode;
-  }
-
-  static fromUser(user: User): UserDto {
+  static fromUser(user: Partial<User>): UserDto {
     if (!user) return null;
 
-    return new UserDto({
-      id: user.id,
+    const userDto = new UserDto();
+    userDto.id = user.id;
+
+    return assignExisting(userDto, {
       firstName: user.firstName,
       username: user.username,
       languageCode: user.languageCode,
     });
   }
 
-  toUser(): Partial<User> {
-    return {
-      id: this.id,
-      firstName: this.firstName,
-      username: this.username,
-      languageCode: this.languageCode,
-    };
+  static toUser(user: UserDto): MinimalUser {
+    return assignExisting(
+      { id: user.id },
+      {
+        firstName: user.firstName,
+        username: user.username,
+        languageCode: user.languageCode,
+      },
+    );
   }
 }
