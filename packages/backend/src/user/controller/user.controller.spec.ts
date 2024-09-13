@@ -6,13 +6,13 @@ import {
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { UniqueViolation } from "src/common/exception/db/unique-violation.exception";
-import { createValidUser } from "test/fixtures/model/user.data";
+import { createValidUser, createValidUserDto } from "test/fixtures/model/user.data";
 import { UserDto } from "../dto/user.dto";
 import { UserService } from "../service/user.service";
 import { UserController } from "./user.controller";
 
 const mockUser = createValidUser();
-const mockUserDto = UserDto.fromUser(mockUser);
+const mockUserDto = createValidUserDto(mockUser);
 
 describe("UserController", () => {
   let app: TestingModule;
@@ -70,7 +70,7 @@ describe("UserController", () => {
 
       const createdUser = await userController.createUser(mockUserDto);
       expect(spyCreate).toHaveBeenCalledWith(mockUserDto);
-      expect(createdUser).toMatchObject(mockUserDto);
+      expect(createdUser).toMatchObject(mockUser);
     });
 
     it("should throw a BadRequestException when user already exists", async () => {
@@ -107,7 +107,7 @@ describe("UserController", () => {
 
     it("should throw a BadRequestException for invalid DTO data", async () => {
       const invalidUserDto = {
-        id: 0,
+        id: "",
         firstName: 2,
         username: ["test"],
         languageCode: { lang: "en" },
@@ -121,7 +121,7 @@ describe("UserController", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(BadRequestException);
         expect(error.getResponse().message).toEqual([
-          "id must be a string",
+          "id should not be empty",
           "firstName must be a string",
           "username must be a string",
           "languageCode must be a string",
