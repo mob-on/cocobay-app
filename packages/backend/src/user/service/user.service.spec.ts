@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Test, TestingModule } from "@nestjs/testing";
+import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { DuplicateUserException } from "src/common/exception/service/duplicate-user.exception";
 import { createValidUser } from "test/fixtures/model/user.data";
 import { UserDto } from "../dto/user.dto";
@@ -12,8 +13,13 @@ const mockIdError = "-1";
 
 class MockedUserRepository {
   static findById = jest.fn().mockImplementation((id: string) => {
-    if (id === mockIdError) return null;
-    return mockUser;
+    if (id === mockIdError) throw new EntityNotFoundException();
+    return {
+      _id: faker.string.numeric(16),
+      createdAt: faker.date.anytime(),
+      updatedAte: faker.date.anytime(),
+      ...mockUser,
+    };
   });
 
   static createdUserIds: Set<string> = new Set();
@@ -44,13 +50,17 @@ describe("UserService", () => {
     service = app.get(UserService);
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   it("should be defined", async () => {
     expect(service).toBeDefined();
   });
 
   it("should throw an exception when not found", async () => {
     const userFetch = service.getUser(mockIdError);
-    await expect(userFetch).rejects.toThrow(Error);
+    await expect(userFetch).rejects.toThrow(EntityNotFoundException);
   });
 
   it("should return a valid user when found", async () => {

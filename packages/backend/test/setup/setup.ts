@@ -17,11 +17,8 @@ import {
 } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { ReturnModelType } from "@typegoose/typegoose";
-import { Model } from "mongoose";
 import * as request from "supertest";
 import TestAgent from "supertest/lib/agent";
-import { ExceptionMapper } from "src/common/database/exception-mapper";
-import { MongoExceptionMapper } from "src/common/database/mongodb/mongo-exception-mapping";
 import { configureMainApiNestApp } from "src/main-api-bootstrap-config";
 import { User } from "src/user/model/user.model";
 import { setupMockDatabase } from "./mongodb";
@@ -34,13 +31,9 @@ export class MockModels {
   ) {}
 }
 
-export interface TestControl {
-  mockDb: { stop: <T extends Model<unknown>>(models: T[]) => Promise<void> };
-  stop: () => Promise<void>;
-}
-
 export interface DBSetup {
-  control: TestControl;
+  stop: () => Promise<void>;
+  clearModels: () => void;
   module: TestingModule;
   models: {
     user: () => ReturnModelType<typeof User>;
@@ -98,13 +91,7 @@ const setupNest = async <T extends TypegooseClass>(
     if (!moduleMetadata) {
       moduleMetadata = {};
     }
-    moduleMetadata.providers = [
-      {
-        provide: ExceptionMapper,
-        useClass: MongoExceptionMapper,
-      },
-      ...(moduleMetadata.providers ?? []),
-    ];
+    moduleMetadata.providers = [...(moduleMetadata.providers ?? [])];
 
     moduleMetadata.imports = [
       getDBMockModule(modelDefinitions, mockDb.uri),
@@ -119,14 +106,12 @@ const setupNest = async <T extends TypegooseClass>(
     }
 
     let result: DBSetup | ApiSetup = {
-      control: {
-        mockDb,
-        stop: () => mockDb.stop(models),
-      },
       module,
       models: {
         user: () => module.get(MockModels).userModel,
       },
+      clearModels: () => models.forEach((m) => m.deleteMany({})),
+      stop: async () => await mockDb.stop(),
     };
 
     if (withApi) {
@@ -135,7 +120,14 @@ const setupNest = async <T extends TypegooseClass>(
       await app.init();
       const api = request(app.getHttpServer());
 
-      result = { ...result, app, api };
+      result = {
+        ...result,
+        app,
+        api,
+        stop: async () => {
+          await Promise.all([mockDb.stop(), app.close()]);
+        },
+      };
     }
 
     return result;

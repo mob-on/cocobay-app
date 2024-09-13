@@ -7,12 +7,11 @@ const { maybe } = faker.helpers;
 export const createValidUser = (user?: Partial<User>) => {
   return {
     id: faker.string.numeric(16),
-    firstName: maybe(() => faker.string.alphanumeric(16), { probability: 0.5 }),
+    firstName: maybe(() => faker.string.alphanumeric(16)),
     languageCode: maybe(
       () => `${faker.string.alpha(2)}-${faker.string.alpha(2)}`,
-      { probability: 0.5 },
     ),
-    username: maybe(() => faker.string.alphanumeric(16), { probability: 0.5 }),
+    username: maybe(() => faker.string.alphanumeric(16)),
     ...user,
   } as User;
 };

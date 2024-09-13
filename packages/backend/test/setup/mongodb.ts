@@ -13,12 +13,14 @@ export const setupMockDatabase = async (globalInit?: boolean) => {
 
   return {
     uri: process.env.MONGODB_TEST_URI,
-    stop: async <T extends Model<unknown>>(models: T[]) => {
+    clearCollections: async <T extends Model<unknown>>(models: T[]) => {
       const dbDropCollections: Promise<unknown>[] = [];
       for (const model of models) {
         dbDropCollections.push(mongoose.connection.dropCollection(model.name));
       }
       await Promise.all(dbDropCollections);
+    },
+    stop: async () => {
       await mongoose.connection.close();
     },
   };

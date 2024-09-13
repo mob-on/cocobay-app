@@ -24,7 +24,6 @@ export class UserRepository {
       .findOne({
         id,
       })
-      .lean()
       .exec();
   }
 

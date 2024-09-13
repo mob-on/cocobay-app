@@ -8,6 +8,7 @@ import {
   Param,
   Post,
 } from "@nestjs/common";
+import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { UniqueViolation } from "../../common/exception/db/unique-violation.exception";
 import { UserDto } from "../dto/user.dto";
 import { UserService } from "../service/user.service";
@@ -17,20 +18,28 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get("/:id")
-  async getUser(@Param("id") id: number) {
-    const user = await this.userService.findById(id);
-    if (!user) throw new NotFoundException("User not found");
-    return user;
+  async getUser(@Param("id") id: string) {
+    try {
+      return await this.userService.getUser(id);
+    } catch (e: unknown) {
+      if (e instanceof EntityNotFoundException) {
+        throw new NotFoundException("User not found");
+      }
+
+      throw e;
+    }
   }
 
   @Post()
   @HttpCode(201)
-  async createUser(@Param("id") id: number, @Body() userDto: UserDto) {
+  async createUser(@Body() userDto: UserDto) {
     try {
       return await this.userService.create(userDto);
     } catch (e: unknown) {
       if (e instanceof UniqueViolation) {
-        throw new BadRequestException(e, "Unable to create user");
+        throw new BadRequestException(
+          "Unable to create user, user with provided details already exists",
+        );
       }
 
       throw e;

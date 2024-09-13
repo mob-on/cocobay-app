@@ -5,6 +5,7 @@ import { createValidUser } from "test/fixtures/model/user.data";
 import { DBSetup, setupDb } from "test/setup/setup";
 import { User } from "../model/user.model";
 import { UserRepository } from "./user.repository";
+import { UserRepositoryModule } from "./user.repository.module";
 
 const mockUser = createValidUser();
 
@@ -14,7 +15,9 @@ describe("UserRepository", () => {
   let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
-    setup = await setupDb([User]);
+    setup = await setupDb([User], {
+      imports: [UserRepositoryModule],
+    });
 
     userModel = setup.models.user();
 
@@ -25,7 +28,7 @@ describe("UserRepository", () => {
   });
 
   afterAll(async () => {
-    await setup.control.stop();
+    await setup.stop();
   });
 
   afterEach(async () => {

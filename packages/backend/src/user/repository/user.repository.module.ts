@@ -1,7 +1,7 @@
 import { TypegooseModule } from "@m8a/nestjs-typegoose";
 import { Module } from "@nestjs/common";
-import { ExceptionMapper } from "src/common/database/ExceptionMapper";
-import { MongoExceptionMapper } from "src/common/database/mongodb/MongoExceptionMapping";
+import { ExceptionMapper } from "src/common/database/exception-mapper";
+import { MongoExceptionMapper } from "src/common/database/mongodb/mongo-exception-mapping";
 import { User } from "../model/user.model";
 import { UserRepository } from "./user.repository";
 

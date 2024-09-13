@@ -9,11 +9,11 @@ export class User extends TimeStamps implements Base {
   id: string;
 
   @prop()
-  firstName: string;
+  firstName?: string;
 
   @prop()
-  username: string;
+  username?: string;
 
   @prop()
-  languageCode: string;
+  languageCode?: string;
 }

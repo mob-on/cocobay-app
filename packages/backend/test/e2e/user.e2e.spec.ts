@@ -1,34 +1,30 @@
 import { faker } from "@faker-js/faker";
-import { ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
+import { User } from "src/user/model/user.model";
+import { UserModule } from "src/user/user.module";
 import { createValidUser } from "test/fixtures/model/user.data";
-import { setupApi, TestControl } from "test/setup/setup";
-import { User } from "../../src/user/model/user.model";
-import { UserModule } from "../../src/user/user.module";
+import { ApiSetup, setupApi } from "test/setup/setup";
 
 const mockUser = createValidUser();
 
 describe("UserController", () => {
-  let control: TestControl;
+  let setup: ApiSetup;
   let api: TestAgent;
-  let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
-    const setup = await setupApi([User], {
+    setup = await setupApi([User], {
       imports: [UserModule],
     });
 
-    control = setup.control;
     api = setup.api;
-    userModel = setup.models.user();
   });
 
   afterAll(async () => {
-    await control.stop();
+    await setup.stop();
   });
 
   beforeEach(async () => {
-    await userModel.deleteMany({});
+    setup.clearModels();
   });
 
   describe("GET /v1/user/:userId", () => {
@@ -39,10 +35,10 @@ describe("UserController", () => {
     });
 
     it("should return a valid user when the user exists", async () => {
-      const { id } = await (await userModel.create(mockUser)).save();
+      await api.post(`/v1/user`).send(mockUser).expect(201);
 
       return api
-        .get(`/v1/user/${id}`)
+        .get(`/v1/user/${mockUser.id}`)
         .expect(200)
         .then((res) => expect(res.body).toMatchObject(mockUser));
     });
