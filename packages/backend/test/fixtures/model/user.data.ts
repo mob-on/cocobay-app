@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Types } from "mongoose";
+import { UserDto } from "src/user/dto/user.dto";
 import { User } from "src/user/model/user.model";
 
 const { maybe } = faker.helpers;
@@ -26,3 +27,14 @@ export const createValidUserWithIdAndTimestamp = (
     ...createValidUser(user),
   } as User;
 };
+
+export const createValidUserDto = (user?: Partial<User>): UserDto => {
+  const validUser = createValidUser(user);
+  const userDto = new UserDto({
+    id: validUser.id,
+    firstName: validUser.firstName,
+    username: validUser.username,
+    languageCode: validUser.languageCode,
+  });
+  return userDto;
+}

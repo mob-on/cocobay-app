@@ -111,7 +111,10 @@ const setupNest = async <T extends TypegooseClass>(
         user: () => module.get(MockModels).userModel,
       },
       clearModels: () => models.forEach((m) => m.deleteMany({})),
-      stop: async () => await mockDb.stop(),
+      stop: async () => {
+        await mockDb.stop();
+        await module.close();
+      },
     };
 
     if (withApi) {
