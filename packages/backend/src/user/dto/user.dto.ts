@@ -1,12 +1,17 @@
-import { IsPositive } from "class-validator";
-
+import { IsString } from "class-validator";
 import { User } from "../model/user.model";
 
 export class UserDto {
-  @IsPositive()
-  id: number;
+  @IsString()
+  id: string;
+
+  @IsString()
   firstName?: string;
+
+  @IsString()
   username?: string;
+
+  @IsString()
   languageCode?: string;
 
   constructor(dto: Partial<UserDto>) {

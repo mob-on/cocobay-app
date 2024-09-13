@@ -1,10 +1,9 @@
 import { prop } from "@typegoose/typegoose";
-import { IsPositive } from "class-validator";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
-export class User {
+export class User extends TimeStamps {
   @prop({ required: true, index: true, unique: true })
-  @IsPositive()
-  id: number;
+  id: string;
 
   @prop()
   firstName: string;

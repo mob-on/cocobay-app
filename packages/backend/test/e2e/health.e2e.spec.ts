@@ -1,10 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
-
 import { HealthModule } from "src/healthcheck/health.module";
 import { User } from "src/user/model/user.model";
-
 import { setupEndToEnd, TestControl } from "./setup/setup";
 
 describe("HealthController (e2e)", () => {

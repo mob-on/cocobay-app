@@ -8,8 +8,7 @@ import {
   Param,
   Post,
 } from "@nestjs/common";
-
-import { EntityAlreadyExists } from "../../common/exception/db/EntityAlreadyExists.exception";
+import { UniqueViolation } from "../../common/exception/db/unique-violation.exception";
 import { UserDto } from "../dto/user.dto";
 import { UserService } from "../service/user.service";
 
@@ -28,9 +27,9 @@ export class UserController {
   @HttpCode(201)
   async createUser(@Param("id") id: number, @Body() userDto: UserDto) {
     try {
-      await this.userService.create(userDto);
+      return await this.userService.create(userDto);
     } catch (e: unknown) {
-      if (e instanceof EntityAlreadyExists) {
+      if (e instanceof UniqueViolation) {
         throw new BadRequestException(e, "Unable to create user");
       }
 

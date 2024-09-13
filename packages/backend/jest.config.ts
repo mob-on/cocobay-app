@@ -5,6 +5,8 @@ export default {
   transform: {
     "^.+\\.(t|j)s$": "ts-jest",
   },
+  globalSetup: "./test/setup/global-start.ts",
+  globalTeardown: "./test/setup/global-teardown.ts",
   collectCoverageFrom: [
     "src/**/*.(t|j)s",
     "!src/**/*.module.(t|j)s",
