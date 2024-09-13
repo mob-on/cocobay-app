@@ -5,6 +5,8 @@ load-testing/
 .github
 .husky
 .next
+coverage/
+.next/
 out/
 dist/
 node_modules

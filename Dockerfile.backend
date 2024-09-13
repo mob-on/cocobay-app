@@ -27,4 +27,4 @@ WORKDIR /app
 COPY --from=backend-build /app/packages/backend/dist /app/packages/backend/dist
 COPY --from=backend-build /app/node_modules /app/node_modules
 
-ENTRYPOINT ["node", "packages/backend/dist/src/main"]
+ENTRYPOINT ["node", "packages/backend/dist/main"]
