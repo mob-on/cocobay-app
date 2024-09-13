@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { Types } from "mongoose";
 import { User } from "src/user/model/user.model";
 
 const { maybe } = faker.helpers;
@@ -13,5 +14,16 @@ export const createValidUser = (user?: Partial<User>) => {
     ),
     username: maybe(() => faker.string.alphanumeric(16), { probability: 0.5 }),
     ...user,
-  } as Partial<User>;
+  } as User;
+};
+
+export const createValidUserWithIdAndTimestamp = (
+  user?: Partial<User>,
+): Partial<User> => {
+  return {
+    _id: new Types.ObjectId(faker.database.mongodbObjectId()),
+    createdAt: faker.date.anytime(),
+    updatedAt: faker.date.anytime(),
+    ...createValidUser(user),
+  } as User;
 };

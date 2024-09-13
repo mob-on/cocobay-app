@@ -32,7 +32,7 @@ export class UserDto {
     });
   }
 
-  toUser(): User {
+  toUser(): Partial<User> {
     return {
       id: this.id,
       firstName: this.firstName,

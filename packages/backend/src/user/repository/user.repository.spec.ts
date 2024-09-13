@@ -46,6 +46,7 @@ describe("UserRepository", () => {
     await repository.create(mockUser);
 
     const user = await repository.findById(mockUser.id);
+
     expect(user).toMatchObject(mockUser);
   });
 

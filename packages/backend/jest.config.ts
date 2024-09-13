@@ -3,7 +3,12 @@ export default {
   rootDir: "./",
   testRegex: "src/.*/.*\\.spec\\.ts$",
   transform: {
-    "^.+\\.(t|j)s$": "ts-jest",
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        tsconfig: "tsconfig.test.json",
+      },
+    ],
   },
   globalSetup: "./test/setup/global-start.ts",
   globalTeardown: "./test/setup/global-teardown.ts",

@@ -1,31 +1,28 @@
 import { faker } from "@faker-js/faker";
-import { getModelToken } from "@m8a/nestjs-typegoose";
 import { Test, TestingModule } from "@nestjs/testing";
+import { DuplicateUserException } from "src/common/exception/service/duplicate-user.exception";
 import { createValidUser } from "test/fixtures/model/user.data";
 import { UserDto } from "../dto/user.dto";
 import { User } from "../model/user.model";
+import { UserRepository } from "../repository/user.repository";
 import { UserService } from "./user.service";
 
 const mockUser = createValidUser();
-const mockIdError = -1;
+const mockIdError = "-1";
 
-class MockedUserModel {
-  static findOne = jest.fn().mockImplementation(({ id }: { id: number }) => {
-    return {
-      exec: () => {
-        if (id === mockIdError) throw new Error("Not found");
-        return mockUser;
-      },
-    };
+class MockedUserRepository {
+  static findById = jest.fn().mockImplementation((id: string) => {
+    if (id === mockIdError) return null;
+    return mockUser;
   });
 
-  static create = jest.fn().mockImplementation(({ id }: { id: number }) => {
-    return {
-      exec: () => {
-        if (id === mockIdError) throw new Error("User already exists");
-        return mockUser;
-      },
-    };
+  static createdUserIds: Set<string> = new Set();
+  static create = jest.fn().mockImplementation((user: Partial<User>) => {
+    if (this.createdUserIds.has(user.id)) {
+      throw new DuplicateUserException("");
+    }
+    this.createdUserIds.add(user.id);
+    return { _id: faker.string.numeric(16), ...user };
   });
 }
 
@@ -38,8 +35,8 @@ describe("UserService", () => {
       providers: [
         UserService,
         {
-          provide: getModelToken(User.name),
-          useValue: MockedUserModel,
+          provide: UserRepository,
+          useValue: MockedUserRepository,
         },
       ],
     }).compile();
@@ -52,12 +49,12 @@ describe("UserService", () => {
   });
 
   it("should throw an exception when not found", async () => {
-    const userFetch = service.findById(mockIdError);
+    const userFetch = service.getUser(mockIdError);
     await expect(userFetch).rejects.toThrow(Error);
   });
 
   it("should return a valid user when found", async () => {
-    const userFetch = service.findById(1);
+    const userFetch = service.getUser("1");
     expect(userFetch).resolves;
     expect(await userFetch).not.toHaveProperty("_id");
     expect(await userFetch).toHaveProperty("id");
@@ -65,25 +62,21 @@ describe("UserService", () => {
 
   it("should create a valid user when provided with the correct information", async () => {
     const userDto = new UserDto({
-      id: faker.number.int(),
+      id: faker.string.uuid(),
       firstName: faker.string.alphanumeric(16),
     });
     const userCreate = service.create(userDto);
     expect(userCreate).resolves;
-    expect(MockedUserModel.create).toHaveBeenCalledTimes(1);
-    expect(MockedUserModel.create).toHaveBeenCalledWith(userDto);
+    expect(MockedUserRepository.create).toHaveBeenCalledTimes(1);
+    expect(MockedUserRepository.create).toHaveBeenCalledWith(userDto);
   });
 
-  it.skip("should fail to create a user that already exists", async () => {
-    //TODO: use in-memory DB to make this test fail, do not mock more than this
-    const userDto = new UserDto({
-      id: faker.number.int(),
-      firstName: faker.string.alphanumeric(16),
-    });
+  it("should fail to create a user that already exists", async () => {
+    const mockUserDto = UserDto.fromUser(mockUser);
+    await service.create(mockUserDto);
 
-    await service.create(userDto);
-
-    const userCreate2 = service.create(userDto);
-    expect(userCreate2).rejects.toThrow(Error);
+    await expect(service.create(mockUserDto)).rejects.toThrow(
+      DuplicateUserException,
+    );
   });
 });

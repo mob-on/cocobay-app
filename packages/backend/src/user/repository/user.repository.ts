@@ -13,12 +13,28 @@ export class UserRepository {
     private readonly exception: ExceptionMapper,
   ) {}
 
+  /**
+   * Finds a user by their ID.
+   *
+   * @param id - The ID of the user to find.
+   * @returns A promise that resolves to the found user.
+   */
   async findById(id: string): Promise<User> {
-    return await this.userModel.findOne({
-      id,
-    });
+    return await this.userModel
+      .findOne({
+        id,
+      })
+      .lean()
+      .exec();
   }
 
+  /**
+   * Creates a new user.
+   *
+   * @param user - The user object to be created.
+   * @returns A promise that resolves to the created user.
+   * @throws {UniqueViolation} If there is a unique key violation.
+   */
   async create(user: Partial<User>): Promise<User> {
     try {
       return (await this.userModel.create(user)).save();
