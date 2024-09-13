@@ -30,12 +30,11 @@ export const createValidUserWithIdAndTimestamp = (
 
 export const createValidUserDto = (user?: Partial<User>): UserDto => {
   const validUser = createValidUser(user);
-  const userDto: UserDto = {
+  const userDto = new UserDto({
     id: validUser.id,
     firstName: validUser.firstName,
     username: validUser.username,
     languageCode: validUser.languageCode,
-    toUser: () => user,
-  };
+  });
   return userDto;
 }

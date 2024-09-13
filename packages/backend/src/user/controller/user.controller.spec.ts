@@ -30,7 +30,7 @@ describe("UserController", () => {
               id === mockUser.id
                 ? Promise.resolve(mockUser)
                 : Promise.reject(new EntityNotFoundException()),
-            create: () => Promise.resolve(mockUser),
+            create: (userDto: UserDto) => Promise.resolve(userDto.toUser()),
           },
         },
       ],
