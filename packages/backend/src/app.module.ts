@@ -1,9 +1,8 @@
-import { Module } from "@nestjs/common";
-import { HealthModule } from "./healthcheck/health.module";
-
-import "dotenv/config";
-import { UserModule } from "./user/user.module";
 import { TypegooseModule } from "@m8a/nestjs-typegoose";
+import { Module } from "@nestjs/common";
+import "dotenv/config";
+import { HealthModule } from "./healthcheck/health.module";
+import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [

@@ -3,8 +3,15 @@ export default {
   rootDir: "./",
   testRegex: "src/.*/.*\\.spec\\.ts$",
   transform: {
-    "^.+\\.(t|j)s$": "ts-jest",
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        tsconfig: "tsconfig.test.json",
+      },
+    ],
   },
+  globalSetup: "./test/setup/global-start.ts",
+  globalTeardown: "./test/setup/global-teardown.ts",
   collectCoverageFrom: [
     "src/**/*.(t|j)s",
     "!src/**/*.module.(t|j)s",
@@ -12,11 +19,12 @@ export default {
     "!src/main-api-bootstrap-config.ts",
     "!src/**/*.model.(t|j)s",
     "!src/**/*.dto.(t|j)s",
+    "!src/**/*.exception.(t|j)s",
     "!src/**/*.controller.(t|j)s",
     "!src/**/*.spec.(t|j)s",
   ],
   moduleNameMapper: {
-    "^src/(.*)$": "<rootDir>/src/$1",
+    "^(.*/?)(src|test)/(.*)$": "<rootDir>/$1/$2/$3",
   },
   coverageThreshold: {
     global: {

@@ -1,31 +1,22 @@
-import { ReturnModelType } from "@typegoose/typegoose";
-import { HealthModule } from "src/healthcheck/health.module";
-import { User } from "src/model/user.model";
-import TestAgent from "supertest/lib/agent";
-import { setupEndToEnd, TestControl } from "./setup/setup";
 import { faker } from "@faker-js/faker";
+import TestAgent from "supertest/lib/agent";
+import { HealthModule } from "src/healthcheck/health.module";
+import { ApiSetup, setupApi } from "test/setup/setup";
 
-describe("HealthController (e2e)", () => {
-  let tests: TestControl;
+describe("HealthController", () => {
+  let setup: ApiSetup;
   let api: TestAgent;
-  let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
-    ({
-      control: tests,
-      api,
-      userModel,
-    } = await setupEndToEnd({
+    setup = await setupApi([], {
       imports: [HealthModule],
-    }));
+    });
+
+    api = setup.api;
   });
 
   afterAll(async () => {
-    await tests.stop();
-  });
-
-  beforeEach(async () => {
-    await userModel.deleteMany({});
+    await setup.stop();
   });
 
   it("GET /v1/health", async () => {

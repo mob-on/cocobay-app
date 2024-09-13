@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Not enforcing linting across all projects before pushing yet
-# If you frequently push changes that fail linting, you'll need to enable this setting
-# yarn lint
+# Fast linting
+yarn lint
