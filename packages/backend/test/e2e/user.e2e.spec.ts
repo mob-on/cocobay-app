@@ -5,10 +5,10 @@ import { UserModule } from "src/user/user.module";
 import { createValidUserDto } from "test/fixtures/model/user.data";
 import { ApiSetup, setupApi } from "test/setup/setup";
 
+const mockUser = createValidUserDto();
+
 describe("UserController", () => {
   describe("GET /v1/user/:userId", () => {
-    const mockUser = createValidUserDto();
-
     let setup: ApiSetup;
     let api: TestAgent;
 
@@ -25,7 +25,7 @@ describe("UserController", () => {
     });
 
     beforeEach(async () => {
-      setup.clearModels();
+      await setup.clearModels();
     });
 
     it("should return a 404 when the user does not exist", async () => {
@@ -61,7 +61,7 @@ describe("UserController", () => {
     });
 
     beforeEach(async () => {
-      setup.clearModels();
+      await setup.clearModels();
     });
 
     it("should return a 400 when no valid body is provided", async () => {
@@ -69,12 +69,10 @@ describe("UserController", () => {
     });
 
     it("should return a 201 when a valid user is created", async () => {
-      const mockUser = createValidUserDto();
       return api.post(`/v1/user`).send(mockUser).expect(201);
     });
 
     it("should return a 400 when trying to create a user that already exists", async () => {
-      const mockUser = createValidUserDto();
       await api.post(`/v1/user`).send(mockUser).expect(201);
 
       return api.post(`/v1/user`).send(mockUser).expect(400);

@@ -14,7 +14,7 @@ import { setupMockDatabase } from "./mongodb";
 
 export interface DBSetup {
   stop: () => Promise<void>;
-  clearModels: () => void;
+  clearModels: () => Promise<void>;
   module: TestingModule;
 }
 
@@ -85,7 +85,9 @@ const setupNest = async <T extends TypegooseClass>(
 
     let result: DBSetup | ApiSetup = {
       module,
-      clearModels: () => models.forEach((m) => m.deleteMany({})),
+      clearModels: async () => {
+        await Promise.all(models.map((m) => m.deleteMany({})));
+      },
       stop: async () => {
         await mockDb.stop();
         await module.close();

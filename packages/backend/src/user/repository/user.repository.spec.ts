@@ -31,8 +31,8 @@ describe("UserRepository", () => {
     await setup.stop();
   });
 
-  afterEach(async () => {
-    await userModel.deleteMany({});
+  beforeEach(async () => {
+    await setup.clearModels();
   });
 
   it("should be defined", () => {
