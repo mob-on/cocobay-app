@@ -13,8 +13,7 @@ RUN yarn workspace backend install --immutable
 
 COPY . /app
 
-ARG APP_VERSION=edge
-RUN APP_VERSION=${APP_VERSION} yarn workspace backend build
+RUN yarn workspace backend build
 
 # After build, keep production-only dependencies in node_modules
 RUN yarn workspaces focus --production backend
@@ -26,5 +25,8 @@ WORKDIR /app
 
 COPY --from=backend-build /app/packages/backend/dist /app/packages/backend/dist
 COPY --from=backend-build /app/node_modules /app/node_modules
+
+ARG APP_VERSION=edge
+ENV APP_VERSION=${APP_VERSION} 
 
 ENTRYPOINT ["node", "packages/backend/dist/main"]
