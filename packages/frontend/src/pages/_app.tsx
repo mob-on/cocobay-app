@@ -1,5 +1,11 @@
 import "../styles/globals.scss";
 
+import TapCounterTimer from "@src/components/util/TapCounterTimer";
+import { DevSettingsContextProvider } from "@src/shared/context/DevSettingsContext";
+import { ErrorContextProvider } from "@src/shared/context/ErrorContext";
+import { LocalStorageContextProvider } from "@src/shared/context/LocalStorageContext";
+import { UserContextProvider } from "@src/shared/context/UserContext";
+import useTelegram from "@src/shared/hooks/useTelegram";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Telegram } from "@twa-dev/types";
 import type { AppProps } from "next/app";
@@ -7,12 +13,6 @@ import Head from "next/head";
 import Image from "next/image";
 import Script from "next/script";
 import { useEffect, useState } from "react";
-import TapCounterTimer from "src/components/util/TapCounterTimer";
-import { DevSettingsContextProvider } from "src/shared/context/DevSettingsContext";
-import { ErrorContextProvider } from "src/shared/context/ErrorContext";
-import { LocalStorageContextProvider } from "src/shared/context/LocalStorageContext";
-import { UserContextProvider } from "src/shared/context/UserContext";
-import useTelegram from "src/shared/hooks/useTelegram";
 
 import grid from "/public/media/grid.svg";
 

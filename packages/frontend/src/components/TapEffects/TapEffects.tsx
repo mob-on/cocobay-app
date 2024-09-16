@@ -1,7 +1,7 @@
+import { useTaps } from "@src/shared/context/TapEffectsContext";
+import styles from "@src/styles/components/tapEffects/tapEffects.module.scss";
 import Image from "next/image";
 import React from "react";
-import { useTaps } from "src/shared/context/TapEffectsContext";
-import styles from "src/styles/components/tapEffects/tapEffects.module.scss";
 
 import CocoCoin from "/public/media/coco-coin.svg";
 

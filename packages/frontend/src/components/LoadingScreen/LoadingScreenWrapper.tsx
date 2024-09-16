@@ -1,6 +1,6 @@
+import { useLoading } from "@src/shared/context/LoadingContext";
 import { NextComponentType, NextPageContext } from "next";
 import dynamic from "next/dynamic";
-import { useLoading } from "src/shared/context/LoadingContext";
 
 import LoadingScreen from "./LoadingScreen";
 

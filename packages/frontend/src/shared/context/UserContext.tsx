@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
+
+import useTelegram from "../hooks/useTelegram";
 import { IUser } from "../services/useUserService";
 import { ILoadingContextResource, useLoading } from "./LoadingContext";
-import useTelegram from "../hooks/useTelegram";
 
 export interface IUserContext {
   data: IUser;

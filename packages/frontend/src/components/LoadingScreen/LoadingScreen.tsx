@@ -1,6 +1,6 @@
+import styles from "@src/styles/components/loadingScreen/loadingScreen.module.scss";
 import { SpinLoading } from "antd-mobile";
 import Image from "next/image";
-import styles from "src/styles/components/loadingScreen/loadingScreen.module.scss";
 
 import cloud1 from "/public/media/cloud-white1.svg";
 import cloud2 from "/public/media/cloud-white2.svg";

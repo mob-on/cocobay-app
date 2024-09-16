@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { IUserDto } from "shared/src/dto/user.dto";
 
-import { UserDto } from "../api/dto/user.dto";
 import { useUserApi } from "../api/useUserApi";
 import useLogger from "../hooks/useLogger";
 import useTelegram from "../hooks/useTelegram";
@@ -62,15 +62,14 @@ export const LoadingProvider = ({ children }) => {
     }
     try {
       logger.info("Getting user");
-      const appUser = await userApi.get(user.id + 1);
+      const appUser = await userApi.get(user.id.toString());
       logger.info("Got user!", user);
       return appUser;
     } catch (err) {
       try {
-        const userObject: UserDto = {
-          id: user.id + 1,
+        const userObject: IUserDto = {
+          id: user?.id.toString(),
           firstName: user.first_name,
-          lastName: user.last_name,
           username: user.username,
           languageCode: user.language_code,
         };
