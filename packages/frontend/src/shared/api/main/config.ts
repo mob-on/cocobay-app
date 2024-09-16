@@ -7,7 +7,7 @@ import { Feature } from "src/shared/lib/FeatureFlags";
 export const useMainApiConfig = (baseUrl?: string) => {
   const [storageApiUrl] = useStoredApiUrl();
   const apiUrl =
-    baseUrl ?? (Feature.DEV_MODE ? storageApiUrl : Config.apis.main.baseUrl);
+    baseUrl || (Feature.DEV_MODE ? storageApiUrl : Config.apis.main.baseUrl);
 
   return [useMemo(() => axios.create({ baseURL: apiUrl }), [apiUrl])];
 };

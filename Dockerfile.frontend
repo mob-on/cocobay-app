@@ -15,7 +15,10 @@ COPY . /app
 RUN mv packages/frontend/config/local.template.ts packages/frontend/config/local.ts
 
 ARG ENV
-RUN NEXT_PUBLIC_ENVIRONMENT=${ENV} yarn workspace frontend build
+ARG APP_VERSION=edge
+RUN NEXT_PUBLIC_ENVIRONMENT=${ENV} \
+    NEXT_PUBLIC_APP_VERSION=${APP_VERSION} \
+    yarn workspace frontend build
 
 FROM nginx:alpine AS frontend
 

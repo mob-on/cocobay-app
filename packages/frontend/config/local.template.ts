@@ -1,6 +1,8 @@
 const config = {
   env: "local",
-  features: {},
+  features: {
+    devMode: true,
+  },
   apis: {
     main: {
       baseUrl: "http://localhost:3001",

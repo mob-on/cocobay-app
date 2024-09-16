@@ -11,7 +11,9 @@ export const useMainApi = (baseUrl?: string) => {
       const logger = useLogger("isHealthy");
       try {
         const response = await axios.get("/v1/health");
-        return response.status === 200;
+        if (response.status === 200) {
+          return response.data;
+        }
       } catch (e: unknown) {
         logger.error("Unable to get API health", e);
       }
