@@ -3,9 +3,6 @@ name: Docker package
 on:
   workflow_call:
     inputs:
-      env:
-        type: string
-        required: true
       docker-build-args:
         type: string
         description: Arguments for docker build, example => ". --file Dockerfile.backend --target backend"
@@ -23,7 +20,6 @@ jobs:
   build:
     name: ${{ inputs.app-name }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4

@@ -15,7 +15,6 @@ jobs:
   check-build-exists:
     name: Skip build if exists
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
     outputs:
       exists: ${{ steps.check-build-exists.outputs.exists }}
 
@@ -44,7 +43,6 @@ jobs:
     name: Install and cache
     if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
     needs: check-build-exists
     outputs:
       version: ${{ steps.meta.outputs.version }}
@@ -68,7 +66,6 @@ jobs:
     name: Lint check
     if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
     needs:
       - check-build-exists
       - setup
@@ -92,7 +89,6 @@ jobs:
     name: Unit tests
     if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
     needs:
       - check-build-exists
       - setup
@@ -116,7 +112,6 @@ jobs:
     name: End to end tests
     if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
     needs:
       - check-build-exists
       - setup
@@ -145,9 +140,8 @@ jobs:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit
     with:
-      env: ${{ inputs.env }}
       docker-build-args: ". --file Dockerfile.backend --target backend \
-        --build-arg ENV=${{ vars.ENV }} --build-arg APP_VERSION=${{ needs.setup.outputs.version }}"
+        --build-arg ENV=${{ inputs.env }} --build-arg APP_VERSION=${{ needs.setup.outputs.version }}"
       app-name: cocobay-app-backend
       version: ${{ needs.setup.outputs.version }}
 
@@ -160,8 +154,7 @@ jobs:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit
     with:
-      env: ${{ inputs.env }}
       docker-build-args: ". --file Dockerfile.frontend --target frontend \
-        --build-arg ENV=${{ vars.ENV }} --build-arg APP_VERSION=${{ needs.setup.outputs.version }}"
+        --build-arg ENV=${{ inputs.env }} --build-arg APP_VERSION=${{ needs.setup.outputs.version }}"
       app-name: cocobay-app-frontend
       version: ${{ needs.setup.outputs.version }}
