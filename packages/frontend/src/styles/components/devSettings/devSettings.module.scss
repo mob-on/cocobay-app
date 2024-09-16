@@ -1,3 +1,8 @@
 .statusIcon {
   margin-left: calc(var(--padding-inner) / 2);
 }
+
+.longText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

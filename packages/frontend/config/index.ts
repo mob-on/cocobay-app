@@ -1,8 +1,9 @@
 import _object from "lodash/object";
+
 import baseConfig from "./default";
-import stageConfig from "./stage";
 import localConfig from "./local";
 import prodConfig from "./prod";
+import stageConfig from "./stage";
 
 interface ConfigSettings {
   env: "local" | "stage" | "prod";
