@@ -1,6 +1,8 @@
 const config = {
   env: "stage",
-  devMode: true,
+  features: {
+    devMode: true,
+  },
 };
 
 export default config;
