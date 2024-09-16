@@ -58,7 +58,10 @@ export const LoadingProvider = ({ children }) => {
     const { user } = initDataUnsafe;
     if (!user) {
       logger.error("No user information available");
-      return {};
+      errorContext.showErrorScreen({
+        message: "No user information available",
+      });
+      throw new Error("No user information available");
     }
     try {
       logger.info("Getting user");
