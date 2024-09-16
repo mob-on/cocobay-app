@@ -18,10 +18,10 @@
     "paths": {
       "@src/*": ["src/*"],
       "@shared/*": ["../shared/*"],
-      "@lib/*": ["../lib/*"],
+      "@lib/*": ["src/shared/lib/*"],
       "@components/*": ["../components/*"],
       "@pages/*": ["../pages/*"],
-      "@hooks/*": ["../shared/hooks/*"],
+      "@hooks/*": ["src/shared/hooks/*"],
       "@utils/*": ["../shared/utils/*"],
       "@tests/*": ["../tests/*"]
     }
