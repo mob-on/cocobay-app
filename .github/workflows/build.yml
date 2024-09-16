@@ -19,6 +19,9 @@ jobs:
       exists: ${{ steps.check-build-exists.outputs.exists }}
 
     steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
       - name: Set version number
         id: meta
         uses: docker/metadata-action@v5
