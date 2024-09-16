@@ -45,16 +45,15 @@ export const DevScreen = () => {
       style={{ background: "#000", height: "100%" }}
     >
       <Form.Header>Developer Settings</Form.Header>
-      <Form.Item label="Front End App Version" layout="horizontal">
-        <Input
-          type="text"
-          value={`${process.env.NEXT_PUBLIC_APP_VERSION ?? "edge"} (${process.env.NEXT_PUBLIC_APP_BUILD_TIME ?? new Date().toISOString()})`}
-          readOnly
-        />
+      <Form.Item label="Front End App Version">
+        <div className={styles.longText}>
+          {process.env.NEXT_PUBLIC_APP_VERSION ?? "edge"}
+        </div>
       </Form.Item>
-      <Form.Item label="Back End App Version" layout="horizontal">
-        <Input type="text" value={mainApiVersion} readOnly />
+      <Form.Item label="Front End App Date">
+        {process.env.NEXT_PUBLIC_APP_BUILD_TIME ?? "edge"}
       </Form.Item>
+      <Form.Item label="Back End App Version">{mainApiVersion}</Form.Item>
       <Form.Item label="Main API Base URL" layout="horizontal">
         <Input
           type="text"
