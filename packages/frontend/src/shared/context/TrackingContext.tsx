@@ -1,13 +1,13 @@
-import { createContext, useContext } from "react";
+import useLogger from "@hooks/useLogger";
+import { TrackerEventTypes, useTracking } from "@hooks/useTracking";
+import { usePathname } from "next/navigation";
+import { createContext, useContext, useEffect } from "react";
 
-import { useMainApiConfig } from "../api/main/config";
-import useLogger from "../hooks/useLogger";
-import { Tracker } from "../lib/Tracker";
-import { useStoredApiUrl } from "./LocalStorageContext";
+export const TrackingContext = createContext<{ track: (any) => void } | null>(
+  null,
+);
 
-export const TrackingContext = createContext<Tracker | null>(null);
-
-export const useTracker = () => {
+export const useTrackerContext = () => {
   const logger = useLogger("useTracker");
   const tracker = useContext(TrackingContext);
 
@@ -20,13 +20,15 @@ export const useTracker = () => {
 export const TrackingProvider: React.FC<{ children: React.JSX.Element }> = ({
   children,
 }) => {
-  const logger = useLogger("TrackingProvider");
-  const [storageApiUrl] = useStoredApiUrl();
+  const pathname = usePathname();
+  const [track] = useTracking();
 
-  const tracker = new Tracker({ logger, href: storageApiUrl });
+  useEffect(() => {
+    track(TrackerEventTypes.PAGE_VIEW);
+  }, [pathname]);
 
   return (
-    <TrackingContext.Provider value={tracker}>
+    <TrackingContext.Provider value={{ track }}>
       {children}
     </TrackingContext.Provider>
   );
