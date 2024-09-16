@@ -23,7 +23,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     secrets: inherit
     with:
-      env: staging
+      env: stage
 
   deployment:
     name: Deploy to staging
