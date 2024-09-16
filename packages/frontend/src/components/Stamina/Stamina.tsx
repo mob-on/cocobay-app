@@ -1,8 +1,8 @@
+import { useGameState } from "@src/shared/context/GameStateContext";
+import styles from "@src/styles/components/main/stamina.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { useGameState } from "src/shared/context/GameStateContext";
-import styles from "src/styles/components/main/stamina.module.scss";
 
 import BoostsIcon from "/public/media/icons/boosts.svg";
 

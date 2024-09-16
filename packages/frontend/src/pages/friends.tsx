@@ -1,14 +1,14 @@
 import CopyOutlined from "@ant-design/icons/CopyOutlined";
+import { defaultFriends } from "@src/components/Friends";
+import FriendsList from "@src/components/Friends/FriendsList";
+import Button from "@src/components/shared/Button";
+import Card from "@src/components/shared/Card";
+import { ICardVariant } from "@src/components/shared/Card/Card";
+import Cost from "@src/components/shared/Cost";
+import styles from "@src/styles/pages/friends.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { defaultFriends } from "src/components/Friends";
-import FriendsList from "src/components/Friends/FriendsList";
-import Button from "src/components/shared/Button";
-import Card from "src/components/shared/Card";
-import { ICardVariant } from "src/components/shared/Card/Card";
-import Cost from "src/components/shared/Cost";
-import styles from "src/styles/pages/friends.module.scss";
 
 import coco from "/public/media/coco/coco-pink-swag.svg";
 

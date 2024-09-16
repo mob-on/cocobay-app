@@ -1,6 +1,6 @@
+import styles from "@src/styles/components/main/homeAvatar.module.scss";
 import { Avatar } from "antd-mobile";
 import React, { useState } from "react";
-import styles from "src/styles/components/main/homeAvatar.module.scss";
 
 import Hero from "/public/media/coco/coco-pink-swag.svg";
 

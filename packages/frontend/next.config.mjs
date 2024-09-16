@@ -16,22 +16,6 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["pino", "pino-pretty"],
   },
-  // webpack(config) {
-  //   config.module.rules.push(
-  //     {
-  //       test: /\.svg$/,
-  //       use: [
-  //         {
-  //           loader: '@svgr/webpack',
-  //           options: {
-
-  //           },
-  //         },
-  //       ]
-  //     }
-  //   );
-  //   return config;
-  // },
 };
 
 const defaultConfig = {};

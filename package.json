@@ -6,16 +6,17 @@
   ],
   "scripts": {
     "prepare": "./scripts/prepare",
-    "dev": "lerna run dev --parallel --scope \"{backend,frontend}\"",
+    "dev": "lerna run dev --parallel --scope \"{backend,frontend,dashboard}\"",
     "dev:frontend": "lerna run dev --scope frontend",
     "dev:backend": "lerna run dev --scope backend",
+    "dev:dashboard": "lerna run dev --scope dashboard",
     "test": "lerna run test --scope frontend && lerna run test --scope backend",
     "test:cov": "lerna run test --scope frontend && lerna run test:cov --scope backend",
     "test:e2e": "lerna run test:e2e --scope \"backend\"",
     "test:e2e-cov": "lerna run test:e2e-cov --scope \"backend\"",
-    "lint": "lerna run lint --scope \"{backend,frontend}\"",
-    "lint:check": "lerna run lint:check --scope \"{backend,frontend}\"",
-    "build": "lerna run build --scope \"{backend,frontend}\"",
+    "lint": "lerna run lint --scope \"{backend,frontend,dashboard}\"",
+    "lint:check": "lerna run lint:check --scope \"{backend,frontend,dashboard}\"",
+    "build": "lerna run build --scope \"{backend,frontend,dashboard}\"",
     "load-test": "./load-testing/start-test.sh"
   },
   "devDependencies": {
