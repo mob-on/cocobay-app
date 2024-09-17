@@ -1,6 +1,6 @@
 import SettingOutlined from "@ant-design/icons/SettingOutlined";
+import DevScreen from "@src/components/DevScreen";
 import { createContext, useContext, useState } from "react";
-import DevScreen from "src/components/DevScreen";
 
 import { Feature } from "../lib/FeatureFlags";
 

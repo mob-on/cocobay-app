@@ -1,7 +1,7 @@
+import { IBuild } from "@src/components/Build";
+import styles from "@src/styles/components/shared/card/buildCard.module.scss";
 import Image from "next/image";
 import React from "react";
-import { IBuild } from "src/components/Build";
-import styles from "src/styles/components/shared/card/buildCard.module.scss";
 
 import Cost from "../Cost";
 

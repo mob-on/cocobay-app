@@ -1,13 +1,13 @@
-import Image from "next/image";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useGameState } from "src/shared/context/GameStateContext";
+import { useGameState } from "@src/shared/context/GameStateContext";
 import {
   TAP_EFFECTS_THROTTLE,
   TAP_EFFECTS_TIMEOUT,
   useTaps,
-} from "src/shared/context/TapEffectsContext";
-import useTelegram from "src/shared/hooks/useTelegram";
-import styles from "src/styles/components/tapArea/tapArea.module.scss";
+} from "@src/shared/context/TapEffectsContext";
+import useTelegram from "@src/shared/hooks/useTelegram";
+import styles from "@src/styles/components/tapArea/tapArea.module.scss";
+import Image from "next/image";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import cloud1 from "/public/media/cloud1.svg";

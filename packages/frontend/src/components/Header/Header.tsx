@@ -1,8 +1,8 @@
+import styles from "@src/styles/components/header.module.scss";
 import { LeftOutline } from "antd-mobile-icons";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
-import styles from "src/styles/components/header.module.scss";
 
 import Logo from "/public/media/logo.svg";
 

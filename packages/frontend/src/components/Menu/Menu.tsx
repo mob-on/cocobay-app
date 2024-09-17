@@ -1,6 +1,6 @@
+import { useLoading } from "@src/shared/context/LoadingContext";
+import styles from "@src/styles/components/menu/menu.module.scss";
 import { useRouter } from "next/router";
-import { useLoading } from "src/shared/context/LoadingContext";
-import styles from "src/styles/components/menu/menu.module.scss";
 
 import BuildIcon from "/public/media/icons/build.svg";
 import EarnIcon from "/public/media/icons/earn.svg";

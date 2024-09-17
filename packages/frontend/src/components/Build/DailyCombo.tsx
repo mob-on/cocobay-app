@@ -1,5 +1,5 @@
+import styles from "@src/styles/components/build/dailyCombo.module.scss";
 import Image from "next/image";
-import styles from "src/styles/components/build/dailyCombo.module.scss";
 
 import hero from "/public/media/coco/coco-pink-swag.svg";
 

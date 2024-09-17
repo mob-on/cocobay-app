@@ -1,6 +1,6 @@
+import NumberFormatter from "@src/shared/lib/NumberFormatter";
+import styles from "@src/styles/components/dailyRewards/dailyReward.module.scss";
 import Image from "next/image";
-import NumberFormatter from "src/shared/lib/NumberFormatter";
-import styles from "src/styles/components/dailyRewards/dailyReward.module.scss";
 
 import Card from "../shared/Card";
 import Cost from "../shared/Cost";

@@ -1,7 +1,7 @@
-import { Popup, Space } from "antd-mobile";
-import { CloseCircleFill, CloseOutline } from "antd-mobile-icons";
+import Button from "@src/components/shared/Button";
+import { Popup } from "antd-mobile";
+import { CloseCircleFill } from "antd-mobile-icons";
 import { createContext, useContext, useMemo, useState } from "react";
-import Button from "src/components/shared/Button";
 
 import { Feature } from "../lib/FeatureFlags";
 

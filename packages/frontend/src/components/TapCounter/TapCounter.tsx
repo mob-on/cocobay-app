@@ -1,7 +1,7 @@
+import { useGameState } from "@src/shared/context/GameStateContext";
+import NumberFormatter from "@src/shared/lib/NumberFormatter";
+import styles from "@src/styles/components/tapCounter/tapCounter.module.scss";
 import React, { useMemo } from "react";
-import { useGameState } from "src/shared/context/GameStateContext";
-import NumberFormatter from "src/shared/lib/NumberFormatter";
-import styles from "src/styles/components/tapCounter/tapCounter.module.scss";
 
 import Cost from "../shared/Cost";
 

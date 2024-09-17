@@ -1,7 +1,7 @@
+import styles from "@src/styles/components/menu/button.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import styles from "src/styles/components/menu/button.module.scss";
 
 interface IMenuButtonProps {
   text: string;
