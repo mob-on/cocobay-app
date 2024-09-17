@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { IUserDto } from "shared/src/dto/user.dto";
+import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
+import { UserDto } from "@shared/src/dto/user.dto";
 
 import { useUserApi } from "../api/useUserApi";
 import useLogger from "../hooks/useLogger";
@@ -7,6 +7,7 @@ import useTelegram from "../hooks/useTelegram";
 import { USER_QUERY_KEY } from "../services/useUserService";
 import { useErrorContext } from "./ErrorContext";
 import { useStoredApiUrl } from "./LocalStorageContext";
+import { validate } from "class-validator";
 
 const MAX_TRIES = 3;
 
@@ -46,6 +47,20 @@ export const LoadingProvider = ({ children }) => {
   const [WebApp] = useTelegram();
   const userApi = useUserApi();
 
+  const userObject = {
+    id: '10',
+    firstName: 1,
+    username: '222',
+    languageCode: '3333',
+  };
+
+  const user = new UserDto();
+  user.id = 1 as unknown as string;
+
+  const validationErrors = validate(user).then(errors => {
+    console.log(errors);
+  });
+  
   const login = async (tries = 1) => {
     if (tries > MAX_TRIES) {
       errorContext.showErrorScreen({
@@ -70,12 +85,17 @@ export const LoadingProvider = ({ children }) => {
       return appUser;
     } catch (err) {
       try {
-        const userObject: IUserDto = {
+        const userObject: UserDto = {
           id: user?.id.toString(),
           firstName: user.first_name,
           username: user.username,
           languageCode: user.language_code,
         };
+        const validationErrors = await validate(userObject);
+        if (validationErrors.length > 0) {
+          logger.error("Validation errors", validationErrors);
+          throw new Error("Validation errors: " + validationErrors);
+        }
         const appUser = await userApi.register(userObject);
         return appUser;
       } catch (e) {
