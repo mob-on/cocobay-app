@@ -1,4 +1,4 @@
-import Config from "../../../config";
+import { Config } from "../../../config";
 import { LocalStorage } from "../LocalStorage";
 
 const FeatureConfig = {

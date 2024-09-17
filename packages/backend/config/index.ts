@@ -1,19 +1,12 @@
-import _object from "lodash/object";
-
+import { merge } from "lodash";
 import baseConfig from "./default";
 import localConfig from "./local";
 import prodConfig from "./prod";
 import stageConfig from "./stage";
 
-interface ConfigSettings {
+export interface ConfigSettings {
   env: string; //"local" | "stage" | "prod"
-  features?: { [key: string]: boolean };
-
-  apis: {
-    main: {
-      baseUrl: string;
-    };
-  };
+  features: { [key: string]: boolean };
 }
 
 export const Config = ((): ConfigSettings => {
@@ -30,5 +23,5 @@ export const Config = ((): ConfigSettings => {
       break;
   }
 
-  return _object.merge(baseConfig, config);
+  return merge(baseConfig, config);
 })();

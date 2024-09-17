@@ -2,4 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # Fast linting
-yarn lint
+# Disabled until we can fix concurrency issues: https://github.com/lint-staged/lint-staged/issues/896
+# yarn lint

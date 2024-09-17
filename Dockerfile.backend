@@ -12,6 +12,7 @@ COPY --parents package.json yarn.lock .yarnrc.yml .yarn/ packages/*/package.json
 RUN yarn workspace backend install --immutable
 
 COPY . /app
+RUN mv packages/backend/config/local.template.ts packages/backend/config/local.ts
 
 RUN yarn workspace backend build
 
@@ -28,5 +29,6 @@ COPY --from=backend-build /app/node_modules /app/node_modules
 
 ARG APP_VERSION=edge
 ENV APP_VERSION=${APP_VERSION} 
+RUN export BUILD_TIME=$(date +"%Y-%m-%dT%H:%M:%S%z")
 
 ENTRYPOINT ["node", "packages/backend/dist/main"]
