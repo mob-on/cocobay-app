@@ -25,6 +25,12 @@ jobs:
       exists: ${{ steps.check-build-exists.outputs.exists }}
       version: ${{ steps.check-build-exists.outputs.version }}
     steps:
+      - name: Checkout branch
+        id: git-checkout
+        uses: actions/checkout@main
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
       - uses: ./.github/workflows/actions/check-build-exists
         id: check-build-exists
         with:
