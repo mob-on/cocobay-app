@@ -1,5 +1,6 @@
 import { merge } from "lodash";
 import baseConfig from "./default";
+//eslint-disable-next-line import/no-unresolved
 import localConfig from "./local";
 import prodConfig from "./prod";
 import stageConfig from "./stage";
