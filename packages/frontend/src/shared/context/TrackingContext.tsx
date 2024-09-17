@@ -1,7 +1,7 @@
 import useLogger from "@hooks/useLogger";
 import { TrackerEventType, useTracking } from "@hooks/useTracking";
 import { usePathname } from "next/navigation";
-import { createContext, useCallback, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 
 export const TrackingContext = createContext<{
   track: (event: TrackerEventType, data: any, ...tags: string[]) => void;

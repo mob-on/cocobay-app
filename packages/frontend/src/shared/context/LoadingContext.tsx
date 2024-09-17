@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { UserDto } from "@shared/src/dto/user.dto";
+import { validate } from "class-validator";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import { useUserApi } from "../api/useUserApi";
 import useLogger from "../hooks/useLogger";
@@ -7,7 +14,6 @@ import useTelegram from "../hooks/useTelegram";
 import { USER_QUERY_KEY } from "../services/useUserService";
 import { useErrorContext } from "./ErrorContext";
 import { useStoredApiUrl } from "./LocalStorageContext";
-import { validate } from "class-validator";
 
 const MAX_TRIES = 3;
 
@@ -48,19 +54,15 @@ export const LoadingProvider = ({ children }) => {
   const userApi = useUserApi();
 
   const userObject = {
-    id: '10',
+    id: "10",
     firstName: 1,
-    username: '222',
-    languageCode: '3333',
+    username: "222",
+    languageCode: "3333",
   };
 
   const user = new UserDto();
   user.id = 1 as unknown as string;
 
-  const validationErrors = validate(user).then(errors => {
-    console.log(errors);
-  });
-  
   const login = async (tries = 1) => {
     if (tries > MAX_TRIES) {
       errorContext.showErrorScreen({

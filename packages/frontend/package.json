@@ -31,7 +31,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "class-validator": "^0.14.1",
-    "next": "^14.2.6",
+    "next": "14.2.11",
     "next-images": "^1.8.5",
     "pino": "^9.4.0",
     "pino-pretty": "^11.2.2",
@@ -79,5 +79,10 @@
     "sass": "^1.78.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
+  },
+  "packageManager": "yarn@3.4.1",
+  "resolutions": {
+    "next@14.2.11": "patch:next@npm%3A14.2.11#./.yarn/patches/next-npm-14.2.11-55919a1342.patch",
+    "next@^14.2.11": "patch:next@npm%3A14.2.11#./.yarn/patches/next-npm-14.2.11-55919a1342.patch"
   }
 }

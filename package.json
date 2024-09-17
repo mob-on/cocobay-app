@@ -24,6 +24,8 @@
     "husky": "^8.0.0",
     "husky-init": "^8.0.0",
     "lint-staged": "^15.2.10",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
