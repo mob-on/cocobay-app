@@ -1,5 +1,5 @@
 import toISOString from "@lib/toISOString";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useMainApiConfig } from "../api/main/config";
 import { useTrackingApi } from "../api/useTrackingApi";
@@ -7,21 +7,33 @@ import useLogger from "../hooks/useLogger";
 
 const MAX_EVENT_BUFFER_SIZE = 3;
 
-export enum TrackerEventTypes {
+export enum TrackerEventType {
   PAGE_VIEW = "page_view",
   BOOST_USE = "boost_use",
   BOOST_UPGRADE = "boost_upgrade",
   BUILD_UPGRADE = "build_upgrade",
   CLICK_LINK = "click_link",
+  TEST = "test",
 }
 
-export interface ITrackerEvent {
-  event: TrackerEventTypes;
+export interface ITrackerEvent<T = any> {
+  event: TrackerEventType;
+  data: T;
   tags?: string[];
   url: string;
   title: string;
   ts: string;
 }
+
+export type IPageViewEvent = ITrackerEvent<{
+  pathname: string;
+  title: string;
+}>;
+
+export type ITestEvent = ITrackerEvent<{
+  testData: any;
+}>;
+
 /**
  * Hook to track events in the app.
  *
@@ -36,24 +48,23 @@ export interface ITrackerEvent {
  * @param {object} options
  * @param {AxiosInstance} options.axios - An instance of Axios.
  * @param {Logger} options.logger - A logger instance.
- * @returns {[(event: TrackerEventTypes, ...tags: string[]) => void, () => void]}
  */
 export const useTracking = (): [
-  (event: TrackerEventTypes, ...tags: string[]) => void,
+  (event: TrackerEventType, data?: any, ...tags: string[]) => void,
   () => void,
 ] => {
   const logger = useLogger("useTracker");
   const [axios] = useMainApiConfig();
-  const [buffer, setBuffer] = useState<ITrackerEvent[]>([]);
-  const [lastSendTimestamp, setLastSendTimestamp] = useState<number>(0);
-  const [timeoutController, setTimeoutController] = useState<
-    number | undefined
-  >(undefined);
+  const buffer = useRef<ITrackerEvent[]>([]);
+  const lastSendTimestamp = useRef<number>(Date.now());
+  const timeoutController = useRef<number | undefined>(undefined);
+
   const trackingApi = useTrackingApi();
 
   const handleNavigationOrTabClose = useCallback(() => {
-    const bufferCopy = [...buffer];
-    setBuffer([]);
+    console.log(102, "handleNavigationOrTabClose");
+    const bufferCopy = [...buffer.current];
+    buffer.current = [];
 
     if (!bufferCopy.length) return;
     navigator.sendBeacon(
@@ -66,51 +77,42 @@ export const useTracking = (): [
     const timestamp = Number(new Date());
 
     if (
-      buffer.length >= MAX_EVENT_BUFFER_SIZE ||
-      timestamp - lastSendTimestamp >= 1000
+      buffer.current.length >= MAX_EVENT_BUFFER_SIZE ||
+      timestamp - lastSendTimestamp.current >= 1000
     )
       return true;
     else return false;
-  }, [buffer, lastSendTimestamp]);
+  }, [lastSendTimestamp]);
 
   const report = useCallback(
     (force = false) => {
       const shouldSendValue = force ? true : shouldSend();
-      const bufferCopy = [...buffer];
+      const bufferCopy = [...buffer.current];
 
       if (!shouldSendValue && bufferCopy.length) {
-        const lastSendTimestampValue = lastSendTimestamp;
-        clearTimeout(timeoutController);
-        setTimeoutController(
-          window.setTimeout(
-            () => report(),
-            lastSendTimestampValue - Number(new Date()) + 1000,
-          ) as number,
+        clearTimeout(timeoutController.current);
+        timeoutController.current = window.setTimeout(
+          () => report(),
+          lastSendTimestamp.current - Number(new Date()) + 1000,
         );
+
         return;
       } else if (!shouldSendValue) {
         return;
       }
 
-      setLastSendTimestamp(Number(new Date()));
+      lastSendTimestamp.current = Number(new Date());
 
-      setBuffer([]);
+      buffer.current = [];
       trackingApi.mutate(bufferCopy, {
         onError: (e: Error) => {
           logger.error(e);
-          setBuffer([...bufferCopy, ...buffer]); // Return data to buffer
+          buffer.current = [...bufferCopy, ...buffer.current]; // Return data to buffer
           window.setTimeout(report, 1000);
         },
       });
     },
-    [
-      buffer,
-      lastSendTimestamp,
-      logger,
-      trackingApi,
-      shouldSend,
-      handleNavigationOrTabClose,
-    ],
+    [logger, trackingApi, shouldSend, handleNavigationOrTabClose],
   );
 
   useEffect(() => {
@@ -120,17 +122,30 @@ export const useTracking = (): [
   }, [handleNavigationOrTabClose]);
 
   return [
-    (event: TrackerEventTypes, ...tags: string[]) => {
-      const bufferEvent: ITrackerEvent = {
-        event,
-        tags,
-        url: window.location.href,
-        title: document.title,
-        ts: toISOString(new Date()),
-      };
-      setBuffer((prev) => [...prev, bufferEvent]);
+    (event: TrackerEventType, data: any = {}, ...tags) => {
+      let bufferEvent: ITrackerEvent | null = null;
+      switch (event) {
+        case TrackerEventType.PAGE_VIEW:
+        case TrackerEventType.CLICK_LINK:
+          bufferEvent = { event, data: {} } as IPageViewEvent;
+          break;
+        case TrackerEventType.TEST:
+          bufferEvent = { event, data } as ITestEvent;
+          break;
+      }
 
-      if (event === TrackerEventTypes.CLICK_LINK) handleNavigationOrTabClose();
+      if (!bufferEvent) {
+        logger.error(`Event type not implemented: ${event}`);
+        return;
+      }
+
+      bufferEvent.tags = tags;
+      bufferEvent.url = window.location.pathname;
+      bufferEvent.title = document.title;
+      bufferEvent.ts = toISOString(new Date());
+
+      buffer.current = [...buffer.current, bufferEvent];
+      if (event === TrackerEventType.CLICK_LINK) handleNavigationOrTabClose();
       else report();
     },
     report,
