@@ -1,12 +1,13 @@
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
+import { UserDto } from "@shared/src/dto/user.dto";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
 import {
   createValidUser,
   createValidUserDto,
 } from "test/fixtures/model/user.data";
-import { UserDto } from "../dto/user.dto";
+import { UserDtoMapper } from "../service/user-mapping.service";
 import { UserService } from "../service/user.service";
 import { UserController } from "./user.controller";
 
@@ -30,7 +31,7 @@ describe("UserController", () => {
                 ? Promise.resolve(mockUser)
                 : Promise.reject(new EntityNotFoundException()),
             create: (userDto: UserDto) => {
-              return Promise.resolve(UserDto.toUser(userDto));
+              return Promise.resolve(new UserDtoMapper().toUser(userDto));
             },
           },
         },

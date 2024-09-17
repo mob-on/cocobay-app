@@ -4,9 +4,6 @@ export default {
   ...defaultJestConfig.default,
   ...{
     rootDir: "../",
-    moduleNameMapper: {
-      "^(src|test)/(.*)$": "<rootDir>/$1/$2",
-    },
     collectCoverageFrom: [
       ...defaultJestConfig.default.collectCoverageFrom,
       "src/**/*.controller.(t|j)s",

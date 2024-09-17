@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Injectable } from "@nestjs/common";
+import { UserDto } from "@shared/src/dto/user.dto";
 import { MinimalUser, User } from "../model/user.model";
 
 const assignExisting = <T extends object>(
@@ -14,24 +15,9 @@ const assignExisting = <T extends object>(
   return out;
 };
 
-export class UserDto {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-
-  @IsOptional()
-  @IsString()
-  firstName?: string;
-
-  @IsOptional()
-  @IsString()
-  username?: string;
-
-  @IsOptional()
-  @IsString()
-  languageCode?: string;
-
-  static fromUser(user: Partial<User>): UserDto {
+@Injectable()
+export class UserDtoMapper {
+  fromUser(user: Partial<User>): UserDto {
     if (!user) return null;
 
     const userDto = new UserDto();
@@ -44,7 +30,7 @@ export class UserDto {
     });
   }
 
-  static toUser(user: UserDto): MinimalUser {
+  toUser(user: UserDto): MinimalUser {
     return assignExisting(
       { id: user.id },
       {

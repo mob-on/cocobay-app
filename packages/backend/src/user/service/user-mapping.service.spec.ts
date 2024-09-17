@@ -1,5 +1,5 @@
 import { BadRequestException, ValidationPipe } from "@nestjs/common";
-import { UserDto } from "./user.dto";
+import { UserDto } from "@shared/src/dto/user.dto";
 
 describe("User Validation", () => {
   let validationPipe: ValidationPipe;

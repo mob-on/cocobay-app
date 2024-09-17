@@ -8,9 +8,9 @@ import {
   Param,
   Post,
 } from "@nestjs/common";
+import { UserDto } from "@shared/src/dto/user.dto";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
-import { UserDto } from "../dto/user.dto";
 import { UserService } from "../service/user.service";
 
 @Controller("/user")

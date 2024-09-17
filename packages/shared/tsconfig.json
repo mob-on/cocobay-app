@@ -2,9 +2,13 @@
   "compilerOptions": {
     "declaration": true,
     "module": "commonjs",
-    "target": "ES6",
+    "target": "ES2021",
     "outDir": "./dist",
     "rootDir": "./src",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true
   },
   "include": ["src"],
