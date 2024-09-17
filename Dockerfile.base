@@ -1,0 +1,12 @@
+# syntax=docker/dockerfile:1.9.0-labs
+FROM node:22
+
+RUN mkdir /app
+WORKDIR /app
+
+#Tell yarn we're building in CI
+ENV CI=true
+
+COPY --parents package.json yarn.lock .yarnrc.yml .yarn/ packages/*/package.json packages/*/yarn.lock ./
+
+RUN yarn --immutable

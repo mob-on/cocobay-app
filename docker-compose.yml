@@ -1,11 +1,18 @@
 version: "3.4"
 services:
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+
   frontend:
     build:
       context: .
       target: frontend
       dockerfile: Dockerfile.frontend
     container_name: cocobay-app-frontend
+    depends_on:
+      - base
     ports:
       - "3000:80"
 
@@ -15,6 +22,8 @@ services:
       target: backend
       dockerfile: Dockerfile.backend
     container_name: cocobay-app-backend
+    depends_on:
+      - base
     networks:
       - backend
     links:

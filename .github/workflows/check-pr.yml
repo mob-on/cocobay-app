@@ -1,6 +1,8 @@
 name: Checks
 
 on:
+  workflow_call:
+
   pull_request:
     branches: [develop, main]
     paths:
@@ -17,9 +19,46 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check-build-exists:
+    name: Skip build if exists
+    runs-on: ubuntu-latest
+    outputs:
+      exists: ${{ steps.check-build-exists.outputs.exists }}
+      version: ${{ steps.check-build-exists.outputs.version }}
+    steps:
+      - uses: ./.github/workflows/actions/check-build-exists
+        id: check-build-exists
+        with:
+          docker_registry: ${{ vars.DOCKER_REGISTRY }}
+          docker_registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          docker_registry_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+  test:
+    name: Test
+    if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
+    needs:
+      - check-build-exists
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  base-build:
+    name: Build Base
+    if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
+    needs:
+      - check-build-exists
+    uses: ./.github/workflows/base.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.check-build-exists.outputs.version }}
+
   build:
     name: Build
+    if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
+    needs:
+      - check-build-exists
+      - base-build
     uses: ./.github/workflows/build.yml
     secrets: inherit
     with:
       env: stage
+      version: ${{ needs.check-build-exists.outputs.version }}

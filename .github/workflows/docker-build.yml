@@ -7,6 +7,10 @@ on:
         type: string
         description: Arguments for docker build, example => ". --file Dockerfile.backend --target backend"
         required: true
+      base-app-name:
+        type: string
+        description: Base application name, used for common initialization
+        required: false
       app-name:
         type: string
         description: Application name, used for docker-repository tagging
@@ -25,6 +29,12 @@ jobs:
         uses: actions/checkout@main
         with:
           ref: ${{ github.event.inputs.branch || github.event.pull_request.head.ref || github.ref }}
+
+      - name: Pull base image before build
+        if: ${{ inputs.base-app-name }}
+        run: |
+          docker pull ${{ vars.DOCKER_REGISTRY }}/${{ inputs.base-app-name }}:${{ inputs.version }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/${{ inputs.base-app-name }}:${{ inputs.version }} base
 
       - name: Build docker image ${{ inputs.app-name }}
         shell: bash

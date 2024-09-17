@@ -1,0 +1,21 @@
+name: Base
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/docker-build.yml
+    secrets: inherit
+    with:
+      docker-build-args: ". --file Dockerfile.base"
+      app-name: cocobay-app-base
+      version: ${{ inputs.version }}

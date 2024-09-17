@@ -1,15 +1,5 @@
 # syntax=docker/dockerfile:1.9.0-labs
-FROM node:22 AS backend-build
-
-RUN mkdir /app
-WORKDIR /app
-
-#Tell yarn we're building in CI
-ENV CI=true
-
-COPY --parents package.json yarn.lock .yarnrc.yml .yarn/ packages/*/package.json packages/*/yarn.lock ./
-
-RUN yarn workspace backend install --immutable
+FROM base AS backend-build
 
 COPY . /app
 RUN mv packages/backend/config/local.template.ts packages/backend/config/local.ts
