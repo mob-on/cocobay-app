@@ -29,7 +29,9 @@ describe("HealthController", () => {
       .expect((res) =>
         expect(res.body).toMatchObject({
           status: "OK",
-          version,
+          build: {
+            version,
+          },
         }),
       );
   });
