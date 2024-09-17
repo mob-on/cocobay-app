@@ -42,7 +42,7 @@ jobs:
     secrets: inherit
 
   base-build:
-    name: Build Base
+    name: Base
     if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
     needs:
       - check-build-exists
@@ -52,7 +52,7 @@ jobs:
       version: ${{ needs.check-build-exists.outputs.version }}
 
   build:
-    name: Build
+    name: App
     if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
     needs:
       - check-build-exists
