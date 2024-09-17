@@ -20,8 +20,7 @@ export class UserDtoMapper {
   fromUser(user: Partial<User>): UserDto {
     if (!user) return null;
 
-    const userDto = new UserDto();
-    userDto.id = user.id;
+    const userDto = new UserDto({ id: user.id });
 
     return assignExisting(userDto, {
       firstName: user.firstName,
