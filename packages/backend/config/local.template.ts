@@ -1,7 +1,7 @@
 const config = {
-  env: "prod",
+  env: "local",
   features: {
-    devMode: false,
+    devMode: true,
   },
 };
 

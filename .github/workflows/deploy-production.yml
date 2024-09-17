@@ -22,44 +22,12 @@ jobs:
     needs: build
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v4
+        id: git-checkout
+        uses: actions/checkout@main
         with:
           ref: ${{ github.event.inputs.branch || github.ref }}
 
-      - name: Get version number
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: cocobay-app-frontend
-          tags: |
-            type=sha,prefix=,format=long
-
-      - name: Login to docker registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ vars.DOCKER_REGISTRY }}
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-
-      - name: Tag Front End build for production release
-        run: |
-          docker pull ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }}
-          docker tag ${{ vars.DOCKER_REGISTRY }}/${{ steps.meta.outputs.tags }} \
-            ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:production
-          docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:production
-
-      - name: Trigger Front End Jenkins release job
-        run: |
-          CRUMB=$(curl --fail -c cookies.txt -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_PASSWORD }}" \
-            "${{ secrets.JENKINS_URL }}/crumbIssuer/api/json" | jq --raw-output '.crumb')
-          curl -X POST -b cookies.txt -H "Jenkins-Crumb: $CRUMB" --fail -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_PASSWORD }}" \
-            "${{ secrets.JENKINS_URL }}/job/Cocobay%20App%20Deploy%20Production/build?delay=0sec" \
-            --data-urlencode "name=branch" \
-            --data-urlencode "value=${{ github.ref }}" \
-            --data-urlencode "statusCode=303" \
-            --data-urlencode "redirectTo=.:" \
-            --data-urlencode "Jenkins-Crumb=$CRUMB" \
-            --data-urlencode "json={\"parameter\":{\"name\":\"branch\",\"value\":\"${{ github.ref }}\"},\"statusCode\":\"303\",\"redirectTo\":\".\",\"\":\"\",\"Jenkins-Crumb\":\"$CRUMB\"}"
+      #More steps needed later
 
   prod-branch-protection:
     name: Stop production release

@@ -1,0 +1,41 @@
+name: Check if build exists
+description: Checks if a docker image with the same version already exists in the repository
+
+inputs:
+  docker_registry:
+    required: true
+  docker_registry_username:
+    required: true
+  docker_registry_password:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout branch
+      id: git-checkout
+      # TODO: This should change from "main" to a stable version once commit output is released
+      uses: actions/checkout@main
+      outputs:
+        commit: ${{ steps.git-checkout.outputs.commit }}
+      with:
+        ref: ${{ github.event.inputs.branch || github.event.pull_request.head.ref || github.ref }}
+
+    - name: Check if already built
+      id: check-build-exists
+      shell: bash
+      outputs:
+        exists: ${{ steps.check-build-exists.outputs.exists }}
+      run: |
+        echo "Checking if version ${{ steps.git-checkout.outputs.commit }} exists"
+        (curl -u "${{ inputs.docker_registry_username }}:${{ inputs.docker_registry_password }}" \
+          "https://${{ inputs.docker_registry }}/v2/cocobay-app-base/tags/list" | \
+          grep -q "\"${{ steps.git-checkout.outputs.commit }}\"" && \
+          echo "Build ${{ steps.git-checkout.outputs.commit }} already exists in registry, no need to rebuild" && \
+          echo "exists=true" >> $GITHUB_OUTPUT
+        ) || \
+        echo "Build ${{ steps.git-checkout.outputs.commit }} does not exist yet"
+
+outputs:
+  exists: ${{ steps.check-build-exists.outputs.exists }}
+  version: ${{ steps.git-checkout.outputs.commit }}

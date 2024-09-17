@@ -18,12 +18,55 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/build.yml
+  check-build-exists:
+    name: Skip build if exists
+    runs-on: ubuntu-latest
+    outputs:
+      exists: ${{ steps.check-build-exists.outputs.exists }}
+      version: ${{ steps.check-build-exists.outputs.version }}
+    steps:
+      - name: Checkout branch
+        id: git-checkout
+        uses: actions/checkout@main
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      - uses: ./.github/workflows/actions/check-build-exists
+        id: check-build-exists
+        with:
+          docker_registry: ${{ vars.DOCKER_REGISTRY }}
+          docker_registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          docker_registry_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+  test:
+    name: Test
+    if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
+    needs:
+      - check-build-exists
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  build-base:
+    name: Base
+    if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
+    needs:
+      - check-build-exists
+    uses: ./.github/workflows/base.yml
     secrets: inherit
     with:
+      version: ${{ needs.check-build-exists.outputs.version }}
+
+  build:
+    name: Build
+    if: ${{ needs.check-build-exists.outputs.exists != 'true' }}
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+    needs:
+      - build-base
+      - check-build-exists
+    with:
       env: stage
+      version: ${{ needs.check-build-exists.outputs.version }}
 
   deployment:
     name: Deploy to staging
@@ -33,17 +76,10 @@ jobs:
       - build
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v4
+        id: git-checkout
+        uses: actions/checkout@main
         with:
           ref: ${{ github.event.inputs.branch || github.ref }}
-
-      - name: Get version number
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: cocobay-app-frontend
-          tags: |
-            type=sha,prefix=,format=long
 
       - name: Login to docker registry
         uses: docker/login-action@v3
@@ -54,15 +90,15 @@ jobs:
 
       - name: Tag Front End build for staging release
         run: |
-          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ steps.meta.outputs.version }}
-          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ steps.meta.outputs.version }} \
+          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ steps.git-checkout.outputs.commit }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:${{ steps.git-checkout.outputs.commit }} \
             ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
           docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-frontend:staging
 
       - name: Tag Back End build for staging release
         run: |
-          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ steps.meta.outputs.version }}
-          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ steps.meta.outputs.version }} \
+          docker pull ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ steps.git-checkout.outputs.commit }}
+          docker tag ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:${{ steps.git-checkout.outputs.commit }} \
             ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:staging
           docker push ${{ vars.DOCKER_REGISTRY }}/cocobay-app-backend:staging
 

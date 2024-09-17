@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 export const DevScreen = () => {
   const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredApiUrl();
   const [mainApiVersion, setMainApiVersion] = useState<string>("");
+  const [mainApiDate, setMainApiDate] = useState<string>("");
 
   const [mainApiBaseUrlValue, setMainApiBaseUrlValue] = useState("");
   const api = useMainApi(mainApiBaseUrlValue);
@@ -21,7 +22,8 @@ export const DevScreen = () => {
         .isHealthy()
         .then((res) => {
           setMainApiOk(!!res);
-          setMainApiVersion(res.version);
+          setMainApiVersion(res.build.version);
+          setMainApiDate(res.build.date ?? "edge");
         })
         .catch(() => setMainApiOk(false));
     }
@@ -54,6 +56,7 @@ export const DevScreen = () => {
         {process.env.NEXT_PUBLIC_APP_BUILD_TIME ?? "edge"}
       </Form.Item>
       <Form.Item label="Back End App Version">{mainApiVersion}</Form.Item>
+      <Form.Item label="Back End App Date">{mainApiDate}</Form.Item>
       <Form.Item label="Main API Base URL" layout="horizontal">
         <Input
           type="text"
