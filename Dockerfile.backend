@@ -31,4 +31,4 @@ ARG APP_VERSION=edge
 ENV APP_VERSION=${APP_VERSION} 
 RUN export BUILD_TIME=$(date +"%Y-%m-%dT%H:%M:%S%z")
 
-ENTRYPOINT ["node", "packages/backend/dist/main"]
+ENTRYPOINT ["node", "packages/backend/dist/src/main"]
