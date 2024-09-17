@@ -1,5 +1,5 @@
 import toISOString from "@lib/toISOString";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { useMainApiConfig } from "../api/main/config";
@@ -8,7 +8,7 @@ import useLogger from "../hooks/useLogger";
 
 const MAX_EVENT_BUFFER_SIZE = 5;
 const REPORT_TIMEOUT = 2000;
-const ERROR_TIMEOUT = 5000;
+const ERROR_TIMEOUT = 4000 + Math.random() * 4000;
 
 export enum TrackerEventType {
   PAGE_VIEW = "page_view",
