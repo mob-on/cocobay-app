@@ -6,7 +6,6 @@ import { useMainApiConfig } from "./main/config";
 
 export const useTrackingApi = () => {
   const [axios] = useMainApiConfig();
-  const logger = useLogger("useTrackingApi");
 
   return useMutation({
     mutationFn: async (events: ITrackerEvent[]) => {
@@ -16,13 +15,11 @@ export const useTrackingApi = () => {
           events,
         );
         if (response.status !== 200) {
-          logger.error("Failed to track events:", response.data);
+          throw new Error("Failed to track events");
         }
         return response.data;
       } catch (e: unknown) {
-        logger.error("Failed to track events:", e);
-      } finally {
-        return events;
+        throw e;
       }
     },
     mutationKey: ["analytics"] as MutationKey,
