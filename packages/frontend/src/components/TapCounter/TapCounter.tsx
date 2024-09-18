@@ -9,8 +9,8 @@ const TapCounter: React.FC = () => {
   const { taps } = useGameState();
   const numberFormatter = new Intl.NumberFormat("en-US");
   const formattedTapCount = useMemo(
-    () => numberFormatter.format(taps.tapCount),
-    [taps.tapCount],
+    () => numberFormatter.format(taps.pointCount),
+    [taps.pointCount],
   );
   const formattedPassiveIncome = useMemo(
     () => NumberFormatter.format(taps.passiveIncome * 3600),

@@ -9,41 +9,51 @@ import { TUseService } from "./types";
 
 export interface ITaps {
   tapCount: number;
+  syncedTapCount: number;
+  pointCount: number;
   passiveIncome: number;
   perTap: number;
 }
 
-interface ITapSyncData {
-  taps: ITaps;
-  availableTaps: number;
+export interface ITapSyncData {
+  tapCountPending: number;
 }
 
 const QUERY_KEY = "taps";
 const UPDATE_INTERVAL = 1000;
+const SYNC_INTERVAL = 5000;
 
 interface IMethods {
   startTimeout: () => void;
 }
 
-const useTapsService: TUseService<ITaps, IMethods> = () => {
+const useTapsService: TUseService<ITaps, IMethods> = (
+  syncData: ITapSyncData,
+) => {
   const logger = useLogger("useTapsService");
   const queryClient = useQueryClient();
   const { dispatchGameState, taps, stamina } = useGameState();
-  const { getTaps: apiGetTaps } = useTapApi();
+  const { getTaps: apiGetTaps, syncTaps: apiSyncTaps } = useTapApi();
   const tapSyncTimeoutController = useRef<number>();
   const tapSyncData = useRef<ITapSyncData>({
-    taps,
-    availableTaps: stamina.current,
+    tapCountPending: taps.syncedTapCount - taps.tapCount,
   });
 
   // update the ref with the latest data
   useEffect(() => {
-    tapSyncData.current = { taps, availableTaps: stamina.current };
+    tapSyncData.current = {
+      tapCountPending: taps.syncedTapCount - taps.tapCount,
+    };
   }, [taps, stamina.current]);
 
-  // useEffect(() => {
-
-  // }, [taps.tapCount])
+  useEffect(() => {
+    clearTimeout(tapSyncTimeoutController.current);
+    setTimeout(() => {
+      tapSyncTimeoutController.current = window.setTimeout(() => {
+        apiSyncTaps(tapSyncData.current);
+      }, SYNC_INTERVAL);
+    });
+  }, [taps.tapCount, stamina.current]);
 
   const timeoutCallback = useCallback(() => {
     dispatchGameState({ type: "TAPS_APPLY_PASSIVE_INCOME" });

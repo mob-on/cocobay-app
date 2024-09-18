@@ -30,7 +30,13 @@ export type IGameStateContext = IGameState & {
 };
 
 const defaultGameData: IGameState = {
-  taps: { tapCount: 1000592, passiveIncome: 1, perTap: 1 },
+  taps: {
+    tapCount: 400,
+    syncedTapCount: 400,
+    pointCount: 1248,
+    passiveIncome: 1,
+    perTap: 1,
+  },
   stamina: {
     current: 50,
     max: 500,
@@ -67,7 +73,7 @@ const gameStateReducer = (
       return {
         pendingTaps,
         stamina,
-        taps: { ...taps, tapCount: taps.tapCount + taps.passiveIncome },
+        taps: { ...taps, pointCount: taps.pointCount + taps.passiveIncome },
       };
     case "TAPS_REGISTER_TAP":
       const { perTap } = taps;
@@ -78,7 +84,11 @@ const gameStateReducer = (
       if (typeof action.payload === "function") action.payload(true);
       return {
         pendingTaps: pendingTaps + 1,
-        taps: { ...taps, tapCount: taps.tapCount + 1 },
+        taps: {
+          ...taps,
+          tapCount: taps.tapCount + 1,
+          pointCount: taps.pointCount + taps.perTap,
+        },
         stamina: {
           ...stamina,
           current: Math.max(0, stamina.current - taps.perTap),
