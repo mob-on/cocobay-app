@@ -21,10 +21,6 @@ export type WithPictureMapped<K extends keyof T, T = Picture> = {
   [P in K]: T[P];
 };
 
-export type Stringified<T> = {
-  [K in keyof T]: string | ((type: T[K]) => boolean);
-};
-
 // use this, unless you need a custom field name
 export type WithPicture = WithPictureMapped<"pictureSrc", Picture>;
 export type WithIcon = WithPictureMapped<"iconSrc", Icon>;
