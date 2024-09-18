@@ -26,6 +26,11 @@ export type WithPicture = WithPictureMapped<"pictureSrc", Picture>;
 export type WithIcon = WithPictureMapped<"iconSrc", Icon>;
 export type WithAvatar = WithPictureMapped<"avatarSrc", Avatar>;
 
+export const optional =
+  <T>(validateFn: (value: T) => boolean) =>
+  (value: T | undefined) =>
+    value === undefined || validateFn(value);
+
 /**
  * A shared validation constraint that checks if the given required fields
  * of the given type are present in the object.
@@ -66,7 +71,7 @@ export const SharedValidConstraint = <T>(
       );
       if (!isObjectValid) {
         this.defaultMessage = (args) =>
-          `${args.value} is not a valid ${name}:\nthis.errors.join("\n")`;
+          `${args.value} is not a valid ${name}:\n${this.errors.join("\n")}`;
       }
       return isObjectValid;
     }

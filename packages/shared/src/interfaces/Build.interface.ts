@@ -35,11 +35,10 @@ export function IsBuild(validationOptions?: ValidationOptions) {
           maxLevel: (value) => typeof value === "number" && value >= 0,
           type: (value) =>
             value === "building" || value === "event" || value === "employee",
-          lastBuilt: (value) => value instanceof Date,
-          cooldownUntil: (value) =>
-            value === undefined || value instanceof Date,
+          lastBuilt: "string",
+          cooldownUntil: "string",
           income: (value) => typeof value === "number",
-          iconSrc: (value) => value === undefined || typeof value === "string",
+          iconSrc: (value) => typeof value === "string",
         },
         propertyName,
         (args: ValidationArguments) => {

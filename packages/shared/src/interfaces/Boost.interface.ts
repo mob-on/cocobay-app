@@ -3,7 +3,7 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from "class-validator";
-import { SharedValidConstraint, WithIcon } from "./_shared";
+import { optional, SharedValidConstraint, WithIcon } from "./_shared";
 
 export interface Boost extends WithIcon {
   id: string;
@@ -36,9 +36,8 @@ export function IsBoost(validationOptions?: ValidationOptions) {
           type: (value) => value === "daily" || value === "regular",
           usedToday: (value) => typeof value === "number" && value >= 0,
           maxToday: (value) => typeof value === "number" && value >= 0,
-          cooldownUntil: (value) =>
-            value === undefined || typeof value === "string",
-          iconSrc: (value) => value === undefined || typeof value === "string",
+          cooldownUntil: optional((value) => typeof value === "string"),
+          iconSrc: (value) => typeof value === "string",
         },
         propertyName,
         (args: ValidationArguments) => {

@@ -3,7 +3,7 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from "class-validator";
-import { SharedValidConstraint, WithIcon } from "./_shared";
+import { optional, SharedValidConstraint, WithIcon } from "./_shared";
 export interface DailyReward extends WithIcon {
   id: number;
   title?: string;
@@ -28,7 +28,7 @@ export function IsDailyReward(validationOptions?: ValidationOptions) {
           day: (value) => typeof value === "number" && value >= 0,
           type: (value) => value === "regular" || value === "special",
           description: "string",
-          iconSrc: (value) => value === undefined || typeof value === "string",
+          iconSrc: optional((value) => typeof value === "string"),
         },
         propertyName,
         (args: ValidationArguments) => {
