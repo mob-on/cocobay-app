@@ -7,7 +7,13 @@ import {
 import useTelegram from "@src/shared/hooks/useTelegram";
 import styles from "@src/styles/components/tapArea/tapArea.module.scss";
 import Image from "next/image";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import cloud1 from "/public/media/cloud1.svg";
@@ -66,6 +72,12 @@ const TapArea: React.FC = () => {
   const { taps: visualTaps = [], setTaps: setVisualTaps } = useTaps();
   const { stamina, taps, dispatchGameState } = useGameState();
 
+  const canTap = useRef(true);
+
+  useEffect(() => {
+    canTap.current = stamina.current >= taps.perTap;
+  }, [stamina.current >= taps.perTap]);
+
   useEffect(() => {
     const element = tapAreaRef.current;
     element.addEventListener("touchstart", handleTouchStart, {
@@ -88,7 +100,7 @@ const TapArea: React.FC = () => {
       // If we want mouse events, we should preventDefault() in the first touchmove event instead.
       e.cancelable && e.preventDefault();
       const touches = e.changedTouches;
-      if (stamina.current <= taps.perTap) return;
+      if (!canTap.current) return;
       // since it's the touchstart event, we only expect one touch to be changed.
       const touch = touches[0];
       const { clientX, clientY } = touch;
@@ -101,8 +113,7 @@ const TapArea: React.FC = () => {
         time: performance.now(),
       };
 
-      dispatchGameState({ type: "STAMINA_CONSUME" });
-      dispatchGameState({ type: "TAPS_APPLY_PASSIVE_INCOME" });
+      dispatchGameState({ type: "TAPS_REGISTER_TAP" });
       throttledHandleTapFeedback();
 
       setVisualTaps((oldTaps) => [...oldTaps, tapEvent]);
@@ -116,7 +127,7 @@ const TapArea: React.FC = () => {
       // Store timeout ID for potential cancellation
       tapEvent.timeoutId = timeoutId;
     },
-    [stamina.current <= taps.perTap],
+    [dispatchGameState, throttledHandleTapFeedback, setVisualTaps],
   );
 
   return (

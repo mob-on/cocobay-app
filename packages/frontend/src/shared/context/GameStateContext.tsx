@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 
 import { ITaps } from "../services/useTapsService";
 
@@ -10,7 +10,8 @@ export type GameAction =
   | { type: "STAMINA_CONSUME" }
   | { type: "STAMINA_REGEN" }
   | { type: "TAPS_UPDATE"; payload: ITaps }
-  | { type: "TAPS_SET_PASSIVE_INCOME"; payload: number };
+  | { type: "TAPS_SET_PASSIVE_INCOME"; payload: number }
+  | { type: "TAPS_REGISTER_TAP"; payload?: (boolean) => void };
 
 export interface IStamina {
   current: number;
@@ -21,6 +22,7 @@ export interface IStamina {
 export interface IGameState {
   taps: ITaps;
   stamina: IStamina;
+  pendingTaps: number;
 }
 
 export type IGameStateContext = IGameState & {
@@ -30,20 +32,22 @@ export type IGameStateContext = IGameState & {
 const defaultGameData: IGameState = {
   taps: { tapCount: 1000592, passiveIncome: 1, perTap: 1 },
   stamina: {
-    current: 500,
+    current: 50,
     max: 500,
-    regen: 5,
+    regen: 3,
   },
+  pendingTaps: 0,
 };
 
 const gameStateReducer = (
   state: IGameState,
   action: GameAction,
 ): IGameState => {
-  const { stamina, taps } = state;
+  const { stamina, taps, pendingTaps } = state;
   switch (action.type) {
     case "TAPS_SET_PASSIVE_INCOME":
       return {
+        pendingTaps,
         stamina,
         taps: {
           ...taps,
@@ -52,6 +56,7 @@ const gameStateReducer = (
       };
     case "TAPS_UPDATE":
       return {
+        pendingTaps,
         stamina,
         taps: {
           ...taps,
@@ -60,11 +65,28 @@ const gameStateReducer = (
       };
     case "TAPS_APPLY_PASSIVE_INCOME":
       return {
+        pendingTaps,
         stamina,
         taps: { ...taps, tapCount: taps.tapCount + taps.passiveIncome },
       };
+    case "TAPS_REGISTER_TAP":
+      const { perTap } = taps;
+      if (stamina.current < perTap) {
+        if (typeof action.payload === "function") action.payload(false);
+        return state;
+      }
+      if (typeof action.payload === "function") action.payload(true);
+      return {
+        pendingTaps: pendingTaps + 1,
+        taps: { ...taps, tapCount: taps.tapCount + 1 },
+        stamina: {
+          ...stamina,
+          current: Math.max(0, stamina.current - taps.perTap),
+        },
+      };
     case "STAMINA_CONSUME":
       return {
+        pendingTaps,
         taps,
         stamina: {
           ...stamina,
@@ -73,6 +95,7 @@ const gameStateReducer = (
       };
     case "STAMINA_REGEN":
       return {
+        pendingTaps,
         taps,
         stamina: {
           ...stamina,

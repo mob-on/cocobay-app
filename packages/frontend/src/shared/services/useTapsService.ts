@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { useTapApi } from "../api/useTapApi";
 import { useGameState } from "../context/GameStateContext";
@@ -10,7 +10,12 @@ import { TUseService } from "./types";
 export interface ITaps {
   tapCount: number;
   passiveIncome: number;
-  perTap: number; // how many taps we count per one tap
+  perTap: number;
+}
+
+interface ITapSyncData {
+  taps: ITaps;
+  availableTaps: number;
 }
 
 const QUERY_KEY = "taps";
@@ -25,10 +30,26 @@ const useTapsService: TUseService<ITaps, IMethods> = () => {
   const queryClient = useQueryClient();
   const { dispatchGameState, taps, stamina } = useGameState();
   const { getTaps: apiGetTaps } = useTapApi();
+  const tapSyncTimeoutController = useRef<number>();
+  const tapSyncData = useRef<ITapSyncData>({
+    taps,
+    availableTaps: stamina.current,
+  });
+
+  // update the ref with the latest data
+  useEffect(() => {
+    tapSyncData.current = { taps, availableTaps: stamina.current };
+  }, [taps, stamina.current]);
+
+  // useEffect(() => {
+
+  // }, [taps.tapCount])
+
   const timeoutCallback = useCallback(() => {
     dispatchGameState({ type: "TAPS_APPLY_PASSIVE_INCOME" });
     dispatchGameState({ type: "STAMINA_REGEN" });
   }, [taps.passiveIncome]);
+
   const timeout = useSelfCorrectingTimeout(timeoutCallback, UPDATE_INTERVAL);
 
   // load taps initally.

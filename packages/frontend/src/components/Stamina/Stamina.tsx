@@ -12,12 +12,6 @@ export interface IStaminaData {
   passiveGain: number;
 }
 
-const defaultLevelingData: IStaminaData = {
-  stamina: 500,
-  maxStamina: 500,
-  passiveGain: 5,
-};
-
 const Leveling: React.FC = () => {
   const { stamina } = useGameState();
   const { current, max } = stamina;
