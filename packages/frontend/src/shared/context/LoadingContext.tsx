@@ -1,12 +1,6 @@
 import { UserDto } from "@shared/src/dto/user.dto";
 import { validate } from "class-validator";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { useUserApi } from "../api/useUserApi";
 import useLogger from "../hooks/useLogger";

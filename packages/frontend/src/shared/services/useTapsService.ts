@@ -1,8 +1,9 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef } from "react";
+import { UseMutationResult, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useTapApi } from "../api/useTapApi";
 import { useGameState } from "../context/GameStateContext";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 import useLogger from "../hooks/useLogger";
 import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
 import { TUseService } from "./types";
@@ -25,40 +26,74 @@ const SYNC_INTERVAL = 5000;
 
 interface IMethods {
   startTimeout: () => void;
+  getTaps: () => any;
+  syncTaps: UseMutationResult<ITapSyncData, unknown, ITapSyncData>;
+  startSync: () => void;
 }
 
-const useTapsService: TUseService<ITaps, IMethods> = (
-  syncData: ITapSyncData,
-) => {
+const useTapsService: TUseService<ITaps, IMethods> = () => {
+  const [, setTapSyncData] = useLocalStorage("tapSyncData", {});
   const logger = useLogger("useTapsService");
   const queryClient = useQueryClient();
-  const { dispatchGameState, taps, stamina } = useGameState();
-  const { getTaps: apiGetTaps, syncTaps: apiSyncTaps } = useTapApi();
+  const { dispatchGameState, taps } = useGameState();
+  const { getTaps: apiGetTaps, syncTaps: getApiSyncTaps } = useTapApi();
   const tapSyncTimeoutController = useRef<number>();
   const tapSyncData = useRef<ITapSyncData>({
     tapCountPending: taps.syncedTapCount - taps.tapCount,
   });
+  const apiSyncTaps = getApiSyncTaps();
+  const [shouldSync, setShouldSync] = useState(false);
 
-  // update the ref with the latest data
+  // update the ref with the latest data, if the syncing is on.
   useEffect(() => {
+    if (!shouldSync) return;
     tapSyncData.current = {
-      tapCountPending: taps.syncedTapCount - taps.tapCount,
+      tapCountPending: taps.tapCount - taps.syncedTapCount,
     };
-  }, [taps, stamina.current]);
+  }, [taps]);
 
+  // Save sync tap data to local storage and stop timeout
+  useEffect(
+    () => () => {
+      clearTimeout(tapSyncTimeoutController.current);
+      setTapSyncData(tapSyncData.current);
+    },
+    [],
+  );
+
+  // tap data sync handler
+  const handleSyncData = async () => {
+    const syncData = tapSyncData.current;
+    try {
+      await apiSyncTaps.mutateAsync({ ...syncData });
+      tapSyncData.current = { ...syncData, tapCountPending: 0 };
+    } catch (error) {
+      if (tapSyncTimeoutController.current) {
+        tapSyncTimeoutController.current = window.setTimeout(
+          handleSyncData,
+          SYNC_INTERVAL,
+        );
+      }
+    }
+  };
+
+  // tap data sync initiator
   useEffect(() => {
+    console.log("calling the initiator!", taps.tapCount, shouldSync);
+    if (!shouldSync) return;
     clearTimeout(tapSyncTimeoutController.current);
-    setTimeout(() => {
-      tapSyncTimeoutController.current = window.setTimeout(() => {
-        apiSyncTaps(tapSyncData.current);
-      }, SYNC_INTERVAL);
-    });
-  }, [taps.tapCount, stamina.current]);
+    if (tapSyncData.current.tapCountPending === 0) return;
+    tapSyncTimeoutController.current = window.setTimeout(
+      handleSyncData,
+      SYNC_INTERVAL,
+    );
+  }, [taps.tapCount]);
 
+  // passive income and stamina regen
   const timeoutCallback = useCallback(() => {
     dispatchGameState({ type: "TAPS_APPLY_PASSIVE_INCOME" });
     dispatchGameState({ type: "STAMINA_REGEN" });
-  }, [taps.passiveIncome]);
+  }, [taps.passiveIncome, dispatchGameState]);
 
   const timeout = useSelfCorrectingTimeout(timeoutCallback, UPDATE_INTERVAL);
 
@@ -75,7 +110,16 @@ const useTapsService: TUseService<ITaps, IMethods> = (
     }
   }, [apiGetTaps, dispatchGameState, queryClient]);
 
-  return [taps, { startTimeout: timeout.start, getTaps }];
+  // We only care when taps change after startSync has been called, to avoid syncing
+  // during app loading and initialization.
+  const startSync = () => {
+    setShouldSync(true);
+  };
+
+  return [
+    taps,
+    { startTimeout: timeout.start, startSync, getTaps, syncTaps: apiSyncTaps },
+  ];
 };
 
 export default useTapsService;

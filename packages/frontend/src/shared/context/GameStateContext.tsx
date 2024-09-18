@@ -1,6 +1,14 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
+import { useLocalStorage } from "../hooks/useLocalStorage";
 import { ITaps } from "../services/useTapsService";
+import { useLoading } from "./LoadingContext";
 
 export const TAP_EFFECTS_TIMEOUT = 1000; // remove taps from list after this time1
 export const TAP_EFFECTS_THROTTLE = 50; // min time before triggering ring animation
@@ -128,7 +136,11 @@ export const GameStateContextProvider = ({
 }: {
   children: React.JSX.Element;
 }) => {
+  // TODO: implement this, after we get access to game data endpoint
+  // const { resources } = useLoading();
+  // const defaultGameData = resources[GAME_DATA_QUERY];
   const [state, dispatch] = useReducer(gameStateReducer, defaultGameData);
+
   return (
     <GameStateContext.Provider
       value={{ ...state, dispatchGameState: dispatch }}
