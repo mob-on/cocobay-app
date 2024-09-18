@@ -24,6 +24,7 @@ export default {
     "!src/**/*.spec.(t|j)s",
   ],
   moduleNameMapper: {
+    "@config/(.*)": "<rootDir>/config/$1",
     "^@(shared)/(.*/?)(src|test)/(.*)$": "<rootDir>../$1/$2/$3/$4",
     "^(.*/?)(src|test)/(.*)$": "<rootDir>/$1/$2/$3",
   },

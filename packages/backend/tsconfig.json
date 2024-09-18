@@ -9,14 +9,14 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"],
-      "test/*": ["test/*"],
-      "@shared/*": ["../shared/*"]
+      "src/*": ["./src/*"],
+      "test/*": ["./test/*"],
+      "@shared/*": ["../shared/*"],
+      "@config/*": ["./config/*"]
     },
     "incremental": true,
     "skipLibCheck": true
   },
-  "include": ["../shared/*", "**/*.ts"]
+  "include": ["**/*.ts"]
 }

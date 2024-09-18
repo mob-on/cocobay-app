@@ -15,6 +15,8 @@ module.exports = {
   extends: [
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:prettier/recommended",
   ],
@@ -61,7 +63,10 @@ module.exports = {
   },
   settings: {
     "import/resolver": {
-      typescript: {},
+      typescript: {
+        alwaysTryTypes: true, // Try to resolve `@types` packages
+        project: __dirname, // Ensures it's using the right `tsconfig.json`
+      },
     },
   },
 };
