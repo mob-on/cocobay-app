@@ -34,8 +34,7 @@ export function IsFriend(validationOptions?: ValidationOptions) {
             value.points >= 0 &&
             typeof value.level === "number" &&
             value.level >= 0,
-          avatarSrc: (value) =>
-            value === undefined || typeof value === "string",
+          avatarSrc: (value) => typeof value === "string",
         },
         propertyName,
         (args: ValidationArguments) => {
