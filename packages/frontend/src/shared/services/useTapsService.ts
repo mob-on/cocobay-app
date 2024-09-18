@@ -5,6 +5,7 @@ import { useTapApi } from "../api/useTapApi";
 import { useGameState } from "../context/GameStateContext";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import useLogger from "../hooks/useLogger";
+import useOnDocumentUnload from "../hooks/useOnDocumentUnload";
 import useSelfCorrectingTimeout from "../hooks/useSelfCorrectingTimeout";
 import { TUseService } from "./types";
 
@@ -53,13 +54,15 @@ const useTapsService: TUseService<ITaps, IMethods> = () => {
   }, [taps]);
 
   // Save sync tap data to local storage and stop timeout
-  useEffect(
-    () => () => {
-      clearTimeout(tapSyncTimeoutController.current);
-      setTapSyncData(tapSyncData.current);
-    },
-    [],
-  );
+  const onDestroy = useCallback(() => {
+    clearTimeout(tapSyncTimeoutController.current);
+    setTapSyncData(tapSyncData.current);
+  }, []);
+
+  useOnDocumentUnload(onDestroy);
+  useEffect(() => {
+    return onDestroy;
+  }, []);
 
   // tap data sync handler
   const handleSyncData = async () => {
@@ -79,7 +82,6 @@ const useTapsService: TUseService<ITaps, IMethods> = () => {
 
   // tap data sync initiator
   useEffect(() => {
-    console.log("calling the initiator!", taps.tapCount, shouldSync);
     if (!shouldSync) return;
     clearTimeout(tapSyncTimeoutController.current);
     if (tapSyncData.current.tapCountPending === 0) return;
