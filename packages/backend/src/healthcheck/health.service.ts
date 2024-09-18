@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Config } from "backend/config";
+import { Config } from "@config/index";
 import { Feature } from "src/shared/lib/FeatureFlags";
 
 @Injectable()

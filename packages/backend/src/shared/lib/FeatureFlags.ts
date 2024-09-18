@@ -1,4 +1,4 @@
-import { Config } from "../../../config";
+import { Config } from "@config/index";
 
 const FeatureConfig = {
   DEV_MODE: Config.features?.devMode,
