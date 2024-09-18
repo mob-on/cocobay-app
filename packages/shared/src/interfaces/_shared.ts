@@ -42,22 +42,33 @@ export const SharedValidConstraint = <T>(
 ) => {
   @ValidatorConstraint({ name, async: false })
   class SharedValidConstraint implements ValidatorConstraintInterface {
+    errors: string[] = [];
     validate(value: T): boolean {
       if (!value || typeof value !== "object") {
         return false;
       }
+      const isObjectValid = Object.entries(requiredFields).every(
+        ([key, type]) => {
+          const fieldValue = value[key as keyof T];
+          const isValid =
+            typeof type === "string"
+              ? typeof fieldValue === type
+              : typeof type === "function"
+                ? type(fieldValue)
+                : false;
 
-      return Object.entries(requiredFields).every(([key, type]) => {
-        const fieldValue = value[key as keyof T];
-
-        if (typeof type === "string") {
-          return typeof fieldValue === type;
-        } else if (typeof type === "function") {
-          return type(fieldValue);
-        }
-
-        return false;
-      });
+          if (isValid) {
+            return true;
+          }
+          this.errors.push(`${key} is not a valid ${name}`);
+          return false;
+        },
+      );
+      if (!isObjectValid) {
+        this.defaultMessage = (args) =>
+          `${args.value} is not a valid ${name}:\nthis.errors.join("\n")`;
+      }
+      return isObjectValid;
     }
 
     defaultMessage(args: ValidationArguments) {
