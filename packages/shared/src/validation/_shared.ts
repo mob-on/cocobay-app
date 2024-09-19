@@ -6,11 +6,6 @@ import {
   ValidatorConstraintInterface,
 } from "class-validator";
 
-export const optional =
-  <T>(validateFn: (value: T) => boolean) =>
-  (value: T | undefined) =>
-    value === undefined || validateFn(value);
-
 /**
  * A shared validation constraint that checks if the given required fields
  * of the given type are present in the object.
@@ -63,12 +58,18 @@ export const SharedValidConstraint = <T>(
   return SharedValidConstraint;
 };
 
-// Define the pipe function
+// pipe function for piping validation functions
 export const pipe = <T = unknown>(
   ...fns: ((value: T) => boolean)[]
 ): ((value: T) => boolean) => {
   return (value: T) => fns.every((fn) => fn(value));
 };
+
+// to make optional pipes
+export const optional =
+  <T>(validateFn: (value: T) => boolean) =>
+  (value: T | undefined) =>
+    value === undefined || validateFn(value);
 
 // NOTE: We use this isIn instead of class-validator's isIn because it's pipeable.
 export const isIn =

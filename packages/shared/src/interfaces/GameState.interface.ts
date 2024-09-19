@@ -22,7 +22,6 @@ export interface GameState {
   targetExp: number;
   currentExp: number;
   maxLevel: number;
-  levelHero: string; // picture of the hero.
 }
 
 // Frontend state, with backend-agnostic fields

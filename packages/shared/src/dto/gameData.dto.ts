@@ -9,7 +9,7 @@ import {
 } from "../validation";
 import { UserDto } from "./user.dto";
 
-export class GameStateDto {
+export class GameDataDto {
   @IsInstance(UserDto)
   user!: UserDto;
 
@@ -36,7 +36,7 @@ export class GameStateDto {
       builds,
       friends,
       rewards,
-    }: GameStateDto = {} as GameStateDto,
+    }: GameDataDto = {} as GameDataDto,
   ) {
     if (user) this.user = user;
     if (gameState) this.gameState = gameState;

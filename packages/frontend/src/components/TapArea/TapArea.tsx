@@ -1,3 +1,13 @@
+import lvl1 from "@media/hero/hero-level1.svg";
+import lvl2 from "@media/hero/hero-level2.svg";
+import lvl3 from "@media/hero/hero-level3.svg";
+import lvl4 from "@media/hero/hero-level4.svg";
+import lvl5 from "@media/hero/hero-level5.svg";
+import lvl6 from "@media/hero/hero-level6.svg";
+import lvl7 from "@media/hero/hero-level7.svg";
+import lvl8 from "@media/hero/hero-level8.svg";
+import lvl9 from "@media/hero/hero-level9.svg";
+import lvl10 from "@media/hero/hero-level10.svg";
 import { useGameState } from "@src/shared/context/GameStateContext";
 import {
   TAP_EFFECTS_THROTTLE,
@@ -7,21 +17,27 @@ import {
 import useTelegram from "@src/shared/hooks/useTelegram";
 import styles from "@src/styles/components/tapArea/tapArea.module.scss";
 import Image from "next/image";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import cloud1 from "/public/media/cloud1.svg";
 import cloud2 from "/public/media/cloud2.svg";
-import Hero from "/public/media/coco/coco-pink-swag.svg";
 import moon from "/public/media/moon.svg";
 
 import Rings from "./Rings";
+
+const heroAvatars = [
+  lvl1,
+  lvl2,
+  lvl3,
+  lvl4,
+  lvl5,
+  lvl6,
+  lvl7,
+  lvl8,
+  lvl9,
+  lvl10,
+];
 
 export interface ITapEvent {
   id: string;

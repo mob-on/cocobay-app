@@ -34,7 +34,6 @@ export function IsGameState(validationOptions?: ValidationOptions) {
           targetExp: isPositiveNumber,
           currentExp: isPositiveNumberOrZero,
           maxLevel: isPositiveNumber,
-          levelHero: pipe(isString, isNotEmpty),
         },
         propertyName,
       ),
