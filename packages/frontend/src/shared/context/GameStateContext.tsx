@@ -124,13 +124,13 @@ export const GameStateContextProvider = ({
 }: {
   children: React.JSX.Element;
 }) => {
-  // TODO: implement this, after we get access to game data endpoint
-  // const { resources } = useLoading();
-  // const defaultGameData = resources[GAME_DATA_QUERY];
   const [gameState, dispatch] = useReducer(gameStateReducer, defaultGameData);
-  const { resources } = useLoading();
+  const { resources = {} } = useLoading();
   const logger = useLogger("GameStateContextProvider");
   useEffect(() => {
+    if (!resources[GAME_DATA_QUERY_KEY]) {
+      return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
+    }
     const { data, status } = resources[
       GAME_DATA_QUERY_KEY
     ] as ILoadingContextResource<GameDataDto>;
@@ -138,7 +138,7 @@ export const GameStateContextProvider = ({
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }
     dispatch({ type: "DATA_INITIALIZE", payload: data });
-  }, []);
+  }, [resources]);
   return (
     <GameStateContext.Provider
       value={{ gameState, dispatchGameState: dispatch }}

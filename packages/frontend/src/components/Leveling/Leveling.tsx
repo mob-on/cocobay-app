@@ -1,6 +1,8 @@
 import styles from "@src/styles/components/leveling/leveling.module.scss";
 import { ProgressBar } from "antd-mobile";
-import React, { useEffect, useState } from "react";
+import React from "react";
+
+import { useGameState } from "../../shared/context/GameStateContext";
 
 export interface ILevelingData {
   level: number;
@@ -10,29 +12,11 @@ export interface ILevelingData {
   maxLevel: number;
 }
 
-const defaultLevelingData: ILevelingData = {
-  level: 1,
-  levelName: "Coco",
-  targetExp: 100,
-  currentExp: 0,
-  maxLevel: 10,
-};
-
 const Leveling: React.FC = () => {
-  const [data, setData] = useState(defaultLevelingData);
-  const { currentExp, targetExp, level, levelName, maxLevel } = data;
-  const percent = Math.round((currentExp / targetExp) * 100);
+  const { gameState } = useGameState();
 
-  useEffect(() => {
-    // fetch data and put it into the state.
-    setData({
-      level: 2,
-      targetExp: 1000,
-      currentExp: 425,
-      levelName: "Super Coco",
-      maxLevel: 10,
-    });
-  }, []);
+  const { currentExp, targetExp, level, levelName, maxLevel } = gameState;
+  const percent = Math.round((currentExp / targetExp) * 100);
 
   return (
     <>

@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 
 import grid from "/public/media/grid.svg";
 
-import LoadingScreenWrapper from "../components/LoadingScreen/LoadingScreenWrapper";
 import Layout from "../layouts/Layout";
 import { GameStateContextProvider } from "../shared/context/GameStateContext";
 import { LoadingProvider } from "../shared/context/LoadingContext";
@@ -58,64 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <ErrorContextProvider>
                   <LoadingProvider>
                     <GameStateContextProvider>
-                      <Layout>
-                        <Head>
-                          <title>Cocobay</title>
-                          <meta
-                            name="description"
-                            content="Blockchain consulting and advising team providing software development for Ethereum, Polygon, Binance and much more."
-                          />
-                          <meta
-                            property="og:url"
-                            key="og-url"
-                            content="https://mobon.io/"
-                          />
-                          <meta
-                            property="og:type"
-                            key="og-type"
-                            content="website"
-                          />
-                          <meta
-                            property="og:image"
-                            key="og-image"
-                            content="https://mobon.io/img/logo/mobon-logo-social-media.png"
-                          />
-                          <meta
-                            property="og:type"
-                            key="og-type"
-                            content="website"
-                          />
-                          <meta
-                            name="twitter:image"
-                            key="twitter-image"
-                            content="https://mobon.io/img/logo/mobon-logo-social-media.png"
-                          />
-                          <meta
-                            name="twitter:card"
-                            key="twitter-card"
-                            content="summary_large_image"
-                          />
-                          <meta
-                            name="viewport"
-                            content="width=device-width, user-scalable=no"
-                          />
-                        </Head>
-                        <Image
-                          priority
-                          id="__grid"
-                          src={grid}
-                          width={1}
-                          height={1}
-                          alt="Grid"
-                        />
-                        <TapCounterTimer />
-                        <UserContextProvider>
-                          <LoadingScreenWrapper
-                            Component={Component}
-                            pageProps={pageProps}
-                          />
-                        </UserContextProvider>
-                      </Layout>
+                      <div></div>
                     </GameStateContextProvider>
                   </LoadingProvider>
                 </ErrorContextProvider>

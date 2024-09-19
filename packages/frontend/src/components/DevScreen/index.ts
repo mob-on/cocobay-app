@@ -1,2 +1,1 @@
-import DevScreen from "./DevScreen";
-export default DevScreen;
+export { default } from "./DevScreen";

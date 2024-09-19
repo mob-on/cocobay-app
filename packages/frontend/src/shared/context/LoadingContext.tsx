@@ -1,5 +1,6 @@
 import { GameDataDto } from "@shared/src/dto/gameData.dto";
 import { UserDto } from "@shared/src/dto/user.dto";
+import { LoadingScreen } from "@src/components/LoadingScreen";
 import { validate } from "class-validator";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -169,7 +170,7 @@ export const LoadingProvider = ({ children }) => {
     <LoadingContext.Provider
       value={{ updateResourceStatus, allLoaded, resources }}
     >
-      {children}
+      {<LoadingScreen />}
     </LoadingContext.Provider>
   );
 };

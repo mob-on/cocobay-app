@@ -45,6 +45,7 @@ export interface ITapEvent {
   y: number;
   time: DOMHighResTimeStamp; // Timestamp with high precision
   timeoutId?: NodeJS.Timeout; // Timeout ID for cancellation (timeout removes the event from the list of taps)
+  pointCount: number;
 }
 
 /**
@@ -90,15 +91,18 @@ const TapArea: React.FC = () => {
   const { energy, pointsPerTap } = gameState;
   const canTap = useRef(true);
 
+  // Block tapping if we don't have enough energy for a tap
   useEffect(() => {
     canTap.current = energy >= pointsPerTap;
   }, [energy >= pointsPerTap]);
 
+  // listen for touch events
   useEffect(() => {
     const element = tapAreaRef.current;
     element.addEventListener("touchstart", handleTouchStart, {
       passive: false,
     });
+
     // cleanup
     return () => {
       element.removeEventListener("touchstart", handleTouchStart);
@@ -127,6 +131,7 @@ const TapArea: React.FC = () => {
         x: clientX,
         y: clientY,
         time: performance.now(),
+        pointCount: pointsPerTap,
       };
 
       dispatchGameState({ type: "TAPS_REGISTER_TAP" });
@@ -180,8 +185,7 @@ const TapArea: React.FC = () => {
         priority
       />
       <Image
-        // TODO: use leveling data after we connect it
-        src={heroAvatars[0]}
+        src={heroAvatars[gameState.level - 1]}
         alt="Hero"
         width={100}
         height={100}

@@ -1,4 +1,5 @@
 import { Container } from "react-bootstrap";
+
 import style from "./privacy-policy.module.scss";
 
 export const PrivacyPolicy = () => {

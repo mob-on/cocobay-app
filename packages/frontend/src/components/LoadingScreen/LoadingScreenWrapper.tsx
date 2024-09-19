@@ -10,18 +10,16 @@ const EarnPage = dynamic(() => import("@src/pages/earn"));
 const FriendsPage = dynamic(() => import("@src/pages/friends"));
 
 interface ILoadingScreenWrapperProps {
-  Component: NextComponentType<NextPageContext, any, any>;
-  pageProps: any;
+  children: React.ReactNode;
 }
 
 const LoadingScreenWrapper: React.FC<ILoadingScreenWrapperProps> = ({
-  Component,
-  pageProps,
+  children,
 }) => {
   const { allLoaded } = useLoading();
 
   return allLoaded ? (
-    <Component {...pageProps} />
+    children
   ) : (
     <>
       <LoadingScreen />
