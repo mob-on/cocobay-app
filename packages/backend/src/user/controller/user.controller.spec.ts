@@ -11,18 +11,20 @@ import { UserDtoMapper } from "../service/user-mapping.service";
 import { UserService } from "../service/user.service";
 import { UserController } from "./user.controller";
 
-const mockUser = createValidUser();
-const mockUserDto = createValidUserDto(mockUser);
-
 describe("UserController", () => {
   let app: TestingModule;
   let service: UserService;
   let userController: UserController;
+  let userDtoMapper: UserDtoMapper;
+
+  const mockUser = createValidUser();
+  const mockUserDto = createValidUserDto(mockUser);
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
+        UserDtoMapper,
         {
           provide: UserService,
           useValue: {
@@ -31,7 +33,7 @@ describe("UserController", () => {
                 ? Promise.resolve(mockUser)
                 : Promise.reject(new EntityNotFoundException()),
             create: (userDto: UserDto) => {
-              return Promise.resolve(new UserDtoMapper().toUser(userDto));
+              return Promise.resolve(userDtoMapper.toUser(userDto));
             },
           },
         },
@@ -40,10 +42,15 @@ describe("UserController", () => {
 
     userController = app.get(UserController);
     service = app.get(UserService);
+    userDtoMapper = app.get(UserDtoMapper);
   });
 
   afterAll(async () => {
     await app?.close();
+  });
+
+  afterEach(async () => {
+    jest.clearAllMocks();
   });
 
   describe("getUser", () => {

@@ -4,11 +4,19 @@ import {
   TypegooseClass,
   TypegooseClassWithOptions,
 } from "@m8a/nestjs-typegoose/dist/typegoose-class.interface";
-import { INestApplication, Logger, ModuleMetadata } from "@nestjs/common";
-import { Test, TestingModule } from "@nestjs/testing";
+import {
+  INestApplication,
+  Logger,
+  Module,
+  ModuleMetadata,
+} from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { Test, TestingModule, TestingModuleBuilder } from "@nestjs/testing";
 import { getModelForClass } from "@typegoose/typegoose";
 import * as request from "supertest";
 import TestAgent from "supertest/lib/agent";
+import configuration from "@config/configuration";
+import { FeatureModule } from "src/common/feature-flags/feature-flag.module";
 import { configureMainApiNestApp } from "src/main-api-bootstrap-config";
 import { setupMockDatabase } from "./mongodb";
 
@@ -22,6 +30,16 @@ export interface ApiSetup extends DBSetup {
   app: INestApplication<unknown>;
   api: TestAgent;
 }
+
+//#TEST_SETUP_GLOBAL_MODULES
+const globalModules = [
+  ConfigModule.forRoot({
+    load: [configuration],
+    cache: true,
+    isGlobal: true,
+  }),
+  { module: FeatureModule, global: true },
+];
 
 /**
  * Gets a unique Model representation with an auto-generated suffix
@@ -53,34 +71,48 @@ const log = new Logger("TestSetup");
 
 const setupNest = async <T extends TypegooseClass>(
   modelDefinitions: T[],
-  moduleMetadata?: ModuleMetadata,
+  moduleMetadata: ModuleMetadata = {},
+  moduleBuilder?: (moduleBuilder: TestingModuleBuilder) => TestingModuleBuilder,
   withApi = false,
 ): Promise<DBSetup | ApiSetup> => {
   try {
     const mockDb = await setupMockDatabase();
 
-    if (!moduleMetadata) {
-      moduleMetadata = {};
-    }
     moduleMetadata.imports = [
       TypegooseModule.forRoot(mockDb.uri),
+      ...globalModules, //Mimic global imports in app.modules
       ...(moduleMetadata.imports ?? []),
     ];
 
-    const creatingTestModule = Test.createTestingModule(moduleMetadata);
+    //We need to wrap the test module in another module to allow configureMainApiNestApp to use "useContainer" from class-validator
+    @Module({
+      ...moduleMetadata,
+    })
+    class RootModule {}
+
+    const creatingTestModule = Test.createTestingModule({
+      imports: [RootModule],
+    });
 
     //Typegoose name overrides
-    const module = await modelDefinitions
-      .reduce((testModule, model) => {
+    let moduleBeforeCompilation =
+      modelDefinitions?.reduce((testModule, model) => {
         return testModule
           .overrideModule(TypegooseModule.forFeature([model]))
           .useModule(TypegooseModule.forFeature([getUniqueModel(model)]));
-      }, creatingTestModule)
-      .compile();
+      }, creatingTestModule) || creatingTestModule;
+
+    if (moduleBuilder) {
+      moduleBeforeCompilation = moduleBuilder(moduleBeforeCompilation);
+    }
+
+    const module = await moduleBeforeCompilation.compile();
 
     const models = [];
-    for (const model of modelDefinitions) {
-      models.push(getModelForClass(model));
+    if (modelDefinitions) {
+      for (const model of modelDefinitions) {
+        models.push(getModelForClass(model));
+      }
     }
 
     let result: DBSetup | ApiSetup = {
@@ -96,7 +128,7 @@ const setupNest = async <T extends TypegooseClass>(
 
     if (withApi) {
       const app = module.createNestApplication();
-      configureMainApiNestApp(app);
+      configureMainApiNestApp(app, RootModule);
       await app.init();
       const api = request(app.getHttpServer());
 
@@ -122,13 +154,20 @@ const setupNest = async <T extends TypegooseClass>(
 export const setupDb = async <T extends TypegooseClass>(
   modelDefinitions?: T[],
   moduleMetadata?: ModuleMetadata,
+  moduleBuilder?: (moduleBuilder: TestingModuleBuilder) => TestingModuleBuilder,
 ): Promise<DBSetup> => {
-  return setupNest(modelDefinitions, moduleMetadata, false);
+  return setupNest(modelDefinitions, moduleMetadata, moduleBuilder, false);
 };
 
 export const setupApi = async <T extends TypegooseClass>(
   modelDefinitions?: T[],
   moduleMetadata?: ModuleMetadata,
+  moduleBuilder?: (moduleBuilder: TestingModuleBuilder) => TestingModuleBuilder,
 ): Promise<ApiSetup> => {
-  return setupNest(modelDefinitions, moduleMetadata, true) as Promise<ApiSetup>;
+  return setupNest(
+    modelDefinitions,
+    moduleMetadata,
+    moduleBuilder,
+    true,
+  ) as Promise<ApiSetup>;
 };

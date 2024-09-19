@@ -1,0 +1,3 @@
+env: "local"
+features:
+  devMode: true
