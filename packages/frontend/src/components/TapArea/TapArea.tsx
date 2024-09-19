@@ -1,3 +1,13 @@
+import lvl1 from "@media/hero/hero-level1.svg";
+import lvl2 from "@media/hero/hero-level2.svg";
+import lvl3 from "@media/hero/hero-level3.svg";
+import lvl4 from "@media/hero/hero-level4.svg";
+import lvl5 from "@media/hero/hero-level5.svg";
+import lvl6 from "@media/hero/hero-level6.svg";
+import lvl7 from "@media/hero/hero-level7.svg";
+import lvl8 from "@media/hero/hero-level8.svg";
+import lvl9 from "@media/hero/hero-level9.svg";
+import lvl10 from "@media/hero/hero-level10.svg";
 import { useGameState } from "@src/shared/context/GameStateContext";
 import {
   TAP_EFFECTS_THROTTLE,
@@ -12,10 +22,22 @@ import { v4 as uuidv4 } from "uuid";
 
 import cloud1 from "/public/media/cloud1.svg";
 import cloud2 from "/public/media/cloud2.svg";
-import Hero from "/public/media/coco/coco-pink-swag.svg";
 import moon from "/public/media/moon.svg";
 
 import Rings from "./Rings";
+
+const heroAvatars = [
+  lvl1,
+  lvl2,
+  lvl3,
+  lvl4,
+  lvl5,
+  lvl6,
+  lvl7,
+  lvl8,
+  lvl9,
+  lvl10,
+];
 
 export interface ITapEvent {
   id: string;
@@ -23,6 +45,7 @@ export interface ITapEvent {
   y: number;
   time: DOMHighResTimeStamp; // Timestamp with high precision
   timeoutId?: NodeJS.Timeout; // Timeout ID for cancellation (timeout removes the event from the list of taps)
+  pointCount: number;
 }
 
 /**
@@ -64,13 +87,22 @@ const TapArea: React.FC = () => {
     }
   };
   const { taps: visualTaps = [], setTaps: setVisualTaps } = useTaps();
-  const { stamina, taps, dispatchGameState } = useGameState();
+  const { gameState, dispatchGameState } = useGameState();
+  const { energy, pointsPerTap } = gameState;
+  const canTap = useRef(true);
 
+  // Block tapping if we don't have enough energy for a tap
+  useEffect(() => {
+    canTap.current = energy >= pointsPerTap;
+  }, [energy >= pointsPerTap]);
+
+  // listen for touch events
   useEffect(() => {
     const element = tapAreaRef.current;
     element.addEventListener("touchstart", handleTouchStart, {
       passive: false,
     });
+
     // cleanup
     return () => {
       element.removeEventListener("touchstart", handleTouchStart);
@@ -88,7 +120,7 @@ const TapArea: React.FC = () => {
       // If we want mouse events, we should preventDefault() in the first touchmove event instead.
       e.cancelable && e.preventDefault();
       const touches = e.changedTouches;
-      if (stamina.current <= taps.perTap) return;
+      if (!canTap.current) return;
       // since it's the touchstart event, we only expect one touch to be changed.
       const touch = touches[0];
       const { clientX, clientY } = touch;
@@ -99,10 +131,10 @@ const TapArea: React.FC = () => {
         x: clientX,
         y: clientY,
         time: performance.now(),
+        pointCount: pointsPerTap,
       };
 
-      dispatchGameState({ type: "STAMINA_CONSUME" });
-      dispatchGameState({ type: "TAPS_APPLY_PASSIVE_INCOME" });
+      dispatchGameState({ type: "TAPS_REGISTER_TAP" });
       throttledHandleTapFeedback();
 
       setVisualTaps((oldTaps) => [...oldTaps, tapEvent]);
@@ -116,7 +148,7 @@ const TapArea: React.FC = () => {
       // Store timeout ID for potential cancellation
       tapEvent.timeoutId = timeoutId;
     },
-    [stamina.current <= taps.perTap],
+    [dispatchGameState, throttledHandleTapFeedback, setVisualTaps],
   );
 
   return (
@@ -153,7 +185,7 @@ const TapArea: React.FC = () => {
         priority
       />
       <Image
-        src={Hero}
+        src={heroAvatars[gameState.level - 1]}
         alt="Hero"
         width={100}
         height={100}

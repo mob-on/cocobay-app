@@ -1,7 +1,10 @@
-import { useGameState } from "../context/GameStateContext";
-import useLogger from "../hooks/useLogger";
-import { ITaps } from "../services/useTapsService";
+import { TapDto } from "@shared/src/dto/tap.dto";
+import { MutationKey, useMutation } from "@tanstack/react-query";
+
+import { ITaps, ITapSyncData } from "../services/useTapsService";
 import { useMainApiConfig } from "./main/config";
+
+export const SyncMutationKey = ["tapSync"] as MutationKey;
 
 // Function to calculate passive income during request time
 const calculatePassiveIncome = (
@@ -24,36 +27,27 @@ const getTaps = (): Promise<ITaps> => {
   });
 };
 
-const syncTaps = (): Promise<boolean> => {
+const syncTaps = () => {
   const [axios] = useMainApiConfig();
-  const { taps, dispatchGameState } = useGameState();
-  const timestamp = new Date();
-  const logger = useLogger("syncTaps");
 
-  return new Promise<boolean>(async (resolve, reject) => {
-    axios
-      .post("/v1/taps/sync", { taps, timestamp: timestamp.toISOString() })
-      .then(async () => {
-        try {
-          const response = await axios.post("/api/sync-taps", { taps });
-
-          const serverData: ITaps | undefined = response?.data;
-          if (serverData) {
-            const { passiveIncome } = serverData;
-            dispatchGameState({
-              type: "TAPS_SET_PASSIVE_INCOME",
-              payload: passiveIncome,
-            });
-          }
-          return resolve(true);
-        } catch (error) {
-          return reject(error);
+  return useMutation({
+    mutationFn: async (syncData: ITapSyncData) => {
+      const timestamp = new Date().toISOString();
+      const tapDto = new TapDto({
+        timestamp,
+        ...syncData,
+      });
+      try {
+        const response = await axios.post("/v1/taps/sync", tapDto);
+        if (response.status !== 200) {
+          throw new Error("Failed to track events");
         }
-      })
-      .catch(reject);
-  }).catch((e) => {
-    logger.error(e);
-    return false;
+        return response.data;
+      } catch (e: unknown) {
+        throw e;
+      }
+    },
+    mutationKey: SyncMutationKey,
   });
 };
 

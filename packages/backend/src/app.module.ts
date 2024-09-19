@@ -5,6 +5,7 @@ import "dotenv/config";
 import configuration from "../config/configuration";
 import { AuthModule } from "./auth/auth.module";
 import { FeatureModule } from "./common/feature-flags/feature-flag.module";
+import { GameDataModule } from "./gamedata/gamedata.module";
 import { HealthModule } from "./healthcheck/health.module";
 import { UserModule } from "./user/user.module";
 
@@ -24,6 +25,8 @@ import { UserModule } from "./user/user.module";
     HealthModule,
     UserModule,
     AuthModule,
+    GameDataModule,
+    TypegooseModule.forRoot(process.env.MONGODB_URI),
   ],
 })
 export class AppModule {}

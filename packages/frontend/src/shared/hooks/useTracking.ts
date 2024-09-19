@@ -81,99 +81,90 @@ const useCreateEvent = (): ((
  * If report fails, the buffer is returned to the buffer and we try to send it again in {ERROR_TIMEOUT}ms
  *
  * If the user navigates away from the page or closes the tab, the buffer is sent to the server.
- *
- * @param {object} options
- * @param {AxiosInstance} options.axios - An instance of Axios.
- * @param {Logger} options.logger - A logger instance.
  */
 export const useTracking = (): [
   (event: TrackerEventType, data?: any, ...tags: string[]) => void,
-  () => void,
+  () => Promise<void>,
 ] => {
   const logger = useLogger("useTracker");
   const createEvent = useCreateEvent();
-  const [axios] = useMainApiConfig();
-  const buffer = useRef<ITrackerEvent[]>([]);
-  const lastSendTimestamp = useRef<number>(Date.now());
-  const timeoutController = useRef<number | undefined>(undefined);
-  const errorTimeoutController = useRef<number | undefined>(undefined);
+  const [axiosInstance] = useMainApiConfig();
+  const eventBuffer = useRef<ITrackerEvent[]>([]);
+  const lastSendTime = useRef<number>(Date.now());
+  const timeoutId = useRef<number | undefined>(undefined);
+  const errorTimeoutId = useRef<number | undefined>(undefined);
 
-  const trackingApi = useTrackingApi();
+  const { mutateAsync: reportEvents } = useTrackingApi();
 
-  const handleNavigationOrTabClose = useCallback(() => {
-    const bufferCopy = [...buffer.current];
-    buffer.current = [];
+  const handleTabClose = useCallback(() => {
+    const eventBufferCopy = [...eventBuffer.current];
+    eventBuffer.current = [];
 
-    if (!bufferCopy.length) return;
+    if (!eventBufferCopy.length) return;
     navigator.sendBeacon(
-      axios.defaults.baseURL || "",
-      JSON.stringify(bufferCopy),
+      axiosInstance.defaults.baseURL || "",
+      JSON.stringify(eventBufferCopy),
     );
-  }, [buffer, trackingApi]);
+  }, [axiosInstance]);
 
-  const shouldSend = useCallback(() => {
-    const timestamp = Date.now();
+  const shouldReportEvents = useCallback(() => {
+    const currentTime = Date.now();
     return (
-      buffer.current.length >= MAX_EVENT_BUFFER_SIZE ||
-      timestamp - lastSendTimestamp.current >= REPORT_TIMEOUT
+      eventBuffer.current.length >= MAX_EVENT_BUFFER_SIZE ||
+      currentTime - lastSendTime.current >= REPORT_TIMEOUT
     );
   }, []);
 
-  const report = useCallback(
-    (force = false) => {
-      const shouldSendValue = force ? true : shouldSend();
-      const bufferCopy = [...buffer.current];
-      clearTimeout(timeoutController.current);
-      clearTimeout(errorTimeoutController.current);
-      if (!shouldSendValue && bufferCopy.length) {
-        timeoutController.current = window.setTimeout(
-          () => report(),
-          lastSendTimestamp.current - Number(new Date()) + REPORT_TIMEOUT,
+  const reportEventsWithTimeout = useCallback(
+    async (force = false) => {
+      const shouldReport = force ? true : shouldReportEvents();
+      const eventBufferCopy = [...eventBuffer.current];
+      clearTimeout(timeoutId.current);
+      clearTimeout(errorTimeoutId.current);
+      if (!shouldReport && eventBufferCopy.length) {
+        timeoutId.current = window.setTimeout(
+          () => reportEventsWithTimeout(),
+          lastSendTime.current - Number(new Date()) + REPORT_TIMEOUT,
         );
 
         return;
-      } else if (!shouldSendValue) {
+      } else if (!shouldReport) {
         return;
       }
 
-      lastSendTimestamp.current = Number(new Date());
+      lastSendTime.current = Number(new Date());
 
-      trackingApi.mutate(bufferCopy, {
-        onError: (e: Error) => {
-          logger.error(e);
-          errorTimeoutController.current = window.setTimeout(
-            report,
-            ERROR_TIMEOUT,
-          );
-        },
-        onSuccess: () => {
-          const succeededIds = new Set();
-          for (let i = 0; i < bufferCopy.length; i++) {
-            succeededIds.add(bufferCopy[i].id);
-          }
+      try {
+        await reportEvents(eventBufferCopy);
+        const succeededIds = new Set();
+        for (let i = 0; i < eventBufferCopy.length; i++) {
+          succeededIds.add(eventBufferCopy[i].id);
+        }
 
-          buffer.current = buffer.current.filter(
-            (event) => !succeededIds.has(event.id),
-          );
-        },
-      });
+        eventBuffer.current = eventBuffer.current.filter(
+          (event) => !succeededIds.has(event.id),
+        );
+      } catch (error) {
+        logger.error(error);
+        errorTimeoutId.current = window.setTimeout(
+          reportEventsWithTimeout,
+          ERROR_TIMEOUT,
+        );
+      }
     },
-    [logger, trackingApi, shouldSend, handleNavigationOrTabClose],
+    [logger, reportEvents, shouldReportEvents],
   );
 
   useEffect(() => {
-    document.addEventListener("visibilitychange", handleNavigationOrTabClose);
+    document.addEventListener("visibilitychange", handleTabClose);
     return () =>
-      document.removeEventListener(
-        "visibilitychange",
-        handleNavigationOrTabClose,
-      );
-  }, [handleNavigationOrTabClose]);
+      document.removeEventListener("visibilitychange", handleTabClose);
+  }, [handleTabClose]);
 
   useEffect(() => {
     return () => {
-      if (timeoutController.current) {
-        clearTimeout(timeoutController.current);
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current);
       }
     };
   }, []);
@@ -183,10 +174,10 @@ export const useTracking = (): [
       const bufferEvent = createEvent(event, data, tags);
       if (!bufferEvent) return;
 
-      buffer.current = [...buffer.current, bufferEvent];
-      if (event === TrackerEventType.CLICK_LINK) handleNavigationOrTabClose();
-      else report();
+      eventBuffer.current = [...eventBuffer.current, bufferEvent];
+      if (event === TrackerEventType.CLICK_LINK) handleTabClose();
+      else reportEventsWithTimeout();
     },
-    report,
+    reportEventsWithTimeout,
   ];
 };

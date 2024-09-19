@@ -1,4 +1,4 @@
-import coco from "/public/media/coco/coco-pink-swag.svg";
+import coco from "@media/coco/coco-pink-swag.svg";
 
 export interface IFriend {
   id: number;

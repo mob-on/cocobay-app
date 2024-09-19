@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 
 import grid from "/public/media/grid.svg";
 
-import LoadingScreenWrapper from "../components/LoadingScreen/LoadingScreenWrapper";
 import Layout from "../layouts/Layout";
 import { GameStateContextProvider } from "../shared/context/GameStateContext";
 import { LoadingProvider } from "../shared/context/LoadingContext";
@@ -110,10 +109,7 @@ export default function App({ Component, pageProps }: AppProps) {
                         />
                         <TapCounterTimer />
                         <UserContextProvider>
-                          <LoadingScreenWrapper
-                            Component={Component}
-                            pageProps={pageProps}
-                          />
+                          <Component {...pageProps} />
                         </UserContextProvider>
                       </Layout>
                     </GameStateContextProvider>

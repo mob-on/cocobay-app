@@ -8,6 +8,7 @@
     "dev": "NEXT_PUBLIC_ENVIRONMENT=dev next dev",
     "prebuild": "ts-node scripts/robots/build-robots",
     "build": "yarn prebuild && next build",
+    "build:analyze": "ANALYZE=true yarn build",
     "start": "next start",
     "lint": "lint-staged",
     "lint:check": "eslint \"{src,apps,libs,test}/**/*.{js,ts,md}\""
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
+    "@next/bundle-analyzer": "^14.2.12",
     "@popperjs/core": "^2.11.8",
     "@tanstack/react-query": "^5.55.4",
     "@twa-dev/sdk": "^7.8.0",

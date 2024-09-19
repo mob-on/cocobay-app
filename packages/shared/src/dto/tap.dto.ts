@@ -1,11 +1,21 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsISO8601, IsNotEmpty, IsNumber } from "class-validator";
 
-export class SharedTapDto {
+export class TapDto {
+  // @IsNumber()
+  // @IsNotEmpty()
+  // availableTaps!: number;
+
   @IsNumber()
   @IsNotEmpty()
-  availableTaps!: number;
+  tapCountPending!: number;
 
-  @IsNumber()
+  @IsISO8601({ strict: true })
   @IsNotEmpty()
-  tapCount!: number;
+  timestamp!: string;
+
+  constructor({ tapCountPending, timestamp }: TapDto = {} as TapDto) {
+    // if (availableTaps) this.availableTaps = availableTaps;
+    if (tapCountPending) this.tapCountPending = tapCountPending;
+    if (timestamp) this.timestamp = timestamp;
+  }
 }

@@ -20,11 +20,10 @@ interface ITapEffectProps {
  *     location of the tap event.
  */
 const TapEffect: React.FC<ITapEffectProps> = ({ tap }) => {
-  const { x, y } = tap;
-
+  const { x, y, pointCount = 1 } = tap;
   return (
     <div style={{ left: x, top: y }} className={styles.floatingNumber}>
-      <span>+1</span>
+      <span>+{pointCount}</span>
       <Image
         src={CocoCoin}
         alt="coin"
