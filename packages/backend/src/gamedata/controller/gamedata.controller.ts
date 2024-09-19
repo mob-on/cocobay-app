@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { Controller, Get } from "@nestjs/common";
 import { GameDataDto } from "@shared/src/dto/gameData.dto";
-@Controller("/gamestate")
+@Controller("/gamedata")
 export class GameDataController {
   constructor() {}
 
-  @Get("/get")
+  @Get("/")
   async getGameState(): Promise<GameDataDto> {
     const levelName = faker.word.adjective();
     return {
