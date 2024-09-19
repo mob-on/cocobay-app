@@ -180,7 +180,8 @@ const TapArea: React.FC = () => {
         priority
       />
       <Image
-        src={Hero}
+        // TODO: use leveling data after we connect it
+        src={heroAvatars[0]}
         alt="Hero"
         width={100}
         height={100}

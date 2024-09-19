@@ -5,10 +5,9 @@ import Button from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import TapCounter from "@src/components/TapCounter";
 import usePopup from "@src/shared/hooks/usePopup";
-import useTapsService from "@src/shared/services/useTapsService";
 import styles from "@src/styles/pages/build.module.scss";
 import { Popup, TabBar, Toast } from "antd-mobile";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import energy from "/public/media/icons/energy.svg";
 
