@@ -13,8 +13,8 @@ export interface IStaminaData {
 }
 
 const Leveling: React.FC = () => {
-  const { stamina } = useGameState();
-  const { current, max } = stamina;
+  const { gameState } = useGameState();
+  const { energy, maxEnergy } = gameState;
 
   return (
     <div className={styles.stamina}>
@@ -23,7 +23,7 @@ const Leveling: React.FC = () => {
       </Link>
       <p>
         <span>
-          {current} / {max}
+          {energy} / {maxEnergy}
         </span>
       </p>
     </div>

@@ -6,15 +6,16 @@ import React, { useMemo } from "react";
 import Cost from "../shared/Cost";
 
 const TapCounter: React.FC = () => {
-  const { taps } = useGameState();
+  const { gameState } = useGameState();
+  const { pointCount, pointIncomePerSecond } = gameState;
   const numberFormatter = new Intl.NumberFormat("en-US");
   const formattedTapCount = useMemo(
-    () => numberFormatter.format(taps.pointCount),
-    [taps.pointCount],
+    () => numberFormatter.format(pointCount),
+    [pointCount],
   );
   const formattedPassiveIncome = useMemo(
-    () => NumberFormatter.format(taps.passiveIncome * 3600),
-    [taps.passiveIncome],
+    () => NumberFormatter.format(pointIncomePerSecond * 3600),
+    [pointIncomePerSecond],
   );
   return (
     <div className={styles.tapCounter}>

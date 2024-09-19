@@ -21,7 +21,7 @@ export function IsGameState(validationOptions?: ValidationOptions) {
       propertyName: propertyName,
       options: validationOptions,
       constraints: [],
-      validator: SharedValidConstraint<GameState>(
+      validator: SharedValidConstraint<Required<GameState>>(
         {
           maxEnergy: isPositiveNumber,
           energyRecoveryPerSecond: isPositiveNumberOrZero,
@@ -34,6 +34,7 @@ export function IsGameState(validationOptions?: ValidationOptions) {
           targetExp: isPositiveNumber,
           currentExp: isPositiveNumberOrZero,
           maxLevel: isPositiveNumber,
+          pointsPerTap: isPositiveNumber,
         },
         propertyName,
       ),

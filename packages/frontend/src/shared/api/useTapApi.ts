@@ -1,11 +1,6 @@
 import { TapDto } from "@shared/src/dto/tap.dto";
-import {
-  MutationKey,
-  useMutation,
-  UseMutationResult,
-} from "@tanstack/react-query";
+import { MutationKey, useMutation } from "@tanstack/react-query";
 
-import { useGameState } from "../context/GameStateContext";
 import { ITaps, ITapSyncData } from "../services/useTapsService";
 import { useMainApiConfig } from "./main/config";
 

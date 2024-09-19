@@ -1,7 +1,9 @@
+import { GameDataDto } from "@shared/src/dto/gameData.dto";
 import { UserDto } from "@shared/src/dto/user.dto";
 import { validate } from "class-validator";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+import { GAME_DATA_QUERY_KEY, useGameDataApi } from "../api/useGameDataApi";
 import { useUserApi } from "../api/useUserApi";
 import useLogger from "../hooks/useLogger";
 import useTelegram from "../hooks/useTelegram";
@@ -46,16 +48,7 @@ export const LoadingProvider = ({ children }) => {
   const logger = useLogger("LoadingProvider");
   const [WebApp] = useTelegram();
   const userApi = useUserApi();
-
-  const userObject = {
-    id: "10",
-    firstName: 1,
-    username: "222",
-    languageCode: "3333",
-  };
-
-  const user = new UserDto();
-  user.id = 1 as unknown as string;
+  const gameDataApi = useGameDataApi();
 
   const login = async (tries = 1) => {
     if (tries > MAX_TRIES) {
@@ -156,7 +149,11 @@ export const LoadingProvider = ({ children }) => {
   useEffect(() => {
     setIsDataRequested(false);
     const apiToLoad: ResourceToLoad<any>[] = [
-      { fn: login, name: USER_QUERY_KEY },
+      { fn: login, name: USER_QUERY_KEY } as ResourceToLoad<UserDto>,
+      {
+        fn: gameDataApi.get,
+        name: GAME_DATA_QUERY_KEY,
+      } as ResourceToLoad<GameDataDto>,
     ];
     // Initialize all resources we know for sure we'll need.
     initializeResources(apiToLoad);

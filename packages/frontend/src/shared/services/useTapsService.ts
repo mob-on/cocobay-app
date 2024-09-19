@@ -1,3 +1,4 @@
+import { FrontendGameState } from "@shared/src/interfaces";
 import { UseMutationResult, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -32,15 +33,17 @@ interface IMethods {
   startSync: () => void;
 }
 
-const useTapsService: TUseService<ITaps, IMethods> = () => {
+const useTapsService: TUseService<FrontendGameState, IMethods> = () => {
   const [, setTapSyncData] = useLocalStorage("tapSyncData", {});
   const logger = useLogger("useTapsService");
   const queryClient = useQueryClient();
-  const { dispatchGameState, taps } = useGameState();
+  const { gameState, dispatchGameState } = useGameState();
+  const { tapCount, tapCountSynced, pointIncomePerSecond, pointCount } =
+    gameState;
   const { getTaps: apiGetTaps, syncTaps: getApiSyncTaps } = useTapApi();
   const tapSyncTimeoutController = useRef<number>();
   const tapSyncData = useRef<ITapSyncData>({
-    tapCountPending: taps.syncedTapCount - taps.tapCount,
+    tapCountPending: tapCountSynced - tapCount,
   });
   const apiSyncTaps = getApiSyncTaps();
   const [shouldSync, setShouldSync] = useState(false);
@@ -49,9 +52,9 @@ const useTapsService: TUseService<ITaps, IMethods> = () => {
   useEffect(() => {
     if (!shouldSync) return;
     tapSyncData.current = {
-      tapCountPending: taps.tapCount - taps.syncedTapCount,
+      tapCountPending: tapCount - tapCountSynced,
     };
-  }, [taps]);
+  }, [tapCount, tapCountSynced]);
 
   // Save sync tap data to local storage and stop timeout
   const onDestroy = useCallback(() => {
@@ -89,13 +92,13 @@ const useTapsService: TUseService<ITaps, IMethods> = () => {
       handleSyncData,
       SYNC_INTERVAL,
     );
-  }, [taps.tapCount]);
+  }, [tapCount]);
 
   // passive income and stamina regen
   const timeoutCallback = useCallback(() => {
-    dispatchGameState({ type: "TAPS_APPLY_PASSIVE_INCOME" });
-    dispatchGameState({ type: "STAMINA_REGEN" });
-  }, [taps.passiveIncome, dispatchGameState]);
+    dispatchGameState({ type: "TAPS_APPLY_POINT_INCOME" });
+    dispatchGameState({ type: "ENERGY_REGEN" });
+  }, [pointIncomePerSecond, dispatchGameState]);
 
   const timeout = useSelfCorrectingTimeout(timeoutCallback, UPDATE_INTERVAL);
 
@@ -106,7 +109,7 @@ const useTapsService: TUseService<ITaps, IMethods> = () => {
         queryKey: [QUERY_KEY],
         queryFn: apiGetTaps,
       });
-      dispatchGameState({ type: "TAPS_UPDATE", payload: tapData });
+      // dispatchGameState({ type: "TAPS_UPDATE", payload: tapData });
     } catch (error) {
       logger.error("Error syncing taps:", error);
     }
@@ -119,7 +122,7 @@ const useTapsService: TUseService<ITaps, IMethods> = () => {
   };
 
   return [
-    taps,
+    gameState,
     { startTimeout: timeout.start, startSync, getTaps, syncTaps: apiSyncTaps },
   ];
 };

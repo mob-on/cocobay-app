@@ -9,6 +9,7 @@ export interface GameState {
   // points
   pointCount: number;
   pointIncomePerSecond: number;
+  pointsPerTap: number;
 
   // taps
   tapCount: number;

@@ -1,3 +1,5 @@
+import { GameDataDto } from "@shared/src/dto/gameData.dto";
+import { FrontendGameState } from "@shared/src/interfaces";
 import {
   createContext,
   useContext,
@@ -6,19 +8,21 @@ import {
   useState,
 } from "react";
 
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { GAME_DATA_QUERY_KEY } from "../api/useGameDataApi";
+import useLogger from "../hooks/useLogger";
 import { ITaps } from "../services/useTapsService";
-import { useLoading } from "./LoadingContext";
+import { ILoadingContextResource, useLoading } from "./LoadingContext";
 
 export const TAP_EFFECTS_TIMEOUT = 1000; // remove taps from list after this time1
 export const TAP_EFFECTS_THROTTLE = 50; // min time before triggering ring animation
 
 export type GameAction =
-  | { type: "TAPS_APPLY_PASSIVE_INCOME" }
-  | { type: "STAMINA_CONSUME" }
-  | { type: "STAMINA_REGEN" }
-  | { type: "TAPS_UPDATE"; payload: ITaps }
-  | { type: "TAPS_SET_PASSIVE_INCOME"; payload: number }
+  | { type: "TAPS_APPLY_POINT_INCOME" }
+  | { type: "ENERGY_CONSUME" }
+  | { type: "ENERGY_REGEN" }
+  | { type: "DATA_INITIALIZE"; payload: GameDataDto }
+  // | { type: "TAPS_UPDATE"; payload: ITaps }
+  | { type: "TAPS_SET_POINT_INCOME"; payload: number }
   | { type: "TAPS_REGISTER_TAP"; payload?: (boolean) => void };
 
 export interface IStamina {
@@ -33,92 +37,76 @@ export interface IGameState {
   pendingTaps: number;
 }
 
-export type IGameStateContext = IGameState & {
+export type IGameStateContext = { gameState: FrontendGameState } & {
   dispatchGameState: React.Dispatch<GameAction>;
 };
 
-const defaultGameData: IGameState = {
-  taps: {
-    tapCount: 400,
-    syncedTapCount: 400,
-    pointCount: 1248,
-    passiveIncome: 1,
-    perTap: 1,
-  },
-  stamina: {
-    current: 50,
-    max: 500,
-    regen: 3,
-  },
-  pendingTaps: 0,
-};
+const defaultGameData: FrontendGameState = {} as FrontendGameState;
 
 const gameStateReducer = (
-  state: IGameState,
+  state: FrontendGameState,
   action: GameAction,
-): IGameState => {
-  const { stamina, taps, pendingTaps } = state;
+): FrontendGameState => {
+  const {
+    pointsPerTap,
+    energy,
+    tapCountPending,
+    pointCount,
+    maxEnergy,
+    pointIncomePerSecond,
+    energyRecoveryPerSecond,
+  } = state;
   switch (action.type) {
-    case "TAPS_SET_PASSIVE_INCOME":
+    case "DATA_INITIALIZE":
+      const { payload } = action;
+      const { gameState } = payload;
       return {
-        pendingTaps,
-        stamina,
-        taps: {
-          ...taps,
-          passiveIncome: action.payload,
-        },
+        ...gameState,
+        // TODO: don't forget to implement actual logic for these 3 parameters, in the useEffect().
+        energy: gameState.maxEnergy,
+        tapCountSynced: gameState.tapCount,
+        tapCountPending: 0,
       };
-    case "TAPS_UPDATE":
+    case "TAPS_SET_POINT_INCOME":
       return {
-        pendingTaps,
-        stamina,
-        taps: {
-          ...taps,
-          ...action.payload,
-        },
+        ...state,
+        pointIncomePerSecond: action.payload,
       };
-    case "TAPS_APPLY_PASSIVE_INCOME":
+    // case "TAPS_UPDATE":
+    //   return {
+    //     pendingTaps,
+    //     stamina,
+    //     taps: {
+    //       ...taps,
+    //       ...action.payload,
+    //     },
+    //   };
+    case "TAPS_APPLY_POINT_INCOME":
       return {
-        pendingTaps,
-        stamina,
-        taps: { ...taps, pointCount: taps.pointCount + taps.passiveIncome },
+        ...state,
+        pointCount: pointCount + pointIncomePerSecond,
       };
     case "TAPS_REGISTER_TAP":
-      const { perTap } = taps;
-      if (stamina.current < perTap) {
+      if (energy < pointsPerTap) {
         if (typeof action.payload === "function") action.payload(false);
         return state;
       }
       if (typeof action.payload === "function") action.payload(true);
       return {
-        pendingTaps: pendingTaps + 1,
-        taps: {
-          ...taps,
-          tapCount: taps.tapCount + 1,
-          pointCount: taps.pointCount + taps.perTap,
-        },
-        stamina: {
-          ...stamina,
-          current: Math.max(0, stamina.current - taps.perTap),
-        },
+        ...state,
+        tapCountPending: tapCountPending + 1,
+        pointCount: pointCount + pointsPerTap,
+        energy: energy - pointsPerTap,
       };
-    case "STAMINA_CONSUME":
+    case "ENERGY_CONSUME":
       return {
-        pendingTaps,
-        taps,
-        stamina: {
-          ...stamina,
-          current: Math.max(0, stamina.current - taps.perTap),
-        },
+        ...state,
+        energy: Math.max(0, energy - pointsPerTap),
       };
-    case "STAMINA_REGEN":
+    case "ENERGY_REGEN":
       return {
-        pendingTaps,
-        taps,
-        stamina: {
-          ...stamina,
-          current: Math.min(stamina.max, stamina.current + stamina.regen),
-        },
+        ...state,
+        energy: Math.min(maxEnergy, energy + energyRecoveryPerSecond),
       };
     default:
       return state;
@@ -139,11 +127,21 @@ export const GameStateContextProvider = ({
   // TODO: implement this, after we get access to game data endpoint
   // const { resources } = useLoading();
   // const defaultGameData = resources[GAME_DATA_QUERY];
-  const [state, dispatch] = useReducer(gameStateReducer, defaultGameData);
-
+  const [gameState, dispatch] = useReducer(gameStateReducer, defaultGameData);
+  const { resources } = useLoading();
+  const logger = useLogger("GameStateContextProvider");
+  useEffect(() => {
+    const { data, status } = resources[
+      GAME_DATA_QUERY_KEY
+    ] as ILoadingContextResource<GameDataDto>;
+    if (status !== "loaded") {
+      return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
+    }
+    dispatch({ type: "DATA_INITIALIZE", payload: data });
+  }, []);
   return (
     <GameStateContext.Provider
-      value={{ ...state, dispatchGameState: dispatch }}
+      value={{ gameState, dispatchGameState: dispatch }}
     >
       {children}
     </GameStateContext.Provider>

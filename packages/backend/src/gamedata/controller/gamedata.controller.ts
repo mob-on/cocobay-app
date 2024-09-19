@@ -28,6 +28,7 @@ export class GameDataController {
           levelName.charAt(0).toUpperCase() + levelName.slice(1) + " Coco",
         targetExp: 1000,
         currentExp: 500,
+        pointsPerTap: 2,
       },
       boosts: [],
       builds: [],

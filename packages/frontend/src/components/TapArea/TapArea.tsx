@@ -86,13 +86,13 @@ const TapArea: React.FC = () => {
     }
   };
   const { taps: visualTaps = [], setTaps: setVisualTaps } = useTaps();
-  const { stamina, taps, dispatchGameState } = useGameState();
-
+  const { gameState, dispatchGameState } = useGameState();
+  const { energy, pointsPerTap } = gameState;
   const canTap = useRef(true);
 
   useEffect(() => {
-    canTap.current = stamina.current >= taps.perTap;
-  }, [stamina.current >= taps.perTap]);
+    canTap.current = energy >= pointsPerTap;
+  }, [energy >= pointsPerTap]);
 
   useEffect(() => {
     const element = tapAreaRef.current;
