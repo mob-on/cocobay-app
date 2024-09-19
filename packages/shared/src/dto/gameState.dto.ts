@@ -1,16 +1,12 @@
 import { IsInstance } from "class-validator";
+import { Boost, Build, Friend, GameState, Rewards } from "../interfaces";
 import {
-  Boost,
-  Build,
-  Friend,
-  GameState,
   IsBoost,
   IsBuild,
   IsFriend,
   IsGameState,
   IsRewards,
-  Rewards,
-} from "../interfaces";
+} from "../validation";
 import { UserDto } from "./user.dto";
 
 export class GameStateDto {
