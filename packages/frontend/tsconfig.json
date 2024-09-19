@@ -27,7 +27,13 @@
       "@utils/*": ["../shared/utils/*"],
       "@tests/*": ["../tests/*"],
       "@media/*": ["./public/media/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "../shared/*",
@@ -39,7 +45,8 @@
     "eslint.config.mjs",
     "__mocks__/svgMock.ts",
     "setupTests.ts",
-    "jest.config.js"
+    "jest.config.js",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

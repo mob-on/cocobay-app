@@ -25,7 +25,7 @@ const nextConfigWithPlugins = async (phase) =>
     defaultConfig,
   });
   
-const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
+// const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
    
 
-export default withBundleAnalyzer(nextConfigWithPlugins);
+export default nextConfigWithPlugins;

@@ -170,7 +170,7 @@ export const LoadingProvider = ({ children }) => {
     <LoadingContext.Provider
       value={{ updateResourceStatus, allLoaded, resources }}
     >
-      {<LoadingScreen />}
+      {allLoaded ? children : <LoadingScreen />}
     </LoadingContext.Provider>
   );
 };
