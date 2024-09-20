@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
 interface IPopupState {
-  id?: number;
+  id?: string;
   show: boolean;
 }
 
@@ -16,17 +16,17 @@ interface IPopupState {
  *   - A function that shows the popup with the given id.
  */
 const usePopup = () => {
-  const [show, setShow] = useState<IPopupState>({ show: false, id: 0 });
+  const [show, setShow] = useState<IPopupState>({ show: false, id: "" });
   const hidePopup = useCallback(
     () => setShow((old) => ({ show: false, id: old.id })),
     [],
   );
 
-  const showPopup = (id?: number) => setShow({ show: true, id });
+  const showPopup = (id?: string) => setShow({ show: true, id });
 
   return [show, showPopup, hidePopup] as [
     IPopupState,
-    (id?: number) => void,
+    (id?: string) => void,
     () => void,
   ];
 };

@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "dev": "NEXT_PUBLIC_ENVIRONMENT=dev next dev",
+    "dev": "NEXT_PUBLIC_ENVIRONMENT=dev next dev --turbo",
+    "dev:trace": "NEXT_TURBOPACK_TRACING=1 NEXT_CPU_PROF=1 next dev --turbo",
     "prebuild": "ts-node scripts/robots/build-robots",
     "build": "yarn prebuild && next build",
     "build:analyze": "ANALYZE=true yarn build",

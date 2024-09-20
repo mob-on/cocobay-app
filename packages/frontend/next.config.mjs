@@ -28,10 +28,14 @@ const nextConfig = {
   trailingSlash: true,
   transpilePackages: ["antd"],
   experimental: {
-    optimizePackageImports: ["antd-mobile"],
+    optimizePackageImports: [
+      "antd-mobile",
+      "antd-mobile-icons",
+      "@ant-design/icons",
+    ],
   },
   images: {
-    disableStaticImages: true,
+    disableStaticImages: false,
     unoptimized: true, //required by next output:export
   },
   experimental: {

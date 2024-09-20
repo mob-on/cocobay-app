@@ -1,115 +1,57 @@
 "use client";
 
-import energy from "@media/icons/energy.svg";
-import { IBoost } from "@src/components/Boosts";
+import { Boost } from "@shared/src/interfaces";
 import BoostPopup from "@src/components/Boosts/BoostPopup";
 import Card from "@src/components/shared/Card";
+import { useBoosts } from "@src/shared/context/BoostsContext";
 import usePopup from "@src/shared/hooks/usePopup";
 import styles from "@src/styles/pages/home/boosts.module.scss";
 import { Popup, Toast } from "antd-mobile";
-import { useCallback, useEffect, useMemo, useState } from "react";
-
-const defaultBoosts: IBoost[] = [
-  {
-    id: 1,
-    name: "Replenish energy",
-    description: "Get your energy back to full, one energy drink at a time",
-    iconSrc: energy,
-    cost: 1000,
-    level: 0,
-    maxLevel: 1,
-    type: "daily",
-    usedToday: 5,
-    maxToday: 6,
-  },
-  {
-    id: 2,
-    name: "Boost 1",
-    description: "Boost 2 description",
-    iconSrc: energy,
-    cost: 10000,
-    level: 5,
-    type: "regular",
-    usedToday: 0,
-    maxToday: Infinity,
-    maxLevel: 5,
-  },
-  {
-    id: 3,
-    name: "Boost 3",
-    description: "Boost 3 description",
-    iconSrc: energy,
-    cost: 10000,
-    level: 2,
-    type: "regular",
-    usedToday: 1,
-    maxToday: Infinity,
-    maxLevel: 5,
-    cooldownUntil: new Date(Date.now() + 1000 * 60 * 5), // 5 minutes, for testing
-  },
-];
+import { useCallback, useMemo } from "react";
 
 export default function Boosts() {
-  const [boosts, setBoosts] = useState(defaultBoosts);
+  const { boosts } = useBoosts();
   const [boostPopupState, showBoostPopup, hideBoostPopup] = usePopup();
-
   const findBoost = useCallback(
-    (id: number) => {
+    (id: string) => {
       return boosts.find((boost) => boost.id === id);
     },
     [boosts],
   );
 
   const { daily, regular } = useMemo(() => {
+    if (!boosts.length)
+      return {
+        daily: [],
+        regular: [],
+      };
     return boosts.reduce<{
-      daily: IBoost[];
-      regular: IBoost[];
-      boostToShow: IBoost;
+      daily: Boost[];
+      regular: Boost[];
+      boostToShow: Boost;
     }>(
       (res, next) => {
         res[next.type].push(next);
         return res;
       },
-      { daily: [], regular: [], boostToShow: {} as IBoost },
+      { daily: [], regular: [], boostToShow: {} as Boost },
     );
   }, [boosts]);
 
   const boostToShow = useMemo(() => {
     // we don't care if `show` is true or false to prevent flickering
-    return findBoost(boostPopupState.id ?? -1) || ({} as IBoost);
+    return findBoost(boostPopupState.id ?? "") || ({} as Boost);
   }, [boosts, boostPopupState]);
 
-  useEffect(() => {
-    // fetch data and put it into the state.
-    setBoosts([
-      ...defaultBoosts,
-      {
-        id: 4,
-        name: "Boost 4",
-        description: "Boost 4 description",
-        iconSrc: energy,
-        cost: 1000,
-        level: 1,
-        type: "regular",
-        usedToday: 0,
-        maxToday: Infinity,
-        maxLevel: 5,
-      },
-    ]);
-  }, []);
-
   const onUpgrade = useCallback(
-    (id: number) => {
+    (id: string) => {
       hideBoostPopup();
       const boost = findBoost(id);
       if (boost) {
-        setBoosts(
-          boosts.map((boost) =>
-            boost.id === id
-              ? { ...boost, level: boost.level + 1, cost: boost.cost * 10 }
-              : boost,
-          ),
-        );
+        // TODO: make boosts service and call it.
+        // boostService.upgradeBoost(boost);
+        // lock this boost in the meantime. Wait for server asnwer, call dispatch in the service.
+        // on error, show error popup, otherwise show success animation
       } else {
         Toast.show({
           icon: "fail",
@@ -121,20 +63,14 @@ export default function Boosts() {
   );
 
   const onClaim = useCallback(
-    (id: number) => {
+    (id: string) => {
       hideBoostPopup();
       const boost = findBoost(id);
       if (boost) {
         if (boost.maxToday - boost.usedToday <= 0) {
           return;
         }
-        setBoosts(
-          boosts.map((boost) =>
-            boost.id === id
-              ? { ...boost, usedToday: boost.usedToday + 1 }
-              : boost,
-          ),
-        );
+        // same logic as onUpgrade, but it should be boostService.claimBoost
       } else {
         Toast.show({
           icon: "fail",
