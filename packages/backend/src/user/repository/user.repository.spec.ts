@@ -1,10 +1,10 @@
 import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
-import { MongoExceptionMapper } from "src/common/database/mongodb/mongo-exception-mapping";
 import { UniqueViolation } from "src/common/exception/db/unique-violation.exception";
 import { createValidUser } from "test/fixtures/model/user.data";
 import { DBSetup, setupDb } from "test/setup/setup";
 import { User } from "../model/user.model";
 import { UserRepository } from "./user.repository";
+import { UserRepositoryModule } from "./user.repository.module";
 
 const mockUser = createValidUser();
 
@@ -14,18 +14,12 @@ describe("UserRepository", () => {
   let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
-    userModel = getModelForClass(User);
-
-    setup = await setupDb([User], {
-      providers: [
-        {
-          provide: UserRepository,
-          useValue: new UserRepository(userModel, new MongoExceptionMapper()),
-        },
-      ],
+    setup = await setupDb({
+      imports: [UserRepositoryModule],
     });
 
     repository = setup.module.get(UserRepository);
+    userModel = getModelForClass(User);
   });
 
   afterAll(async () => {
@@ -33,7 +27,7 @@ describe("UserRepository", () => {
   });
 
   beforeEach(async () => {
-    await setup.clearModels();
+    await userModel.deleteMany({});
   });
 
   it("should be defined", () => {

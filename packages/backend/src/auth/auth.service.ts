@@ -4,8 +4,8 @@ import { UserDto } from "@shared/src/dto/user.dto";
 import { InitDataParsed } from "@telegram-apps/init-data-node";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { UserService } from "src/user/service/user.service";
+import { TelegramJwtDto } from "../../../shared/src/dto/auth/telegram-jwt-dto";
 import { LoggedInUser } from "./logged-in-user-data";
-import { TelegramJwtPayload } from "./telegram-jwt-payload";
 
 @Injectable()
 export class AuthService {
@@ -40,6 +40,6 @@ export class AuthService {
       token: this.jwtService.sign({ id: userId } as LoggedInUser, {
         secret: process.env.JWT_SECRET,
       }),
-    } as TelegramJwtPayload;
+    } as TelegramJwtDto;
   }
 }

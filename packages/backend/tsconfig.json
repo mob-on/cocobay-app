@@ -18,5 +18,5 @@
     "incremental": true,
     "skipLibCheck": true
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../shared/src/dto/auth/telegram-jwt-dto.ts"]
 }
