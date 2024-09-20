@@ -29,7 +29,7 @@ describe("HealthService", () => {
   describe("getHealth", () => {
     it("should return minimal information to know the application is healthy", () => {
       const version = faker.string.alphanumeric(16);
-      process.env.APP_VERSION = version;
+      process.env.APP_VERSION = version; //TODO refactor to config instead of directly reading process.env
       const buildTime = new Date().toISOString();
       process.env.BUILD_TIME = buildTime;
 
@@ -39,6 +39,7 @@ describe("HealthService", () => {
         status: "OK",
         build: {
           version: version,
+          date: buildTime,
         },
       });
     });
@@ -54,22 +55,39 @@ describe("HealthService", () => {
       });
     });
 
-    it("should NOT return sensitive settings when devmode is not enabled", () => {
+    it("should NOT return config settings when devmode is not enabled", () => {
       featureService.setFeature(Feature.DEV_MODE, false);
-      const version = faker.string.alphanumeric(16);
-      process.env.APP_VERSION = version;
-      const buildTime = new Date().toISOString();
-      process.env.BUILD_TIME = buildTime;
 
       const health = healthService.getHealth();
 
       expect(health).not.toMatchObject({
         status: "OK",
-        build: {
-          date: buildTime,
-        },
         config: expect.any(Object),
       });
+    });
+
+    it("should never return secrets with dev mode disabled", () => {
+      featureService.setFeature(Feature.DEV_MODE, false);
+
+      const health = healthService.getHealth();
+
+      expect(health).not.toMatchObject({
+        status: "OK",
+        config: expect.any(Object),
+      });
+      expect(health).not.toHaveProperty("config.secrets");
+    });
+
+    it("should never return secrets with dev mode enabled", () => {
+      featureService.setFeature(Feature.DEV_MODE, true);
+
+      const health = healthService.getHealth();
+
+      expect(health).toMatchObject({
+        status: "OK",
+        config: expect.any(Object),
+      });
+      expect(health).not.toHaveProperty("config.secrets");
     });
   });
 });
