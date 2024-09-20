@@ -12,8 +12,8 @@
     "paths": {
       "src/*": ["./src/*"],
       "test/*": ["./test/*"],
-      "@shared/*": ["../shared/*"],
-      "@config/*": ["./config/*"]
+      "@config/*": ["./config/*"],
+      "@shared/*": ["../shared/*"]
     },
     "incremental": true,
     "skipLibCheck": true

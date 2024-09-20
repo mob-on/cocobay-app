@@ -10,7 +10,7 @@ export class UserRepository {
   constructor(
     @InjectModel(User)
     private readonly userModel: ReturnModelType<typeof User>,
-    private readonly exception: ExceptionMapper,
+    private readonly exceptionMapper: ExceptionMapper,
   ) {}
 
   /**
@@ -38,7 +38,7 @@ export class UserRepository {
     try {
       return (await this.userModel.create(user)).save();
     } catch (e: unknown) {
-      if (this.exception.isUniqueKeyViolation(e)) {
+      if (this.exceptionMapper.isUniqueKeyViolation(e)) {
         throw new UniqueViolation();
       }
 
