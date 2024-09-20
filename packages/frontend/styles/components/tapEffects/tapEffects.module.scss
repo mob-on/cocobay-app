@@ -1,0 +1,46 @@
+@import "styles/theme.scss";
+
+@keyframes disappear {
+  0% {
+    transform: translateY(-50%) translateX(-50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(-50% - 30vh)) translateX(-50%) scale(1)
+      rotate(0deg);
+    opacity: 0;
+  }
+}
+
+.tapEffects {
+  z-index: 1000;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.floatingNumber {
+  position: absolute;
+  animation: disappear 1s ease-in-out forwards;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #fff;
+  font-weight: 700;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+$tap-coin-svg-size: 160px;
+
+.coin {
+  left: calc(100% + $padding-coin);
+  position: absolute;
+}

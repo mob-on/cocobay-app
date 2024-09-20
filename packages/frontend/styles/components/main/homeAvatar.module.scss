@@ -1,0 +1,10 @@
+@import "styles/theme.scss";
+
+.homeAvatar {
+  display: flex;
+  align-items: center;
+}
+
+.name {
+  margin: 0 var(--padding);
+}

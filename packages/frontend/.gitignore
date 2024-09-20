@@ -2,4 +2,4 @@
 /public/sitemap*.xml
 /public/robots.txt
 config/local.ts
-node_modules/
+node_modules

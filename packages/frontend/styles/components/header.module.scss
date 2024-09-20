@@ -1,0 +1,27 @@
+@import "styles/theme.scss";
+
+.fixedWrapper {
+  position: relative;
+  height: $header-height;
+}
+
+.main {
+  height: $header-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0 var(--padding);
+  overflow: hidden;
+}
+
+.back {
+  order: -1;
+}
+
+.logo {
+  margin: 0 auto;
+}

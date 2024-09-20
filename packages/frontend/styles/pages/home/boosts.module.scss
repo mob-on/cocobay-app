@@ -1,0 +1,52 @@
+@import "styles/theme.scss";
+
+.boosts {
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding);
+  padding-bottom: calc(
+    var(--padding) + var(--menu-height) + var(--menu-bottom)
+  );
+  user-select: none;
+}
+
+.boost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--padding-inner);
+  padding: var(--padding-inner 0);
+  background-color: var(--color-menu);
+  border-radius: 5px;
+  width: calc(50% - var(--padding-inner));
+}
+
+.boost:active {
+  background-color: lighten($color-menu, 10%);
+}
+
+.boostList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--padding-inner);
+  justify-content: space-between;
+}
+
+.cost {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--padding-inner) / 2);
+}
+
+.boostPopup {
+  box-sizing: border-box;
+  padding: var(--padding);
+  width: 100%;
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: var(--popup-b-radius);
+}

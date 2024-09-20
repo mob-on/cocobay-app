@@ -1,14 +1,18 @@
 import withPlugins from "next-compose-plugins";
 import withImages from "next-images";
-import bundleAnalyzer from '@next/bundle-analyzer';
+import bundleAnalyzer from "@next/bundle-analyzer";
+
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
   output: "export",
   reactStrictMode: true,
-  transpilePackages: ["antd-mobile"],
   trailingSlash: true,
+  transpilePackages: ["antd"],
+  experimental: {
+    optimizePackageImports: ["antd-mobile"],
+  },
   images: {
     disableStaticImages: true,
     unoptimized: true, //required by next output:export
@@ -24,8 +28,9 @@ const nextConfigWithPlugins = async (phase) =>
   withPlugins([[withImages()]], nextConfig)(phase, {
     defaultConfig,
   });
-  
-// const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
-   
 
-export default nextConfigWithPlugins;
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default withBundleAnalyzer(nextConfigWithPlugins);
