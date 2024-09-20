@@ -1,0 +1,71 @@
+@import "styles/theme.scss";
+@import "./tapArea.module.scss";
+
+.ringsMain {
+  z-index: -1;
+}
+
+.ring1,
+.ring2,
+.ring3,
+.ringBg,
+.bg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  border-radius: 50%;
+  box-sizing: border-box;
+  width: var(--tap-ring-diameter);
+  height: var(--tap-ring-diameter);
+  max-width: var(--tap-ring-diameter-max);
+  max-height: var(--tap-ring-diameter-max);
+}
+
+.bg {
+  width: calc(var(--tap-ring-diameter) - var(--tap-ring-width));
+  height: calc(var(--tap-ring-diameter) - var(--tap-ring-width));
+  z-index: 5;
+  background: var(--tap-background);
+}
+
+.ringBg {
+  width: calc(var(--tap-ring-diameter) - var(--tap-ring-width));
+  height: calc(var(--tap-ring-diameter) - var(--tap-ring-width));
+  z-index: 4;
+  background-color: var(--body-bg);
+}
+
+.bg,
+.ringBg {
+  max-width: calc(var(--tap-ring-diameter-max) - var(--tap-ring-width));
+  max-height: calc(var(--tap-ring-diameter-max) - var(--tap-ring-width));
+}
+
+.ring1 {
+  border: var(--tap-ring-width) var(--tap-ring1-color) solid;
+  z-index: 3;
+  &.main:hover & {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+.ring2 {
+  border: var(--tap-ring-width) var(--tap-ring2-color) solid;
+  z-index: 2;
+}
+
+.ring3 {
+  border: var(--tap-ring-width) var(--tap-ring3-color) solid;
+  z-index: 1;
+}
+
+.ring2,
+.ring3 {
+  transition:
+    transform var(--tap-transition-time) ease,
+    opacity calc(var(--tap-transition-time) * 2) ease;
+  opacity: 1;
+}

@@ -1,0 +1,29 @@
+@import "styles/theme.scss";
+
+.earn {
+  padding: var(--padding);
+  padding-bottom: var(--bottom-margin);
+}
+
+.link {
+  text-decoration: none;
+  color: $color-white;
+}
+
+.taskList {
+  display: flex;
+  gap: var(--padding-inner);
+  flex-direction: column;
+}
+
+.earnMore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--padding-inner);
+}
+
+.popup h2,
+.popup p {
+  margin: 0;
+}

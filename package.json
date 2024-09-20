@@ -21,6 +21,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.5.0",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
     "husky": "^8.0.0",
     "husky-init": "^8.0.0",
     "lerna": "^8.1.8",

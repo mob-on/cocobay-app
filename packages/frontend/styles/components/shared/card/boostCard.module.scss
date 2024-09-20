@@ -1,0 +1,16 @@
+@import "styles/theme.scss";
+
+.boost {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  width: calc(50vw - $padding * 2 - var(--padding-inner));
+  max-width: 470px;
+}
+
+.boostList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--padding-inner) / 2);
+}

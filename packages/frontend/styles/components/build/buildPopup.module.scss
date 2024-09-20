@@ -1,0 +1,13 @@
+@import "styles/theme.scss";
+
+.buildPopup {
+  box-sizing: border-box;
+  padding: var(--padding);
+  width: 100%;
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

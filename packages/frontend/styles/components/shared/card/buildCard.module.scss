@@ -1,0 +1,24 @@
+@import "styles/theme.scss";
+
+.buildCard {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--padding-inner);
+  cursor: pointer;
+  user-select: none;
+}
+
+.buildInfo {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.buildInfo p {
+  margin: 0;
+}
