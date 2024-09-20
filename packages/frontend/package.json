@@ -5,16 +5,17 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "dev": "NEXT_PUBLIC_ENVIRONMENT=dev next dev",
+    "dev": "NEXT_PUBLIC_ENVIRONMENT=dev next dev --turbo",
+    "dev:trace": "NEXT_TURBOPACK_TRACING=1 NEXT_CPU_PROF=1 next dev --turbo",
     "prebuild": "ts-node scripts/robots/build-robots",
     "build": "yarn prebuild && next build",
     "build:analyze": "ANALYZE=true yarn build",
     "start": "next start",
     "lint": "lint-staged",
-    "lint:check": "eslint \"{src,apps,libs,test}/**/*.{js,ts,md}\""
+    "lint:check": "eslint \"**/*.{ts,tsx,md}\""
   },
   "lint-staged": {
-    "*.{js,ts,md}": [
+    "*.{ts,tsx,md}": [
       "eslint --fix"
     ]
   },
@@ -33,15 +34,14 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "class-validator": "^0.14.1",
-    "next": "14.2.11",
+    "next": "^14.2.13",
     "next-images": "^1.8.5",
     "pino": "^9.4.0",
     "pino-pretty": "^11.2.2",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",
-    "uuid": "^10.0.0",
-    "webpack": "^5.94.0"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -60,7 +60,7 @@
     "aos": "^2.3.4",
     "babel-jest": "^29.7.0",
     "eslint": "^8.56.0",
-    "eslint-config-next": "^14.2.6",
+    "eslint-config-next": "14.2.12",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.30.0",
@@ -77,10 +77,11 @@
     "lodash": "^4.17.21",
     "next-compose-plugins": "^2.2.1",
     "next-sitemap": "^4.2.3",
-    "prettier": "^3.3.3",
-    "sass": "^1.78.0",
+    "prettier-eslint": "^16.3.0",
+    "sass": "^1.79.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "webpack": "^5.94.0"
   },
   "packageManager": "yarn@3.4.1",
   "resolutions": {

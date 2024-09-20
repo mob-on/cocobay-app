@@ -1,0 +1,13 @@
+@use "sass:color";
+@import "styles/theme.scss";
+
+.cost {
+  display: flex;
+  align-items: center;
+}
+
+.coin {
+  width: 16px;
+  height: 16px;
+  margin-right: calc(var(--padding) / 4);
+}

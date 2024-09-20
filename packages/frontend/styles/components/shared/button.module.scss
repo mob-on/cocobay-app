@@ -1,0 +1,30 @@
+.gradient {
+  background: var(--color-button-gradient);
+  border: none !important;
+}
+
+.gradient:active {
+  background: var(--color-button-gradient-active);
+}
+
+.primary {
+  background: var(--color-button-primary);
+}
+
+.primary:active {
+  background-color: var(--color-button-primary-active);
+}
+
+.secondary {
+  background: var(--color-button-secondary);
+}
+
+.secondary:active {
+  background-color: var(--color-button-secondary-active);
+}
+
+.button {
+  border-radius: var(--button-b-radius);
+  border: none;
+  height: var(--button-height);
+}

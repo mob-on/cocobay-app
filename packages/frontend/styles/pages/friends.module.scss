@@ -1,0 +1,93 @@
+@import "styles/theme";
+
+.friends {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--padding);
+  padding-bottom: var(--bottom-margin);
+  user-select: none;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.card {
+  width: calc(50% - var(--padding-inner) / 2);
+  flex-direction: column;
+  text-align: center;
+}
+
+.cardTitle {
+  margin: 0;
+}
+
+.buttons {
+  width: var(--page-width);
+  display: flex;
+  gap: var(--padding-inner);
+  margin-top: var(--padding-inner);
+  position: fixed;
+  bottom: var(--bottom-margin);
+}
+
+.button {
+  width: 100%;
+  min-width: 75px;
+  height: var(--button-height);
+}
+
+// icon style
+.button span {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.button:last-child {
+  flex-shrink: 10;
+}
+
+.copyIcon {
+  width: 48px;
+}
+
+.friendsListTitle {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.friendsListTitle > *:first-child {
+  margin-right: auto;
+}
+
+.friendsListTitle a {
+  text-decoration: none;
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+.noFriends {
+  margin: 0;
+  font-weight: bold;
+}
+
+@media screen and (max-height: 800px) {
+  .card {
+    --padding-inner: 5px;
+  }
+  .cardImg {
+    height: 64px;
+  }
+}
+
+// @media screen and (max-height: 730px) {
+//   .cardImg {
+//     height: 64px;
+//   }
+// }

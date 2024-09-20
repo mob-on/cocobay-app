@@ -17,16 +17,17 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@src/*": ["./src/*"],
+      "@src/*": ["./*"],
       "@config/*": ["./config/*"],
       "@shared/*": ["../shared/*"],
-      "@lib/*": ["./src/shared/lib/*"],
+      "@lib/*": ["./shared/lib/*"],
       "@components/*": ["../components/*"],
       "@pages/*": ["../pages/*"],
-      "@hooks/*": ["./src/shared/hooks/*"],
+      "@hooks/*": ["./shared/hooks/*"],
       "@utils/*": ["../shared/utils/*"],
       "@tests/*": ["../tests/*"],
-      "@media/*": ["./public/media/*"]
+      "@media/*": ["./public/media/*"],
+      "@api/*": ["./shared/api/*"]
     },
     "plugins": [
       {
