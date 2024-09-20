@@ -1,12 +1,12 @@
 "use client";
 
-import { defaultFriends, IFriend } from "@src/components/Friends";
 import FriendsList from "@src/components/Friends/FriendsList";
+import { useFriends } from "@src/shared/context/FriendsContext";
 import styles from "@src/styles/pages/friends/friends-all.module.css";
 import React from "react";
 
 const FriendsAll = () => {
-  const [friends] = React.useState<IFriend[]>(defaultFriends);
+  const { friends } = useFriends();
   return (
     <section id="friends-all" className={styles.friends}>
       <h1>Your friends</h1>

@@ -2,12 +2,12 @@
 
 import CopyOutlined from "@ant-design/icons/CopyOutlined";
 import coco from "@media/coco/coco-pink-swag.svg";
-import { defaultFriends } from "@src/components/Friends";
 import FriendsList from "@src/components/Friends/FriendsList";
 import Button from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import { ICardVariant } from "@src/components/shared/Card/Card";
 import Cost from "@src/components/shared/Cost";
+import { useFriends } from "@src/shared/context/FriendsContext";
 import styles from "@src/styles/pages/friends.module.scss";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,7 +41,7 @@ const cards: ICard[] = [
 ];
 
 export default function Friends() {
-  const [friends] = useState(defaultFriends);
+  const { friends } = useFriends();
   const [hideLastFriend, setHideLastFriend] = useState(false);
 
   // If the screen height is less than 890px, hide the last friend.

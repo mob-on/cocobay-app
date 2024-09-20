@@ -16,7 +16,7 @@ import Link from "next/link";
 import React, { useCallback, useMemo, useState } from "react";
 
 interface IEarnTask {
-  id: number;
+  id: string;
   name: string;
   description: string;
   iconSrc: string;
@@ -27,7 +27,7 @@ interface IEarnTask {
 
 const defaultTasks: IEarnTask[] = [
   {
-    id: 0,
+    id: "0",
     name: "Get to level 2",
     description: "Get to level 2",
     iconSrc: gift,
@@ -35,7 +35,7 @@ const defaultTasks: IEarnTask[] = [
     completed: true,
   },
   {
-    id: 1,
+    id: "1",
     name: "Invite 3 friends",
     description: "Get to level 2",
     iconSrc: gift,
@@ -55,7 +55,7 @@ export default function Earn() {
   }, [taskList, popupState.id]);
 
   const showPopup = useCallback(
-    (id: number) => {
+    (id: string) => {
       _showPopup(id);
     },
     [currentTask.id],

@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { TUseService } from "./types";
 
 export interface IUser {
-  name: string;
+  name?: string;
+  lastName?: string;
   id: number;
   avatar: string;
 }
