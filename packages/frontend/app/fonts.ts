@@ -6,11 +6,11 @@ export const martian = Martian_Mono({ subsets: ["latin"] });
 export const ddin = localFont({
   src: [
     {
-      path: "./public/fonts/ddinpro/D-DIN-PRO-400-Regular.otf",
+      path: "../public/fonts/ddinpro/D-DIN-PRO-400-Regular.otf",
       weight: "400",
     },
     {
-      path: "./public/fonts/ddinpro/D-DIN-PRO-700-Bold.otf",
+      path: "../public/fonts/ddinpro/D-DIN-PRO-700-Bold.otf",
       weight: "700",
     },
   ],

@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "styles/theme.scss";
 
 .boosts {
@@ -15,14 +16,14 @@
   flex-direction: column;
   align-items: center;
   gap: var(--padding-inner);
-  padding: var(--padding-inner 0);
+  padding: var(--padding-inner, 0);
   background-color: var(--color-menu);
   border-radius: 5px;
   width: calc(50% - var(--padding-inner));
 }
 
 .boost:active {
-  background-color: lighten($color-menu, 10%);
+  background-color: color.adjust($color-menu, $lightness: 10%);
 }
 
 .boostList {

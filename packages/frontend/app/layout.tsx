@@ -21,6 +21,7 @@ import Layout from "../layouts/Layout";
 import { GameStateContextProvider } from "../shared/context/GameStateContext";
 import { LoadingProvider } from "../shared/context/LoadingContext";
 import { TrackingProvider } from "../shared/context/TrackingContext";
+import { ddin, kumbh, martian } from "./fonts";
 
 declare global {
   interface Window {
@@ -65,7 +66,9 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css"
         />
       </Head>
-      <body>
+      <body
+        className={`${ddin.className} ${kumbh.className} ${martian.className}`}
+      >
         <Script
           id="TelegramWebApp"
           src="/scripts/TelegramLib.js"

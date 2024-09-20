@@ -1,3 +1,4 @@
+@use "sass:color";
 /*
   This file contains all the theme variables.
   They are stored in sass variables, and are converted to css variables in globals.scss.
@@ -44,8 +45,8 @@ $gradient-primary-rotated: linear-gradient(
 
 $gradient-primary-light: linear-gradient(
   93deg,
-  lighten($color-grad-primary-start, 5%) 1.77%,
-  lighten($color-grad-primary-end, 5%) 98.75%
+  color.adjust($color-grad-primary-start, $lightness: 5%) 1.77%,
+  color.adjust($color-grad-primary-end, $lightness: 5%) 98.75%
 );
 
 $gradient-secondary: linear-gradient(
@@ -55,8 +56,8 @@ $gradient-secondary: linear-gradient(
 );
 $gradient-secondary-light: linear-gradient(
   152deg,
-  lighten($color-grad-secondary-start, 5%) 31.93%,
-  lighten($color-grad-secondary-end, 5%) 97.94%
+  color.adjust($color-grad-secondary-start, $lightness: 5%) 31.93%,
+  color.adjust($color-grad-secondary-end, $lightness: 5%) 97.94%
 );
 
 // other
@@ -78,7 +79,7 @@ $tap-coin-size: 24px;
 
 // Cards specific
 $card-bg-color: $color-menu;
-$card-bg-color-active: lighten($card-bg-color, 10%);
+$card-bg-color-active: color.adjust($card-bg-color, $lightness: 10%);
 $card-b-radius: 15px;
 $card-border: 0px solid #fff;
 $card-gradient: $gradient-primary;
@@ -93,9 +94,15 @@ $build-card-height: $card-height;
 
 // buttons
 $color-button-primary: $color-primary;
-$color-button-primary-active: lighten($color-button-primary, 10%);
+$color-button-primary-active: color.adjust(
+  $color-button-primary,
+  $lightness: 10%
+);
 $color-button-secondary: $color-secondary;
-$color-button-secondary-active: lighten($color-button-secondary, 10%);
+$color-button-secondary-active: color.adjust(
+  $color-button-secondary,
+  $lightness: 10%
+);
 $color-button-gradient: $gradient-primary;
 $color-button-gradient-active: $gradient-primary-light;
 $button-b-radius: 8px;
