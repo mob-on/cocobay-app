@@ -19,15 +19,21 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post("/telegram/login")
-  signIn(
+  async logIn(
     @Body()
     webappAuthDto: TelegramWebappAuthDtoValid,
   ) {
+    let userId: string;
+    let webappInitData: WebAppInitData;
+
     try {
-      this.telegramInitDataTransformer.transform(webappAuthDto);
-      //TODO: Implement JWT token generation
+      webappInitData =
+        this.telegramInitDataTransformer.transform(webappAuthDto);
+      userId = webappInitData.user.id.toString();
     } catch (e) {
       throw new BadRequestException("Invalid initData");
     }
+
+    return await this.authService.logInWithTelegram(userId, webappInitData);
   }
 }

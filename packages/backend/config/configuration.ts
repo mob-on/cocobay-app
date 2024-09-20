@@ -14,18 +14,20 @@ switch (process.env.APP_ENVIRONMENT) {
     break;
 }
 
+export interface ConfigSecrets {
+  jwtSecret: string;
+  telegram: {
+    appToken: string;
+  };
+}
+
 export interface ConfigSettings {
   env: string; //"local" | "stage" | "prod"
   features: { [key: string]: boolean };
   telegram: {
     webappDataExpirySeconds: number;
   };
-  secrets: {
-    jwtSecret: string;
-    telegram: {
-      appToken: string;
-    };
-  };
+  secrets: ConfigSecrets;
 }
 
 export default () => {

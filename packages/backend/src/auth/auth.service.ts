@@ -1,24 +1,44 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { sign } from "jsonwebtoken";
+import { Injectable, Logger } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { UserDto } from "@shared/src/dto/user.dto";
+import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { UserService } from "src/user/service/user.service";
+import { TelegramJwtPayload } from "./telegram-jwt-payload";
+import { LoggedInUser } from "./user-data";
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
-    private configService: ConfigService,
     private userService: UserService,
+    private jwtService: JwtService,
   ) {}
 
-  async signIn(userId: string) {
-    const user = await this.userService.getUser(userId);
-
-    if (!user) {
-      throw new UnauthorizedException();
+  async logInWithTelegram(userId: string, { user }: WebAppInitData) {
+    let userObj: UserDto;
+    try {
+      userObj = await this.userService.getUser(userId);
+    } catch (e) {
+      if (e instanceof EntityNotFoundException) {
+        userObj = await this.userService.create({
+          id: userId,
+          username: user.username,
+          firstName: user.first_name,
+          languageCode: user.language_code,
+        });
+      }
     }
 
-    return sign({ userId }, this.configService.get<string>("jwtSecret"), {
-      expiresIn: "1m",
-    });
+    if (!userObj) {
+      throw new Error("Unable to log in user");
+    }
+
+    return {
+      user: userObj,
+      token: this.jwtService.sign({ id: userId } as LoggedInUser, {
+        secret: process.env.JWT_SECRET,
+      }),
+    } as TelegramJwtPayload;
   }
 }

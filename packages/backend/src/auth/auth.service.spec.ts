@@ -1,10 +1,19 @@
+import { faker } from "@faker-js/faker/.";
+import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
+import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { UserService } from "src/user/service/user.service";
 import { mockConfigProvider } from "test/fixtures/config/mock-config-provider";
+import { createValidUserDto } from "test/fixtures/model/user.data";
 import { AuthService } from "./auth.service";
 
 describe("AuthService", () => {
-  let service: AuthService;
+  let authService: AuthService;
+  let userService: UserService;
+  let jwtService: JwtService;
+
+  const mockUser = createValidUserDto();
+  const inexistentUserId = "-1";
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -12,16 +21,65 @@ describe("AuthService", () => {
         AuthService,
         {
           provide: UserService,
-          useValue: jest.fn(),
+          useValue: {
+            getUser: jest.fn().mockImplementation((id: string) => {
+              if (id === inexistentUserId) {
+                throw new EntityNotFoundException();
+              }
+
+              return mockUser;
+            }),
+            create: jest.fn().mockResolvedValue(mockUser),
+          },
+        },
+        {
+          provide: JwtService,
+          useValue: {
+            sign: jest.fn().mockReturnValue(faker.string.alphanumeric(12)),
+          },
         },
         mockConfigProvider(),
       ],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    authService = module.get(AuthService);
+    userService = module.get(UserService);
+    jwtService = module.get(JwtService);
+  });
+
+  afterEach(async () => {
+    jest.clearAllMocks();
   });
 
   it("should be defined", () => {
-    expect(service).toBeDefined();
+    expect(authService).toBeDefined();
+  });
+
+  it("should return a user when found", async () => {
+    const result = authService.logInWithTelegram(mockUser.id, {
+      user: { id: parseInt(mockUser.id) },
+    } as unknown as WebAppInitData);
+
+    await expect(result).resolves.toMatchObject({
+      user: expect.any(Object),
+      token: expect.any(String),
+    });
+    expect(jwtService.sign).toHaveBeenCalled();
+    expect(userService.getUser).toHaveBeenCalledTimes(1);
+    expect(userService.create).not.toHaveBeenCalled();
+  });
+
+  it("should create a user when not found and still return it", async () => {
+    const result = authService.logInWithTelegram(inexistentUserId, {
+      user: { id: inexistentUserId },
+    } as unknown as WebAppInitData);
+
+    await expect(result).resolves.toMatchObject({
+      user: expect.any(Object),
+      token: expect.any(String),
+    });
+    expect(jwtService.sign).toHaveBeenCalled();
+    expect(userService.getUser).toHaveBeenCalledTimes(1);
+    expect(userService.create).toHaveBeenCalledTimes(1);
   });
 });
