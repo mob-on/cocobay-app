@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import { deleteTempDir } from "./mongo-temp-dir";
 
 export default async () => {
   const client = await MongoClient.connect(process.env.MONGODB_TEST_URI);
@@ -16,6 +17,7 @@ export default async () => {
       .catch(() => resolve(false))
       .finally(() => {
         resolve(true);
+        deleteTempDir();
         process.exit(0);
       });
   });

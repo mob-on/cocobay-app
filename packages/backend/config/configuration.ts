@@ -14,14 +14,20 @@ switch (process.env.APP_ENVIRONMENT) {
     break;
 }
 
-export interface ConfigSettings {
-  env: string; //"local" | "stage" | "prod"
-  features: { [key: string]: boolean };
+export interface ConfigSecrets {
   jwtSecret: string;
   telegram: {
     appToken: string;
+  };
+}
+
+export interface ConfigSettings {
+  env: string; //"local" | "stage" | "prod"
+  features: { [key: string]: boolean };
+  telegram: {
     webappDataExpirySeconds: number;
   };
+  secrets: ConfigSecrets;
 }
 
 export default () => {
@@ -33,9 +39,11 @@ export default () => {
       readFileSync(join(__dirname, `${config}.yaml`), "utf8"),
     ) as Partial<ConfigSettings>,
     {
-      jwtSecret: process.env.JWT_SECRET,
-      telegram: {
-        appToken: process.env.TELEGRAM_APP_TOKEN,
+      secrets: {
+        jwtSecret: process.env.JWT_SECRET,
+        telegram: {
+          appToken: process.env.TELEGRAM_APP_TOKEN,
+        },
       },
     },
   ) as ConfigSettings;

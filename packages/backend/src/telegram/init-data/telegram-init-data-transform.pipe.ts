@@ -1,31 +1,19 @@
-import { URLSearchParams } from "url";
 import { ArgumentMetadata, Injectable, PipeTransform } from "@nestjs/common";
+import { InitDataParsed, parse } from "@telegram-apps/init-data-node";
 import { TelegramWebappAuthDtoValid } from "./valid-init-data.dto";
 
 @Injectable()
 export class TelegramInitDataPipeTransform
-  implements PipeTransform<TelegramWebappAuthDtoValid, WebAppInitData>
+  implements PipeTransform<TelegramWebappAuthDtoValid, InitDataParsed>
 {
   constructor() {}
-
-  private transformUrlSearchToObject(params: URLSearchParams) {
-    const initDataObj = Object.fromEntries(params);
-    for (const [key, value] of Object.entries(initDataObj)) {
-      try {
-        initDataObj[key] = JSON.parse(decodeURIComponent(value as string));
-      } catch (e) {}
-    }
-    return initDataObj;
-  }
 
   transform(
     dto: TelegramWebappAuthDtoValid,
     _metadata?: ArgumentMetadata,
-  ): WebAppInitData {
+  ): InitDataParsed {
     try {
-      return this.transformUrlSearchToObject(
-        new URLSearchParams(dto.initDataRaw),
-      ) as unknown as WebAppInitData;
+      return parse(dto.initDataRaw);
     } catch (e: unknown) {
       throw new Error("Unexpected or malformed initData");
     }

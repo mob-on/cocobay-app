@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Post,
 } from "@nestjs/common";
+import { InitDataParsed } from "@telegram-apps/init-data-node";
 import { TelegramInitDataPipeTransform } from "src/telegram/init-data/telegram-init-data-transform.pipe";
 import { TelegramWebappAuthDtoValid } from "src/telegram/init-data/valid-init-data.dto";
 import { AuthService } from "./auth.service";
@@ -19,15 +20,21 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post("/telegram/login")
-  signIn(
+  async logIn(
     @Body()
     webappAuthDto: TelegramWebappAuthDtoValid,
   ) {
+    let userId: string;
+    let webappInitData: InitDataParsed;
+
     try {
-      this.telegramInitDataTransformer.transform(webappAuthDto);
-      //TODO: Implement JWT token generation
+      webappInitData =
+        this.telegramInitDataTransformer.transform(webappAuthDto);
+      userId = webappInitData.user.id.toString();
     } catch (e) {
       throw new BadRequestException("Invalid initData");
     }
+
+    return await this.authService.logInWithTelegram(userId, webappInitData);
   }
 }

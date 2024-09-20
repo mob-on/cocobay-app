@@ -1,10 +1,19 @@
 import { MongoMemoryReplSet } from "mongodb-memory-server";
 import mongoose, { Model } from "mongoose";
 
-export const setupMockDatabase = async (globalInit?: boolean) => {
+export const setupMockDatabase = async (
+  globalInit?: boolean,
+  tempDir?: string,
+) => {
   let mongod: MongoMemoryReplSet;
   if (globalInit) {
-    mongod = await MongoMemoryReplSet.create();
+    mongod = await MongoMemoryReplSet.create({
+      instanceOpts: [
+        {
+          dbPath: tempDir,
+        },
+      ],
+    });
     await mongod.waitUntilRunning();
     process.env.MONGODB_TEST_URI = mongod.getUri();
   }

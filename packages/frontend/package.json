@@ -12,10 +12,10 @@
     "build:analyze": "ANALYZE=true yarn build",
     "start": "next start",
     "lint": "lint-staged",
-    "lint:check": "eslint \"{src,apps,libs,test}/**/*.{js,ts,md}\""
+    "lint:check": "eslint \"**/*.{ts,tsx,md}\""
   },
   "lint-staged": {
-    "*.{js,ts,md}": [
+    "*.{ts,tsx,md}": [
       "eslint --fix"
     ]
   },

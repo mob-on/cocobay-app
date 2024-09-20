@@ -13,6 +13,10 @@ export class TelegramInitDataValid implements ValidatorConstraintInterface {
   constructor(private readonly configService: ConfigService) {}
 
   validate(value: string, _validationArguments?: ValidationArguments) {
+    if (this.configService.get<boolean>("features.devMode")) {
+      return true; //We trust all telegram data in dev mode
+    }
+
     try {
       initDataValidate(
         value,

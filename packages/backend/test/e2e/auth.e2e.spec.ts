@@ -1,50 +1,81 @@
+import { faker } from "@faker-js/faker/.";
 import { ConfigService } from "@nestjs/config";
 import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth.dto";
+import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
 import { AuthModule } from "src/auth/auth.module";
+import { User } from "src/user/model/user.model";
+import { UserModule } from "src/user/user.module";
+import { createValidUser } from "test/fixtures/model/user.data";
+import { apiCreateUser } from "test/fixtures/rest/user";
+import {
+  configureTelegramForSuccess,
+  createValidWebappInitData,
+} from "test/fixtures/telegram/telegram-data";
 import { ApiSetup, setupApi } from "test/setup/setup";
 
 describe("AuthController", () => {
   let setup: ApiSetup;
   let api: TestAgent;
   let configService: ConfigService;
+  let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
-    setup = await setupApi([], {
-      imports: [AuthModule],
+    process.env.JWT_SECRET = faker.string.alphanumeric(64);
+
+    setup = await setupApi({
+      imports: [AuthModule, UserModule],
     });
 
     api = setup.api;
     configService = setup.app.get(ConfigService);
+    userModel = getModelForClass(User);
   });
 
   afterAll(async () => {
     await setup.stop();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     jest.clearAllMocks();
+    await userModel.deleteMany({});
   });
 
   describe("POST /v1/auth/telegram/login", () => {
-    it("should return 200 when auth header present and valid", async () => {
-      const validInitData =
-        "auth_date=1&can_send_after=10000&chat=%7B%22id%22%3A1%2C%22type%22%3A%22group%22%2C%22title%22%3A%22chat-title%22%2C%22photo_url%22%3A%22group%22%2C%22username%22%3A%22my-chat%22%7D&chat_instance=888&chat_type=sender&hash=47cfa22e72b887cba90c9cb833c5ea0f599975b6ce7193741844b5c4a4228b40&query_id=QUERY&receiver=%7B%22added_to_attachment_menu%22%3Afalse%2C%22allows_write_to_pm%22%3Atrue%2C%22first_name%22%3A%22receiver-first-name%22%2C%22id%22%3A991%2C%22is_bot%22%3Afalse%2C%22is_premium%22%3Atrue%2C%22language_code%22%3A%22ru%22%2C%22last_name%22%3A%22receiver-last-name%22%2C%22photo_url%22%3A%22receiver-photo%22%2C%22username%22%3A%22receiver-username%22%7D&start_param=debug&user=%7B%22added_to_attachment_menu%22%3Afalse%2C%22allows_write_to_pm%22%3Afalse%2C%22first_name%22%3A%22user-first-name%22%2C%22id%22%3A222%2C%22is_bot%22%3Atrue%2C%22is_premium%22%3Afalse%2C%22language_code%22%3A%22en%22%2C%22last_name%22%3A%22user-last-name%22%2C%22photo_url%22%3A%22user-photo%22%2C%22username%22%3A%22user-username%22%7D";
+    it("should return 200 when auth information present and valid, and user exists", async () => {
+      const userId = faker.number.int();
+      const { initDataRaw } = createValidWebappInitData(userId);
+      const user = createValidUser({
+        id: userId.toString(),
+      });
+      await apiCreateUser(api, user);
 
-      configService.set("telegram.webappDataExpirySeconds", 0);
-      configService.set(
-        "telegram.appToken",
-        "5768337691:AAH5YkoiEuPk8-FZa32hStHTqXiLPtAEhx8",
-      );
+      configureTelegramForSuccess(configService);
 
       await api
         .post("/v1/auth/telegram/login")
-        .send(new TelegramWebappAuthDto({ initDataRaw: validInitData }))
-        .expect(200);
+        .send(
+          new TelegramWebappAuthDto({
+            initDataRaw: initDataRaw,
+          }),
+        )
+        .expect(200)
+        .expect((res) => {
+          expect(res.body).toMatchObject({
+            user: expect.objectContaining(user),
+            token: expect.any(String),
+          });
+        });
     });
 
-    it("should return 400 when auth header not present", async () => {
-      await api.post("/v1/auth/telegram/login").send().expect(400);
+    it("should return 400 when auth info not present or not valid", async () => {
+      await Promise.all([
+        api.post("/v1/auth/telegram/login").send().expect(400),
+        api
+          .post("/v1/auth/telegram/login")
+          .send({ userId: faker.string.sample() })
+          .expect(400),
+      ]);
     });
   });
 });

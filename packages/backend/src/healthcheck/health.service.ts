@@ -6,9 +6,11 @@ import { LazyInitializer } from "src/common/util/lazy-initializer";
 
 @Injectable()
 export class HealthService {
-  private readonly configuration = new LazyInitializer<object>(() =>
-    configuration(),
-  );
+  private readonly configuration = new LazyInitializer<object>(() => {
+    const result = { ...configuration() };
+    delete result.secrets;
+    return result;
+  });
 
   constructor(private readonly feature: FeatureService) {}
 

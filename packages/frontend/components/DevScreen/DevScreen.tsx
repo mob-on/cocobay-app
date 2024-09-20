@@ -17,6 +17,7 @@ export const DevScreen = () => {
   const [mainApiBaseUrlValue, setMainApiBaseUrlValue] = useState("");
   const api = useMainApi(mainApiBaseUrlValue);
   const [mainApiOk, setMainApiOk] = useState<boolean | null>(null);
+
   useEffect(() => {
     if (mainApiBaseUrl) {
       setMainApiBaseUrlValue(mainApiBaseUrl);

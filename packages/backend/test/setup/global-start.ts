@@ -1,5 +1,7 @@
+import { createTempDir } from "./mongo-temp-dir";
 import { setupMockDatabase } from "./mongodb";
 
 export default async () => {
-  await setupMockDatabase(true);
+  const tempDir = createTempDir();
+  await setupMockDatabase(true, tempDir);
 };

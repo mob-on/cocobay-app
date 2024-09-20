@@ -2,4 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # Fast linting (synchronous)
-yarn lint
+# Disabling linting-staged until lerna/git/lint-stage conflics are resolved
+# yarn lint

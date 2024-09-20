@@ -8,7 +8,7 @@ describe("HealthController", () => {
   let api: TestAgent;
 
   beforeAll(async () => {
-    setup = await setupApi([], {
+    setup = await setupApi({
       imports: [HealthModule],
     });
 
