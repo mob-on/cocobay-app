@@ -1,6 +1,6 @@
 .gradient {
   background: var(--color-button-gradient);
-  border: none;
+  border: none !important;
 }
 
 .gradient:active {

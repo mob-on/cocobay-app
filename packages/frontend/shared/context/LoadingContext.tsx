@@ -92,7 +92,8 @@ export const LoadingProvider = ({ children }) => {
         return appUser;
       } catch (e) {
       } finally {
-        return login(tries + 1);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return await login(tries + 1);
       }
     }
   };

@@ -20,6 +20,7 @@ const Cost: React.FC<{
       alt="coin"
       width={size}
       height={size}
+      priority
     />
   );
   return (
