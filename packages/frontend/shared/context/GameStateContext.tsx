@@ -6,7 +6,6 @@ import { FrontendGameState } from "@shared/src/interfaces";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 import useLogger from "../hooks/useLogger";
-import { ITaps } from "../services/useTapsService";
 import { ILoadingContextResource, useLoading } from "./LoadingContext";
 
 export const TAP_EFFECTS_TIMEOUT = 1000; // remove taps from list after this time1
@@ -20,18 +19,6 @@ export type GameAction =
   // | { type: "TAPS_UPDATE"; payload: ITaps }
   | { type: "TAPS_SET_POINT_INCOME"; payload: number }
   | { type: "TAPS_REGISTER_TAP"; payload?: (boolean) => void };
-
-export interface IStamina {
-  current: number;
-  max: number;
-  regen: number;
-}
-
-export interface IGameState {
-  taps: ITaps;
-  stamina: IStamina;
-  pendingTaps: number;
-}
 
 export type IGameStateContext = { gameState: FrontendGameState } & {
   dispatchGameState: React.Dispatch<GameAction>;

@@ -1,12 +1,12 @@
+import { Friend } from "@shared/src/interfaces";
 import NumberFormatter from "@src/shared/lib/NumberFormatter";
 import styles from "@src/styles/components/friends/friendsList.module.scss";
 import Avatar from "antd-mobile/es/components/avatar";
 
 import Card from "../shared/Card";
 import Cost from "../shared/Cost";
-import { IFriend } from "./Friends";
 
-const FriendsList: React.FC<{ friends: IFriend[]; className?: string }> = ({
+const FriendsList: React.FC<{ friends: Friend[]; className?: string }> = ({
   friends,
   className,
 }) => {
@@ -16,16 +16,16 @@ const FriendsList: React.FC<{ friends: IFriend[]; className?: string }> = ({
         return (
           <Card key={friend.id} className={styles.friend}>
             <>
-              <Avatar src={friend.imgSrc} />
+              <Avatar src={friend.avatarSrc} />
               <div className={styles.friendInfo}>
-                <p className={styles.name}>{friend.name}</p>
+                <p className={styles.name}>{friend.username}</p>
                 <p className={styles.taps}>
-                  <Cost cost={friend.progress.taps} />
+                  <Cost cost={friend.progress.points} />
                 </p>
               </div>
               <Cost position="right" size={20} className={styles.reward}>
                 <span className={styles.rewardText}>
-                  +{NumberFormatter.format(friend.reward)}
+                  +{NumberFormatter.format(friend.collectedReward)}
                 </span>
               </Cost>
             </>

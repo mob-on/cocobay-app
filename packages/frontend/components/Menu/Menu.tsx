@@ -23,7 +23,7 @@ const Menu: React.FC = () => {
     },
     {
       text: "Build",
-      path: "/build",
+      path: "/builds",
       iconPath: BuildIcon,
     },
     {

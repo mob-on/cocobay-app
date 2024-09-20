@@ -1,25 +1,18 @@
+import { Boost } from "@shared/src/interfaces";
 import styles from "@src/styles/components/boosts/boostPopup.module.scss";
-import Image from "next/image";
 import React, { memo } from "react";
 
 import Button from "../shared/Button";
 import Cost from "../shared/Cost";
-import { IBoost } from "./Boosts";
 
-const BoostPopup: React.FC<{ boost: IBoost; onAction: (id: number) => void }> =
+const BoostPopup: React.FC<{ boost: Boost; onAction: (id: string) => void }> =
   memo(({ boost, onAction }) => {
     if (!boost) return <></>;
     const isLastLevel = boost.level === boost.maxLevel;
     const leftToday = boost.maxToday - boost.usedToday;
     return (
       <>
-        <Image
-          src={boost.iconSrc}
-          alt={boost.name}
-          width={128}
-          height={128}
-          priority
-        />
+        <img src={boost.iconSrc} alt={boost.name} width={128} height={128} />
         <h2>{boost.name}</h2>
         <h3>{boost.description}</h3>
         {boost.type === "regular" ? (

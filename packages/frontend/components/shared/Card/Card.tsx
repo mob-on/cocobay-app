@@ -1,13 +1,12 @@
 "use client";
 
+import { Boost, Build } from "@shared/src/interfaces";
 import useSelfCorrectingTimeout from "@src/shared/hooks/useSelfCorrectingTimeout";
 import useTelegram from "@src/shared/hooks/useTelegram";
 import TimeFormatter from "@src/shared/lib/TimeFormatter";
 import styles from "@src/styles/components/shared/card/card.module.scss";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import { IBoost } from "../../Boosts";
-import { IBuild } from "../../Build";
 import BoostCard from "./BoostCard";
 import BuildCard from "./BuildCard";
 
@@ -18,8 +17,8 @@ export type ICardVariant = "default" | "special";
 const UPDATE_INTERVAL = 1000;
 
 interface ICardProps {
-  data?: IBuild | IBoost | { cooldownUntil?: Date; id?: number }; // for type="build" and type="boost"
-  onClick?: (id: number) => void;
+  data?: Build | Boost | { cooldownUntil?: Date; id?: string }; // for type="build" and type="boost"
+  onClick?: (id: string) => void;
   type?: ICardType;
   disabled?: boolean;
   secondary?: boolean;
@@ -39,7 +38,10 @@ const Card: React.FC<ICardProps> = memo(
     className = "",
   }) => {
     const { cooldownUntil } = data;
-    const cooldownTimestamp = cooldownUntil?.getTime() ?? 0;
+    const id = data.id as string;
+    const cooldownTimestamp = cooldownUntil
+      ? (new Date(cooldownUntil)?.getTime() ?? 0)
+      : 0;
     const [cooldown, setCooldown] = useState(cooldownTimestamp - Date.now());
     const [WebApp] = useTelegram();
 
@@ -61,11 +63,11 @@ const Card: React.FC<ICardProps> = memo(
     }, []);
 
     const clickCallback = useCallback(() => {
-      if (data.id && onClick) {
+      if (id && onClick) {
         WebApp?.HapticFeedback?.impactOccurred("light");
-        onClick(data.id);
+        onClick(id);
       }
-    }, [data?.id, onClick]);
+    }, [id, onClick]);
 
     return (
       <div
@@ -84,8 +86,8 @@ const Card: React.FC<ICardProps> = memo(
       >
         {type === "build" && (
           <BuildCard
-            build={data as IBuild}
-            onClick={(id: number) => {
+            build={data as Build}
+            onClick={(id: string) => {
               WebApp?.HapticFeedback?.impactOccurred("light");
               if (onClick) onClick(id);
             }}
@@ -93,8 +95,8 @@ const Card: React.FC<ICardProps> = memo(
         )}
         {type === "boost" && (
           <BoostCard
-            boost={data as IBoost}
-            onClick={(id: number) => {
+            boost={data as Boost}
+            onClick={(id: string) => {
               WebApp?.HapticFeedback?.impactOccurred("light");
               if (onClick) onClick(id);
             }}

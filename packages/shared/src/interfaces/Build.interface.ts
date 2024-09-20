@@ -1,14 +1,14 @@
 import { WithIcon } from "./_shared";
 
 export interface Build extends WithIcon {
-  id: number;
+  id: string;
   name: string;
   description: string;
   cost: number;
   level: number;
   maxLevel: number;
   type: "building" | "event" | "employee";
-  lastBuilt: Date;
-  cooldownUntil?: Date;
+  lastBuilt: string;
+  cooldownUntil?: string;
   income: number;
 }

@@ -1,13 +1,12 @@
-import { IBoost } from "@src/components/Boosts";
+import { Boost } from "@shared/src/interfaces";
 import styles from "@src/styles/components/shared/card/boostCard.module.scss";
-import Image from "next/image";
 import React from "react";
 
 import Cost from "../Cost";
 
 const BoostCard: React.FC<{
-  boost: IBoost;
-  onClick: (id: number) => void;
+  boost: Boost;
+  onClick: (id: string) => void;
 }> = ({ boost, onClick }) => {
   const isLastLevel = boost.level === boost.maxLevel;
   return (
@@ -15,13 +14,7 @@ const BoostCard: React.FC<{
       onClick={isLastLevel ? undefined : () => onClick(boost.id)}
       className={styles.boost}
     >
-      <Image
-        priority
-        src={boost.iconSrc}
-        alt={boost.name}
-        width={64}
-        height={64}
-      />
+      <img src={boost.iconSrc} alt={boost.name} width={64} height={64} />
       <p>{boost.name}</p>
       {boost.type === "daily" && (
         <span>Left today: {boost.maxToday - boost.usedToday}</span>
