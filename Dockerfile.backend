@@ -12,7 +12,7 @@ COPY --parents package.json yarn.lock .yarnrc.yml .yarn/ packages/*/package.json
 RUN yarn workspace backend install --immutable
 
 COPY . /app
-RUN mv packages/backend/config/local.template.ts packages/backend/config/local.ts
+RUN mv packages/backend/config/local.template.yaml packages/backend/config/local.yaml
 
 RUN yarn workspace backend build
 
