@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker/.";
 import { BadRequestException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -7,8 +8,7 @@ import { mockConfigProvider } from "test/fixtures/config/mock-config-provider";
 import { createValidUserDto } from "test/fixtures/model/user.data";
 import {
   configureTelegramForSuccess,
-  validInitDataRaw,
-  validWebappInitData,
+  createValidWebappInitData,
 } from "test/fixtures/telegram/telegram-data";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
@@ -46,19 +46,22 @@ describe("AuthController", () => {
 
   describe("logIn", () => {
     it("should return valid login information", async () => {
+      const userId = faker.number.int();
+      const { initDataRaw } = createValidWebappInitData();
       const webappAuthDto: TelegramWebappAuthDtoValid = {
-        initDataRaw: validInitDataRaw,
+        initDataRaw,
       };
       configureTelegramForSuccess(configService);
       const userDto = createValidUserDto({
-        id: "222",
+        id: userId.toString(),
       });
       const token = "some-token";
       const expectedResult = { user: userDto, token: token };
+      const { initData } = createValidWebappInitData(userId);
 
       jest
         .spyOn(telegramInitDataTransformer, "transform")
-        .mockReturnValue(validWebappInitData);
+        .mockReturnValue(initData);
       jest
         .spyOn(authService, "logInWithTelegram")
         .mockResolvedValue(expectedResult);
@@ -69,13 +72,14 @@ describe("AuthController", () => {
       );
       expect(authService.logInWithTelegram).toHaveBeenCalledWith(
         userDto.id,
-        validWebappInitData,
+        initData,
       );
     });
 
     it("should throw BadRequestException if transform throws an error", async () => {
+      const { initDataRaw } = createValidWebappInitData();
       const webappAuthDto: TelegramWebappAuthDtoValid = {
-        initDataRaw: validInitDataRaw,
+        initDataRaw,
       };
 
       jest

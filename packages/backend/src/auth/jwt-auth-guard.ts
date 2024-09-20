@@ -8,7 +8,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { ExtractJwt } from "passport-jwt";
 import { ConfigSecrets } from "@config/configuration";
-import { LoggedInUser } from "./user-data";
+import { LoggedInUser } from "./logged-in-user-data";
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

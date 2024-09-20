@@ -1,10 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { TypegooseModule } from "@m8a/nestjs-typegoose";
 import {
-  TypegooseClass,
-  TypegooseClassWithOptions,
-} from "@m8a/nestjs-typegoose/dist/typegoose-class.interface";
-import {
   INestApplication,
   Logger,
   Module,
@@ -12,7 +8,6 @@ import {
 } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { Test, TestingModule, TestingModuleBuilder } from "@nestjs/testing";
-import { getModelForClass } from "@typegoose/typegoose";
 import * as request from "supertest";
 import TestAgent from "supertest/lib/agent";
 import configuration from "@config/configuration";
@@ -22,7 +17,6 @@ import { setupMockDatabase } from "./mongodb";
 
 export interface DBSetup {
   stop: () => Promise<void>;
-  clearModels: () => Promise<void>;
   module: TestingModule;
 }
 
@@ -41,36 +35,9 @@ const globalModules = [
   { module: FeatureModule, global: true },
 ];
 
-/**
- * Gets a unique Model representation with an auto-generated suffix
- * to ensure parallel tests don't share the same collection name
- *
- * @template T - The type of the model.
- * @param {T} model - The model to retrieve.
- * @returns {TypegooseClassWithOptions} - The unique model with schema options.
- */
-const getUniqueModel = <T extends TypegooseClass | TypegooseClassWithOptions>(
-  model: T,
-): TypegooseClassWithOptions => {
-  let typegooseClass;
-  if (model.hasOwnProperty("typegooseClass")) {
-    ({ typegooseClass } = model as TypegooseClassWithOptions);
-  } else {
-    typegooseClass = model;
-  }
-
-  return {
-    typegooseClass: typegooseClass,
-    schemaOptions: {
-      collection: `${typegooseClass.name}_${faker.string.alphanumeric(32)}`,
-    },
-  };
-};
-
 const log = new Logger("TestSetup");
 
-const setupNest = async <T extends TypegooseClass>(
-  modelDefinitions: T[],
+const setupNest = async (
   moduleMetadata: ModuleMetadata = {},
   moduleBuilder?: (moduleBuilder: TestingModuleBuilder) => TestingModuleBuilder,
   withApi = false,
@@ -79,7 +46,10 @@ const setupNest = async <T extends TypegooseClass>(
     const mockDb = await setupMockDatabase();
 
     moduleMetadata.imports = [
-      TypegooseModule.forRoot(mockDb.uri),
+      TypegooseModule.forRoot(mockDb.uri, {
+        //Each test will have its own database in memory
+        dbName: `test_${faker.string.alphanumeric(24)}`,
+      }),
       ...globalModules, //Mimic global imports in app.modules
       ...(moduleMetadata.imports ?? []),
     ];
@@ -90,17 +60,9 @@ const setupNest = async <T extends TypegooseClass>(
     })
     class RootModule {}
 
-    const creatingTestModule = Test.createTestingModule({
+    let moduleBeforeCompilation = Test.createTestingModule({
       imports: [RootModule],
     });
-
-    //Typegoose name overrides
-    let moduleBeforeCompilation =
-      modelDefinitions?.reduce((testModule, model) => {
-        return testModule
-          .overrideModule(TypegooseModule.forFeature([model]))
-          .useModule(TypegooseModule.forFeature([getUniqueModel(model)]));
-      }, creatingTestModule) || creatingTestModule;
 
     if (moduleBuilder) {
       moduleBeforeCompilation = moduleBuilder(moduleBeforeCompilation);
@@ -108,18 +70,8 @@ const setupNest = async <T extends TypegooseClass>(
 
     const module = await moduleBeforeCompilation.compile();
 
-    const models = [];
-    if (modelDefinitions) {
-      for (const model of modelDefinitions) {
-        models.push(getModelForClass(model));
-      }
-    }
-
     let result: DBSetup | ApiSetup = {
       module,
-      clearModels: async () => {
-        await Promise.all(models.map((m) => m.deleteMany({})));
-      },
       stop: async () => {
         await mockDb.stop();
         await module.close();
@@ -151,23 +103,16 @@ const setupNest = async <T extends TypegooseClass>(
   }
 };
 
-export const setupDb = async <T extends TypegooseClass>(
-  modelDefinitions?: T[],
+export const setupDb = async (
   moduleMetadata?: ModuleMetadata,
   moduleBuilder?: (moduleBuilder: TestingModuleBuilder) => TestingModuleBuilder,
 ): Promise<DBSetup> => {
-  return setupNest(modelDefinitions, moduleMetadata, moduleBuilder, false);
+  return setupNest(moduleMetadata, moduleBuilder, false);
 };
 
-export const setupApi = async <T extends TypegooseClass>(
-  modelDefinitions?: T[],
+export const setupApi = async (
   moduleMetadata?: ModuleMetadata,
   moduleBuilder?: (moduleBuilder: TestingModuleBuilder) => TestingModuleBuilder,
 ): Promise<ApiSetup> => {
-  return setupNest(
-    modelDefinitions,
-    moduleMetadata,
-    moduleBuilder,
-    true,
-  ) as Promise<ApiSetup>;
+  return setupNest(moduleMetadata, moduleBuilder, true) as Promise<ApiSetup>;
 };

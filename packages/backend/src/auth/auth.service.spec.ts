@@ -5,6 +5,7 @@ import { EntityNotFoundException } from "src/common/exception/db/entity-not-foun
 import { UserService } from "src/user/service/user.service";
 import { mockConfigProvider } from "test/fixtures/config/mock-config-provider";
 import { createValidUserDto } from "test/fixtures/model/user.data";
+import { createValidWebappInitData } from "test/fixtures/telegram/telegram-data";
 import { AuthService } from "./auth.service";
 
 describe("AuthService", () => {
@@ -56,9 +57,8 @@ describe("AuthService", () => {
   });
 
   it("should return a user when found", async () => {
-    const result = authService.logInWithTelegram(mockUser.id, {
-      user: { id: parseInt(mockUser.id) },
-    } as unknown as WebAppInitData);
+    const { initData } = createValidWebappInitData(parseInt(mockUser.id));
+    const result = authService.logInWithTelegram(mockUser.id, initData);
 
     await expect(result).resolves.toMatchObject({
       user: expect.any(Object),
@@ -70,10 +70,8 @@ describe("AuthService", () => {
   });
 
   it("should create a user when not found and still return it", async () => {
-    const result = authService.logInWithTelegram(inexistentUserId, {
-      user: { id: inexistentUserId },
-    } as unknown as WebAppInitData);
-
+    const { initData } = createValidWebappInitData(parseInt(inexistentUserId));
+    const result = authService.logInWithTelegram(inexistentUserId, initData);
     await expect(result).resolves.toMatchObject({
       user: expect.any(Object),
       token: expect.any(String),

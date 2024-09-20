@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Post,
 } from "@nestjs/common";
+import { InitDataParsed } from "@telegram-apps/init-data-node";
 import { TelegramInitDataPipeTransform } from "src/telegram/init-data/telegram-init-data-transform.pipe";
 import { TelegramWebappAuthDtoValid } from "src/telegram/init-data/valid-init-data.dto";
 import { AuthService } from "./auth.service";
@@ -24,7 +25,7 @@ export class AuthController {
     webappAuthDto: TelegramWebappAuthDtoValid,
   ) {
     let userId: string;
-    let webappInitData: WebAppInitData;
+    let webappInitData: InitDataParsed;
 
     try {
       webappInitData =

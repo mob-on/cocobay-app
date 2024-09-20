@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker/.";
 import { ConfigService } from "@nestjs/config";
 import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth.dto";
+import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
 import { AuthModule } from "src/auth/auth.module";
 import { User } from "src/user/model/user.model";
@@ -9,7 +10,7 @@ import { createValidUser } from "test/fixtures/model/user.data";
 import { apiCreateUser } from "test/fixtures/rest/user";
 import {
   configureTelegramForSuccess,
-  validInitDataRaw,
+  createValidWebappInitData,
 } from "test/fixtures/telegram/telegram-data";
 import { ApiSetup, setupApi } from "test/setup/setup";
 
@@ -17,31 +18,35 @@ describe("AuthController", () => {
   let setup: ApiSetup;
   let api: TestAgent;
   let configService: ConfigService;
+  let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
     process.env.JWT_SECRET = faker.string.alphanumeric(64);
 
-    setup = await setupApi([User], {
+    setup = await setupApi({
       imports: [AuthModule, UserModule],
     });
 
     api = setup.api;
     configService = setup.app.get(ConfigService);
+    userModel = getModelForClass(User);
   });
 
   afterAll(async () => {
     await setup.stop();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     jest.clearAllMocks();
+    await userModel.deleteMany({});
   });
 
   describe("POST /v1/auth/telegram/login", () => {
     it("should return 200 when auth information present and valid, and user exists", async () => {
+      const userId = faker.number.int();
+      const { initDataRaw } = createValidWebappInitData(userId);
       const user = createValidUser({
-        id: "222",
-        username: "user-username",
+        id: userId.toString(),
       });
       await apiCreateUser(api, user);
 
@@ -49,7 +54,11 @@ describe("AuthController", () => {
 
       await api
         .post("/v1/auth/telegram/login")
-        .send(new TelegramWebappAuthDto({ initDataRaw: validInitDataRaw }))
+        .send(
+          new TelegramWebappAuthDto({
+            initDataRaw: initDataRaw,
+          }),
+        )
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject({
