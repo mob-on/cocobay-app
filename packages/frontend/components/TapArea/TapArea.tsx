@@ -194,12 +194,11 @@ const TapArea: React.FC = () => {
         priority
       />
       <Image
-        src={heroAvatars[gameState.level - 1]}
+        src={heroAvatars[gameState.level - 1 || 0]}
         alt="Hero"
         width={100}
         height={100}
         className={styles.hero}
-        priority
       />
     </div>
   );
