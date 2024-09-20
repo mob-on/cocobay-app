@@ -9,12 +9,6 @@ export class GameDataController {
   async getGameState(): Promise<GameDataDto> {
     const levelName = faker.word.adjective();
     return {
-      user: {
-        id: faker.string.uuid(),
-        username: faker.helpers.maybe(faker.internet.userName),
-        firstName: faker.helpers.maybe(faker.person.firstName),
-        languageCode: faker.helpers.maybe(() => "en"),
-      },
       gameState: {
         maxEnergy: 500,
         energyRecoveryPerSecond: 3,
