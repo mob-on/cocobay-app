@@ -141,7 +141,8 @@ jobs:
     secrets: inherit
     with:
       docker-build-args: ". --file Dockerfile.backend --target backend \
-        --build-arg ENV=${{ inputs.env }} --build-arg APP_VERSION=${{ needs.setup.outputs.version }}"
+        --build-arg ENV=${{ inputs.env }} --build-arg APP_VERSION=${{ needs.setup.outputs.version }} \
+        --build-arg BUILD_TIME=$(date +\"%Y-%m-%dT%H:%M:%S%z\")"
       app-name: cocobay-app-backend
       version: ${{ needs.setup.outputs.version }}
 
