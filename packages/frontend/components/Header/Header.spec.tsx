@@ -4,7 +4,7 @@ import { Router } from "next/router";
 
 import Header from "./Header";
 
-jest.mock("next/router", () => ({
+jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
