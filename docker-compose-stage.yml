@@ -18,6 +18,8 @@ services:
     environment:
       PORT: "80"
       MONGODB_URI: "mongodb://root:root@mongodb:27017/"
+    env_file:
+      - .env.backend
     ports:
       - "3002:80"
 
