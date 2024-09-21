@@ -11,7 +11,7 @@
     "build": "yarn prebuild && next build",
     "build:analyze": "ANALYZE=true yarn build",
     "start": "next start",
-    "lint": "lint-staged",
+    "lint": "eslint --fix \"**/*.{ts,tsx,md}\"",
     "lint:check": "eslint \"**/*.{ts,tsx,md}\""
   },
   "lint-staged": {
