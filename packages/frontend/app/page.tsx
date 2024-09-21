@@ -6,6 +6,7 @@ import TapCounter from "@src/components/TapCounter";
 import TapEffects from "@src/components/TapEffects";
 import { LevelingContextProvider } from "@src/shared/context/LevelingContext";
 import { TapsEffectsContextProvider } from "@src/shared/context/TapEffectsContext";
+import { UserContextProvider } from "@src/shared/context/UserContext";
 import styles from "@src/styles/pages/index.module.scss";
 import React from "react";
 
@@ -17,7 +18,9 @@ export default function Home() {
           <TapEffects />
           <section id="home" className={styles.home}>
             <div className={styles.avatar}>
-              <HomeAvatar />
+              <UserContextProvider>
+                <HomeAvatar />
+              </UserContextProvider>
             </div>
             <div className={styles.tapCounterWrapper}>
               <TapCounter />
