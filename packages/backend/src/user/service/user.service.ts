@@ -1,20 +1,24 @@
 import { Injectable } from "@nestjs/common";
+import { UserDto } from "@shared/src/dto/user.dto";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { UniqueViolation } from "src/common/exception/db/unique-violation.exception";
 import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
-import { UserDto } from "../dto/user.dto";
 import { UserRepository } from "../repository/user.repository";
+import { UserDtoMapper } from "./user-mapping.service";
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly userDtoMapper: UserDtoMapper,
+  ) {}
 
   async getUser(id: string): Promise<UserDto> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new EntityNotFoundException(`User with ID ${id}`);
+      throw new EntityNotFoundException(`User with ID not found ${id}`);
     }
-    return UserDto.fromUser(user);
+    return this.userDtoMapper.fromUser(user);
   }
 
   /**
@@ -27,8 +31,8 @@ export class UserService {
    */
   async create(userDto: UserDto): Promise<UserDto> {
     try {
-      return UserDto.fromUser(
-        await this.userRepository.create(UserDto.toUser(userDto)),
+      return this.userDtoMapper.fromUser(
+        await this.userRepository.create(this.userDtoMapper.toUser(userDto)),
       );
     } catch (e: unknown) {
       if (e instanceof UniqueViolation) {

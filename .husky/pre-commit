@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Fast linting (synchronous)
-yarn lint
+# Fast linting (synchronous to avoid conflicts with git+lint-staged in monorepo)
+yarn workspace backend lint-staged
+yarn workspace frontend lint-staged

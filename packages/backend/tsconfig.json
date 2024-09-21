@@ -9,12 +9,14 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "../",
     "paths": {
-      "src/*": ["backend/src/*"],
-      "test/*": ["backend/test/*"]
+      "src/*": ["./src/*"],
+      "test/*": ["./test/*"],
+      "@config/*": ["./config/*"],
+      "@shared/*": ["../shared/*"]
     },
     "incremental": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["**/*.ts", "../shared/src/dto/auth/telegram-jwt-dto.ts"]
 }

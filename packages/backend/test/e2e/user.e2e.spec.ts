@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
 import { User } from "src/user/model/user.model";
 import { UserModule } from "src/user/user.module";
@@ -8,26 +9,29 @@ import { ApiSetup, setupApi } from "test/setup/setup";
 const mockUser = createValidUserDto();
 
 describe("UserController", () => {
+  let setup: ApiSetup;
+  let api: TestAgent;
+  let userModel: ReturnModelType<typeof User>;
+
+  beforeAll(async () => {
+    setup = await setupApi({
+      imports: [UserModule],
+    });
+
+    api = setup.api;
+    userModel = getModelForClass(User);
+  });
+
+  afterAll(async () => {
+    await setup.stop();
+  });
+
+  afterEach(async () => {
+    jest.clearAllMocks();
+    await userModel.deleteMany({});
+  });
+
   describe("GET /v1/user/:userId", () => {
-    let setup: ApiSetup;
-    let api: TestAgent;
-
-    beforeAll(async () => {
-      setup = await setupApi([User], {
-        imports: [UserModule],
-      });
-
-      api = setup.api;
-    });
-
-    afterAll(async () => {
-      await setup.stop();
-    });
-
-    beforeEach(async () => {
-      await setup.clearModels();
-    });
-
     it("should return a 404 when the user does not exist", async () => {
       const userId = faker.string.numeric(16);
 
@@ -45,25 +49,6 @@ describe("UserController", () => {
   });
 
   describe("POST /v1/user", () => {
-    let setup: ApiSetup;
-    let api: TestAgent;
-
-    beforeAll(async () => {
-      setup = await setupApi([User], {
-        imports: [UserModule],
-      });
-
-      api = setup.api;
-    });
-
-    afterAll(async () => {
-      await setup.stop();
-    });
-
-    beforeEach(async () => {
-      await setup.clearModels();
-    });
-
     it("should return a 400 when no valid body is provided", async () => {
       return api.post(`/v1/user`).send({}).expect(400);
     });

@@ -18,12 +18,16 @@ services:
     environment:
       PORT: "80"
       MONGODB_URI: "mongodb://root:root@mongodb:27017/"
+    env_file:
+      - .env.backend
     ports:
       - "3002:80"
 
   mongodb:
     image: mongo:latest
     restart: unless-stopped
+    networks:
+      - backend
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root

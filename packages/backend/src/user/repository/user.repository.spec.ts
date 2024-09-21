@@ -1,5 +1,4 @@
 import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
-import { ExceptionMapper } from "src/common/database/exception-mapper";
 import { UniqueViolation } from "src/common/exception/db/unique-violation.exception";
 import { createValidUser } from "test/fixtures/model/user.data";
 import { DBSetup, setupDb } from "test/setup/setup";
@@ -15,16 +14,12 @@ describe("UserRepository", () => {
   let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
-    setup = await setupDb([User], {
+    setup = await setupDb({
       imports: [UserRepositoryModule],
     });
 
+    repository = setup.module.get(UserRepository);
     userModel = getModelForClass(User);
-
-    repository = new UserRepository(
-      userModel,
-      setup.module.get(ExceptionMapper),
-    );
   });
 
   afterAll(async () => {
@@ -32,7 +27,7 @@ describe("UserRepository", () => {
   });
 
   beforeEach(async () => {
-    await setup.clearModels();
+    await userModel.deleteMany({});
   });
 
   it("should be defined", () => {

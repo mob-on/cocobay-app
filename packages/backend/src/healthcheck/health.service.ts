@@ -1,9 +1,19 @@
 import { Injectable } from "@nestjs/common";
-import { Config } from "backend/config";
-import { Feature } from "src/shared/lib/FeatureFlags";
+import configuration from "@config/configuration";
+import { Feature } from "@config/features";
+import { FeatureService } from "src/common/feature-flags/feature-flag.service";
+import { LazyInitializer } from "src/common/util/lazy-initializer";
 
 @Injectable()
 export class HealthService {
+  private readonly configuration = new LazyInitializer<object>(() => {
+    const result = { ...configuration() };
+    delete result.secrets;
+    return result;
+  });
+
+  constructor(private readonly feature: FeatureService) {}
+
   getHealth(): object {
     const baseHealth = {
       status: "OK",
@@ -13,10 +23,10 @@ export class HealthService {
       },
     };
 
-    if (Feature.DEV_MODE) {
+    if (this.feature.enabled(Feature.DEV_MODE)) {
       return {
         ...baseHealth,
-        config: Config,
+        config: this.configuration.get(),
       };
     } else {
       return baseHealth;

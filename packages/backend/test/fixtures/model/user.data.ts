@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker";
+import { UserDto } from "@shared/src/dto/user.dto";
 import { Types } from "mongoose";
-import { UserDto } from "src/user/dto/user.dto";
 import { MinimalUser, User } from "src/user/model/user.model";
+import { UserDtoMapper } from "src/user/service/user-mapping.service";
 import { maybeAssign } from "../maybe-assign";
 
 export const createValidUser = (user?: Partial<User>) => {
@@ -30,7 +31,9 @@ export const createValidUserWithIdAndTimestamp = (
   } as User;
 };
 
+const userDtoMapper = new UserDtoMapper();
+
 export const createValidUserDto = (user?: Partial<User>): UserDto => {
   const validUser = createValidUser(user);
-  return UserDto.fromUser(validUser);
+  return userDtoMapper.fromUser(validUser);
 };

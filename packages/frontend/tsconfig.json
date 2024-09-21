@@ -11,20 +11,30 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
     "paths": {
-      "@src/*": ["src/*"],
+      "@src/*": ["./*"],
+      "@config/*": ["./config/*"],
       "@shared/*": ["../shared/*"],
-      "@lib/*": ["src/shared/lib/*"],
+      "@lib/*": ["./shared/lib/*"],
       "@components/*": ["../components/*"],
       "@pages/*": ["../pages/*"],
-      "@hooks/*": ["src/shared/hooks/*"],
+      "@hooks/*": ["./shared/hooks/*"],
       "@utils/*": ["../shared/utils/*"],
-      "@tests/*": ["../tests/*"]
-    }
+      "@tests/*": ["../tests/*"],
+      "@media/*": ["./public/media/*"],
+      "@api/*": ["./shared/api/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "../shared/*",
@@ -36,7 +46,8 @@
     "eslint.config.mjs",
     "__mocks__/svgMock.ts",
     "setupTests.ts",
-    "jest.config.js"
+    "jest.config.js",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

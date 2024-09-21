@@ -3,9 +3,9 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
 import { createValidUser } from "test/fixtures/model/user.data";
-import { UserDto } from "../dto/user.dto";
 import { User } from "../model/user.model";
 import { UserRepository } from "../repository/user.repository";
+import { UserDtoMapper } from "./user-mapping.service";
 import { UserService } from "./user.service";
 
 const mockUser = createValidUser();
@@ -35,11 +35,13 @@ class MockedUserRepository {
 describe("UserService", () => {
   let app: TestingModule;
   let service: UserService;
+  let userDtoMapper: UserDtoMapper;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
       providers: [
         UserService,
+        UserDtoMapper,
         {
           provide: UserRepository,
           useValue: MockedUserRepository,
@@ -48,10 +50,15 @@ describe("UserService", () => {
     }).compile();
 
     service = app.get(UserService);
+    userDtoMapper = app.get(UserDtoMapper);
   });
 
   afterAll(async () => {
     await app.close();
+  });
+
+  afterEach(async () => {
+    jest.clearAllMocks();
   });
 
   it("should be defined", async () => {
@@ -71,7 +78,7 @@ describe("UserService", () => {
   });
 
   it("should create a valid user when provided with the correct information", async () => {
-    const userDto = UserDto.fromUser({
+    const userDto = userDtoMapper.fromUser({
       id: faker.string.uuid(),
       firstName: faker.string.alphanumeric(16),
     });
@@ -82,7 +89,7 @@ describe("UserService", () => {
   });
 
   it("should fail to create a user that already exists", async () => {
-    const mockUserDto = UserDto.fromUser(mockUser);
+    const mockUserDto = userDtoMapper.fromUser(mockUser);
     await service.create(mockUserDto);
 
     await expect(service.create(mockUserDto)).rejects.toThrow(

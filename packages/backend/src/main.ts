@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = parseInt(process.env.PORT, 10) || 3001;
 
-  configureMainApiNestApp(app);
+  configureMainApiNestApp(app, AppModule);
 
   const server = app.listen(port);
   logger.log(`Application started on port ${port}`);

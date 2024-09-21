@@ -1,3 +1,3 @@
-import { DatabaseError } from "./databse.exception";
+import { DatabaseError } from "./database.exception";
 
 export class UniqueViolation extends DatabaseError {}
