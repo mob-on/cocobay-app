@@ -1,5 +1,3 @@
-import withPlugins from "next-compose-plugins";
-import withImages from "next-images";
 import bundleAnalyzer from "@next/bundle-analyzer";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -27,18 +25,16 @@ const nextConfig = {
   reactStrictMode: false,
   trailingSlash: true,
   transpilePackages: ["antd"],
+  images: {
+    disableStaticImages: false,
+    unoptimized: true, //required by next output:export
+  },
   experimental: {
     optimizePackageImports: [
       "antd-mobile",
       "antd-mobile-icons",
       "@ant-design/icons",
     ],
-  },
-  images: {
-    disableStaticImages: false,
-    unoptimized: true, //required by next output:export
-  },
-  experimental: {
     serverComponentsExternalPackages: ["pino", "pino-pretty"],
     turbo: {
       rules: {
@@ -59,15 +55,8 @@ const nextConfig = {
   },
 };
 
-const defaultConfig = {};
-
-const nextConfigWithPlugins = async (phase) =>
-  withPlugins([[withImages()]], nextConfig)(phase, {
-    defaultConfig,
-  });
-
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
-export default withBundleAnalyzer(nextConfigWithPlugins);
+export default withBundleAnalyzer(nextConfig);
