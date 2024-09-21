@@ -12,6 +12,7 @@ const getRandomDateInTheNextHour = () =>
     .toUTCString();
 
 const builds: Build[] = new Array(20).fill(0).map(() => {
+  //Remove faker from prod dependencies once this is removed
   return {
     id: faker.string.uuid(),
     name: faker.word.adjective() + " " + faker.word.noun(),

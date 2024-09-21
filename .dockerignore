@@ -5,12 +5,12 @@ load-testing/
 .github
 .husky
 .next
-coverage/
-.next/
-out/
-dist/
+coverage
+.next
+out
+dist
 node_modules
-infrastructure/cdk.out
+packages/infrastructure/cdk.out
 docker-compose*.yml
 /Dockerfile.*
 lerna.json
