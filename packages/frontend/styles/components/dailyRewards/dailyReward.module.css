@@ -58,7 +58,7 @@
   width: calc(var(--specialImageSize) * 1.5);
   background-image: linear-gradient(
     -90deg,
-    color-mod(var(--body-bg) alpha(40%)),
+    opacify(var(--body-bg), 40%),
     var(--body-bg) 100%
   );
   z-index: 1;
