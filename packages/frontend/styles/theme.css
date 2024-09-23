@@ -38,18 +38,8 @@
 
   --gradient-primary-light: linear-gradient(
     93deg,
-    hsl(
-        var(--color-grad-primary-start-h),
-        var(--color-grad-primary-start-s),
-        calc(var(--color-grad-primary-start-l) + 5%)
-      )
-      1.77%,
-    hsl(
-        var(--color-grad-primary-end-h),
-        var(--color-grad-primary-end-s),
-        calc(var(--color-grad-primary-end-l) + 5%)
-      )
-      98.75%
+    lighten(var(--color-grad-primary-start), 10%),
+    lighten(var(--color-grad-primary-end), 10%)
   );
 
   --gradient-secondary: linear-gradient(
@@ -60,18 +50,8 @@
 
   --gradient-secondary-light: linear-gradient(
     152deg,
-    hsl(
-        var(--color-grad-secondary-start-h),
-        var(--color-grad-secondary-start-s),
-        calc(var(--color-grad-secondary-start-l) + 5%)
-      )
-      31.93%,
-    hsl(
-        var(--color-grad-secondary-end-h),
-        var(--color-grad-secondary-end-s),
-        calc(var(--color-grad-secondary-end-l) + 5%)
-      )
-      97.94%
+    lighten(var(--color-grad-secondary-start), 10%) 31.93%,
+    lighten(var(--color-grad-secondary-end), 10%) 97.94%
   );
 
   --popup-b-radius: 15px 15px 0 0;

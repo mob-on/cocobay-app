@@ -52,7 +52,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: color-mod(var(--body-bg) alpha(80%));
+  background-color: opacify(var(--body-bg), 80%);
   display: flex;
   justify-content: center;
   align-items: center;
