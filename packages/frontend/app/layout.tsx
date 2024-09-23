@@ -16,7 +16,7 @@ import Script from "next/script";
 import { useEffect, useState } from "react";
 
 import { TrackingProvider } from "../shared/context/TrackingContext";
-import { ddin, kumbh, martian } from "./fonts";
+import { ddin, martian } from "./fonts";
 
 declare global {
   interface Window {
@@ -68,9 +68,7 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
         />
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
-      <body
-        className={`${ddin.variable} ${kumbh.variable} ${martian.variable}`}
-      >
+      <body className={`${ddin.variable} ${martian.variable}`}>
         <Script
           id="TelegramWebApp"
           src="/scripts/TelegramLib.js"
