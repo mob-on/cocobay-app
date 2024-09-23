@@ -13,9 +13,7 @@ export interface IHomeAvatarData {
 
 const HomeAvatar: React.FC = () => {
   const { data } = useUserData();
-  console.log(data);
   const { username, firstName, avatarSrc } = data;
-  console.log(avatarSrc, Hero);
   return (
     <div className={styles.homeAvatar}>
       <Avatar src={avatarSrc ?? Hero.src} />
