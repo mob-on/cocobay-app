@@ -7,7 +7,6 @@ import { useBoosts } from "@src/shared/context/BoostsContext";
 import usePopup from "@src/shared/hooks/usePopup";
 import styles from "@src/styles/pages/home/boosts.module.css";
 import { Popup, Toast } from "antd-mobile";
-import Link from "next/link";
 import { useCallback, useMemo } from "react";
 
 export default function Boosts() {

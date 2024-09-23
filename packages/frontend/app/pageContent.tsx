@@ -12,18 +12,12 @@ import { TapsEffectsContextProvider } from "@src/shared/context/TapEffectsContex
 import { UserContextProvider } from "@src/shared/context/UserContext";
 import styles from "@styles/pages/index.module.css";
 import { useRouter } from "next/navigation";
-import { use, useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export default function PageContent() {
   const router = useRouter();
-  const resolver = useRef(null as unknown as Function);
   const loading = useLoading();
-  if (!loading.allLoaded) {
-    use(new Promise((resolve) => (resolver.current = resolve)));
-  }
   useEffect(() => {
-    if (loading.allLoaded && resolver.current instanceof Function)
-      resolver.current();
     router.prefetch("/builds");
     router.prefetch("/earn");
     router.prefetch("/boosts");

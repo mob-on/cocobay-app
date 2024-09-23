@@ -12,7 +12,6 @@ import styles from "@src/styles/pages/build.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import TabBar from "antd-mobile/es/components/tab-bar";
 import Toast from "antd-mobile/es/components/toast";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
