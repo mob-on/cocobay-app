@@ -12,7 +12,9 @@ import styles from "@src/styles/pages/build.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import TabBar from "antd-mobile/es/components/tab-bar";
 import Toast from "antd-mobile/es/components/toast";
-import { useCallback, useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const tabs = [
   {
@@ -36,6 +38,14 @@ export default function Boosts() {
 
   const [comboPopupState, _showComboPopup, hideComboPopup] = usePopup();
   const showComboPopup = useCallback(() => _showComboPopup(), []);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/");
+    router.prefetch("/earn");
+    router.prefetch("/friends");
+  }, []);
 
   const currentBuild = useMemo(() => {
     return builds.find((task) => task.id === popupState.id) || ({} as Build);

@@ -8,7 +8,7 @@
     "dev": "NEXT_PUBLIC_ENVIRONMENT=dev next dev",
     "dev:trace": "NEXT_TURBOPACK_TRACING=1 NEXT_CPU_PROF=1 next dev",
     "prebuild": "ts-node scripts/robots/build-robots",
-    "build": "yarn prebuild && next build",
+    "build": "NODE_ENV=production yarn prebuild && next build",
     "build:analyze": "ANALYZE=true yarn build",
     "start": "next start",
     "lint": "eslint --fix \"**/*.{ts,tsx,md}\"",

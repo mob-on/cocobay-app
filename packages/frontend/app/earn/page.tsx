@@ -13,7 +13,8 @@ import Popup from "antd-mobile/es/components/popup";
 import { CheckCircleFill, RightOutline } from "antd-mobile-icons";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 interface IEarnTask {
   id: string;
@@ -47,6 +48,14 @@ const defaultTasks: IEarnTask[] = [
 export default function Earn() {
   const [taskList] = useState(defaultTasks);
   const [popupState, _showPopup, hidePopup] = usePopup();
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/");
+    router.prefetch("/builds");
+    router.prefetch("/earn/daily-rewards");
+    router.prefetch("/friends");
+  }, []);
 
   const currentTask = useMemo(() => {
     return (

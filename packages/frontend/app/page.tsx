@@ -1,7 +1,6 @@
-import dynamic from "next/dynamic";
-import React from "react";
+import React, { lazy } from "react";
 
-const PageContent = dynamic(() => import("./pageContent"));
+const PageContent = lazy(() => import("./pageContent"));
 
 export default function Home() {
   return <PageContent />;

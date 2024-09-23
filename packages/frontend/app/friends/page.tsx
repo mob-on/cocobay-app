@@ -11,6 +11,7 @@ import { useFriends } from "@src/shared/context/FriendsContext";
 import styles from "@src/styles/pages/friends.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const FRIENDS_SHOW_LIMIT = 3;
@@ -43,6 +44,7 @@ const cards: ICard[] = [
 export default function Friends() {
   const { friends } = useFriends();
   const [hideLastFriend, setHideLastFriend] = useState(false);
+  const router = useRouter();
 
   // If the screen height is less than 890px, hide the last friend.
   // This is the easiest way to do this, and we don't expect screen to be resized, so it's fine.
@@ -51,6 +53,10 @@ export default function Friends() {
     if (screenHeight < 930) {
       setHideLastFriend(true);
     }
+    router.prefetch("/");
+    router.prefetch("/builds");
+    router.prefetch("/earn");
+    router.prefetch("/friends/all");
   }, []);
   const showFriendCount = FRIENDS_SHOW_LIMIT - (hideLastFriend ? 1 : 0);
 

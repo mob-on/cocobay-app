@@ -1,5 +1,3 @@
-@import "@styles/pages/daily-rewards.module.css";
-
 .dailyReward {
   --specialImageSize: 100px;
   --rewardsPerRow: 4;
