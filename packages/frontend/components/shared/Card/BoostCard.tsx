@@ -1,5 +1,5 @@
 import { Boost } from "@shared/src/interfaces";
-import styles from "@src/styles/components/shared/card/boostCard.module.scss";
+import styles from "@src/styles/components/shared/card/boostCard.module.css";
 import React from "react";
 
 import Cost from "../Cost";

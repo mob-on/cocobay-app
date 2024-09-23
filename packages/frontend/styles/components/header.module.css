@@ -1,13 +1,10 @@
-@use "sass:color";
-@import "styles/theme.scss";
-
 .fixedWrapper {
   position: relative;
-  height: $header-height;
+  height: var(--header-height);
 }
 
 .main {
-  height: $header-height;
+  height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;

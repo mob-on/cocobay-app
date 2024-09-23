@@ -43,6 +43,10 @@
   opacity: 0.5;
 }
 
+.label {
+  color: gray;
+}
+
 .value {
   align-items: center;
 }

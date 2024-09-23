@@ -1,6 +1,4 @@
-@use "sass:color";
-@import "styles/theme.scss";
-@import "./tapArea.module.scss";
+@import "./tapArea.module.css";
 
 .ringsMain {
   z-index: -1;

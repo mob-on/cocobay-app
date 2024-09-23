@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@src/styles/components/leveling/leveling.module.scss";
+import styles from "@src/styles/components/leveling/leveling.module.css";
 import ProgressBar from "antd-mobile/es/components/progress-bar";
 import React from "react";
 

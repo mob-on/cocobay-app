@@ -1,3 +1,5 @@
+"use client";
+
 import cloud1 from "@media/cloud-white1.svg";
 import cloud2 from "@media/cloud-white2.svg";
 import cloud3 from "@media/cloud-white3.svg";

@@ -20,7 +20,7 @@ import {
   useTaps,
 } from "@src/shared/context/TapEffectsContext";
 import useTelegram from "@src/shared/hooks/useTelegram";
-import styles from "@src/styles/components/tapArea/tapArea.module.scss";
+import styles from "@src/styles/components/tapArea/tapArea.module.css";
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";

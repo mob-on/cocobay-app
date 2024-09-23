@@ -5,7 +5,7 @@ import { IDailyReward, IDailyRewards } from "@src/components/DailyRewards";
 import DailyReward from "@src/components/DailyRewards/DailyReward";
 import Week from "@src/components/DailyRewards/Week";
 import Button from "@src/components/shared/Button";
-import styles from "@src/styles/pages/daily-rewards.module.scss";
+import styles from "@src/styles/pages/daily-rewards.module.css";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 

@@ -1,4 +1,4 @@
-import styles from "@src/styles/components/menu/button.module.scss";
+import styles from "@src/styles/components/menu/button.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";

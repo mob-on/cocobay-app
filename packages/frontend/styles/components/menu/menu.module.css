@@ -1,6 +1,3 @@
-@use "sass:color";
-@import "styles/theme.scss";
-
 .main {
   width: 100%;
   left: 0;
@@ -25,7 +22,7 @@
   border-radius: var(--card-b-radius) var(--card-b-radius) 0 0;
   height: var(--menu-height);
   box-sizing: border-box;
-  max-width: calc($max-page-width - var(--padding-menu) * 2);
+  max-width: calc(var(--max-page-width) - var(--padding-menu) * 2);
 }
 
 .menu {

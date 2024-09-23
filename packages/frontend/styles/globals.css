@@ -1,0 +1,136 @@
+html,
+body,
+#__next {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: var(--color-white);
+}
+
+#__main {
+  height: 100%;
+  max-width: var(--max-page-width);
+  position: relative;
+}
+
+#__grid,
+#__grid-loading {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+#__grid-loading {
+  z-index: 0;
+  filter: invert(1) brightness(0.6);
+}
+
+.__error-popup {
+  padding: var(--padding-inner);
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--padding-inner);
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+body {
+  /* Global css variables */
+  --page-width: calc(100% - 2 * var(--padding));
+  --bottom-margin: calc(
+    var(--padding) + var(--menu-height) + var(--menu-bottom)
+  );
+  --tap-background: radial-gradient(
+    circle,
+    var(--color-purple-primary) 0%,
+    transparent 70%
+  ); /* gradient behind the coco */
+
+  /* Antd mobile style overrides */
+  --adm-color-primary: var(--color-purple-primary) !important;
+  --adm-color-background: var(--body-bg) !important;
+  --adm-font-size-main: 16px;
+  --adm-color-text: var(--color-white) !important;
+  --adm-font-family: var(--font-ddin) !important;
+  --adm-font-size-2: 16px !important;
+  .adm-progress-bar-fill {
+    background: var(--gradient-primary) !important;
+  }
+  background-color: var(--body-bg);
+  color: var(--color-white);
+  font-family: var(--font-kumbh);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: var(--padding-inner) 0;
+}
+
+p {
+  font-size: 16px;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 400px), (max-height: 720px) {
+  :root {
+    --padding: 10px;
+    --padding-inner: 10px;
+    --tap-ring-width: 5px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 21px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  h5 {
+    font-size: 14px;
+  }
+}

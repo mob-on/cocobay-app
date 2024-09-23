@@ -1,5 +1,5 @@
 import { Build } from "@shared/src/interfaces";
-import styles from "@src/styles/components/build/buildPopup.module.scss";
+import styles from "@src/styles/components/build/buildPopup.module.css";
 import React, { memo } from "react";
 
 import Button from "../shared/Button";

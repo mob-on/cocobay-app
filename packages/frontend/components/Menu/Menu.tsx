@@ -3,7 +3,7 @@ import EarnIcon from "@media/icons/earn.svg";
 import FriendsIcon from "@media/icons/friends.svg";
 import HomeIcon from "@media/icons/home.svg";
 import { useLoading } from "@src/shared/context/LoadingContext";
-import styles from "@src/styles/components/menu/menu.module.scss";
+import styles from "@src/styles/components/menu/menu.module.css";
 import { usePathname } from "next/navigation";
 
 import MenuButton from "./MenuButton";

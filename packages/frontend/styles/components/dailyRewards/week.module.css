@@ -1,9 +1,6 @@
-@import "styles/theme";
-
-$WEEKS: 3;
-
 .week {
-  width: calc(100% / $WEEKS);
+  --WEEKS: 3;
+  width: calc(100% / var(--WEEKS));
   min-width: 100px;
   flex-direction: column;
   padding: calc(var(--padding-inner) / 2);

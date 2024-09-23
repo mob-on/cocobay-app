@@ -1,4 +1,4 @@
-import styles from "@src/styles/components/dailyRewards/week.module.scss";
+import styles from "@src/styles/components/dailyRewards/week.module.css";
 
 import Card from "../shared/Card";
 

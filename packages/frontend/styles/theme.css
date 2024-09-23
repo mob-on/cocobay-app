@@ -1,0 +1,127 @@
+/* stylelint-disable selector-type-no-unknown */
+:root {
+  --padding: 30px;
+  --padding-inner: 20px;
+  --padding-menu: 0px;
+  --padding-menu-inner: var(--padding) calc(var(--padding) * 2);
+  --menu-bottom: 0px;
+  --menu-height: 83px;
+  --header-height: 0;
+  --padding-coin: 4px;
+  --max-page-width: 1024px;
+
+  --color-menu: #515172;
+  --color-menu-active: #8181b1;
+  --color-white: #fff;
+  --body-bg: #1e1e2b;
+  --color-purple-primary: #c7a0fd;
+  --color-primary: #9e71ff;
+  --color-secondary: #16cef6;
+
+  --color-grad-primary-start: var(--color-primary);
+  --color-grad-primary-mid: #5f9dfc;
+  --color-grad-primary-end: var(--color-secondary);
+  --color-grad-secondary-start: var(--color-primary);
+  --color-grad-secondary-end: #ff7999;
+
+  --gradient-primary: linear-gradient(
+    93deg,
+    var(--color-grad-primary-start) 1.77%,
+    var(--color-grad-primary-end) 98.75%
+  );
+
+  --gradient-primary-rotated: linear-gradient(
+    45deg,
+    var(--color-grad-primary-start) 1.77%,
+    var(--color-grad-primary-end) 98.75%
+  );
+
+  --gradient-primary-light: linear-gradient(
+    93deg,
+    hsl(
+        var(--color-grad-primary-start-h),
+        var(--color-grad-primary-start-s),
+        calc(var(--color-grad-primary-start-l) + 5%)
+      )
+      1.77%,
+    hsl(
+        var(--color-grad-primary-end-h),
+        var(--color-grad-primary-end-s),
+        calc(var(--color-grad-primary-end-l) + 5%)
+      )
+      98.75%
+  );
+
+  --gradient-secondary: linear-gradient(
+    152deg,
+    var(--color-grad-secondary-start) 31.93%,
+    var(--color-grad-secondary-end) 97.94%
+  );
+
+  --gradient-secondary-light: linear-gradient(
+    152deg,
+    hsl(
+        var(--color-grad-secondary-start-h),
+        var(--color-grad-secondary-start-s),
+        calc(var(--color-grad-secondary-start-l) + 5%)
+      )
+      31.93%,
+    hsl(
+        var(--color-grad-secondary-end-h),
+        var(--color-grad-secondary-end-s),
+        calc(var(--color-grad-secondary-end-l) + 5%)
+      )
+      97.94%
+  );
+
+  --popup-b-radius: 15px 15px 0 0;
+
+  --tap-ring-diameter: 75vw;
+  --tap-ring-diameter-max: 360px;
+  --tap-ring-width: 10px;
+  --tap-ring1-color: #88d912;
+  --tap-ring2-color: #cdff83;
+  --tap-ring3-color: #f5ffe7;
+  --tap-ring-scale: calc(1.03); /* 1 + scale width in pixels / diameter */
+  --tap-rings-number: 2; /* number of rings, used only in tap height calculation */
+  --tap-transition-time: 0.05s;
+  --coco-size: 50%;
+  --coco-size-max: 239px;
+  --tap-coin-size: 24px;
+
+  --card-bg-color: var(--color-menu);
+  --card-bg-color-active: hsl(
+    var(--color-menu-h),
+    var(--color-menu-s),
+    calc(var(--color-menu-l) + 10%)
+  );
+  --card-b-radius: 15px;
+  --card-border: 0px solid #fff;
+  --card-gradient: var(--gradient-primary);
+  --card-gradient-active: var(--gradient-primary-light);
+  --card-bg: var(--gradient-primary);
+  --card-gradient-secondary: var(--gradient-secondary);
+  --card-gradient-secondary-active: var(--gradient-secondary-light);
+  --card-height: 64px;
+
+  --build-card-height: var(--card-height);
+
+  --color-button-primary: var(--color-primary);
+  --color-button-primary-active: hsl(
+    var(--color-button-primary-h),
+    var(--color-button-primary-s),
+    calc(var(--color-button-primary-l) + 10%)
+  );
+  --color-button-secondary: var(--color-secondary);
+  --color-button-secondary-active: hsl(
+    var(--color-button-secondary-h),
+    var(--color-button-secondary-s),
+    calc(var(--color-button-secondary-l) + 10%)
+  );
+  --color-button-gradient: var(--gradient-primary);
+  --color-button-gradient-active: var(--gradient-primary-light);
+  --button-b-radius: 8px;
+  --button-height: 64px;
+
+  --friend-card-height: 75px;
+}

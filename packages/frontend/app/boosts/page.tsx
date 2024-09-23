@@ -5,7 +5,7 @@ import BoostPopup from "@src/components/Boosts/BoostPopup";
 import Card from "@src/components/shared/Card";
 import { useBoosts } from "@src/shared/context/BoostsContext";
 import usePopup from "@src/shared/hooks/usePopup";
-import styles from "@src/styles/pages/home/boosts.module.scss";
+import styles from "@src/styles/pages/home/boosts.module.css";
 import { Popup, Toast } from "antd-mobile";
 import { useCallback, useMemo } from "react";
 

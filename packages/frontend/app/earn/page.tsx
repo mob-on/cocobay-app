@@ -8,7 +8,7 @@ import Card from "@src/components/shared/Card";
 import Cost from "@src/components/shared/Cost";
 import usePopup from "@src/shared/hooks/usePopup";
 import NumberFormatter from "@src/shared/lib/NumberFormatter";
-import styles from "@src/styles/pages/earn.module.scss";
+import styles from "@src/styles/pages/earn.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import { CheckCircleFill, RightOutline } from "antd-mobile-icons";
 import Image from "next/image";

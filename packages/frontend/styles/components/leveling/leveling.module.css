@@ -1,6 +1,3 @@
-@use "sass:color";
-@import "styles/theme.scss";
-
 .levelInfo {
   display: flex;
   min-width: 250px;

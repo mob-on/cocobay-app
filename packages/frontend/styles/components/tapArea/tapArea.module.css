@@ -1,6 +1,3 @@
-@use "sass:color";
-@import "styles/theme.scss";
-
 .main {
   position: relative;
   left: 0;
@@ -8,23 +5,21 @@
   height: calc(var(--tap-ring-diameter) + var(--tap-ring-width) * 2);
   width: 100%;
   touch-action: none;
+  --scale-background: 1;
   --scale-ring-2: var(--tap-ring-scale);
   --scale-ring-3: calc(var(--tap-ring-scale) + var(--tap-ring-scale) - 1);
-  --scale-background: 1;
 }
 
 .tapped {
-  // Using globals is not perfect, but that is the simplest solution I can think of at the moment.
-  // If we limit globals to occasional ids, if shoudln't be a problem.
-  :global(#tap-ring3),
-  :global(#tap-ring2) {
+  #tap-ring3,
+  #tap-ring2 {
     transition: none;
     opacity: 0.5;
   }
-  :global(#tap-ring2) {
+  #tap-ring2 {
     transform: translate(-50%, -50%) scale(var(--scale-ring-2));
   }
-  :global(#tap-ring3) {
+  #tap-ring3 {
     transform: translate(-50%, -50%) scale(var(--scale-ring-3));
   }
 }

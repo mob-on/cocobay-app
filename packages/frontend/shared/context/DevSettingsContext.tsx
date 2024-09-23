@@ -1,6 +1,6 @@
 "use client";
 
-import SettingOutlined from "@ant-design/icons/SettingOutlined";
+import { SettingOutlined } from "@ant-design/icons";
 import DevScreen from "@src/components/DevScreen";
 import { createContext, useContext, useState } from "react";
 

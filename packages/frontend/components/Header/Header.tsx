@@ -1,5 +1,5 @@
 import Logo from "@media/logo.svg";
-import styles from "@src/styles/components/header.module.scss";
+import styles from "@src/styles/components/header.module.css";
 import { LeftOutline } from "antd-mobile-icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
