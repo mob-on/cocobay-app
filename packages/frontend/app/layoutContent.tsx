@@ -1,5 +1,4 @@
 import { QueryClient } from "@tanstack/react-query";
-import dynamic from "next/dynamic";
 import { lazy } from "react";
 
 const DynamicLoadingProvider = lazy(() => import("./loadingProviderContent"));
