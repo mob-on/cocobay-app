@@ -1,4 +1,4 @@
-import styles from "@src/styles/components/popupContents/popupContents.module.scss";
+import styles from "@src/styles/components/popupContents/popupContents.module.css";
 
 interface PopupContentsProps {
   children?: JSX.Element;

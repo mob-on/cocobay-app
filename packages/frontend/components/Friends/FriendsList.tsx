@@ -1,6 +1,6 @@
 import { Friend } from "@shared/src/interfaces";
 import NumberFormatter from "@src/shared/lib/NumberFormatter";
-import styles from "@src/styles/components/friends/friendsList.module.scss";
+import styles from "@src/styles/components/friends/friendsList.module.css";
 import Avatar from "antd-mobile/es/components/avatar";
 
 import Card from "../shared/Card";

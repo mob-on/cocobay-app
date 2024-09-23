@@ -2,7 +2,7 @@
 
 import { useMainApi } from "@api/main/useMainApi";
 import { useStoredApiUrl } from "@src/shared/context/LocalStorageContext";
-import styles from "@src/styles/components/devSettings/devSettings.module.scss";
+import styles from "@src/styles/components/devSettings/devSettings.module.css";
 import Button from "antd-mobile/es/components/button";
 import Input from "antd-mobile/es/components/input";
 import { CheckCircleOutline, CloseCircleOutline } from "antd-mobile-icons";

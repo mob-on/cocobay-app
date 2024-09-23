@@ -1,6 +1,3 @@
-@use "sass:color";
-@import "styles/theme.scss";
-
 .boosts {
   display: flex;
   flex-direction: column;

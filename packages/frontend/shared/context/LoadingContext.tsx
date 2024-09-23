@@ -3,7 +3,13 @@ import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth
 import { GameDataDto } from "@shared/src/dto/gameData.dto";
 import { UserDto } from "@shared/src/dto/user.dto";
 import { LoadingScreen } from "@src/components/LoadingScreen";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  Suspense,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { GAME_DATA_QUERY_KEY, useGameDataApi } from "../api/useGameDataApi";
 import { useUserApi } from "../api/useUserApi";
@@ -13,6 +19,14 @@ import { Feature } from "../lib/FeatureFlags";
 import { USER_QUERY_KEY } from "../services/useUserService";
 import { useErrorContext } from "./ErrorContext";
 import { useStoredApiUrl } from "./LocalStorageContext";
+
+// const GameStateContextProvider = dynamic(() =>
+//   import("./GameStateContext").then((mod) => mod.GameStateContextProvider),
+// );
+// const Layout = dynamic(() => import("../../layouts/Layout"));
+// const TapCounterTimer = dynamic(
+//   () => import("@components/util/TapCounterTimer"),
+// );
 
 const MAX_TRIES = 3;
 
@@ -167,7 +181,7 @@ export const LoadingProvider = ({ children }) => {
     <LoadingContext.Provider
       value={{ updateResourceStatus, allLoaded, resources }}
     >
-      {allLoaded ? children : <LoadingScreen />}
+      <Suspense>{allLoaded ? children : <LoadingScreen />}</Suspense>
     </LoadingContext.Provider>
   );
 };

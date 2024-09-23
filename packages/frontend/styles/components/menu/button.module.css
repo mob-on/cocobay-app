@@ -1,6 +1,3 @@
-@use "sass:color";
-@import "styles/theme.scss";
-
 .button {
   height: 56px;
   width: 76px;
@@ -10,12 +7,12 @@
   border-radius: 10px;
   padding-top: 7px;
   padding-bottom: 4px;
-  border: solid 1.5px $color-menu;
+  border: solid 1.5px var(--color-menu);
 }
 
 .button.selected {
-  background-color: $color-menu-active;
-  border-color: $color-white;
+  background-color: var(--color-menu-active);
+  border-color: var(--color-white);
 }
 
 .button p {
@@ -24,7 +21,7 @@
 
 .button {
   text-decoration: none;
-  color: $color-white;
+  color: var(--color-white);
 }
 
 .icon {

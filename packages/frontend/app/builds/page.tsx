@@ -8,7 +8,7 @@ import Card from "@src/components/shared/Card";
 import TapCounter from "@src/components/TapCounter";
 import { useBuilds } from "@src/shared/context/BuildsContext";
 import usePopup from "@src/shared/hooks/usePopup";
-import styles from "@src/styles/pages/build.module.scss";
+import styles from "@src/styles/pages/build.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import TabBar from "antd-mobile/es/components/tab-bar";
 import Toast from "antd-mobile/es/components/toast";

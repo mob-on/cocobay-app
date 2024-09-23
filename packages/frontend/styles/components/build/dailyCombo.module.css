@@ -1,7 +1,5 @@
-@import "styles/theme.scss";
-
 .dailyCombo {
-  background-color: $color-menu;
+  background-color: var(--color-menu);
   border-radius: var(--card-b-radius);
   padding: var(--padding-inner);
 }
@@ -21,24 +19,23 @@
 }
 
 .singleCombo:nth-child(3n - 1) {
-  background-color: $color-grad-primary-start;
+  background-color: var(--color-grad-primary-start);
 }
 
 .singleCombo:nth-child(3n - 3) {
-  background-color: $color-grad-primary-mid;
+  background-color: var(--color-grad-primary-mid);
 }
 
 .singleCombo:nth-child(3n - 2) {
-  background-color: $color-grad-primary-end;
+  background-color: var(--color-grad-primary-end);
 }
 
 .singleCombo {
-  // box-shadow: -3px -3px 0px 0px $color-white inset;
   border-radius: 15px;
   position: relative;
   width: 75px;
   height: 75px;
-  border: $card-border;
+  border: var(--card-border);
   box-sizing: border-box;
 }
 

@@ -1,4 +1,4 @@
-import styles from "@src/styles/components/tapArea/rings.module.scss";
+import styles from "@src/styles/components/tapArea/rings.module.css";
 import React from "react";
 
 /**

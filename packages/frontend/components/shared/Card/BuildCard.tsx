@@ -1,5 +1,5 @@
 import { Build } from "@shared/src/interfaces";
-import styles from "@src/styles/components/shared/card/buildCard.module.scss";
+import styles from "@src/styles/components/shared/card/buildCard.module.css";
 import React from "react";
 
 import Cost from "../Cost";

@@ -1,5 +1,5 @@
-import NumberFormatter from "@src/shared/lib/NumberFormatter";
-import styles from "@src/styles/components/dailyRewards/dailyReward.module.scss";
+import NumberFormatter from "@lib/NumberFormatter";
+import styles from "@styles/components/dailyRewards/dailyReward.module.css";
 import Image from "next/image";
 
 import Card from "../shared/Card";

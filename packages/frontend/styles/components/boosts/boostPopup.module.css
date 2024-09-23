@@ -1,6 +1,4 @@
-@import "styles/theme.scss";
-
-.buildPopup {
+.boostPopup {
   box-sizing: border-box;
   padding: var(--padding);
   width: 100%;

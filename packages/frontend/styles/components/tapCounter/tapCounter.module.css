@@ -1,6 +1,3 @@
-@use "sass:color";
-@import "styles/theme.scss";
-
 .tapCounter {
   display: flex;
   flex-direction: column;
@@ -11,7 +8,7 @@
 .tapCounter h1 {
   font-size: 35px;
   margin-bottom: var(--padding-inner);
-  font-style: "MartianMono", sans-serif;
+  font-family: var(--font-martian);
 }
 
 .tapCounter p {

@@ -1,5 +1,5 @@
 import { Boost } from "@shared/src/interfaces";
-import styles from "@src/styles/components/boosts/boostPopup.module.scss";
+import styles from "@src/styles/components/boosts/boostPopup.module.css";
 import React, { memo } from "react";
 
 import Button from "../shared/Button";
