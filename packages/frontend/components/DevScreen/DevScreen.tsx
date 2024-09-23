@@ -4,7 +4,6 @@ import { useMainApi } from "@api/main/useMainApi";
 import { useStoredApiUrl } from "@src/shared/context/LocalStorageContext";
 import styles from "@src/styles/components/devSettings/devSettings.module.scss";
 import Button from "antd-mobile/es/components/button";
-import Form from "antd-mobile/es/components/form";
 import Input from "antd-mobile/es/components/input";
 import { CheckCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
 import { useCallback, useEffect, useState } from "react";
@@ -46,36 +45,54 @@ export const DevScreen = () => {
   }, [mainApiBaseUrlValue, api]);
 
   return (
-    <Form
-      footer={<Button onClick={save}>Save</Button>}
-      style={{ background: "#000", height: "100%" }}
-    >
-      <Form.Header>Developer Settings</Form.Header>
-      <Form.Item label="Front End App Version">
-        <div className={styles.longText}>
-          {process.env.NEXT_PUBLIC_APP_VERSION ?? "edge"}
+    <div className={styles.container}>
+      <h1>Developer Settings</h1>
+      <div className={styles.fields}>
+        <div className={styles.field}>
+          <div className={styles.label}>Front End App Version</div>
+          <div className={styles.value}>
+            {process.env.NEXT_PUBLIC_APP_VERSION ?? "edge"}
+          </div>
         </div>
-      </Form.Item>
-      <Form.Item label="Front End App Date">
-        {process.env.NEXT_PUBLIC_APP_BUILD_TIME ?? "edge"}
-      </Form.Item>
-      <Form.Item label="Back End App Version">{mainApiVersion}</Form.Item>
-      <Form.Item label="Back End App Date">{mainApiDate}</Form.Item>
-      <Form.Item label="Main API Base URL" layout="horizontal">
-        <Input
-          type="text"
-          value={mainApiBaseUrlValue}
-          onChange={setMainApiBaseUrlValue}
-        />
-        <Button onClick={testApi}>Test</Button>
-        {mainApiOk !== null &&
-          (mainApiOk ? (
-            <CheckCircleOutline color="green" className={styles.statusIcon} />
-          ) : (
-            <CloseCircleOutline color="red" className={styles.statusIcon} />
-          ))}
-      </Form.Item>
-    </Form>
+        <div className={styles.field}>
+          <div className={styles.label}>Front End App Date</div>
+          <div className={styles.value}>
+            {process.env.NEXT_PUBLIC_APP_BUILD_TIME ?? "edge"}
+          </div>
+        </div>
+        <div className={styles.field}>
+          <div className={styles.label}>Back End App Version</div>
+          <div className={styles.value}>{mainApiVersion}</div>
+        </div>
+        <div className={styles.field}>
+          <div className={styles.label}>Back End App Date</div>
+          <div className={styles.value}>{mainApiDate}</div>
+        </div>
+        <div className={styles.field}>
+          <div className={styles.label}>Main API Base URL</div>
+          <div className={styles.value}>
+            <Input
+              type="text"
+              value={mainApiBaseUrlValue}
+              onChange={setMainApiBaseUrlValue}
+            />
+            <Button onClick={testApi}>Test</Button>
+            {mainApiOk !== null &&
+              (mainApiOk ? (
+                <CheckCircleOutline
+                  color="green"
+                  className={styles.statusIcon}
+                />
+              ) : (
+                <CloseCircleOutline color="red" className={styles.statusIcon} />
+              ))}
+          </div>
+        </div>
+      </div>
+      <Button className={styles.save} onClick={save}>
+        Save
+      </Button>
+    </div>
   );
 };
 
