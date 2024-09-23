@@ -1,0 +1,18 @@
+{
+  "pipeline": {
+    "dev": {
+      "entrypoints": ["src/index.js"],
+      "outputPath": "dist",
+      "loaders": {
+        "css": {
+          "loader": "@turbopack/bundler/lib/loaders/css",
+          "options": {
+            "postcssOptions": {
+              "config": "./postcss.config.js"
+            }
+          }
+        }
+      }
+    }
+  }
+}
