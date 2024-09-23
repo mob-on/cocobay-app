@@ -24,4 +24,5 @@ export interface IStorageContext {
   storage: IStorage;
   useStoredApiUrl: () => [string, (value: string) => void];
   useStoredFeatures: () => [IFeatures, (features: IFeatures) => void];
+  isStorageLoaded: boolean;
 }

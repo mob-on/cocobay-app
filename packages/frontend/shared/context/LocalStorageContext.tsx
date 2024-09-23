@@ -9,10 +9,11 @@ import { IFeatures, IStorageContext, LocalStorage } from "../LocalStorage";
 const LocalStorageContext = createContext({} as IStorageContext);
 
 const LocalStorageContextProvider = ({ children }) => {
-  const [storedApiBaseUrl, setStoredApiBaseUrl] = useLocalStorage<string>(
-    LocalStorage.API_BASE_URL,
-    Config.apis.main.baseUrl,
-  );
+  const [storedApiBaseUrl, setStoredApiBaseUrl, isStorageLoaded] =
+    useLocalStorage<string>(
+      LocalStorage.API_BASE_URL,
+      Config.apis.main.baseUrl,
+    );
 
   const [storedFeatures, setStoredFeatures] = useLocalStorage<IFeatures>(
     LocalStorage.FEATURES,
@@ -31,7 +32,7 @@ const LocalStorageContextProvider = ({ children }) => {
 
   const useStoredFeatures = (): [IFeatures, (value: IFeatures) => void] => {
     const { FEATURES } = useStorage().storage;
-    return [FEATURES, (value: IFeatures) => setStoredFeatures];
+    return [FEATURES, (value: IFeatures) => setStoredFeatures(value)];
   };
 
   return (
@@ -40,6 +41,7 @@ const LocalStorageContextProvider = ({ children }) => {
         storage,
         useStoredApiUrl,
         useStoredFeatures,
+        isStorageLoaded,
       }}
     >
       {children}
