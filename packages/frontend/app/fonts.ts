@@ -9,6 +9,7 @@ export const kumbh = Kumbh_Sans({
 
 export const martian = Martian_Mono({
   subsets: ["latin"],
+  weight: "700",
   preload: false,
   variable: "--font-martian",
 });
