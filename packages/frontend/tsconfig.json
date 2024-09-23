@@ -19,6 +19,7 @@
     "paths": {
       "@src/*": ["./*"],
       "@config/*": ["./config/*"],
+      "@styles/*": ["./styles/*"],
       "@shared/*": ["../shared/*"],
       "@lib/*": ["./shared/lib/*"],
       "@components/*": ["../components/*"],
