@@ -23,6 +23,7 @@ export function useLocalStorage<T>(
   initialValue?: T,
 ): LocalStorageType<T> {
   const logger = useLogger("useLocalStorage");
+
   const getLocalStorageValue = (): T => {
     if (typeof window === "undefined") {
       return initialValue as T;
@@ -37,17 +38,19 @@ export function useLocalStorage<T>(
     }
   };
 
-  const [storageLoaded, setStorageLoaded] = useState(false);
-  const [storedValue, setStoredValue] = useState(initialValue);
+  const localStorageValue = getLocalStorageValue();
+
+  const [storageLoaded, setStorageLoaded] = useState(!!localStorageValue);
+  const [storedValue, setStoredValue] = useState(
+    localStorageValue || initialValue,
+  );
 
   const setValue: Dispatch<SetStateAction<T>> = (value) => {
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue as T) : value;
 
-      setStoredValue((prev) => {
-        return valueToStore;
-      });
+      setStoredValue(valueToStore);
 
       if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
