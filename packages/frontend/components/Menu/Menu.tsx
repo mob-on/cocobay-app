@@ -47,9 +47,11 @@ const Menu: React.FC = () => {
         {buttons.map((button) => (
           <MenuButton
             isSelected={
-              !isRoot
-                ? pathname === button.path
-                : pathname.startsWith(button.path)
+              (!(button.path === "/") &&
+                pathname
+                  .replaceAll("/", "")
+                  .startsWith(button.path.replaceAll("/", ""))) ||
+              (isRoot && pathname === button.path)
             }
             key={button.text}
             {...button}
