@@ -6,3 +6,49 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding);
+  min-height: 100svh;
+  position: relative;
+  box-sizing: border-box;
+}
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--padding-inner) * 2);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--padding-inner) / 2);
+  position: relative;
+}
+
+.value {
+  font-weight: bold;
+}
+
+.field::after {
+  content: "";
+  position: absolute;
+  bottom: calc(-1 * var(--padding-inner));
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--color-white);
+  opacity: 0.5;
+}
+
+.value {
+  align-items: center;
+}
+
+.save {
+  position: fixed !important;
+  bottom: var(--padding);
+  width: calc(100% - var(--padding) * 2);
+}
