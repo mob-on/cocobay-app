@@ -4,18 +4,13 @@ import "@styles/globals.css";
 import "@styles/theme.css";
 import "antd-mobile/es/global";
 
-import { DevSettingsContextProvider } from "@src/shared/context/DevSettingsContext";
-import { ErrorContextProvider } from "@src/shared/context/ErrorContext";
-import { LocalStorageContextProvider } from "@src/shared/context/LocalStorageContext";
+import { LoadingScreen } from "@src/components/LoadingScreen";
 import useTelegram from "@src/shared/hooks/useTelegram";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Telegram } from "@twa-dev/types";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 
-import { TrackingProvider } from "../shared/context/TrackingContext";
 import { ddin, martian } from "./fonts";
 
 declare global {
@@ -24,11 +19,7 @@ declare global {
   }
 }
 
-const DynamicLoadingProvider = dynamic(
-  () => import("./loadingProviderContent"),
-);
-
-const queryClient = new QueryClient();
+const LayoutContent = lazy(() => import("./layoutContent"));
 
 export default function RootLayout({ children }: { children: JSX.Element }) {
   const [WebApp] = useTelegram();
@@ -77,19 +68,9 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
           }}
           strategy="afterInteractive"
         />
-        {telegramLoaded && (
-          <LocalStorageContextProvider>
-            <DevSettingsContextProvider>
-              <QueryClientProvider client={queryClient}>
-                <TrackingProvider>
-                  <ErrorContextProvider>
-                    <DynamicLoadingProvider>{children}</DynamicLoadingProvider>
-                  </ErrorContextProvider>
-                </TrackingProvider>
-              </QueryClientProvider>
-            </DevSettingsContextProvider>
-          </LocalStorageContextProvider>
-        )}
+        <Suspense fallback={<LoadingScreen />}>
+          <LayoutContent>{children}</LayoutContent>
+        </Suspense>
       </body>
     </html>
   );

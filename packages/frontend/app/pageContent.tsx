@@ -11,18 +11,23 @@ import { useLoading } from "@src/shared/context/LoadingContext";
 import { TapsEffectsContextProvider } from "@src/shared/context/TapEffectsContext";
 import { UserContextProvider } from "@src/shared/context/UserContext";
 import styles from "@styles/pages/index.module.css";
-import { use, useCallback, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { use, useEffect, useRef } from "react";
 
 export default function PageContent() {
+  const router = useRouter();
   const resolver = useRef(null as unknown as Function);
   const loading = useLoading();
   if (!loading.allLoaded) {
     use(new Promise((resolve) => (resolver.current = resolve)));
   }
   useEffect(() => {
-    console.log(loading);
     if (loading.allLoaded && resolver.current instanceof Function)
-      setTimeout(() => resolver.current(), 1000);
+      resolver.current();
+    router.prefetch("/builds");
+    router.prefetch("/earn");
+    router.prefetch("/boosts");
+    router.prefetch("/friends");
   }, [loading.allLoaded]);
 
   return (
