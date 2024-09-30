@@ -55,10 +55,11 @@ export const FriendsContextProvider = ({
     friendsReducer,
     defaultFriendsData,
   );
-  const { resources = {} } = useLoading();
+  const { resources = {}, allLoaded } = useLoading();
   const logger = useLogger("FriendsProvider");
 
   useEffect(() => {
+    if (!allLoaded) return;
     if (!resources[GAME_DATA_QUERY_KEY]) {
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }
@@ -69,7 +70,7 @@ export const FriendsContextProvider = ({
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }
     dispatchFriends({ type: "DATA_INITIALIZE", payload: data });
-  }, [resources]);
+  }, [resources, allLoaded]);
 
   return (
     <FriendsContext.Provider value={{ friends, dispatchFriends }}>

@@ -33,6 +33,35 @@ const DynamicTrackingProvider = lazy(() =>
   })),
 );
 
+/* The idea is to lazy load all context providers, so that we don't bundle them, 
+and show the loading screen quicker. Then, we don't unmount them, unless the page reloads. 
+All of those contexts get their initial data from resources, fetched during loading 
+and manage their own state afterwards. */
+
+const DynamicBoostsContextProvider = lazy(() =>
+  import("@src/shared/context/BoostsContext").then((mod) => ({
+    default: mod.BoostsContextProvider,
+  })),
+);
+
+const DynamicBuildsContextProvider = lazy(() =>
+  import("@src/shared/context/BuildsContext").then((mod) => ({
+    default: mod.BuildsContextProvider,
+  })),
+);
+
+const DynamicFriendsContextProvider = lazy(() =>
+  import("@src/shared/context/FriendsContext").then((mod) => ({
+    default: mod.FriendsContextProvider,
+  })),
+);
+
+const DynamicGameStateContextProvider = lazy(() =>
+  import("@src/shared/context/GameStateContext").then((mod) => ({
+    default: mod.GameStateContextProvider,
+  })),
+);
+
 const queryClient = new QueryClient();
 
 export default function LayoutContent({ children }: { children: JSX.Element }) {
@@ -42,7 +71,15 @@ export default function LayoutContent({ children }: { children: JSX.Element }) {
         <DynamicQueryClientProvider client={queryClient}>
           <DynamicTrackingProvider>
             <DynamicErrorContextProvider>
-              <DynamicLoadingProvider>{children}</DynamicLoadingProvider>
+              <DynamicLoadingProvider>
+                <DynamicBoostsContextProvider>
+                  <DynamicBuildsContextProvider>
+                    <DynamicFriendsContextProvider>
+                      {children}
+                    </DynamicFriendsContextProvider>
+                  </DynamicBuildsContextProvider>
+                </DynamicBoostsContextProvider>
+              </DynamicLoadingProvider>
             </DynamicErrorContextProvider>
           </DynamicTrackingProvider>
         </DynamicQueryClientProvider>
