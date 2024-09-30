@@ -9,11 +9,7 @@ interface IImageLoaderProps {
 
 /**
  * Loads the given image(s) and updates the LoadingContext accordingly.
- * NOTE: this should only be used for images that aren't benefitting from next/image + priority.
- * This component might not be useful, but it's there if we find a use case for it.
- * Requires a bit of research and testing!
- * @param {string|string[]} src - The source URL of the image to load, or an array of URLs.
- * @returns {null}
+ * TODO: Use this in place of next/image, so we can manually cache images!
  */
 const ImageLoader = ({ src, srcList }: IImageLoaderProps) => {
   const { updateResourceStatus, resources } = useLoading();
