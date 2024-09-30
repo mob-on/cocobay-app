@@ -50,10 +50,11 @@ export const BuildsContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [builds, dispatchBuilds] = useReducer(buildsReducer, defaultBuildsData);
-  const { resources = {} } = useLoading();
+  const { resources = {}, allLoaded } = useLoading();
   const logger = useLogger("BuildsProvider");
 
   useEffect(() => {
+    if (!allLoaded) return;
     if (!resources[GAME_DATA_QUERY_KEY]) {
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }
@@ -64,7 +65,7 @@ export const BuildsContextProvider = ({
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }
     dispatchBuilds({ type: "DATA_INITIALIZE", payload: data });
-  }, [resources]);
+  }, [resources, allLoaded]);
 
   return (
     <BuildsContext.Provider value={{ builds, dispatchBuilds }}>
