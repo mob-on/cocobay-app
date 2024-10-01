@@ -56,12 +56,6 @@ const DynamicFriendsContextProvider = lazy(() =>
   })),
 );
 
-const DynamicGameStateContextProvider = lazy(() =>
-  import("@src/shared/context/GameStateContext").then((mod) => ({
-    default: mod.GameStateContextProvider,
-  })),
-);
-
 const queryClient = new QueryClient();
 
 export default function LayoutContent({ children }: { children: JSX.Element }) {
