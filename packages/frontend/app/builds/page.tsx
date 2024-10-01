@@ -38,6 +38,7 @@ export default function Boosts() {
   const logger = useLogger("Builds");
   const [currentTab, setCurrentTab] = useState(tabs[0].key);
   const [popupState, _showPopup, hidePopup] = usePopup();
+  const [isUpgradeInProgress, setIsUpgradeInProgress] = useState(false);
 
   const [comboPopupState, _showComboPopup, hideComboPopup] = usePopup();
   const showComboPopup = useCallback(
@@ -79,6 +80,7 @@ export default function Boosts() {
   }, [builds]);
 
   const onUpgrade = useCallback(async () => {
+    setIsUpgradeInProgress(true);
     if (currentBuild) {
       try {
         await buildsService.upgrade(currentBuild.id);
@@ -101,7 +103,8 @@ export default function Boosts() {
         content: "Build not found!",
       });
     }
-  }, [currentBuild, hidePopup, buildsService, logger]);
+    setIsUpgradeInProgress(false);
+  }, [currentBuild, hidePopup, buildsService, logger, setIsUpgradeInProgress]);
 
   return (
     <>
@@ -142,7 +145,11 @@ export default function Boosts() {
         onClose={hidePopup}
         bodyClassName={styles.buildPopup}
       >
-        <BuildPopup build={currentBuild} onAction={onUpgrade} />
+        <BuildPopup
+          isUpgradeInProgress={isUpgradeInProgress}
+          build={currentBuild}
+          onAction={onUpgrade}
+        />
       </Popup>
       <Popup
         visible={comboPopupState.show}

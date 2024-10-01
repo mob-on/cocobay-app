@@ -61,7 +61,8 @@ const Card: React.FC<ICardProps> = memo(
 
     useEffect(() => {
       timeout.start();
-    }, [timeout]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const clickCallback = useCallback(() => {
       if (id && onClick) {
