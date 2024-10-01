@@ -59,36 +59,35 @@ export interface ITapEvent {
 const TapArea: React.FC = () => {
   const [WebApp] = useTelegram();
   const [isClassApplied, setIsClassApplied] = useState(false);
-  const [classTimeoutId, setClassTimeoutId] = useState<NodeJS.Timeout | null>(
-    null,
-  );
   const tapAreaRef = useRef<HTMLDivElement>(null);
+  const classTimeoutIdRef = useRef<NodeJS.Timeout | null>(null);
 
   /**
    * Handles tap feedback by flashing ring animation for 50ms
    */
-  const handleTapFeedback = () => {
+  const handleTapFeedback = useCallback(() => {
     WebApp?.HapticFeedback?.impactOccurred("medium");
     setIsClassApplied(true);
 
     const timeoutId = setTimeout(() => {
       setIsClassApplied(false);
-      setClassTimeoutId(null);
+      classTimeoutIdRef.current = null;
     }, TAP_EFFECTS_THROTTLE);
 
     // Store timeout ID for potential cancellation
-    setClassTimeoutId(timeoutId);
-  };
+    classTimeoutIdRef.current = timeoutId;
+  }, [WebApp, setIsClassApplied]);
 
   /**
    * Executes handleTapFeedback if no timeout has been set. Prevents multiple
    * calls to handleTapFeedback within a short period of time.
    */
-  const throttledHandleTapFeedback = () => {
-    if (!classTimeoutId) {
+  const throttledHandleTapFeedback = useCallback(() => {
+    if (!classTimeoutIdRef.current) {
       handleTapFeedback();
     }
-  };
+  }, [handleTapFeedback]);
+
   const { taps: visualTaps = [], setTaps: setVisualTaps } = useTaps();
   const { gameState, dispatchGameState } = useGameState();
   const { energy, pointsPerTap } = gameState;
@@ -116,10 +115,11 @@ const TapArea: React.FC = () => {
         element.removeEventListener("touchstart", handleTouchStart);
         visualTaps.forEach((tap) => clearTimeout(tap.timeoutId));
         setVisualTaps([]);
-        clearTimeout(classTimeoutId ?? undefined);
-        setClassTimeoutId(null);
+        clearTimeout(classTimeoutIdRef.current ?? undefined);
+        classTimeoutIdRef.current = null;
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleTouchStart = useCallback(
@@ -157,7 +157,12 @@ const TapArea: React.FC = () => {
       // Store timeout ID for potential cancellation
       tapEvent.timeoutId = timeoutId;
     },
-    [dispatchGameState, throttledHandleTapFeedback, setVisualTaps],
+    [
+      dispatchGameState,
+      throttledHandleTapFeedback,
+      setVisualTaps,
+      pointsPerTap,
+    ],
   );
 
   return (

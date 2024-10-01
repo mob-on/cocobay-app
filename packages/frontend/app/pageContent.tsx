@@ -22,7 +22,7 @@ export default function PageContent() {
     router.prefetch("/earn");
     router.prefetch("/boosts");
     router.prefetch("/friends");
-  }, [loading.allLoaded]);
+  }, [loading.allLoaded, router]);
 
   return (
     <>

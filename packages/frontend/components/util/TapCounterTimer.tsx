@@ -10,6 +10,7 @@ const TapCounterTimer: React.FC<object> = () => {
   useEffect(() => {
     startTimeout();
     startSync();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <></>;
 };

@@ -54,20 +54,21 @@ const Card: React.FC<ICardProps> = memo(
             setCooldown(cooldownTimestamp - now);
           }
         : null;
-    }, []);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cooldownTimestamp]);
 
     const timeout = useSelfCorrectingTimeout(updateCooldown, UPDATE_INTERVAL);
 
     useEffect(() => {
       timeout.start();
-    }, []);
+    }, [timeout]);
 
     const clickCallback = useCallback(() => {
       if (id && onClick) {
         WebApp?.HapticFeedback?.impactOccurred("light");
         onClick(id);
       }
-    }, [id, onClick]);
+    }, [id, onClick, WebApp?.HapticFeedback]);
 
     return (
       <div

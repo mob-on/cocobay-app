@@ -40,7 +40,10 @@ export default function Boosts() {
   const [popupState, _showPopup, hidePopup] = usePopup();
 
   const [comboPopupState, _showComboPopup, hideComboPopup] = usePopup();
-  const showComboPopup = useCallback(() => _showComboPopup(), []);
+  const showComboPopup = useCallback(
+    () => _showComboPopup(),
+    [_showComboPopup],
+  );
 
   const router = useRouter();
 
@@ -48,7 +51,7 @@ export default function Boosts() {
     router.prefetch("/");
     router.prefetch("/earn");
     router.prefetch("/friends");
-  }, []);
+  }, [router]);
 
   const currentBuild = useMemo(() => {
     return builds.find((task) => task.id === popupState.id) || ({} as Build);
@@ -58,7 +61,7 @@ export default function Boosts() {
     (id: string) => {
       _showPopup(id);
     },
-    [currentBuild.id],
+    [_showPopup],
   );
 
   const categorizedBuilds = useMemo(() => {
@@ -98,7 +101,7 @@ export default function Boosts() {
         content: "Build not found!",
       });
     }
-  }, [builds, currentBuild.id, buildsService]);
+  }, [currentBuild, hidePopup, buildsService, logger]);
 
   return (
     <>

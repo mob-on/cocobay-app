@@ -1,5 +1,4 @@
 import { UpgradeBuildResponseDto } from "@shared/src/dto/builds/upgrade.dto";
-import { Build } from "@shared/src/interfaces";
 import { validate } from "class-validator";
 import { useCallback } from "react";
 

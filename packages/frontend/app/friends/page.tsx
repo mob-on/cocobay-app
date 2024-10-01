@@ -57,7 +57,7 @@ export default function Friends() {
     router.prefetch("/builds");
     router.prefetch("/earn");
     router.prefetch("/friends/all");
-  }, []);
+  }, [router]);
   const showFriendCount = FRIENDS_SHOW_LIMIT - (hideLastFriend ? 1 : 0);
 
   return (
