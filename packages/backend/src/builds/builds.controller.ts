@@ -6,8 +6,12 @@ import {
   Param,
   Put,
 } from "@nestjs/common";
+import {
+  UpgradeBuildDto,
+  UpgradeBuildResponseDto,
+} from "@shared/src/dto/builds/upgrade.dto";
 import { Build } from "@shared/src/interfaces";
-import { UpgradeBuildResponseDto } from "../../../shared/src/dto/builds/upgrade.dto";
+import { validate } from "class-validator";
 
 @Controller("/builds")
 export class BuildsController {
@@ -16,10 +20,15 @@ export class BuildsController {
   // TODO: Remove debugBuild and faker when implemeting builds service!
   // One could test this temporary method by providing currentBuild to the frontend builds service -> api
   @Put("build/:id/upgrade")
-  upgradeBuilding(
+  async upgradeBuild(
     @Param("id") id: string,
     @Body() debugBuild: Build,
-  ): UpgradeBuildResponseDto {
+  ): Promise<UpgradeBuildResponseDto> {
+    const dto = new UpgradeBuildDto({ id });
+    const errors = await validate(dto);
+    if (errors.length) {
+      throw new ForbiddenException("Invalid build id!");
+    }
     const isEnoughMoney = faker.datatype.boolean();
     if (isEnoughMoney) {
       return {
