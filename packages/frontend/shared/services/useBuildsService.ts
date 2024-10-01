@@ -36,7 +36,7 @@ const useBuildsService = () => {
         throw extractApiError(e);
       }
     },
-    [api, builds, dispatchBuilds],
+    [api, builds, dispatchBuilds, dispatchGameState, logger],
   );
 
   return { upgrade };
