@@ -12,13 +12,13 @@ export const TAP_EFFECTS_TIMEOUT = 1000; // remove taps from list after this tim
 export const TAP_EFFECTS_THROTTLE = 50; // min time before triggering ring animation
 
 export type GameAction =
-  | { type: "TAPS_APPLY_POINT_INCOME" }
+  | { type: "APPLY_POINT_INCOME" }
   | { type: "ENERGY_CONSUME" }
   | { type: "ENERGY_REGEN" }
   | { type: "DATA_INITIALIZE"; payload: GameDataDto }
-  // | { type: "TAPS_UPDATE"; payload: ITaps }
-  | { type: "TAPS_SET_POINT_INCOME"; payload: number }
-  | { type: "TAPS_REGISTER_TAP"; payload?: (boolean) => void };
+  | { type: "SET_POINT_INCOME"; payload: number }
+  | { type: "REGISTER_TAP"; payload?: (boolean) => void }
+  | { type: "SET_POINT_COUNT"; payload: number };
 
 export type IGameStateContext = { gameState: FrontendGameState } & {
   dispatchGameState: React.Dispatch<GameAction>;
@@ -50,26 +50,18 @@ const gameStateReducer = (
         tapCountSynced: gameState.tapCount,
         tapCountPending: 0,
       };
-    case "TAPS_SET_POINT_INCOME":
+    case "SET_POINT_INCOME":
       return {
         ...state,
         pointIncomePerSecond: action.payload,
       };
-    // case "TAPS_UPDATE":
-    //   return {
-    //     pendingTaps,
-    //     stamina,
-    //     taps: {
-    //       ...taps,
-    //       ...action.payload,
-    //     },
-    //   };
-    case "TAPS_APPLY_POINT_INCOME":
+
+    case "APPLY_POINT_INCOME":
       return {
         ...state,
         pointCount: pointCount + pointIncomePerSecond,
       };
-    case "TAPS_REGISTER_TAP":
+    case "REGISTER_TAP":
       if (energy < pointsPerTap) {
         if (typeof action.payload === "function") action.payload(false);
         return state;
@@ -90,6 +82,11 @@ const gameStateReducer = (
       return {
         ...state,
         energy: Math.min(maxEnergy, energy + energyRecoveryPerSecond),
+      };
+    case "SET_POINT_COUNT":
+      return {
+        ...state,
+        pointCount: action.payload,
       };
     default:
       return state;

@@ -143,7 +143,7 @@ const TapArea: React.FC = () => {
         pointCount: pointsPerTap,
       };
 
-      dispatchGameState({ type: "TAPS_REGISTER_TAP" });
+      dispatchGameState({ type: "REGISTER_TAP" });
       throttledHandleTapFeedback();
 
       setVisualTaps((oldTaps) => [...oldTaps, tapEvent]);
