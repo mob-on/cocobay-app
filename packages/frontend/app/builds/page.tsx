@@ -79,7 +79,7 @@ export default function Boosts() {
     // hidePopup();
     if (currentBuild) {
       try {
-        await buildsService.upgrade(currentBuild.id, currentBuild);
+        await buildsService.upgrade(currentBuild.id);
         // TODO: add a success animation? Maybe just coins, going from the bottom of the screen upward, and vibration?
         hidePopup();
       } catch (e) {
