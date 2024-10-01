@@ -3,16 +3,8 @@ import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth
 import { GameDataDto } from "@shared/src/dto/gameData.dto";
 import { UserDto } from "@shared/src/dto/user.dto";
 import { LoadingScreen } from "@src/components/LoadingScreen";
-import dynamic from "next/dynamic";
-import {
-  createContext,
-  Suspense,
-  use,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { validate } from "class-validator";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { GAME_DATA_QUERY_KEY, useGameDataApi } from "../api/useGameDataApi";
 import { useUserApi } from "../api/useUserApi";
@@ -94,6 +86,12 @@ export const LoadingProvider = ({ children }) => {
           initDataRaw,
         }),
       );
+      const userDto = new UserDto(loginDto.user);
+      const userDtoErrors = await validate(userDto);
+      if (userDtoErrors.length) {
+        logger.error("Failed to validate user dto", userDtoErrors);
+        throw new Error("Failed to validate user dto");
+      }
       return loginDto.user;
     } catch (err) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
