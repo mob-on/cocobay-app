@@ -76,7 +76,6 @@ export default function Boosts() {
   }, [builds]);
 
   const onUpgrade = useCallback(async () => {
-    // hidePopup();
     if (currentBuild) {
       try {
         await buildsService.upgrade(currentBuild.id);
