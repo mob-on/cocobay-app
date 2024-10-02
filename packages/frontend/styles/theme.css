@@ -87,17 +87,9 @@
   --build-card-height: var(--card-height);
 
   --color-button-primary: var(--color-primary);
-  --color-button-primary-active: hsl(
-    var(--color-button-primary-h),
-    var(--color-button-primary-s),
-    calc(var(--color-button-primary-l) + 10%)
-  );
+  --color-button-primary-active: lighten(var(--color-primary), 10%);
   --color-button-secondary: var(--color-secondary);
-  --color-button-secondary-active: hsl(
-    var(--color-button-secondary-h),
-    var(--color-button-secondary-s),
-    calc(var(--color-button-secondary-l) + 10%)
-  );
+  --color-button-secondary-active: lighten(var(--color-secondary), 10%);
   --color-button-gradient: var(--gradient-primary);
   --color-button-gradient-active: var(--gradient-primary-light);
   --button-b-radius: 8px;

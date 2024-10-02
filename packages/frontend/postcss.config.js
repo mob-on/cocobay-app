@@ -82,7 +82,6 @@ const cssnano = {
 module.exports = {
   plugins: {
     "postcss-color-mod-function": {},
-    ...(process.env.NODE_ENV === "production" ? cssnano : {}),
     autoprefixer: {},
     "postcss-functions": {
       functions: {
@@ -104,5 +103,6 @@ module.exports = {
         },
       },
     },
+    ...(process.env.NODE_ENV === "production" ? cssnano : {}),
   },
 };

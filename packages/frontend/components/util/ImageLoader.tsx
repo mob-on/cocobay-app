@@ -16,6 +16,9 @@ const ImageLoader = ({ src, srcList }: IImageLoaderProps) => {
   const logger = useLogger("ImageLoader");
 
   useEffect(() => {
+    if (!src && !srcList) {
+      return;
+    }
     const srcToLoad = srcList ? srcList : [src];
     srcToLoad.forEach((src) => loadImage(src));
   }, [src, srcList, updateResourceStatus]);

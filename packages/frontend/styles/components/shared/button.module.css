@@ -1,26 +1,28 @@
+/* We use !important here to overwrtie the default styles of the antd-mobile Button */
+
 .gradient {
-  background: var(--color-button-gradient);
+  background: var(--color-button-gradient) !important;
   border: none !important;
 }
 
 .gradient:active {
-  background: var(--color-button-gradient-active);
+  background: var(--color-button-gradient-active) !important;
 }
 
 .primary {
-  background: var(--color-button-primary);
+  background: var(--color-button-primary) !important;
 }
 
 .primary:active {
-  background-color: var(--color-button-primary-active);
+  background-color: var(--color-button-primary-active) !important;
 }
 
 .secondary {
-  background: var(--color-button-secondary);
+  background: var(--color-button-secondary) !important;
 }
 
 .secondary:active {
-  background-color: var(--color-button-secondary-active);
+  background-color: var(--color-button-secondary-active) !important;
 }
 
 .button {

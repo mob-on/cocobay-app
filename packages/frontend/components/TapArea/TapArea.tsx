@@ -1,7 +1,5 @@
 "use client";
 
-import cloud1 from "@media/cloud1.svg";
-import cloud2 from "@media/cloud2.svg";
 import lvl1 from "@media/hero/hero-level1.svg";
 import lvl2 from "@media/hero/hero-level2.svg";
 import lvl3 from "@media/hero/hero-level3.svg";
@@ -25,6 +23,8 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import * as Clouds from "../svg/Clouds";
+import Moon from "../svg/Moon";
 import Rings from "./Rings";
 
 const heroAvatars = [
@@ -166,33 +166,9 @@ const TapArea: React.FC = () => {
       ref={tapAreaRef}
     >
       <Rings />
-      <Image
-        src={moon}
-        width={96}
-        height={96}
-        alt="Decoration"
-        className={styles.moon}
-        id="__moon"
-        priority
-      />
-      <Image
-        src={cloud1}
-        width={96}
-        height={96}
-        alt="Decoration"
-        className={styles.cloud1}
-        id="__cloud1"
-        priority
-      />
-      <Image
-        src={cloud2}
-        width={96}
-        height={96}
-        alt="Decoration"
-        className={styles.cloud2}
-        id="_cloud2"
-        priority
-      />
+      <Moon className={styles.moon} id="__moon" />
+      <Clouds.Dark1 className={styles.cloud1} id="__cloud1" />
+      <Clouds.Dark2 className={styles.cloud2} id="__cloud2" />
       <Image
         src={heroAvatars[gameState.level - 1 || 0]}
         alt="Hero"

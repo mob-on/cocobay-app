@@ -6,6 +6,7 @@ import styles from "@src/styles/components/tapEffects/tapEffects.module.css";
 import Image from "next/image";
 import React from "react";
 
+import Cost from "../shared/Cost";
 import { ITapEvent } from "../TapArea";
 
 interface ITapEffectProps {
@@ -24,16 +25,9 @@ const TapEffect: React.FC<ITapEffectProps> = ({ tap }) => {
   const { x, y, pointCount = 1 } = tap;
   return (
     <div style={{ left: x, top: y }} className={styles.floatingNumber}>
-      <span>+{pointCount}</span>
-      <Image
-        src={CocoCoin}
-        alt="coin"
-        width={24}
-        height={24}
-        className={styles.coin}
-        priority
-        loading="eager"
-      />
+      <Cost position="right" size={20}>
+        <span>+{pointCount}</span>
+      </Cost>
     </div>
   );
 };

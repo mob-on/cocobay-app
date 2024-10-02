@@ -1,5 +1,5 @@
-import grid from "@media/grid.svg";
 import Menu from "@src/components/Menu";
+import Grid from "@src/components/svg/Grid";
 import TapCounterTimer from "@src/components/util/TapCounterTimer";
 import { GameStateContextProvider } from "@src/shared/context/GameStateContext";
 import { LoadingProvider } from "@src/shared/context/LoadingContext";
@@ -16,14 +16,7 @@ export default function LoadingProviderContent({
       <GameStateContextProvider>
         <>
           <main id="__main">
-            <Image
-              priority
-              id="__grid"
-              src={grid}
-              width={1}
-              height={1}
-              alt="Grid"
-            />
+            <Grid id="__grid" />
             <TapCounterTimer />
             <UserContextProvider>{children}</UserContextProvider>
           </main>
