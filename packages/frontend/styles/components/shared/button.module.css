@@ -28,3 +28,15 @@
   border: none;
   height: var(--button-height);
 }
+
+.primary.disabled:active {
+  background: var(--color-button-primary);
+}
+
+.secondary.disabled:active {
+  background: var(--color-button-secondary);
+}
+
+.gradient.disabled:active {
+  background: var(--color-button-gradient);
+}

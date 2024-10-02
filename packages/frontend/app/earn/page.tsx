@@ -55,7 +55,7 @@ export default function Earn() {
     router.prefetch("/builds");
     router.prefetch("/earn/daily-rewards");
     router.prefetch("/friends");
-  }, []);
+  }, [router]);
 
   const currentTask = useMemo(() => {
     return (
@@ -67,7 +67,7 @@ export default function Earn() {
     (id: string) => {
       _showPopup(id);
     },
-    [currentTask.id],
+    [_showPopup],
   );
 
   return (

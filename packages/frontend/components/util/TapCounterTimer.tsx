@@ -13,7 +13,7 @@ const TapCounterTimer: React.FC<object> = () => {
     if (!allLoaded) return;
     startTimeout();
     startSync();
-  }, [allLoaded]);
+  }, [startTimeout, startSync, allLoaded]);
   return <></>;
 };
 

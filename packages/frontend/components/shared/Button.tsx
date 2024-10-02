@@ -13,18 +13,25 @@ const ButtonComponent: React.FC<{
   value?: string;
   style?: React.CSSProperties;
   fill?: "solid" | "outline";
+  disabled?: boolean;
 }> = ({
   onClick,
-  className,
+  className = "",
   children,
   color = "primary",
   fill = "solid",
   style,
+  disabled = false,
 }) => {
+  console.log(color, styles.button, styles[color]);
   return (
     <Button
+      disabled={disabled}
       onClick={onClick}
-      className={className + ` ${styles[color]} ${styles.button}`}
+      className={
+        className +
+        ` ${styles[color]} ${styles.button} ${disabled && styles.disabled}`
+      }
       block
       style={style}
       fill={fill}

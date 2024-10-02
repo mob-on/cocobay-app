@@ -99,7 +99,7 @@ const useTapsService: TUseService<FrontendGameState, IMethods> = () => {
 
   // passive income and stamina regen
   const timeoutCallback = useCallback(() => {
-    dispatchGameState({ type: "TAPS_APPLY_POINT_INCOME" });
+    dispatchGameState({ type: "APPLY_POINT_INCOME" });
     dispatchGameState({ type: "ENERGY_REGEN" });
   }, [pointIncomePerSecond, dispatchGameState]);
 
@@ -120,9 +120,9 @@ const useTapsService: TUseService<FrontendGameState, IMethods> = () => {
 
   // We only care when taps change after startSync has been called, to avoid syncing
   // during app loading and initialization.
-  const startSync = () => {
+  const startSync = useCallback(() => {
     setShouldSync(true);
-  };
+  }, [setShouldSync]);
 
   return [
     gameState,

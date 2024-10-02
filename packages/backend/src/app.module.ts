@@ -4,6 +4,7 @@ import { ConfigModule } from "@nestjs/config";
 import "dotenv/config";
 import configuration from "../config/configuration";
 import { AuthModule } from "./auth/auth.module";
+import { BuildsModule } from "./builds/builds.module";
 import { FeatureModule } from "./common/feature-flags/feature-flag.module";
 import { GameDataModule } from "./gamedata/gamedata.module";
 import { HealthModule } from "./healthcheck/health.module";
@@ -26,6 +27,7 @@ import { UserModule } from "./user/user.module";
     UserModule,
     AuthModule,
     GameDataModule,
+    BuildsModule,
     TypegooseModule.forRoot(process.env.MONGODB_URI),
   ],
 })

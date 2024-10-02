@@ -7,7 +7,9 @@ import Button from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import TapCounter from "@src/components/TapCounter";
 import { useBuilds } from "@src/shared/context/BuildsContext";
+import useLogger from "@src/shared/hooks/useLogger";
 import usePopup from "@src/shared/hooks/usePopup";
+import useBuildsService from "@src/shared/services/useBuildsService";
 import styles from "@src/styles/pages/build.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import TabBar from "antd-mobile/es/components/tab-bar";
@@ -31,12 +33,18 @@ const tabs = [
 ];
 
 export default function Boosts() {
+  const buildsService = useBuildsService();
   const { builds } = useBuilds();
+  const logger = useLogger("Builds");
   const [currentTab, setCurrentTab] = useState(tabs[0].key);
   const [popupState, _showPopup, hidePopup] = usePopup();
+  const [isUpgradeInProgress, setIsUpgradeInProgress] = useState(false);
 
   const [comboPopupState, _showComboPopup, hideComboPopup] = usePopup();
-  const showComboPopup = useCallback(() => _showComboPopup(), []);
+  const showComboPopup = useCallback(
+    () => _showComboPopup(),
+    [_showComboPopup],
+  );
 
   const router = useRouter();
 
@@ -44,7 +52,7 @@ export default function Boosts() {
     router.prefetch("/");
     router.prefetch("/earn");
     router.prefetch("/friends");
-  }, []);
+  }, [router]);
 
   const currentBuild = useMemo(() => {
     return builds.find((task) => task.id === popupState.id) || ({} as Build);
@@ -54,7 +62,7 @@ export default function Boosts() {
     (id: string) => {
       _showPopup(id);
     },
-    [currentBuild.id],
+    [_showPopup],
   );
 
   const categorizedBuilds = useMemo(() => {
@@ -71,20 +79,32 @@ export default function Boosts() {
     );
   }, [builds]);
 
-  const onUpgrade = useCallback(
-    (/*id: string*/) => {
-      hidePopup();
-      if (currentBuild) {
-        // update the build via backend. check boosts page comments for more info.
-      } else {
+  const onUpgrade = useCallback(async () => {
+    setIsUpgradeInProgress(true);
+    if (currentBuild) {
+      try {
+        await buildsService.upgrade(currentBuild.id);
+        // TODO: add a success animation? Maybe just coins, going from the bottom of the screen upward, and vibration?
+        hidePopup();
+      } catch (e) {
+        // Possibly, integrate logger.error with the tracker? Or create a new logger method like `criticalError`?
+        // Or maybe we don't need this with a error transport? Let's think about it!
+        if (typeof e !== "string") {
+          logger.error("Got a critical error!", e);
+        }
         Toast.show({
           icon: "fail",
-          content: "Build not found!",
+          content: e,
         });
       }
-    },
-    [builds, currentBuild.id],
-  );
+    } else {
+      Toast.show({
+        icon: "fail",
+        content: "Build not found!",
+      });
+    }
+    setIsUpgradeInProgress(false);
+  }, [currentBuild, hidePopup, buildsService, logger, setIsUpgradeInProgress]);
 
   return (
     <>
@@ -125,7 +145,11 @@ export default function Boosts() {
         onClose={hidePopup}
         bodyClassName={styles.buildPopup}
       >
-        <BuildPopup build={currentBuild} onAction={onUpgrade} />
+        <BuildPopup
+          isUpgradeInProgress={isUpgradeInProgress}
+          build={currentBuild}
+          onAction={onUpgrade}
+        />
       </Popup>
       <Popup
         visible={comboPopupState.show}

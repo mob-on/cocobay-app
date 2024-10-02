@@ -7,12 +7,13 @@ import React, { useMemo } from "react";
 
 import Cost from "../shared/Cost";
 
+const intl = new Intl.NumberFormat("en-US");
+
 const TapCounter: React.FC = () => {
   const { gameState } = useGameState();
   const { pointCount, pointIncomePerSecond } = gameState;
-  const numberFormatter = new Intl.NumberFormat("en-US");
   const formattedTapCount = useMemo(
-    () => numberFormatter.format(pointCount),
+    () => intl.format(pointCount),
     [pointCount],
   );
   const formattedPassiveIncome = useMemo(

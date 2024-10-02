@@ -30,7 +30,7 @@ export const DevScreen = () => {
         })
         .catch(() => setMainApiOk(false));
     }
-  }, [mainApiBaseUrl]);
+  }, [mainApiBaseUrl, api]);
 
   const save = () => {
     setMainApiBaseUrl(mainApiBaseUrlValue);
@@ -42,7 +42,7 @@ export const DevScreen = () => {
       .isHealthy()
       .then(setMainApiOk)
       .catch(() => setMainApiOk(false));
-  }, [mainApiBaseUrlValue, api]);
+  }, [api]);
 
   return (
     <div className={styles.container}>
