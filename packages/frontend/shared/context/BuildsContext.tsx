@@ -6,7 +6,7 @@ import { Build } from "@shared/src/interfaces";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 import useLogger from "../hooks/useLogger";
-import { ILoadingContextResource, useLoading } from "./LoadingContext";
+import { IResourcesContextResource, useResources } from "./ResourcesContext";
 
 type BuildsContext = {
   builds: Build[];
@@ -50,7 +50,7 @@ export const BuildsContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [builds, dispatchBuilds] = useReducer(buildsReducer, defaultBuildsData);
-  const { resources = {}, allLoaded } = useLoading();
+  const { resources = {}, allLoaded } = useResources();
   const logger = useLogger("BuildsProvider");
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export const BuildsContextProvider = ({
     }
     const { data, status } = resources[
       GAME_DATA_QUERY_KEY
-    ] as ILoadingContextResource<GameDataDto>;
+    ] as IResourcesContextResource<GameDataDto>;
     if (status !== "loaded" || !data) {
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }

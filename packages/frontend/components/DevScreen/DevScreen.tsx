@@ -18,19 +18,12 @@ export const DevScreen = () => {
   const [mainApiOk, setMainApiOk] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (mainApiBaseUrl) {
-      setMainApiBaseUrlValue(mainApiBaseUrl);
+    if (mainApiBaseUrl) setMainApiBaseUrlValue(mainApiBaseUrl);
+  }, [mainApiBaseUrl]);
 
-      api
-        .isHealthy()
-        .then((res) => {
-          setMainApiOk(!!res);
-          setMainApiVersion(res.build.version);
-          setMainApiDate(res.build.date ?? "edge");
-        })
-        .catch(() => setMainApiOk(false));
-    }
-  }, [mainApiBaseUrl, api]);
+  useEffect(() => {
+    testApi();
+  }, []);
 
   const save = () => {
     setMainApiBaseUrl(mainApiBaseUrlValue);

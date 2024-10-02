@@ -10,6 +10,7 @@ import lvl7 from "@media/hero/hero-level7.svg";
 import lvl8 from "@media/hero/hero-level8.svg";
 import lvl9 from "@media/hero/hero-level9.svg";
 import lvl10 from "@media/hero/hero-level10.svg";
+import { FrontendGameState } from "@shared/src/interfaces";
 import { useGameState } from "@src/shared/context/GameStateContext";
 import {
   TAP_EFFECTS_THROTTLE,
@@ -88,7 +89,8 @@ const TapArea: React.FC = () => {
   }, [handleTapFeedback]);
 
   const { taps: visualTaps = [], setTaps: setVisualTaps } = useTaps();
-  const { gameState, dispatchGameState } = useGameState();
+  const { gameState = {} as FrontendGameState, dispatchGameState } =
+    useGameState();
   const { energy, pointsPerTap } = gameState;
   const canTap = useRef(true);
   const lastTapHandler = useRef<(e: TouchEvent) => void>(() => {});

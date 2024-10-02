@@ -1,5 +1,6 @@
 "use client";
 
+import { FrontendGameState } from "@shared/src/interfaces";
 import { useGameState } from "@src/shared/context/GameStateContext";
 import styles from "@src/styles/components/main/stamina.module.css";
 import Link from "next/link";
@@ -14,7 +15,7 @@ export interface IStaminaData {
 }
 
 const Leveling: React.FC = () => {
-  const { gameState } = useGameState();
+  const { gameState = {} as FrontendGameState } = useGameState();
   const { energy, maxEnergy } = gameState;
 
   return (

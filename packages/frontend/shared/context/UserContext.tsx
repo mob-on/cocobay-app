@@ -4,7 +4,7 @@ import { User } from "@shared/src/interfaces";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import useTelegram from "../hooks/useTelegram";
-import { ILoadingContextResource, useLoading } from "./LoadingContext";
+import { IResourcesContextResource, useResources } from "./ResourcesContext";
 
 export interface IUserContext {
   data: User;
@@ -25,8 +25,8 @@ export const UserContextProvider = ({
   children: React.JSX.Element;
 }) => {
   const [WebApp] = useTelegram();
-  const loading = useLoading();
-  const user: ILoadingContextResource<User> = loading.resources["user"];
+  const loading = useResources();
+  const user: IResourcesContextResource<User> = loading.resources["user"];
 
   const [data, setData] = useState<User>(user?.data ?? ({} as User));
 

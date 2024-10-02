@@ -1,4 +1,4 @@
-import { useLoading } from "@src/shared/context/LoadingContext";
+import { useResources } from "@src/shared/context/ResourcesContext";
 import useLogger from "@src/shared/hooks/useLogger";
 import { useCallback, useEffect } from "react";
 
@@ -12,7 +12,7 @@ interface IImageLoaderProps {
  * TODO: Use this in place of next/image, so we can manually cache images!
  */
 const ImageLoader = ({ src, srcList }: IImageLoaderProps) => {
-  const { updateResourceStatus, resources } = useLoading();
+  const { updateResourceStatus, resources } = useResources();
   const logger = useLogger("ImageLoader");
 
   const loadImage = useCallback(
