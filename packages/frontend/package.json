@@ -60,7 +60,6 @@
     "aos": "^2.3.4",
     "babel-jest": "^29.7.0",
     "color": "^4.2.3",
-    "cssnano": "^7.0.6",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.2.12",
     "eslint-config-prettier": "^9.1.0",

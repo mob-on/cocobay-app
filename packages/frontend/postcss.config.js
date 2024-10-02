@@ -72,13 +72,6 @@ const getVarColor = (string) => {
   return resolvedVariables[name];
 };
 
-const cssnano = {
-  cssnano: {
-    preset: "default",
-    discardComments: { removeAll: true },
-  },
-};
-
 module.exports = {
   plugins: {
     "postcss-color-mod-function": {},
@@ -103,6 +96,5 @@ module.exports = {
         },
       },
     },
-    ...(process.env.NODE_ENV === "production" ? cssnano : {}),
   },
 };
