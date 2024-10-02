@@ -1,0 +1,27 @@
+name: Enforce Merge Commit on Main
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  enforce-merge-commit:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Verify merge commit
+        run: |
+          MERGE_COMMIT_SHA=$(git rev-parse HEAD)
+          PARENT_COUNT=$(git rev-list --count --parents -n 1 $MERGE_COMMIT_SHA | awk '{print NF-1}')
+
+          if [ "$PARENT_COUNT" -ne 2 ]; then
+            echo "Error: Only merge commits are allowed when merging into main."
+            exit 1
+          else
+            echo "Merge commit verified."
+          fi
