@@ -103,6 +103,15 @@ const setupNest = async (
   }
 };
 
+/**
+ * Sets up the database for testing purposes.
+ * Already includes the Config and Feature NestJS services.
+ *
+ * @param moduleMetadata - Optional metadata for the module.
+ * @param moduleBuilder - Optional function to customize the module builder.
+ * @returns A promise that resolves to an `ApiSetup` instance.
+ */
+
 export const setupDb = async (
   moduleMetadata?: ModuleMetadata,
   moduleBuilder?: (moduleBuilder: TestingModuleBuilder) => TestingModuleBuilder,
@@ -110,6 +119,14 @@ export const setupDb = async (
   return setupNest(moduleMetadata, moduleBuilder, false);
 };
 
+/**
+ * Sets up the API and database for testing purposes.
+ * Already includes the Config and Feature NestJS services.
+ *
+ * @param moduleMetadata - Optional metadata for the module.
+ * @param moduleBuilder - Optional function to customize the module builder.
+ * @returns A promise that resolves to an `ApiSetup` instance.
+ */
 export const setupApi = async (
   moduleMetadata?: ModuleMetadata,
   moduleBuilder?: (moduleBuilder: TestingModuleBuilder) => TestingModuleBuilder,

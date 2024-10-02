@@ -9,7 +9,7 @@
     "start:debug": "nest start --debug --watch",
     "lint": "lint-staged",
     "lint:check": "eslint .",
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "test:cov": "yarn test --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
