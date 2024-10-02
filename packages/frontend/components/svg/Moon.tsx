@@ -1,4 +1,4 @@
-export default function Moon(props: any) {
+export default function Moon(props: Record<string, unknown>) {
   return (
     <svg
       width="123"

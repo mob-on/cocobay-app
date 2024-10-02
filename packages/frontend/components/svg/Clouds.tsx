@@ -1,4 +1,4 @@
-export const White1 = (props: any) => {
+export const White1 = (props: Record<string, unknown>) => {
   return (
     <svg
       width="170"
@@ -19,7 +19,7 @@ export const White1 = (props: any) => {
   );
 };
 
-export const White2 = (props: any) => {
+export const White2 = (props: Record<string, unknown>) => {
   return (
     <svg
       width="142"
@@ -59,7 +59,7 @@ export const White2 = (props: any) => {
   );
 };
 
-export const White3 = (props: any) => {
+export const White3 = (props: Record<string, unknown>) => {
   return (
     <svg
       width="78"
@@ -80,7 +80,7 @@ export const White3 = (props: any) => {
   );
 };
 
-export const Dark1 = (props: any) => {
+export const Dark1 = (props: Record<string, unknown>) => {
   return (
     <svg
       width="170"
@@ -101,7 +101,7 @@ export const Dark1 = (props: any) => {
   );
 };
 
-export const Dark2 = (props: any) => {
+export const Dark2 = (props: Record<string, unknown>) => {
   return (
     <svg
       width="78"

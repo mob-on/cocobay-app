@@ -1,4 +1,4 @@
-export default function Palm(props: any) {
+export default function Palm(props: Record<string, unknown>) {
   return (
     <svg
       width="64"

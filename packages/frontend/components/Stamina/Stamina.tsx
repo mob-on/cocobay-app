@@ -1,9 +1,7 @@
 "use client";
 
-import BoostsIcon from "@media/icons/boosts.svg";
 import { useGameState } from "@src/shared/context/GameStateContext";
 import styles from "@src/styles/components/main/stamina.module.css";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 

@@ -1,4 +1,4 @@
-export default function Logo(props: any) {
+export default function Logo(props: Record<string, unknown>) {
   return (
     <svg
       width="258"

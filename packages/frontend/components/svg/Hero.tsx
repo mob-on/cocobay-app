@@ -1,4 +1,4 @@
-export default function Hero(props: any) {
+export default function Hero(props: Record<string, unknown>) {
   return (
     <svg
       width="243"

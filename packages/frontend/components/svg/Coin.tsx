@@ -1,4 +1,4 @@
-export default function Coin(props: any) {
+export default function Coin(props: Record<string, unknown>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

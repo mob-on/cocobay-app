@@ -1,4 +1,4 @@
-export default function Grid(props: any) {
+export default function Grid(props: Record<string, unknown>) {
   return (
     <svg
       width="652"

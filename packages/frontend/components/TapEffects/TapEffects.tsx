@@ -1,9 +1,7 @@
 "use client";
 
-import CocoCoin from "@media/coco-coin.svg";
 import { useTaps } from "@src/shared/context/TapEffectsContext";
 import styles from "@src/styles/components/tapEffects/tapEffects.module.css";
-import Image from "next/image";
 import React from "react";
 
 import Cost from "../shared/Cost";

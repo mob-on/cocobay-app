@@ -19,7 +19,7 @@ const Cost: React.FC<{
         className={styles.coin + ` ${className || ""}`}
       />
     ),
-    [],
+    [size, className],
   );
   return (
     <span className={styles.cost}>
