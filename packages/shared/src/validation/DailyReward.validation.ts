@@ -4,7 +4,7 @@ import {
   registerDecorator,
   ValidationOptions,
 } from "class-validator";
-import { DailyReward } from "../interfaces/DailyReward.interface";
+import type { DailyReward } from "../interfaces/DailyReward.interface";
 import {
   isPositiveNumber,
   isPositiveNumberOrZero,

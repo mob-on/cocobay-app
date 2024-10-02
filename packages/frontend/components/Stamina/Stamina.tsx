@@ -1,11 +1,11 @@
 "use client";
 
-import BoostsIcon from "@media/icons/boosts.svg";
 import { useGameState } from "@src/shared/context/GameStateContext";
 import styles from "@src/styles/components/main/stamina.module.css";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+
+import Palm from "../svg/Palm";
 
 export interface IStaminaData {
   stamina: number;
@@ -20,7 +20,7 @@ const Leveling: React.FC = () => {
   return (
     <div className={styles.stamina}>
       <Link href="/boosts/">
-        <Image src={BoostsIcon} alt="boosts" width="64" height="64" priority />
+        <Palm style={{ width: "64px", height: "64px" }} />
       </Link>
       <p>
         <span>

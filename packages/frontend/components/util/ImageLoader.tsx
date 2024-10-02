@@ -32,6 +32,9 @@ const ImageLoader = ({ src, srcList }: IImageLoaderProps) => {
   );
 
   useEffect(() => {
+    if (!src && !srcList) {
+      return;
+    }
     const srcToLoad = srcList ? srcList : [src];
     srcToLoad.forEach((src) => loadImage(src));
   }, [src, srcList, loadImage]);

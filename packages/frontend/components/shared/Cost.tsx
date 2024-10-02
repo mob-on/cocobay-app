@@ -1,8 +1,8 @@
-import coin from "@media/coco-coin.svg";
 import NumberFormatter from "@src/shared/lib/NumberFormatter";
 import styles from "@src/styles/components/shared/cost.module.css";
-import Image from "next/image";
-import { ReactElement } from "react";
+import { ReactElement, useMemo } from "react";
+
+import Coin from "../svg/Coin";
 
 // Draws a coin next to the passed element, with the optional cost number.
 const Cost: React.FC<{
@@ -12,16 +12,14 @@ const Cost: React.FC<{
   className?: string;
   position?: "left" | "right";
 }> = ({ cost, children, size = 16, className, position = "left" }) => {
-  const img = (
-    <Image
-      style={{ width: size, height: size }}
-      className={styles.coin + ` ${className || ""}`}
-      src={coin}
-      alt="coin"
-      width={size}
-      height={size}
-      priority
-    />
+  const img = useMemo(
+    () => (
+      <Coin
+        style={{ width: size, height: size }}
+        className={styles.coin + ` ${className || ""}`}
+      />
+    ),
+    [size, className],
   );
   return (
     <span className={styles.cost}>

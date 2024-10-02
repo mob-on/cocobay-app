@@ -27,8 +27,9 @@ const nextConfig = {
   transpilePackages: ["antd"],
   images: {
     disableStaticImages: false,
-    unoptimized: true, //required by next output:export
   },
+  optimizeFonts: true,
+  swcMinify: true,
   experimental: {
     optimizePackageImports: [
       "antd-mobile",

@@ -25,3 +25,22 @@
 .popup p {
   margin: 0;
 }
+
+.coin {
+  width: 96px;
+  height: 96px;
+}
+
+@media (min-width: 768px) {
+  .coin {
+    width: 128px;
+    height: 128px;
+  }
+}
+
+@media (max-width: 400px) {
+  .coin {
+    width: 64px;
+    height: 64px;
+  }
+}

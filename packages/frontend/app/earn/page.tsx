@@ -1,11 +1,11 @@
 "use client";
 
-import coin from "@media/coco-coin.svg";
 import gift from "@media/gift.svg";
 import PopupContents from "@src/components/PopupContents";
 import ButtonComponent from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import Cost from "@src/components/shared/Cost";
+import Coin from "@src/components/svg/Coin";
 import usePopup from "@src/shared/hooks/usePopup";
 import NumberFormatter from "@src/shared/lib/NumberFormatter";
 import styles from "@src/styles/pages/earn.module.css";
@@ -74,14 +74,7 @@ export default function Earn() {
     <>
       <section id="earn" className={styles.earn}>
         <div className={styles.earnMore}>
-          <Image
-            src={coin}
-            alt="Earn more"
-            className={styles.coin}
-            width={128}
-            height={128}
-            priority
-          />
+          <Coin className={styles.coin} />
           <h1>Earn more coins</h1>
         </div>
         <Link href="/earn/daily-rewards" className={styles.link}>

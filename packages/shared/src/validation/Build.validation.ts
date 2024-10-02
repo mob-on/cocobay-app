@@ -4,7 +4,7 @@ import {
   registerDecorator,
   ValidationOptions,
 } from "class-validator";
-import { Build } from "../interfaces/Build.interface";
+import type { Build } from "../interfaces/Build.interface";
 import {
   isIn,
   isPositiveNumber,
