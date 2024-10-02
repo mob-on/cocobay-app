@@ -45,21 +45,21 @@ const Card: React.FC<ICardProps> = memo(
     const [cooldown, setCooldown] = useState(cooldownTimestamp - Date.now());
     const [WebApp] = useTelegram();
 
-    const now = useMemo(() => Date.now(), []);
+    const renderedTimeStamp = useMemo(() => Date.now(), []);
 
     const updateCooldown = useMemo(() => {
-      return cooldownTimestamp > now
+      return cooldownTimestamp > renderedTimeStamp
         ? async () => {
-            const now = Date.now();
-            setCooldown(cooldownTimestamp - now);
+            setCooldown(cooldownTimestamp - Date.now());
           }
         : null;
-    }, [cooldownTimestamp, setCooldown, now]);
+    }, [cooldownTimestamp, setCooldown, renderedTimeStamp]);
 
     const timeout = useSelfCorrectingTimeout(updateCooldown, UPDATE_INTERVAL);
 
     useEffect(() => {
       timeout.start();
+      return () => timeout.stop();
     }, [timeout]);
 
     const clickCallback = useCallback(() => {
