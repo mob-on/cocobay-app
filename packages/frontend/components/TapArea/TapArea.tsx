@@ -10,7 +10,6 @@ import lvl7 from "@media/hero/hero-level7.svg";
 import lvl8 from "@media/hero/hero-level8.svg";
 import lvl9 from "@media/hero/hero-level9.svg";
 import lvl10 from "@media/hero/hero-level10.svg";
-import moon from "@media/moon.svg";
 import { useGameState } from "@src/shared/context/GameStateContext";
 import {
   TAP_EFFECTS_THROTTLE,
