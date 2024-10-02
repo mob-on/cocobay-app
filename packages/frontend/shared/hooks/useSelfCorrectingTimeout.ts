@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import useLogger from "./useLogger";
 
@@ -23,27 +23,11 @@ const useSelfCorrectingTimeout = (
   const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
   const previousTimeRef = useRef<DOMHighResTimeStamp | null>(null);
 
-  const stopTimeout = () => {
+  const stopTimeout = useCallback(() => {
     if (timeoutIdRef.current) {
       clearTimeout(timeoutIdRef.current);
     }
-  };
-
-  const startTimeout = () => {
-    updateTimeout();
-  };
-
-  const calculateNextInterval = (previousUpdateTime: DOMHighResTimeStamp) => {
-    const now = performance.now();
-    const timeDrift = previousUpdateTime
-      ? now - previousUpdateTime - UPDATE_INTERVAL
-      : 0;
-    const nextInterval = Math.min(
-      UPDATE_INTERVAL,
-      Math.max(UPDATE_INTERVAL - timeDrift, 0),
-    );
-    return nextInterval;
-  };
+  }, []);
 
   // Service to increment or execute the function, correcting time drift.
   const updateTimeout = useCallback(async () => {
@@ -67,6 +51,22 @@ const useSelfCorrectingTimeout = (
     timeoutIdRef.current = setTimeout(updateTimeout, nextInterval);
   }, [fn, UPDATE_INTERVAL]);
 
+  const startTimeout = useCallback(() => {
+    updateTimeout();
+  }, [updateTimeout]);
+
+  const calculateNextInterval = (previousUpdateTime: DOMHighResTimeStamp) => {
+    const now = performance.now();
+    const timeDrift = previousUpdateTime
+      ? now - previousUpdateTime - UPDATE_INTERVAL
+      : 0;
+    const nextInterval = Math.min(
+      UPDATE_INTERVAL,
+      Math.max(UPDATE_INTERVAL - timeDrift, 0),
+    );
+    return nextInterval;
+  };
+
   useEffect(() => {
     const previousUpdateTime = previousTimeRef.current;
 
@@ -78,12 +78,17 @@ const useSelfCorrectingTimeout = (
     return stopTimeout;
   }, [fn, UPDATE_INTERVAL]);
 
-  return {
-    stop: stopTimeout,
-    start: startTimeout,
-    timeoutIdRef: timeoutIdRef,
-    fn,
-  };
+  const out = useMemo(
+    () => ({
+      stop: stopTimeout,
+      start: startTimeout,
+      timeoutIdRef: timeoutIdRef,
+      fn,
+    }),
+    [stopTimeout, startTimeout, timeoutIdRef, fn],
+  );
+
+  return out;
 };
 
 export default useSelfCorrectingTimeout;

@@ -41,7 +41,7 @@ export default function Boosts() {
   const boostToShow = useMemo(() => {
     // we don't care if `show` is true or false to prevent flickering
     return findBoost(boostPopupState.id ?? "") || ({} as Boost);
-  }, [boosts, boostPopupState]);
+  }, [boostPopupState, findBoost]);
 
   const onUpgrade = useCallback(
     (id: string) => {
@@ -59,7 +59,7 @@ export default function Boosts() {
         });
       }
     },
-    [boosts],
+    [findBoost, hideBoostPopup],
   );
 
   const onClaim = useCallback(
@@ -78,7 +78,7 @@ export default function Boosts() {
         });
       }
     },
-    [boosts],
+    [findBoost, hideBoostPopup],
   );
   return (
     <>

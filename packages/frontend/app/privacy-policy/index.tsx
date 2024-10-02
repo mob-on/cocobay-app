@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+
 import { Container } from "react-bootstrap";
 
 import style from "./privacy-policy.module.css";
