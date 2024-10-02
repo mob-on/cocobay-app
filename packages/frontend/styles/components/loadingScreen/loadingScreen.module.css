@@ -1,4 +1,5 @@
 .loadingScreen {
+  --hero-width: min(calc(100vw - var(--padding) * 4), 50vh);
   position: fixed;
   padding: var(--padding);
   padding-top: calc(100vw + var(--padding) * 2);
@@ -31,17 +32,20 @@
   left: 50%;
   top: calc(var(--padding) * 2);
   transform: translateX(-50%);
-  width: calc(100% - var(--padding) * 4);
+  width: var(--hero-width);
   max-width: 500px;
   height: auto;
   z-index: 2;
 }
 
 .logo {
-  width: calc(100% - var(--padding) * 2);
+  position: absolute;
+  left: 50%;
+  top: min(100vw, 600px, 65vh);
+  transform: translateX(-50%);
+  width: var(--hero-width);
   max-width: 500px;
   height: auto;
-  position: relative;
   z-index: 2;
 }
 
@@ -52,7 +56,8 @@
 }
 
 .slogan {
-  position: relative;
+  position: absolute;
+  top: calc(min(100vw, 600px, 65vh) + var(--padding) * 2);
   z-index: 2;
 }
 

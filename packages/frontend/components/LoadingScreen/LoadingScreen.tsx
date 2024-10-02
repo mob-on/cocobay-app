@@ -1,6 +1,5 @@
 import styles from "@src/styles/components/loadingScreen/loadingScreen.module.css";
 import SpinLoading from "antd-mobile/es/components/spin-loading";
-import Image from "next/image";
 
 import * as Clouds from "../svg/Clouds";
 import Grid from "../svg/Grid";
