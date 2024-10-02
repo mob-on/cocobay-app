@@ -47,10 +47,11 @@ export const BoostsContextProvider = ({
   children: React.JSX.Element;
 }) => {
   const [boosts, dispatch] = useReducer(boostsReducer, defaultBoostsData);
-  const { resources = {} } = useLoading();
+  const { resources = {}, allLoaded } = useLoading();
   const logger = useLogger("BoostsContextProvider");
 
   useEffect(() => {
+    if (!allLoaded) return;
     if (!resources[GAME_DATA_QUERY_KEY]) {
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }
@@ -61,7 +62,7 @@ export const BoostsContextProvider = ({
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }
     dispatch({ type: "DATA_INITIALIZE", payload: data });
-  }, [resources]);
+  }, [resources, allLoaded]);
 
   return (
     <BoostsContext.Provider value={{ boosts, dispatchBoosts: dispatch }}>

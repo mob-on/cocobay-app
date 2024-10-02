@@ -39,7 +39,8 @@ const useTapsService: TUseService<FrontendGameState, IMethods> = () => {
   const [, setTapSyncData] = useLocalStorage("tapSyncData", {});
   const logger = useLogger("useTapsService");
   const queryClient = useQueryClient();
-  const { gameState, dispatchGameState } = useGameState();
+  const { gameState = {} as FrontendGameState, dispatchGameState } =
+    useGameState();
   const { tapCount, tapCountSynced, pointIncomePerSecond, pointCount } =
     gameState;
   const { getTaps: apiGetTaps, syncTaps: getApiSyncTaps } = useTapApi();
@@ -56,7 +57,7 @@ const useTapsService: TUseService<FrontendGameState, IMethods> = () => {
     tapSyncData.current = {
       tapCountPending: tapCount - tapCountSynced,
     };
-  }, [tapCount, tapCountSynced]);
+  }, [tapCount, tapCountSynced, shouldSync]);
 
   // Save sync tap data to local storage and stop timeout
   const onDestroy = useCallback(() => {

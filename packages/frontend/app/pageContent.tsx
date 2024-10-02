@@ -6,7 +6,6 @@ import Stamina from "@src/components/Stamina";
 import TapArea from "@src/components/TapArea";
 import TapCounter from "@src/components/TapCounter";
 import TapEffects from "@src/components/TapEffects";
-import { LevelingContextProvider } from "@src/shared/context/LevelingContext";
 import { useLoading } from "@src/shared/context/LoadingContext";
 import { TapsEffectsContextProvider } from "@src/shared/context/TapEffectsContext";
 import { UserContextProvider } from "@src/shared/context/UserContext";
@@ -45,9 +44,7 @@ export default function PageContent() {
         </>
       </TapsEffectsContextProvider>
       <footer className={styles.footer}>
-        <LevelingContextProvider>
-          <Leveling />
-        </LevelingContextProvider>
+        <Leveling />
         <Stamina />
       </footer>
     </>
