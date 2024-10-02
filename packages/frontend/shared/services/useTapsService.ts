@@ -120,9 +120,9 @@ const useTapsService: TUseService<FrontendGameState, IMethods> = () => {
 
   // We only care when taps change after startSync has been called, to avoid syncing
   // during app loading and initialization.
-  const startSync = () => {
+  const startSync = useCallback(() => {
     setShouldSync(true);
-  };
+  }, [setShouldSync]);
 
   return [
     gameState,

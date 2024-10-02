@@ -76,7 +76,7 @@ const TapArea: React.FC = () => {
 
     // Store timeout ID for potential cancellation
     classTimeoutIdRef.current = timeoutId;
-  }, [WebApp, setIsClassApplied]);
+  }, [WebApp]);
 
   /**
    * Executes handleTapFeedback if no timeout has been set. Prevents multiple
@@ -92,6 +92,13 @@ const TapArea: React.FC = () => {
   const { gameState, dispatchGameState } = useGameState();
   const { energy, pointsPerTap } = gameState;
   const canTap = useRef(true);
+  const lastTapHandler = useRef<(e: TouchEvent) => void>(() => {});
+  const visualTapRef = useRef<ITapEvent[]>([]);
+
+  // We need this for cleanup, so we keep a mutable copy of the taps to prevent recreating effects when possible
+  useEffect(() => {
+    visualTapRef.current = visualTaps;
+  }, [visualTaps]);
 
   const hasEnergyToTap = energy >= pointsPerTap;
 
@@ -99,28 +106,6 @@ const TapArea: React.FC = () => {
   useEffect(() => {
     canTap.current = hasEnergyToTap;
   }, [hasEnergyToTap]);
-
-  // listen for touch events
-  useEffect(() => {
-    const element = tapAreaRef.current;
-    if (element) {
-      element.addEventListener("touchstart", handleTouchStart, {
-        passive: false,
-      });
-    }
-
-    // cleanup
-    return () => {
-      if (element) {
-        element.removeEventListener("touchstart", handleTouchStart);
-        visualTaps.forEach((tap) => clearTimeout(tap.timeoutId));
-        setVisualTaps([]);
-        clearTimeout(classTimeoutIdRef.current ?? undefined);
-        classTimeoutIdRef.current = null;
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleTouchStart = useCallback(
     (e: TouchEvent) => {
@@ -159,11 +144,40 @@ const TapArea: React.FC = () => {
     },
     [
       dispatchGameState,
-      throttledHandleTapFeedback,
       setVisualTaps,
       pointsPerTap,
+      throttledHandleTapFeedback,
     ],
   );
+
+  const cleanup = useCallback(() => {
+    if (tapAreaRef.current) {
+      tapAreaRef.current.removeEventListener(
+        "touchstart",
+        lastTapHandler.current,
+      );
+      visualTapRef.current.forEach((tap) => clearTimeout(tap.timeoutId));
+      setVisualTaps([]);
+      clearTimeout(classTimeoutIdRef.current ?? undefined);
+      classTimeoutIdRef.current = null;
+    }
+  }, [setVisualTaps]);
+
+  // listen for touch events
+  useEffect(() => {
+    const element = tapAreaRef.current;
+    if (element) {
+      // remove old tap handler if it's present
+      if (lastTapHandler.current) {
+        element.removeEventListener("touchstart", lastTapHandler.current);
+      }
+      lastTapHandler.current = handleTouchStart;
+      element.addEventListener("touchstart", handleTouchStart, {
+        passive: false,
+      });
+    }
+    return cleanup;
+  }, [tapAreaRef, handleTouchStart, setVisualTaps, cleanup]);
 
   return (
     <div

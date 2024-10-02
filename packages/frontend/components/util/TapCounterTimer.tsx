@@ -13,8 +13,7 @@ const TapCounterTimer: React.FC<object> = () => {
     if (!allLoaded) return;
     startTimeout();
     startSync();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [startTimeout, startSync, allLoaded]);
   return <></>;
 };
 
