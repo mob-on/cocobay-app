@@ -6,6 +6,11 @@ import Grid from "../svg/Grid";
 import Hero from "../svg/Hero";
 import Logo from "../svg/Logo";
 
+import * as Clouds from "../svg/Clouds";
+import Grid from "../svg/Grid";
+import Hero from "../svg/Hero";
+import Logo from "../svg/Logo";
+
 const LoadingScreen: React.FC = () => {
   return (
     <div className={styles.loadingScreen}>
