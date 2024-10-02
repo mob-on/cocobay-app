@@ -34,7 +34,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "class-validator": "^0.14.1",
-    "next": "14.2.13",
+    "next": "14.2.14",
     "next-images": "^1.8.5",
     "pino": "^9.4.0",
     "pino-pretty": "^11.2.2",
