@@ -6,7 +6,7 @@ import {
   registerDecorator,
   ValidationOptions,
 } from "class-validator";
-import { GameState } from "../interfaces/GameState.interface";
+import type { GameState } from "../interfaces/GameState.interface";
 import {
   isPositiveNumber,
   isPositiveNumberOrZero,

@@ -4,7 +4,7 @@ import {
   ValidationOptions,
   isNotEmpty,
 } from "class-validator";
-import { Boost } from "../interfaces/Boost.interface";
+import type { Boost } from "../interfaces/Boost.interface";
 import {
   isIn,
   isPositiveNumber,

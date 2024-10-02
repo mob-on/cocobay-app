@@ -5,7 +5,7 @@ import {
   registerDecorator,
   ValidationOptions,
 } from "class-validator";
-import { Friend } from "../interfaces/Friend.interface";
+import type { Friend } from "../interfaces/Friend.interface";
 import {
   isPositiveNumber,
   optional,

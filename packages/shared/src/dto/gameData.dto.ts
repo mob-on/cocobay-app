@@ -1,5 +1,5 @@
 import { IsInstance } from "class-validator";
-import { Boost, Build, Friend, GameState, Rewards } from "../interfaces";
+import type { Boost, Build, Friend, GameState, Rewards } from "../interfaces";
 import {
   IsBoost,
   IsBuild,

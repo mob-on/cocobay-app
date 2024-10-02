@@ -1,5 +1,5 @@
 import { registerDecorator, ValidationOptions } from "class-validator";
-import { Rewards } from "../interfaces/Rewards.interface";
+import type { Rewards } from "../interfaces/Rewards.interface";
 import { isPositiveNumberOrZero, SharedValidConstraint } from "./_shared";
 import { IsDailyReward } from "./DailyReward.validation";
 

@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { Build } from "../../interfaces";
+import type { Build } from "../../interfaces";
 import { IsBuild } from "../../validation";
 
 export class UpgradeBuildDto {
