@@ -1,17 +1,15 @@
 import { faker } from "@faker-js/faker";
 import {
+  BadRequestException,
   Body,
   Controller,
   ForbiddenException,
   Param,
   Put,
 } from "@nestjs/common";
-import {
-  UpgradeBuildDto,
-  UpgradeBuildResponseDto,
-} from "@shared/src/dto/builds/upgrade.dto";
+import { UpgradeBuildResponseDto } from "@shared/src/dto/builds/upgrade.dto";
 import { Build } from "@shared/src/interfaces";
-import { validate } from "class-validator";
+import { isNotEmpty, isString, isUUID } from "class-validator";
 
 @Controller("/builds")
 export class BuildsController {
@@ -24,11 +22,14 @@ export class BuildsController {
     @Param("id") id: string,
     @Body() debugBuild: Build,
   ): Promise<UpgradeBuildResponseDto> {
-    const dto = new UpgradeBuildDto({ id });
-    const errors = await validate(dto);
-    if (errors.length) {
-      throw new ForbiddenException("Invalid build id!");
+    const validators = [isNotEmpty, isString, isUUID];
+    const isValidInput = validators.every((validator) => validator(id));
+    if (!isValidInput) {
+      throw new BadRequestException(
+        "Upgrade build information provided is not correct",
+      );
     }
+
     const isEnoughMoney = faker.datatype.boolean();
     if (isEnoughMoney) {
       return {
