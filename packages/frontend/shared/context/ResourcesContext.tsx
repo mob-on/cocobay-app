@@ -11,7 +11,7 @@ import { useStoredField } from "./LocalStorageContext";
 
 type IResourcesContextResourceStatus = "pending" | "loaded" | "errored";
 
-export interface IResourcesContextResource<T> {
+export interface Resource<T> {
   status: IResourcesContextResourceStatus;
   data?: T;
 }
@@ -26,7 +26,7 @@ export interface IResourcesContext {
 }
 
 export interface IResourcesContextResources {
-  [key: string]: IResourcesContextResource<any>;
+  [key: string]: Resource<any>;
 }
 
 interface ResourceToLoad<T> {
