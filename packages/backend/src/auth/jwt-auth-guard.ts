@@ -6,12 +6,15 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
+import { Request } from "express";
 import { ExtractJwt } from "passport-jwt";
 import { ConfigSecrets } from "@config/configuration";
 import { LoggedInUser } from "./logged-in-user-data";
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
+  public static readonly COOKIE_NAME = "jwt_auth_token";
+
   constructor(
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
@@ -19,7 +22,10 @@ export class JwtAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = ExtractJwt.fromAuthHeaderAsBearerToken()(request);
+    const token = ExtractJwt.fromExtractors([
+      JwtAuthGuard.extractJwtFromCookie,
+      ExtractJwt.fromAuthHeaderAsBearerToken(),
+    ])(request);
 
     if (!token) {
       throw new UnauthorizedException();
@@ -35,5 +41,9 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     return true;
+  }
+
+  private static extractJwtFromCookie(req: Request): string | null {
+    return req.cookies ? req.cookies[JwtAuthGuard.COOKIE_NAME] : null;
   }
 }

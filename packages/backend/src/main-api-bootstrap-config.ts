@@ -6,6 +6,7 @@ import {
   VersioningType,
 } from "@nestjs/common";
 import { useContainer } from "class-validator";
+import * as cookieParser from "cookie-parser";
 import { Application as ExpressApplication } from "express";
 
 export const configureMainApiNestApp = <T>(
@@ -32,6 +33,7 @@ export const configureMainApiNestApp = <T>(
     }),
   );
 
+  app.use(cookieParser());
   app.enableCors();
 
   return app;

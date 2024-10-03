@@ -12,6 +12,7 @@ import {
 } from "test/fixtures/telegram/telegram-data";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
+import { JwtAuthGuard } from "./jwt-auth-guard";
 
 describe("AuthController", () => {
   let authController: AuthController;
@@ -40,11 +41,19 @@ describe("AuthController", () => {
     configService = module.get(ConfigService);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should be defined", () => {
     expect(authController).toBeDefined();
   });
 
   describe("logIn", () => {
+    const res = {
+      cookie: jest.fn(),
+    } as any;
+
     it("should return valid login information", async () => {
       const userId = faker.number.int();
       const { initDataRaw } = createValidWebappInitData();
@@ -66,7 +75,12 @@ describe("AuthController", () => {
         .spyOn(authService, "logInWithTelegram")
         .mockResolvedValue(expectedResult);
 
-      expect(await authController.logIn(webappAuthDto)).toBe(expectedResult);
+      await authController.logIn(webappAuthDto, res);
+      expect(res.cookie).toHaveBeenCalledWith(
+        JwtAuthGuard.COOKIE_NAME,
+        expect.any(String),
+        expect.any(Object),
+      );
       expect(telegramInitDataTransformer.transform).toHaveBeenCalledWith(
         webappAuthDto,
       );
@@ -88,7 +102,7 @@ describe("AuthController", () => {
           throw new Error("Invalid initData");
         });
 
-      await expect(authController.logIn(webappAuthDto)).rejects.toThrow(
+      await expect(authController.logIn(webappAuthDto, res)).rejects.toThrow(
         BadRequestException,
       );
     });

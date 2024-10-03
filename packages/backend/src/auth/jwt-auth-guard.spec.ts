@@ -59,7 +59,7 @@ describe("JwtAuthGuard", () => {
     await api.get("/v1/mock/auth").expect(401);
   });
 
-  it("should allow correctly authenticated controller calls", async () => {
+  it("should allow correctly authenticated controller calls using Authorization header", async () => {
     const secret = faker.string.alphanumeric(64);
     const token = jwtService.sign(
       { id: faker.string.numeric() } as LoggedInUser,
@@ -73,5 +73,55 @@ describe("JwtAuthGuard", () => {
       .get("/v1/mock/auth")
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
+  });
+
+  it("should reject calls using a bad Authorization header", async () => {
+    const secret = faker.string.alphanumeric(64);
+    const token = jwtService.sign(
+      { id: faker.string.numeric() } as LoggedInUser,
+      {
+        secret,
+      },
+    );
+    // Set the secret to something different than the token
+    configService.set("secrets.jwtSecret", faker.string.alphanumeric(64));
+
+    await api
+      .get("/v1/mock/auth")
+      .set("Authorization", `Bearer ${token}`)
+      .expect(401);
+  });
+
+  it("should allow correctly authenticated controller calls using Cookies", async () => {
+    const secret = faker.string.alphanumeric(64);
+    const token = jwtService.sign(
+      { id: faker.string.numeric() } as LoggedInUser,
+      {
+        secret,
+      },
+    );
+    configService.set("secrets.jwtSecret", secret);
+
+    await api
+      .get("/v1/mock/auth")
+      .set("Cookie", [`${JwtAuthGuard.COOKIE_NAME}=${token}`])
+      .expect(200);
+  });
+
+  it("should reject calls using a bad Cookie JWT token", async () => {
+    const secret = faker.string.alphanumeric(64);
+    const token = jwtService.sign(
+      { id: faker.string.numeric() } as LoggedInUser,
+      {
+        secret,
+      },
+    );
+    // Set the secret to something different than the token
+    configService.set("secrets.jwtSecret", faker.string.alphanumeric(64));
+
+    await api
+      .get("/v1/mock/auth")
+      .set("Authorization", `Bearer ${token}`)
+      .expect(401);
   });
 });

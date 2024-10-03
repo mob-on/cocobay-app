@@ -4,6 +4,7 @@ import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth
 import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
 import { AuthModule } from "src/auth/auth.module";
+import { JwtAuthGuard } from "src/auth/jwt-auth-guard";
 import { User } from "src/user/model/user.model";
 import { UserModule } from "src/user/user.module";
 import { createValidUser } from "test/fixtures/model/user.data";
@@ -65,6 +66,39 @@ describe("AuthController", () => {
             user: expect.objectContaining(user),
             token: expect.any(String),
           });
+        });
+    });
+
+    it("should return 200 and set a JWT token cookie when valid", async () => {
+      const userId = faker.number.int();
+      const { initDataRaw } = createValidWebappInitData(userId);
+      const user = createValidUser({
+        id: userId.toString(),
+      });
+      await apiCreateUser(api, user);
+
+      configureTelegramForSuccess(configService);
+
+      await api
+        .post("/v1/auth/telegram/login")
+        .send(
+          new TelegramWebappAuthDto({
+            initDataRaw: initDataRaw,
+          }),
+        )
+        .expect(200)
+        .expect((res) => {
+          expect(res.headers["set-cookie"]).toBeDefined();
+          const cookies = res.headers["set-cookie"][0];
+          expect(cookies).toContain(`${JwtAuthGuard.COOKIE_NAME}=`);
+          const jwtCookie = cookies
+            .split(";")
+            .find((cookie) =>
+              cookie.trim().startsWith(`${JwtAuthGuard.COOKIE_NAME}=`),
+            );
+          expect(jwtCookie).toBeDefined();
+          const jwtValue = jwtCookie.split("=")[1];
+          expect(jwtValue).toEqual(expect.any(String));
         });
     });
 

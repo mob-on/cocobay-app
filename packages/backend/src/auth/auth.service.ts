@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { UserDto } from "@shared/src/dto/user.dto";
-import { InitDataParsed } from "@telegram-apps/init-data-node";
+import { InitData } from "@telegram-apps/init-data-node";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { UserService } from "src/user/service/user.service";
 import { TelegramJwtDto } from "../../../shared/src/dto/auth/telegram-jwt-dto";
@@ -16,7 +16,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async logInWithTelegram(userId: string, { user }: InitDataParsed) {
+  async logInWithTelegram(userId: string, { user }: InitData) {
     let userObj: UserDto;
     try {
       userObj = await this.userService.getUser(userId);
