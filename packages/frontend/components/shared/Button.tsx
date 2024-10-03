@@ -23,7 +23,6 @@ const ButtonComponent: React.FC<{
   style,
   disabled = false,
 }) => {
-  console.log(color, styles.button, styles[color]);
   return (
     <Button
       disabled={disabled}

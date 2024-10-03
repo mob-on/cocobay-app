@@ -6,7 +6,7 @@ import { Friend } from "@shared/src/interfaces";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 import useLogger from "../hooks/useLogger";
-import { IResourcesContextResource, useResources } from "./ResourcesContext";
+import { Resource, useResources } from "./ResourcesContext";
 
 type FriendsContext = {
   friends: Friend[];
@@ -65,7 +65,7 @@ export const FriendsContextProvider = ({
     }
     const { data, status } = resources[
       GAME_DATA_QUERY_KEY
-    ] as IResourcesContextResource<GameDataDto>;
+    ] as Resource<GameDataDto>;
     if (status !== "loaded" || !data) {
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }

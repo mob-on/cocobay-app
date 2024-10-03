@@ -20,6 +20,7 @@ export interface IUser {
 const MAX_LOGIN_TRIES = 3;
 
 export const USER_QUERY_KEY = "user";
+export const LOGIN_QUERY_KEY = "login";
 
 const useUserService: () => {
   login: (tries?: number) => Promise<UserDto>;
@@ -31,9 +32,6 @@ const useUserService: () => {
   const login = useCallback(
     async (tries = 0) => {
       if (tries >= MAX_LOGIN_TRIES) {
-        // errorContext.showErrorScreen({
-        //   message: "Wasn't able to log in/register",
-        // });
         throw new Error("Wasn't able to log in/register");
       }
 
