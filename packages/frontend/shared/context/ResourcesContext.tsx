@@ -50,6 +50,15 @@ const cache: Record<
 
 const ResourcesContext = createContext({} as ResourceContext);
 
+/**
+ * Returns an array of Resource objects for the given resourcesToLoad.
+ * If a resource has already been loaded, it will be returned immediately.
+ * If a resource has not yet been loaded, a promise for the resource will be
+ * added to the cache and returned.
+ * If any of the resources are still pending (i.e. not loaded or errored), this
+ * function will throw a promise that will resolve when all resources have
+ * finished loading.
+ */
 const useMultipleResources = <T extends any[]>(
   resources: ResourceToLoad<T[number]>[],
 ): Resource<T[number]>[] => {
