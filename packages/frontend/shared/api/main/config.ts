@@ -7,7 +7,7 @@ import { useMemo } from "react";
 export const useMainApiConfig = (baseUrl?: string) => {
   const [storageApiUrl] = useStoredApiUrl();
   const apiUrl =
-    baseUrl || (Feature.DEV_MODE ? storageApiUrl : Config.apis.main.baseUrl);
+    baseUrl || (Feature.DEV_MODE ? storageApiUrl : Config.apiBaseUrl);
 
   return [useMemo(() => axios.create({ baseURL: apiUrl }), [apiUrl])];
 };

@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useMainApiConfig } from "../api/main/config";
 import { useTrackingApi } from "../api/useTrackingApi";
+import { useStoredFeatures } from "../context/LocalStorageContext";
 import useLogger from "../hooks/useLogger";
 
 const MAX_EVENT_BUFFER_SIZE = 5;
@@ -88,6 +89,7 @@ export const useTracking = (): [
   (event: TrackerEventType, data?: unknown, ...tags: string[]) => void,
   () => Promise<void>,
 ] => {
+  const [{ tracking }] = useStoredFeatures();
   const logger = useLogger("useTracker");
   const createEvent = useCreateEvent();
   const [axiosInstance] = useMainApiConfig();
@@ -109,6 +111,7 @@ export const useTracking = (): [
   }, [axiosInstance]);
 
   const shouldReportEvents = useCallback(() => {
+    if (!tracking) return false;
     const currentTime = Date.now();
     return (
       eventBuffer.current.length >= MAX_EVENT_BUFFER_SIZE ||

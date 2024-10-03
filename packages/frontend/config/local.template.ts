@@ -1,13 +1,9 @@
-const config = {
+import { ConfigSettings } from ".";
+
+const config: ConfigSettings = {
   env: "local",
-  features: {
-    devMode: true,
-  },
-  apis: {
-    main: {
-      baseUrl: "http://localhost:3001",
-    },
-  },
+  features: { devMode: true, tracking: false },
+  apiBaseUrl: "http://localhost:3001",
 };
 
 export default config;

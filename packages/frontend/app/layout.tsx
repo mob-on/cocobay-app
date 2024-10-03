@@ -5,6 +5,7 @@ import "@styles/theme.css";
 import "antd-mobile/es/global";
 
 import { LoadingContextProvider } from "@src/shared/context/LoadingContext";
+import { LocalStorageContextProvider } from "@src/shared/context/LocalStorageContext";
 import useTelegram from "@src/shared/hooks/useTelegram";
 import { Telegram } from "@twa-dev/types";
 import Head from "next/head";
@@ -69,7 +70,9 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
           strategy="afterInteractive"
         />
         <LoadingContextProvider>
-          <LayoutContent>{children}</LayoutContent>
+          <LocalStorageContextProvider>
+            <LayoutContent>{children}</LayoutContent>
+          </LocalStorageContextProvider>
         </LoadingContextProvider>
       </body>
     </html>

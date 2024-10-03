@@ -1,44 +1,96 @@
 "use client";
 
 import { Config } from "@config/index";
-import { createContext, useContext, useMemo } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { IFeatures, IStorageContext, LocalStorage } from "../LocalStorage";
+/**
+ * List of variable names for storage in Local Storage
+ */
+export const LocalStorage = {
+  API_BASE_URL: "apiBaseUrl",
+  FEATURES: "features",
+  ENV: "env",
+};
+
+export interface IDevSettings {
+  tracking: boolean;
+}
+
+export type TFeatureType = "string";
+
+export interface IFeatures {
+  tracking: boolean;
+  devMode: boolean;
+}
+
+export interface IStorage {
+  FEATURES: IFeatures;
+  API_BASE_URL: string;
+}
+
+export interface IStorageContext {
+  useStoredApiUrl: () => [string, (value: string) => void];
+  useStoredFeatures: () => [IFeatures, (features: IFeatures) => void];
+  isStorageLoaded: boolean;
+}
 
 const LocalStorageContext = createContext({} as IStorageContext);
 
+const fields = [
+  LocalStorage.API_BASE_URL,
+  LocalStorage.FEATURES,
+  LocalStorage.ENV,
+] as const;
+
 const LocalStorageContextProvider = ({ children }) => {
-  const [storedApiBaseUrl, setStoredApiBaseUrl, isStorageLoaded] =
-    useLocalStorage<string>(
-      LocalStorage.API_BASE_URL,
-      Config.apis.main.baseUrl,
-    );
+  const [storedState, setStoredState] = useState({} as IStorage);
+  const [isStorageLoaded, setIsStorageLoaded] = useState(false);
+  // populate the initial state
+  useEffect(() => {
+    fields.forEach((field) => {
+      const value = localStorage.getItem(field);
+      if (value)
+        setStoredState((state) => ({ ...state, [field]: JSON.parse(value) }));
+      else setStoredState((state) => ({ ...state, [field]: Config[field] }));
+    });
 
-  const [storedFeatures, setStoredFeatures] = useLocalStorage<IFeatures>(
-    LocalStorage.FEATURES,
-    {},
-  );
+    setIsStorageLoaded(true);
+  }, []);
 
-  const storage = useMemo(
-    () => ({ API_BASE_URL: storedApiBaseUrl, FEATURES: storedFeatures }),
-    [storedApiBaseUrl, storedFeatures],
-  );
+  // sync local storage with state on state change
+  useEffect(() => {
+    Object.keys(storedState).forEach((field) => {
+      localStorage.setItem(field, JSON.stringify(storedState[field]));
+    });
+  }, [storedState]);
 
-  const useStoredApiUrl = (): [string, (value: string) => void] => {
-    const { API_BASE_URL } = useStorage().storage;
-    return [API_BASE_URL, setStoredApiBaseUrl];
-  };
+  const useStoredApiUrl = useCallback(() => {
+    return [
+      storedState[LocalStorage.API_BASE_URL],
+      (value: string) =>
+        setStoredState({ ...storedState, [LocalStorage.API_BASE_URL]: value }),
+    ] as [string, (value: string) => void];
+  }, [storedState]);
 
-  const useStoredFeatures = (): [IFeatures, (value: IFeatures) => void] => {
-    const { FEATURES } = useStorage().storage;
-    return [FEATURES, (value: IFeatures) => setStoredFeatures(value)];
-  };
-
+  const useStoredFeatures = useCallback(() => {
+    return [
+      storedState[LocalStorage.FEATURES],
+      (value: IFeatures) =>
+        setStoredState({ ...storedState, [LocalStorage.FEATURES]: value }),
+    ] as [IFeatures, (value: IFeatures) => void];
+  }, [storedState]);
+  if (!isStorageLoaded) {
+    return null;
+  }
   return (
     <LocalStorageContext.Provider
       value={{
-        storage,
         useStoredApiUrl,
         useStoredFeatures,
         isStorageLoaded,
@@ -49,7 +101,7 @@ const LocalStorageContextProvider = ({ children }) => {
   );
 };
 
-const useStorage = () => {
+export const useStorage = () => {
   return useContext(LocalStorageContext);
 };
 

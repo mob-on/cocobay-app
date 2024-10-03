@@ -16,7 +16,7 @@ import { GAME_DATA_QUERY_KEY, useGameDataApi } from "../api/useGameDataApi";
 import useLogger from "../hooks/useLogger";
 import useUserService, { LOGIN_QUERY_KEY } from "../services/useUserService";
 import { useErrorContext } from "./ErrorContext";
-import { useStoredApiUrl } from "./LocalStorageContext";
+import { useStorage, useStoredApiUrl } from "./LocalStorageContext";
 
 type ResourceStatus = "pending" | "loaded" | "errored";
 
@@ -108,7 +108,7 @@ const useMultipleResources = <T extends any[]>(
 };
 
 export const ResourcesProvider = ({ children }: { children: ReactNode }) => {
-  const [mainApiBaseUrl] = useStoredApiUrl();
+  const mainApiBaseUrl = useStoredApiUrl();
   const [isDataRequested, setIsDataRequested] = useState(false);
   const [resources, setResources] = useState<Record<string, Resource<unknown>>>(
     {} as Record<string, Resource<unknown>>,

@@ -6,12 +6,6 @@ const DynamicResourcesProvider = lazy(
   () => import("./resourcesProviderContent"),
 );
 
-const DynamicLocalStorageContextProvider = lazy(() =>
-  import("@src/shared/context/LocalStorageContext").then((mod) => ({
-    default: mod.LocalStorageContextProvider,
-  })),
-);
-
 const DynamicDevSettingsContextProvider = lazy(() =>
   import("@src/shared/context/DevSettingsContext").then((mod) => ({
     default: mod.DevSettingsContextProvider,
@@ -63,24 +57,22 @@ const queryClient = new QueryClient();
 
 export default function LayoutContent({ children }: { children: JSX.Element }) {
   return (
-    <DynamicLocalStorageContextProvider>
-      <DynamicDevSettingsContextProvider>
-        <DynamicQueryClientProvider client={queryClient}>
-          <DynamicTrackingProvider>
-            <DynamicErrorContextProvider>
-              <DynamicResourcesProvider>
-                <DynamicBoostsContextProvider>
-                  <DynamicBuildsContextProvider>
-                    <DynamicFriendsContextProvider>
-                      {children}
-                    </DynamicFriendsContextProvider>
-                  </DynamicBuildsContextProvider>
-                </DynamicBoostsContextProvider>
-              </DynamicResourcesProvider>
-            </DynamicErrorContextProvider>
-          </DynamicTrackingProvider>
-        </DynamicQueryClientProvider>
-      </DynamicDevSettingsContextProvider>
-    </DynamicLocalStorageContextProvider>
+    <DynamicDevSettingsContextProvider>
+      <DynamicQueryClientProvider client={queryClient}>
+        <DynamicTrackingProvider>
+          <DynamicErrorContextProvider>
+            <DynamicResourcesProvider>
+              <DynamicBoostsContextProvider>
+                <DynamicBuildsContextProvider>
+                  <DynamicFriendsContextProvider>
+                    {children}
+                  </DynamicFriendsContextProvider>
+                </DynamicBuildsContextProvider>
+              </DynamicBoostsContextProvider>
+            </DynamicResourcesProvider>
+          </DynamicErrorContextProvider>
+        </DynamicTrackingProvider>
+      </DynamicQueryClientProvider>
+    </DynamicDevSettingsContextProvider>
   );
 }
