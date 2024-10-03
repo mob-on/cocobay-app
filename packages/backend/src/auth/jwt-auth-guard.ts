@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
+import { BACKEND_JWT_COOKIE_NAME } from "@shared/src/cookie/auth";
 import { Request } from "express";
 import { ExtractJwt } from "passport-jwt";
 import { ConfigSecrets } from "@config/configuration";
@@ -13,8 +14,6 @@ import { LoggedInUser } from "./logged-in-user-data";
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  public static readonly COOKIE_NAME = "jwt_auth_token";
-
   constructor(
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
@@ -44,6 +43,6 @@ export class JwtAuthGuard implements CanActivate {
   }
 
   private static extractJwtFromCookie(req: Request): string | null {
-    return req.cookies ? req.cookies[JwtAuthGuard.COOKIE_NAME] : null;
+    return req.cookies ? req.cookies[BACKEND_JWT_COOKIE_NAME] : null;
   }
 }

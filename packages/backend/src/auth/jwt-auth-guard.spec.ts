@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker/.";
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
+import { BACKEND_JWT_COOKIE_NAME } from "@shared/src/cookie/auth";
 import TestAgent from "supertest/lib/agent";
 import { ApiSetup, setupApi } from "test/setup/setup";
 import { JwtAuthGuard } from "./jwt-auth-guard";
@@ -104,7 +105,7 @@ describe("JwtAuthGuard", () => {
 
     await api
       .get("/v1/mock/auth")
-      .set("Cookie", [`${JwtAuthGuard.COOKIE_NAME}=${token}`])
+      .set("Cookie", [`${BACKEND_JWT_COOKIE_NAME}=${token}`])
       .expect(200);
   });
 

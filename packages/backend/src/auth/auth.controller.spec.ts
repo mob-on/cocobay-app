@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker/.";
 import { BadRequestException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
+import { BACKEND_JWT_COOKIE_NAME } from "@shared/src/cookie/auth";
 import { TelegramInitDataPipeTransform } from "src/telegram/init-data/telegram-init-data-transform.pipe";
 import { TelegramWebappAuthDtoValid } from "src/telegram/init-data/valid-init-data.dto";
 import { mockConfigProvider } from "test/fixtures/config/mock-config-provider";
@@ -12,7 +13,6 @@ import {
 } from "test/fixtures/telegram/telegram-data";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { JwtAuthGuard } from "./jwt-auth-guard";
 
 describe("AuthController", () => {
   let authController: AuthController;
@@ -77,7 +77,7 @@ describe("AuthController", () => {
 
       await authController.logIn(webappAuthDto, res);
       expect(res.cookie).toHaveBeenCalledWith(
-        JwtAuthGuard.COOKIE_NAME,
+        BACKEND_JWT_COOKIE_NAME,
         expect.any(String),
         expect.any(Object),
       );

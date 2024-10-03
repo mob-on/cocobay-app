@@ -7,12 +7,12 @@ import {
   Post,
   Res,
 } from "@nestjs/common";
+import { BACKEND_JWT_COOKIE_NAME } from "@shared/src/cookie/auth";
 import { InitData } from "@telegram-apps/init-data-node";
 import { Response } from "express";
 import { TelegramInitDataPipeTransform } from "src/telegram/init-data/telegram-init-data-transform.pipe";
 import { TelegramWebappAuthDtoValid } from "src/telegram/init-data/valid-init-data.dto";
 import { AuthService } from "./auth.service";
-import { JwtAuthGuard } from "./jwt-auth-guard";
 
 @Controller("/auth")
 export class AuthController {
@@ -44,7 +44,7 @@ export class AuthController {
       webappInitData,
     );
 
-    res.cookie(JwtAuthGuard.COOKIE_NAME, loginResult.token, {
+    res.cookie(BACKEND_JWT_COOKIE_NAME, loginResult.token, {
       httpOnly: true,
       secure: true,
       sameSite: "strict",

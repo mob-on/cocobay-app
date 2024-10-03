@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker/.";
 import { ConfigService } from "@nestjs/config";
+import { BACKEND_JWT_COOKIE_NAME } from "@shared/src/cookie/auth";
 import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth.dto";
 import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
 import { AuthModule } from "src/auth/auth.module";
-import { JwtAuthGuard } from "src/auth/jwt-auth-guard";
 import { User } from "src/user/model/user.model";
 import { UserModule } from "src/user/user.module";
 import { createValidUser } from "test/fixtures/model/user.data";
@@ -90,11 +90,11 @@ describe("AuthController", () => {
         .expect((res) => {
           expect(res.headers["set-cookie"]).toBeDefined();
           const cookies = res.headers["set-cookie"][0];
-          expect(cookies).toContain(`${JwtAuthGuard.COOKIE_NAME}=`);
+          expect(cookies).toContain(`${BACKEND_JWT_COOKIE_NAME}=`);
           const jwtCookie = cookies
             .split(";")
             .find((cookie) =>
-              cookie.trim().startsWith(`${JwtAuthGuard.COOKIE_NAME}=`),
+              cookie.trim().startsWith(`${BACKEND_JWT_COOKIE_NAME}=`),
             );
           expect(jwtCookie).toBeDefined();
           const jwtValue = jwtCookie.split("=")[1];
