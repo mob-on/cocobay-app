@@ -36,6 +36,7 @@ interface IMethods {
 }
 
 const useTapsService: TUseService<FrontendGameState, IMethods> = () => {
+  // TODO: when testing/implementing this, remove useLocalStorage in favor of LocalStorageContext!
   const [, setTapSyncData] = useLocalStorage("tapSyncData", {});
   const logger = useLogger("useTapsService");
   const queryClient = useQueryClient();
