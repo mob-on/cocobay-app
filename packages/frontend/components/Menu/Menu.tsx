@@ -2,7 +2,7 @@ import BuildIcon from "@media/icons/build.svg";
 import EarnIcon from "@media/icons/earn.svg";
 import FriendsIcon from "@media/icons/friends.svg";
 import HomeIcon from "@media/icons/home.svg";
-import { useLoading } from "@src/shared/context/LoadingContext";
+import { useResources } from "@src/shared/context/ResourcesContext";
 import styles from "@src/styles/components/menu/menu.module.css";
 import { usePathname } from "next/navigation";
 
@@ -12,7 +12,7 @@ import MenuButton from "./MenuButton";
  * Renders a menu with buttons for each page. The current page button is highlighted.
  */
 const Menu: React.FC = () => {
-  const { allLoaded } = useLoading();
+  const { allLoaded } = useResources();
   const pathname = usePathname();
   const isRoot = pathname === "/";
   const buttons = [

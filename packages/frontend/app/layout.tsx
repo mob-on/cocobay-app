@@ -4,12 +4,12 @@ import "@styles/globals.css";
 import "@styles/theme.css";
 import "antd-mobile/es/global";
 
-import { LoadingScreen } from "@src/components/LoadingScreen";
+import { LoadingContextProvider } from "@src/shared/context/LoadingContext";
 import useTelegram from "@src/shared/hooks/useTelegram";
 import { Telegram } from "@twa-dev/types";
 import Head from "next/head";
 import Script from "next/script";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 
 import { ddin, martian } from "./fonts";
 
@@ -68,9 +68,9 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
           }}
           strategy="afterInteractive"
         />
-        <Suspense fallback={<LoadingScreen />}>
+        <LoadingContextProvider>
           <LayoutContent>{children}</LayoutContent>
-        </Suspense>
+        </LoadingContextProvider>
       </body>
     </html>
   );

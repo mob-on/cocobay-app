@@ -1,5 +1,6 @@
 "use client";
 
+import { FrontendGameState } from "@shared/src/interfaces";
 import { useGameState } from "@src/shared/context/GameStateContext";
 import NumberFormatter from "@src/shared/lib/NumberFormatter";
 import styles from "@src/styles/components/tapCounter/tapCounter.module.css";
@@ -10,7 +11,7 @@ import Cost from "../shared/Cost";
 const intl = new Intl.NumberFormat("en-US");
 
 const TapCounter: React.FC = () => {
-  const { gameState } = useGameState();
+  const { gameState = {} as FrontendGameState } = useGameState();
   const { pointCount, pointIncomePerSecond } = gameState;
   const formattedTapCount = useMemo(
     () => intl.format(pointCount),

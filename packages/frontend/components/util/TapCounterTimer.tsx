@@ -1,4 +1,4 @@
-import { useLoading } from "@src/shared/context/LoadingContext";
+import { useResources } from "@src/shared/context/ResourcesContext";
 import useTapsService from "@src/shared/services/useTapsService";
 import { useEffect } from "react";
 
@@ -7,7 +7,7 @@ import { useEffect } from "react";
  * trigger the tap counter and sync to start when the app is loaded.
  */
 const TapCounterTimer: React.FC<object> = () => {
-  const { allLoaded } = useLoading();
+  const { allLoaded } = useResources();
   const [, { startTimeout, startSync }] = useTapsService();
   useEffect(() => {
     if (!allLoaded) return;

@@ -1,7 +1,10 @@
+import { LoadingContextProvider } from "@src/shared/context/LoadingContext";
 import { QueryClient } from "@tanstack/react-query";
 import { lazy } from "react";
 
-const DynamicLoadingProvider = lazy(() => import("./loadingProviderContent"));
+const DynamicResourcesProvider = lazy(
+  () => import("./resourcesProviderContent"),
+);
 
 const DynamicLocalStorageContextProvider = lazy(() =>
   import("@src/shared/context/LocalStorageContext").then((mod) => ({
@@ -65,7 +68,7 @@ export default function LayoutContent({ children }: { children: JSX.Element }) {
         <DynamicQueryClientProvider client={queryClient}>
           <DynamicTrackingProvider>
             <DynamicErrorContextProvider>
-              <DynamicLoadingProvider>
+              <DynamicResourcesProvider>
                 <DynamicBoostsContextProvider>
                   <DynamicBuildsContextProvider>
                     <DynamicFriendsContextProvider>
@@ -73,7 +76,7 @@ export default function LayoutContent({ children }: { children: JSX.Element }) {
                     </DynamicFriendsContextProvider>
                   </DynamicBuildsContextProvider>
                 </DynamicBoostsContextProvider>
-              </DynamicLoadingProvider>
+              </DynamicResourcesProvider>
             </DynamicErrorContextProvider>
           </DynamicTrackingProvider>
         </DynamicQueryClientProvider>

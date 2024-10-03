@@ -6,7 +6,7 @@ import { GameDataDto } from "@shared/src/dto/gameData.dto";
 import { Boost } from "@shared/src/interfaces";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
-import { ILoadingContextResource, useLoading } from "./LoadingContext";
+import { Resource, useResources } from "./ResourcesContext";
 
 type BoostsContext = {
   boosts: Boost[];
@@ -47,7 +47,7 @@ export const BoostsContextProvider = ({
   children: React.JSX.Element;
 }) => {
   const [boosts, dispatch] = useReducer(boostsReducer, defaultBoostsData);
-  const { resources = {}, allLoaded } = useLoading();
+  const { resources = {}, allLoaded } = useResources();
   const logger = useLogger("BoostsContextProvider");
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export const BoostsContextProvider = ({
     }
     const { data, status } = resources[
       GAME_DATA_QUERY_KEY
-    ] as ILoadingContextResource<GameDataDto>;
+    ] as Resource<GameDataDto>;
     if (status !== "loaded" || !data) {
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }

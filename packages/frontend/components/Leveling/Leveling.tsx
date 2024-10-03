@@ -1,5 +1,6 @@
 "use client";
 
+import { FrontendGameState } from "@shared/src/interfaces";
 import styles from "@src/styles/components/leveling/leveling.module.css";
 import ProgressBar from "antd-mobile/es/components/progress-bar";
 import React from "react";
@@ -15,7 +16,7 @@ export interface ILevelingData {
 }
 
 const Leveling: React.FC = () => {
-  const { gameState } = useGameState();
+  const { gameState = {} as FrontendGameState } = useGameState();
 
   const { currentExp, targetExp, level, levelName, maxLevel } = gameState;
   const percent = Math.round((currentExp / targetExp) * 100);

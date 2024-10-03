@@ -6,7 +6,7 @@ import { FrontendGameState } from "@shared/src/interfaces";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 import useLogger from "../hooks/useLogger";
-import { ILoadingContextResource, useLoading } from "./LoadingContext";
+import { Resource, useResources } from "./ResourcesContext";
 
 export const TAP_EFFECTS_TIMEOUT = 1000; // remove taps from list after this time1
 export const TAP_EFFECTS_THROTTLE = 50; // min time before triggering ring animation
@@ -105,7 +105,7 @@ export const GameStateContextProvider = ({
   children: React.JSX.Element;
 }) => {
   const [gameState, dispatch] = useReducer(gameStateReducer, defaultGameData);
-  const { resources = {}, allLoaded } = useLoading();
+  const { resources = {}, allLoaded } = useResources();
   const logger = useLogger("GameStateContextProvider");
 
   useEffect(() => {
@@ -116,7 +116,7 @@ export const GameStateContextProvider = ({
     }
     const { data, status } = resources[
       GAME_DATA_QUERY_KEY
-    ] as ILoadingContextResource<GameDataDto>;
+    ] as Resource<GameDataDto>;
     if (status !== "loaded" || !data) {
       return logger.error(`Expected ${GAME_DATA_QUERY_KEY} to be loaded`);
     }

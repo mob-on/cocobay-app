@@ -6,7 +6,7 @@ import Stamina from "@src/components/Stamina";
 import TapArea from "@src/components/TapArea";
 import TapCounter from "@src/components/TapCounter";
 import TapEffects from "@src/components/TapEffects";
-import { useLoading } from "@src/shared/context/LoadingContext";
+import { useResources } from "@src/shared/context/ResourcesContext";
 import { TapsEffectsContextProvider } from "@src/shared/context/TapEffectsContext";
 import { UserContextProvider } from "@src/shared/context/UserContext";
 import styles from "@styles/pages/index.module.css";
@@ -15,7 +15,7 @@ import { useEffect } from "react";
 
 export default function PageContent() {
   const router = useRouter();
-  const loading = useLoading();
+  const loading = useResources();
   useEffect(() => {
     router.prefetch("/builds");
     router.prefetch("/earn");
