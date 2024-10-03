@@ -1,15 +1,9 @@
-import { LoadingContextProvider } from "@src/shared/context/LoadingContext";
+import { DevSettingsContextProvider } from "@src/shared/context/DevSettingsContext";
 import { QueryClient } from "@tanstack/react-query";
 import { lazy } from "react";
 
 const DynamicResourcesProvider = lazy(
   () => import("./resourcesProviderContent"),
-);
-
-const DynamicDevSettingsContextProvider = lazy(() =>
-  import("@src/shared/context/DevSettingsContext").then((mod) => ({
-    default: mod.DevSettingsContextProvider,
-  })),
 );
 
 const DynamicErrorContextProvider = lazy(() =>
@@ -57,7 +51,7 @@ const queryClient = new QueryClient();
 
 export default function LayoutContent({ children }: { children: JSX.Element }) {
   return (
-    <DynamicDevSettingsContextProvider>
+    <DevSettingsContextProvider>
       <DynamicQueryClientProvider client={queryClient}>
         <DynamicTrackingProvider>
           <DynamicErrorContextProvider>
@@ -73,6 +67,6 @@ export default function LayoutContent({ children }: { children: JSX.Element }) {
           </DynamicErrorContextProvider>
         </DynamicTrackingProvider>
       </DynamicQueryClientProvider>
-    </DynamicDevSettingsContextProvider>
+    </DevSettingsContextProvider>
   );
 }

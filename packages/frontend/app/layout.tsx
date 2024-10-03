@@ -10,17 +10,16 @@ import useTelegram from "@src/shared/hooks/useTelegram";
 import { Telegram } from "@twa-dev/types";
 import Head from "next/head";
 import Script from "next/script";
-import { lazy, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { ddin, martian } from "./fonts";
+import LayoutContent from "./layoutContent";
 
 declare global {
   interface Window {
     Telegram: Telegram;
   }
 }
-
-const LayoutContent = lazy(() => import("./layoutContent"));
 
 export default function RootLayout({ children }: { children: JSX.Element }) {
   const [WebApp] = useTelegram();
@@ -71,7 +70,10 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
         />
         <LoadingContextProvider>
           <LocalStorageContextProvider>
-            <LayoutContent>{children}</LayoutContent>
+            {/* we use this suspense to suspend our app until we finish lazy-loading all context providers */}
+            <Suspense>
+              <LayoutContent>{children}</LayoutContent>
+            </Suspense>
           </LocalStorageContextProvider>
         </LoadingContextProvider>
       </body>

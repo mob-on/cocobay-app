@@ -3,8 +3,7 @@
 import { useMainApi } from "@api/main/useMainApi";
 import {
   IFeatures,
-  useStoredApiUrl,
-  useStoredFeatures,
+  useStoredField,
 } from "@src/shared/context/LocalStorageContext";
 import styles from "@src/styles/components/devSettings/devSettings.module.css";
 import { Space } from "antd-mobile";
@@ -12,14 +11,16 @@ import Button from "antd-mobile/es/components/button";
 import Input from "antd-mobile/es/components/input";
 import Switch from "antd-mobile/es/components/switch";
 import { CheckCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 export const DevScreen = () => {
-  const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredApiUrl();
-  const [features, setFeatures] = useStoredFeatures();
+  const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredField(
+    "API_BASE_URL" as const,
+  );
+  const [features, setFeatures] = useStoredField("FEATURES" as const);
   const [mainApiVersion] = useState<string>("");
   const [mainApiDate] = useState<string>("");
-
   const [mainApiBaseUrlValue, setMainApiBaseUrlValue] = useState("");
   const api = useMainApi(mainApiBaseUrlValue);
   const [mainApiOk, setMainApiOk] = useState<boolean | null>(null);

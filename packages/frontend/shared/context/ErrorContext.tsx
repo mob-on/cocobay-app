@@ -9,6 +9,7 @@ import { Feature } from "../lib/FeatureFlags";
 
 export interface IErrorContext {
   showErrorScreen: (error: IAppError) => void;
+  hideErrorScreen: () => void;
 }
 
 export interface IAppError {
@@ -51,6 +52,7 @@ export const ErrorContextProvider: React.FC<{
         showErrorScreen: (error: IAppError) => {
           setError(error);
         },
+        hideErrorScreen: () => setError({} as IAppError),
       }}
     >
       {devMode ? (
