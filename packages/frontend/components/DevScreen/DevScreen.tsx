@@ -11,7 +11,6 @@ import Button from "antd-mobile/es/components/button";
 import Input from "antd-mobile/es/components/input";
 import Switch from "antd-mobile/es/components/switch";
 import { CheckCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 export const DevScreen = () => {
@@ -34,10 +33,13 @@ export const DevScreen = () => {
 
   const toggleFeature = useCallback(
     (feature: keyof IFeatures) => {
-      setFeatures({
-        ...features,
-        [feature]: !features[feature],
-      } as IFeatures);
+      setFeatures(
+        (oldFeatures) =>
+          ({
+            ...oldFeatures,
+            [feature]: !oldFeatures[feature],
+          }) as IFeatures,
+      );
     },
     [setFeatures],
   );

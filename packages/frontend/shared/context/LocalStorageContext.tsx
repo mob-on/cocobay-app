@@ -95,7 +95,10 @@ export const useStorage = () => useContext(LocalStorageContext);
 
 export function useStoredField<K extends keyof StoredState>(
   field: K,
-): [StoredState[K], (value: StoredState[K]) => void] {
+): [
+  StoredState[K],
+  (value: StoredState[K] | ((value: StoredState[K]) => void)) => void,
+] {
   // Prevent execution during SSR
   if (typeof window === "undefined") {
     return [{}, () => {}] as unknown as [
@@ -107,10 +110,10 @@ export function useStoredField<K extends keyof StoredState>(
   const { storage, setStorage } = useStorage();
 
   const changeField = useCallback(
-    (value: StoredState[K]) => {
+    (value: StoredState[K] | ((value: StoredState[K]) => void)) => {
       setStorage((prevState: StoredState) => ({
         ...prevState,
-        [field]: value,
+        [field]: typeof value === "function" ? value(prevState[field]) : value,
       }));
     },
     [field, setStorage],
