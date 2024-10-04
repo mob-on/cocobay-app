@@ -1,12 +1,11 @@
-const config = {
+import { ConfigSettings } from ".";
+
+const config: Omit<ConfigSettings, "env"> = {
   features: {
     devMode: false,
+    tracking: true,
   },
-  apis: {
-    main: {
-      baseUrl: "https://cocoapp-api.twinsoft.es",
-    },
-  },
+  apiBaseUrl: "https://cocoapp-api.twinsoft.es",
 };
 
 export default config;

@@ -1,7 +1,31 @@
 import { AxiosError } from "axios";
 
-export default (error: AxiosError<{ message?: string }>) => {
-  return typeof error === "string"
-    ? error
-    : error.response?.data?.message || "Something went wrong!";
-};
+export class ErrorWithMessage extends Error {
+  instance: Error;
+  message: string;
+
+  constructor(error: Error | AxiosError<{ message?: string }>) {
+    const message =
+      error instanceof AxiosError
+        ? error.response?.data.message || error.message
+        : "Something went wrong";
+
+    super(message);
+
+    this.instance = error;
+    this.message = message;
+  }
+}
+
+export function extractApiError(
+  error: AxiosError<{ message?: string }> | Error,
+): ErrorWithMessage {
+  return new ErrorWithMessage(error);
+}
+
+export function parseErrorMessage(error: unknown) {
+  if (error instanceof Error || error instanceof ErrorWithMessage) {
+    return error.message;
+  }
+  return "Something went wrong";
+}

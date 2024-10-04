@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useMainApiConfig } from "../api/main/config";
 import { useTrackingApi } from "../api/useTrackingApi";
+import { useStoredField } from "../context/LocalStorageContext";
 import useLogger from "../hooks/useLogger";
 
 const MAX_EVENT_BUFFER_SIZE = 5;
@@ -88,6 +89,7 @@ export const useTracking = (): [
   (event: TrackerEventType, data?: unknown, ...tags: string[]) => void,
   () => Promise<void>,
 ] => {
+  const [{ tracking }] = useStoredField("FEATURES");
   const logger = useLogger("useTracker");
   const createEvent = useCreateEvent();
   const [axiosInstance] = useMainApiConfig();
@@ -107,14 +109,14 @@ export const useTracking = (): [
       JSON.stringify(eventBufferCopy),
     );
   }, [axiosInstance]);
-
   const shouldReportEvents = useCallback(() => {
+    if (!tracking) return false;
     const currentTime = Date.now();
     return (
       eventBuffer.current.length >= MAX_EVENT_BUFFER_SIZE ||
       currentTime - lastSendTime.current >= REPORT_TIMEOUT
     );
-  }, []);
+  }, [tracking]);
 
   const reportEventsWithTimeout = useCallback(
     async (force = false) => {
@@ -123,10 +125,16 @@ export const useTracking = (): [
       clearTimeout(timeoutId.current);
       clearTimeout(errorTimeoutId.current);
       if (!shouldReport && eventBufferCopy.length) {
-        timeoutId.current = window.setTimeout(
-          () => reportEventsWithTimeout(),
-          lastSendTime.current - Number(new Date()) + REPORT_TIMEOUT,
-        );
+        const nextTimeout =
+          lastSendTime.current - Number(new Date()) + REPORT_TIMEOUT;
+
+        // Ensure we only set a timeout if tracking is enabled
+        if (nextTimeout > 0 && tracking) {
+          timeoutId.current = window.setTimeout(
+            () => reportEventsWithTimeout(),
+            nextTimeout,
+          );
+        }
 
         return;
       } else if (!shouldReport) {
@@ -166,6 +174,9 @@ export const useTracking = (): [
     return () => {
       if (timeoutId.current) {
         clearTimeout(timeoutId.current);
+      }
+      if (errorTimeoutId.current) {
+        clearTimeout(errorTimeoutId.current);
       }
     };
   }, []);

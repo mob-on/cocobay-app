@@ -1,22 +1,28 @@
 "use client";
 
 import { useMainApi } from "@api/main/useMainApi";
-import { useStoredApiUrl } from "@src/shared/context/LocalStorageContext";
+import {
+  IFeatures,
+  useStoredField,
+} from "@src/shared/context/LocalStorageContext";
 import styles from "@src/styles/components/devSettings/devSettings.module.css";
+import { Space } from "antd-mobile";
 import Button from "antd-mobile/es/components/button";
 import Input from "antd-mobile/es/components/input";
+import Switch from "antd-mobile/es/components/switch";
 import { CheckCircleOutline, CloseCircleOutline } from "antd-mobile-icons";
 import { useCallback, useEffect, useState } from "react";
 
 export const DevScreen = () => {
-  const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredApiUrl();
-  const [mainApiVersion, setMainApiVersion] = useState<string>("");
-  const [mainApiDate, setMainApiDate] = useState<string>("");
-
+  const [mainApiBaseUrl, setMainApiBaseUrl] = useStoredField(
+    "API_BASE_URL" as const,
+  );
+  const [features, setFeatures] = useStoredField("FEATURES" as const);
+  const [mainApiVersion] = useState<string>("");
+  const [mainApiDate] = useState<string>("");
   const [mainApiBaseUrlValue, setMainApiBaseUrlValue] = useState("");
   const api = useMainApi(mainApiBaseUrlValue);
   const [mainApiOk, setMainApiOk] = useState<boolean | null>(null);
-
   useEffect(() => {
     if (mainApiBaseUrl) setMainApiBaseUrlValue(mainApiBaseUrl);
   }, [mainApiBaseUrl]);
@@ -24,6 +30,19 @@ export const DevScreen = () => {
   useEffect(() => {
     testApi();
   }, []);
+
+  const toggleFeature = useCallback(
+    (feature: keyof IFeatures) => {
+      setFeatures(
+        (oldFeatures) =>
+          ({
+            ...oldFeatures,
+            [feature]: !oldFeatures[feature],
+          }) as IFeatures,
+      );
+    },
+    [setFeatures],
+  );
 
   const save = () => {
     setMainApiBaseUrl(mainApiBaseUrlValue);
@@ -69,7 +88,10 @@ export const DevScreen = () => {
               value={mainApiBaseUrlValue}
               onChange={setMainApiBaseUrlValue}
             />
-            <Button onClick={testApi}>Test</Button>
+            <Space align="center">
+              <Button onClick={save}>Save</Button>
+              <Button onClick={testApi}>Test</Button>
+            </Space>
             {mainApiOk !== null &&
               (mainApiOk ? (
                 <CheckCircleOutline
@@ -81,10 +103,16 @@ export const DevScreen = () => {
               ))}
           </div>
         </div>
+        <div className={styles.field}>
+          <div className={styles.label}>
+            <Switch
+              checked={features.tracking}
+              onChange={() => toggleFeature("tracking")}
+            />{" "}
+            &nbsp; Tracking
+          </div>
+        </div>
       </div>
-      <Button className={styles.save} onClick={save}>
-        Save
-      </Button>
     </div>
   );
 };
