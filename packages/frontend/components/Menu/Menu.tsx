@@ -37,7 +37,6 @@ const Menu: React.FC = () => {
       iconPath: FriendsIcon,
     },
   ];
-  console.log(pathname, buttons);
   return (
     <div className={styles.menu}>
       {buttons.map((button) => (
