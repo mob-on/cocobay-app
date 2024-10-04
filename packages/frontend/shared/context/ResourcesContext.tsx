@@ -1,11 +1,9 @@
 "use client";
 import { GameDataDto } from "@shared/src/dto/gameData.dto";
-import { UserDto } from "@shared/src/dto/user.dto";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { GAME_DATA_QUERY_KEY, useGameDataApi } from "../api/useGameDataApi";
 import useLogger from "../hooks/useLogger";
-import useUserService, { USER_QUERY_KEY } from "../services/useUserService";
 import { useErrorContext } from "./ErrorContext";
 import { useStoredField } from "./LocalStorageContext";
 
@@ -46,7 +44,6 @@ export const ResourcesProvider = ({ children }) => {
   const [resources, setResources] = useState<IResourcesContextResources>({}); // { resource1: 'pending', resource2: 'loaded', ... }
   const logger = useLogger("ResourcesProvider");
   const gameDataApi = useGameDataApi();
-  const { login } = useUserService();
 
   const updateResourceStatus = (
     resourceName: string,
@@ -108,11 +105,6 @@ export const ResourcesProvider = ({ children }) => {
     setIsDataRequested(false);
     const apiToLoad: ResourceToLoad<any>[] = [
       {
-        fn: login,
-        name: USER_QUERY_KEY,
-        errorMessage: "Log in failed. Try again later.",
-      } as ResourceToLoad<UserDto>,
-      {
         fn: gameDataApi.get,
         name: GAME_DATA_QUERY_KEY,
         errorMessage: "Failed to load game data. Try again later.",
@@ -133,6 +125,8 @@ export const ResourcesProvider = ({ children }) => {
       }));
     if (errors.length > 0) {
       logger.error("Got resource errors", errors);
+
+      // we only show the first error to the user, to not overwhelm them and the UI
       errorContext.showErrorScreen({
         message: errors[0].errorMessage as string,
         dismissable: false,
