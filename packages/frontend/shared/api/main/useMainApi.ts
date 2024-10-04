@@ -1,7 +1,7 @@
+import { UserDto } from "@shared/src/dto/user.dto";
 import useLogger from "@src/shared/hooks/useLogger";
 
 import { useMainApiConfig } from "./config";
-import { UserDto } from "./dto/user.dto";
 
 export const useMainApi = (baseUrl?: string) => {
   const [axios] = useMainApiConfig(baseUrl);
