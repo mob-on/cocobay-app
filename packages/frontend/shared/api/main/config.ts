@@ -1,4 +1,5 @@
 import { Config } from "@config/index";
+import { UserDto } from "@shared/src/dto/user.dto";
 import { useStoredField } from "@src/shared/context/LocalStorageContext";
 import useLogger from "@src/shared/hooks/useLogger";
 import { Feature } from "@src/shared/lib/FeatureFlags";
@@ -6,9 +7,13 @@ import useUserService from "@src/shared/services/useUserService";
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { useMemo } from "react";
 
-const setupLoginInterceptor = (axiosInstance: AxiosInstance) => {
+const setupLoginInterceptor = (
+  axiosInstance: AxiosInstance,
+  login: (_?: number) => Promise<UserDto>,
+) => {
   const logger = useLogger("setupLoginInterceptor");
-  const { login } = useUserService();
+
+  logger.debug("all ok?");
 
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -58,8 +63,12 @@ const getAxiosDefaultWrapper = (
 
 export const useMainApiConfig = (baseUrl?: string) => {
   const [apiUrl, axiosWrapper] = getAxiosDefaultWrapper(baseUrl);
+  const { login } = useUserService();
 
-  return useMemo(() => [setupLoginInterceptor(axiosWrapper())], [apiUrl]);
+  return useMemo(
+    () => [setupLoginInterceptor(axiosWrapper(), login)],
+    [apiUrl],
+  );
 };
 
 export const useMainApiConfigAnonymous = (baseUrl?: string) => {
