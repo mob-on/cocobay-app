@@ -1,7 +1,6 @@
 const Color = require("color");
 const fs = require("fs");
 
-let colors = {};
 const css = fs.readFileSync("./styles/theme.css", "utf-8");
 
 // const unwrapMatched = (matched, unwrapped) => {}
@@ -74,8 +73,9 @@ const getVarColor = (string) => {
 
 module.exports = {
   plugins: {
-    "postcss-color-mod-function": {},
+    tailwindcss: {},
     autoprefixer: {},
+    "postcss-color-mod-function": {},
     "postcss-functions": {
       functions: {
         lighten(color, amount) {
