@@ -15,7 +15,7 @@ import { LoggedInUser } from "./logged-in-user-data";
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(
-    private readonly configService: ConfigService,
+    private readonly config: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -32,7 +32,8 @@ export class JwtAuthGuard implements CanActivate {
 
     try {
       const payload = this.jwtService.verify<LoggedInUser>(token, {
-        secret: this.configService.get<ConfigSecrets>("secrets").jwtSecret,
+        secret: this.config.get<ConfigSecrets>("secrets").jwtSecret,
+        maxAge: `${this.config.get<number>("session.expiryMinutes")}m`,
       });
       request["user"] = payload;
     } catch {

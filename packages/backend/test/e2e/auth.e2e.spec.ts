@@ -5,8 +5,9 @@ import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth
 import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
 import { AuthModule } from "src/auth/auth.module";
+import { JwtAuthGuard } from "src/auth/jwt-auth-guard";
 import { User } from "src/user/model/user.model";
-import { UserModule } from "src/user/user.module";
+import { mockJwtAuthGuard } from "test/fixtures/config/mock-jwt-auth";
 import { createValidUser } from "test/fixtures/model/user.data";
 import { apiCreateUser } from "test/fixtures/rest/user";
 import {
@@ -18,18 +19,22 @@ import { ApiSetup, setupApi } from "test/setup/setup";
 describe("AuthController", () => {
   let setup: ApiSetup;
   let api: TestAgent;
-  let configService: ConfigService;
+  let config: ConfigService;
   let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
     process.env.JWT_SECRET = faker.string.alphanumeric(64);
 
-    setup = await setupApi({
-      imports: [AuthModule, UserModule],
-    });
+    setup = await setupApi(
+      {
+        imports: [AuthModule],
+      },
+      (module) =>
+        module.overrideGuard(JwtAuthGuard).useValue(mockJwtAuthGuard()),
+    );
 
     api = setup.api;
-    configService = setup.app.get(ConfigService);
+    config = setup.app.get(ConfigService);
     userModel = getModelForClass(User);
   });
 
@@ -49,9 +54,10 @@ describe("AuthController", () => {
       const user = createValidUser({
         id: userId.toString(),
       });
+
       await apiCreateUser(api, user);
 
-      configureTelegramForSuccess(configService);
+      configureTelegramForSuccess(config);
 
       await api
         .post("/v1/auth/telegram/login")
@@ -77,7 +83,7 @@ describe("AuthController", () => {
       });
       await apiCreateUser(api, user);
 
-      configureTelegramForSuccess(configService);
+      configureTelegramForSuccess(config);
 
       await api
         .post("/v1/auth/telegram/login")

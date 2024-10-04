@@ -11,8 +11,8 @@ import { Test, TestingModule, TestingModuleBuilder } from "@nestjs/testing";
 import * as request from "supertest";
 import TestAgent from "supertest/lib/agent";
 import configuration from "@config/configuration";
+import { configureMainApiNestApp } from "src/bootstrap-config";
 import { FeatureModule } from "src/common/feature-flags/feature-flag.module";
-import { configureMainApiNestApp } from "src/main-api-bootstrap-config";
 import { setupMockDatabase } from "./mongodb";
 
 export interface DBSetup {

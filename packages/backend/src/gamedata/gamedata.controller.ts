@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker";
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, UseGuards } from "@nestjs/common";
 import { GameDataDto } from "@shared/src/dto/gameData.dto";
 import { Build, Friend } from "@shared/src/interfaces";
+import { JwtAuthGuard } from "src/auth/jwt-auth-guard";
 
 const getRandomDateInTheNextHour = () =>
   faker.date
@@ -46,6 +47,7 @@ const friends: Friend[] = new Array(faker.number.int({ min: 0, max: 10 }))
   });
 
 @Controller("/gamedata")
+@UseGuards(JwtAuthGuard)
 export class GameDataController {
   constructor() {}
 

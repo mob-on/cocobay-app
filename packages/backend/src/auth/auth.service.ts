@@ -1,4 +1,5 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { UserDto } from "@shared/src/dto/user.dto";
 import { InitData } from "@telegram-apps/init-data-node";
@@ -9,10 +10,9 @@ import { LoggedInUser } from "./logged-in-user-data";
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(AuthService.name);
-
   constructor(
     private userService: UserService,
+    private config: ConfigService,
     private jwtService: JwtService,
   ) {}
 
@@ -39,6 +39,7 @@ export class AuthService {
       user: userObj,
       token: this.jwtService.sign({ id: userId } as LoggedInUser, {
         secret: process.env.JWT_SECRET,
+        expiresIn: `${this.config.get<number>("session.expiryMinutes")}m`,
       }),
     } as TelegramJwtDto;
   }

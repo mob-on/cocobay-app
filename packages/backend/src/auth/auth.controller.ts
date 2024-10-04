@@ -7,6 +7,7 @@ import {
   Post,
   Res,
 } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { BACKEND_JWT_COOKIE_NAME } from "@shared/src/cookie/auth";
 import { InitData } from "@telegram-apps/init-data-node";
 import { Response } from "express";
@@ -14,10 +15,13 @@ import { TelegramInitDataPipeTransform } from "src/telegram/init-data/telegram-i
 import { TelegramWebappAuthDtoValid } from "src/telegram/init-data/valid-init-data.dto";
 import { AuthService } from "./auth.service";
 
+const MINUTE = 1000 * 60;
+
 @Controller("/auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
+    private readonly config: ConfigService,
     private readonly telegramInitDataTransformer: TelegramInitDataPipeTransform,
   ) {}
 
@@ -48,6 +52,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
+      maxAge: this.config.get<number>("session.expiryMinutes") * MINUTE,
     });
 
     return loginResult;

@@ -1,7 +1,7 @@
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { configureMainApiNestApp } from "./main-api-bootstrap-config";
+import { configureMainApiNestApp } from "./bootstrap-config";
 
 async function bootstrap() {
   const logger = new Logger("Main");

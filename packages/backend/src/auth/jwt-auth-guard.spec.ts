@@ -23,7 +23,7 @@ describe("JwtAuthGuard", () => {
 
   let setup: ApiSetup;
   let api: TestAgent;
-  let configService: ConfigService;
+  let config: ConfigService;
   let mockController: MockController;
   let jwtService: JwtService;
 
@@ -36,7 +36,7 @@ describe("JwtAuthGuard", () => {
     api = setup.api;
 
     mockController = setup.module.get(MockController);
-    configService = setup.module.get(ConfigService);
+    config = setup.module.get(ConfigService);
     jwtService = setup.module.get(JwtService);
   });
 
@@ -68,7 +68,7 @@ describe("JwtAuthGuard", () => {
         secret,
       },
     );
-    configService.set("secrets.jwtSecret", secret);
+    config.set("secrets.jwtSecret", secret);
 
     await api
       .get("/v1/mock/auth")
@@ -85,7 +85,7 @@ describe("JwtAuthGuard", () => {
       },
     );
     // Set the secret to something different than the token
-    configService.set("secrets.jwtSecret", faker.string.alphanumeric(64));
+    config.set("secrets.jwtSecret", faker.string.alphanumeric(64));
 
     await api
       .get("/v1/mock/auth")
@@ -101,7 +101,7 @@ describe("JwtAuthGuard", () => {
         secret,
       },
     );
-    configService.set("secrets.jwtSecret", secret);
+    config.set("secrets.jwtSecret", secret);
 
     await api
       .get("/v1/mock/auth")
@@ -118,7 +118,24 @@ describe("JwtAuthGuard", () => {
       },
     );
     // Set the secret to something different than the token
-    configService.set("secrets.jwtSecret", faker.string.alphanumeric(64));
+    config.set("secrets.jwtSecret", faker.string.alphanumeric(64));
+
+    await api
+      .get("/v1/mock/auth")
+      .set("Authorization", `Bearer ${token}`)
+      .expect(401);
+  });
+
+  it("should reject calls using an expired token", async () => {
+    const secret = faker.string.alphanumeric(64);
+    const token = jwtService.sign(
+      { id: faker.string.numeric() } as LoggedInUser,
+      {
+        secret,
+        expiresIn: "-30m",
+      },
+    );
+    config.set("secrets.jwtSecret", secret);
 
     await api
       .get("/v1/mock/auth")
