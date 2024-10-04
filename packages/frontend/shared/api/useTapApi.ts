@@ -1,6 +1,7 @@
 import { TapDto } from "@shared/src/dto/tap.dto";
 import { MutationKey, useMutation } from "@tanstack/react-query";
 
+import { extractApiError } from "../lib/extractApiError";
 import { ITaps, ITapSyncData } from "../services/useTapsService";
 import { useMainApiConfig } from "./main/config";
 
@@ -27,6 +28,7 @@ const getTaps = (): Promise<ITaps> => {
   });
 };
 
+// TODO: keep this as axios-only, and move mutations to tap service when we implement it!
 const syncTaps = () => {
   const [axios] = useMainApiConfig();
 
@@ -43,8 +45,8 @@ const syncTaps = () => {
           throw new Error("Failed to track events");
         }
         return response.data;
-      } catch (e: unknown) {
-        throw e;
+      } catch (e) {
+        throw extractApiError(e);
       }
     },
     mutationKey: SyncMutationKey,

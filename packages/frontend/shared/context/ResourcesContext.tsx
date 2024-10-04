@@ -14,6 +14,8 @@ type IResourcesContextResourceStatus = "pending" | "loaded" | "errored";
 export interface Resource<T> {
   status: IResourcesContextResourceStatus;
   data?: T;
+  errorMessage?: string;
+  error?: Error;
 }
 
 export interface IResourcesContext {
@@ -31,6 +33,7 @@ export interface IResourcesContextResources {
 
 interface ResourceToLoad<T> {
   name: string;
+  errorMessage: string;
   fn: () => Promise<T>;
 }
 
@@ -86,8 +89,12 @@ export const ResourcesProvider = ({ children }) => {
           const data = await resource.fn();
           updatedResources[resource.name] = { status: "loaded", data };
         } catch (error) {
-          logger.error(error);
-          updatedResources[resource.name] = { status: "errored", data: null };
+          updatedResources[resource.name] = {
+            status: "errored",
+            data: null,
+            errorMessage: resource.errorMessage,
+            error,
+          };
         }
       }),
     );
@@ -100,16 +107,38 @@ export const ResourcesProvider = ({ children }) => {
   useEffect(() => {
     setIsDataRequested(false);
     const apiToLoad: ResourceToLoad<any>[] = [
-      { fn: login, name: USER_QUERY_KEY } as ResourceToLoad<UserDto>,
+      {
+        fn: login,
+        name: USER_QUERY_KEY,
+        errorMessage: "Log in failed. Try again later.",
+      } as ResourceToLoad<UserDto>,
       {
         fn: gameDataApi.get,
         name: GAME_DATA_QUERY_KEY,
+        errorMessage: "Failed to load game data. Try again later.",
       } as ResourceToLoad<GameDataDto>,
     ];
     // Initialize all resources we know for sure we'll need.
     initializeResources(apiToLoad);
     setIsDataRequested(true);
   }, [mainApiBaseUrl]);
+
+  useEffect(() => {
+    const errors = Object.entries(resources)
+      .filter(([, resource]) => resource.status === "errored")
+      .map(([name, resource]) => ({
+        name,
+        errorMessage: resource.errorMessage,
+        error: resource.error,
+      }));
+    if (errors.length > 0) {
+      logger.error("Got resource errors", errors);
+      errorContext.showErrorScreen({
+        message: errors[0].errorMessage as string,
+        dismissable: false,
+      });
+    }
+  }, [resources]);
 
   // if we haven't requested the data to load yet, our resource list might be empty.
   const allLoaded =
