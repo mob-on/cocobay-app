@@ -1,211 +1,152 @@
 "use client";
 import { GameDataDto } from "@shared/src/dto/gameData.dto";
-import { UserDto } from "@shared/src/dto/user.dto";
-import { LoadingScreen } from "@src/components/LoadingScreen";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { GAME_DATA_QUERY_KEY, useGameDataApi } from "../api/useGameDataApi";
 import useLogger from "../hooks/useLogger";
-import useUserService, { LOGIN_QUERY_KEY } from "../services/useUserService";
 import { useErrorContext } from "./ErrorContext";
-import { useStoredApiUrl } from "./LocalStorageContext";
+import { useStoredField } from "./LocalStorageContext";
 
-type ResourceStatus = "pending" | "loaded" | "errored";
+type IResourcesContextResourceStatus = "pending" | "loaded" | "errored";
 
 export interface Resource<T> {
-  name: string;
-  status: ResourceStatus;
-  data: T | null;
-  promise: Promise<T>;
+  status: IResourcesContextResourceStatus;
+  data?: T;
+  errorMessage?: string;
   error?: Error;
 }
 
-interface ResourceContext {
+export interface IResourcesContext {
   allLoaded: boolean;
-  updateResourceStatus: <T>(
+  updateResourceStatus: (
     resourceName: string,
-    status: ResourceStatus,
-    data?: T,
+    status: IResourcesContextResourceStatus,
   ) => void;
-  resources: Record<string, Resource<any>>;
+  resources: IResourcesContextResources;
+}
+
+export interface IResourcesContextResources {
+  [key: string]: Resource<any>;
 }
 
 interface ResourceToLoad<T> {
   name: string;
+  errorMessage: string;
   fn: () => Promise<T>;
 }
 
-const cache: Record<
-  string,
-  { data: any; promise: Promise<void>; status: ResourceStatus; error?: Error }
-> = {};
+const ResourcesContext = createContext({} as IResourcesContext);
 
-const ResourcesContext = createContext({} as ResourceContext);
-
-/**
- * Returns an array of Resource objects for the given resourcesToLoad.
- * If a resource has already been loaded, it will be returned immediately.
- * If a resource has not yet been loaded, a promise for the resource will be
- * added to the cache and returned.
- * If any of the resources are still pending (i.e. not loaded or errored), this
- * function will throw a promise that will resolve when all resources have
- * finished loading.
- */
-const useMultipleResources = <T extends any[]>(
-  resources: ResourceToLoad<T[number]>[],
-): Resource<T[number]>[] => {
-  if (typeof window === "undefined") return [];
-
-  const cachedResources = resources.map((resource) => {
-    if (cache[resource.name]) {
-      return {
-        name: resource.name,
-        status: cache[resource.name].status,
-        data: cache[resource.name].data as T[number],
-        promise: cache[resource.name].promise as Promise<T[number]>,
-      };
-    }
-
-    const promise = resource
-      .fn()
-      .then((data: T[number]) => {
-        cache[resource.name] = { data, promise, status: "loaded" };
-      })
-      .catch((error) => {
-        cache[resource.name] = {
-          data: null,
-          promise,
-          status: "errored",
-          error,
-        };
-      });
-
-    cache[resource.name] = { data: null, promise, status: "pending" };
-
-    return {
-      name: resource.name,
-      status: "pending" as ResourceStatus,
-      data: null as T[number] | null,
-      promise: promise as Promise<T[number]>,
-    };
-  });
-
-  const pendingPromises = cachedResources
-    .filter((resource) => resource.status === "pending")
-    .map((resource) => resource.promise);
-
-  if (pendingPromises.length > 0) throw Promise.all(pendingPromises);
-
-  return cachedResources;
-};
-
-export const ResourcesProvider = ({ children }: { children: ReactNode }) => {
-  const [mainApiBaseUrl] = useStoredApiUrl();
-  const [isDataRequested, setIsDataRequested] = useState(false);
-  const [resources, setResources] = useState<Record<string, Resource<unknown>>>(
-    {} as Record<string, Resource<unknown>>,
-  );
-  const logger = useLogger("ResourcesProvider");
+export const ResourcesProvider = ({ children }) => {
   const errorContext = useErrorContext();
+  const [mainApiBaseUrl] = useStoredField("API_BASE_URL");
+  const [isDataRequested, setIsDataRequested] = useState(false);
+  const [resources, setResources] = useState<IResourcesContextResources>({}); // { resource1: 'pending', resource2: 'loaded', ... }
+  const logger = useLogger("ResourcesProvider");
   const gameDataApi = useGameDataApi();
-  const { login } = useUserService();
 
-  const updateResourceStatus = useCallback(
-    <T,>(resourceName: string, status: ResourceStatus, data?: T) => {
-      setResources((prev) => {
-        if (
-          prev[resourceName]?.status === status &&
-          prev[resourceName]?.data === data
-        )
-          return prev;
-        return {
-          ...prev,
-          [resourceName]: { ...(prev[resourceName] || {}), status, data },
-        };
-      });
-    },
-    [],
-  );
+  const updateResourceStatus = (
+    resourceName: string,
+    status: IResourcesContextResourceStatus,
+    data?: any,
+  ) => {
+    setResources((prev) => {
+      const current = prev[resourceName];
+      if (current?.status === status && current?.data === data) {
+        return prev; // No change, avoid state update
+      }
+      return {
+        ...prev,
+        [resourceName]: {
+          ...(prev[resourceName] || {}),
+          status,
+          data,
+        },
+      };
+    });
+  };
 
-  const resourcesToLoad = useMemo(
-    () => [
-      { name: GAME_DATA_QUERY_KEY, fn: gameDataApi.get },
-      { name: LOGIN_QUERY_KEY, fn: login },
-    ],
-    [gameDataApi.get, login],
-  );
+  const initializeResources = async (resourceList: ResourceToLoad<any>[]) => {
+    const initialResources = resourceList.reduce((acc, resource) => {
+      acc[resource.name] = {
+        status: "pending",
+        data: null,
+      };
+      return acc;
+    }, {} as IResourcesContextResources);
 
-  const initialResources =
-    useMultipleResources<[GameDataDto, UserDto]>(resourcesToLoad);
+    setResources(initialResources);
 
+    const updatedResources = { ...initialResources };
+
+    // Load all resources concurrently
+    await Promise.all(
+      resourceList.map(async (resource) => {
+        try {
+          const data = await resource.fn();
+          updatedResources[resource.name] = { status: "loaded", data };
+        } catch (error) {
+          updatedResources[resource.name] = {
+            status: "errored",
+            data: null,
+            errorMessage: resource.errorMessage,
+            error,
+          };
+        }
+      }),
+    );
+
+    // Batch update the state
+    setResources(updatedResources);
+  };
+
+  // Initialize resources. If mainApiBaseUrl changes, we'll need to reload all resources.
   useEffect(() => {
-    if (mainApiBaseUrl) setIsDataRequested(true);
+    setIsDataRequested(false);
+    const apiToLoad: ResourceToLoad<any>[] = [
+      {
+        fn: gameDataApi.get,
+        name: GAME_DATA_QUERY_KEY,
+        errorMessage: "Failed to load game data. Try again later.",
+      } as ResourceToLoad<GameDataDto>,
+    ];
+    // Initialize all resources we know for sure we'll need.
+    initializeResources(apiToLoad);
+    setIsDataRequested(true);
   }, [mainApiBaseUrl]);
 
-  const allLoaded = useMemo(
-    () =>
-      isDataRequested &&
-      initialResources.every((resource) => resource.status === "loaded"),
-    [isDataRequested, initialResources],
-  );
-
-  const combinedResources = useMemo(() => {
-    return initialResources.reduce(
-      (acc, resource) => {
-        acc[resource.name] = resource as Resource<UserDto | GameDataDto>;
-        return acc;
-      },
-      { ...resources } as Record<
-        string,
-        Resource<unknown> & Resource<GameDataDto | UserDto>
-      >,
-    );
-  }, [initialResources, resources]);
-
   useEffect(() => {
-    const loginData = combinedResources[LOGIN_QUERY_KEY];
-    loginData.promise?.catch((e) => {
+    const errors = Object.entries(resources)
+      .filter(([, resource]) => resource.status === "errored")
+      .map(([name, resource]) => ({
+        name,
+        errorMessage: resource.errorMessage,
+        error: resource.error,
+      }));
+    if (errors.length > 0) {
+      logger.error("Got resource errors", errors);
+
+      // we only show the first error to the user, to not overwhelm them and the UI
       errorContext.showErrorScreen({
-        message: e.message,
+        message: errors[0].errorMessage as string,
         dismissable: false,
       });
-    });
-  }, [combinedResources[LOGIN_QUERY_KEY]]);
-
-  useEffect(() => {
-    const resourceErrors = Object.values(combinedResources)
-      .filter(
-        (resource) =>
-          resource.status === "errored" && !(resource.name === LOGIN_QUERY_KEY),
-      )
-      .map((item) => ({ name: item.name, error: item.error }));
-
-    if (resourceErrors.length > 0) {
-      errorContext.showErrorScreen({
-        message:
-          "Something went wrong while fetching data. Please try again later.",
-        dismissable: false,
-      });
-      logger.error("Resource errors", resourceErrors);
     }
-  }, [combinedResources]);
+  }, [resources]);
+
+  // if we haven't requested the data to load yet, our resource list might be empty.
+  const allLoaded =
+    isDataRequested &&
+    Object.values(resources).every((resource) => resource.status === "loaded");
 
   return (
     <ResourcesContext.Provider
-      value={{ updateResourceStatus, allLoaded, resources: combinedResources }}
+      value={{ updateResourceStatus, allLoaded, resources }}
     >
-      {allLoaded ? children : <LoadingScreen />}
+      {allLoaded ? children : <></>}
     </ResourcesContext.Provider>
   );
 };
 
 export const useResources = () =>
-  useContext(ResourcesContext) as ResourceContext;
+  useContext(ResourcesContext) as IResourcesContext;

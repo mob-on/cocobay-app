@@ -9,6 +9,10 @@ import TapCounter from "@src/components/TapCounter";
 import { useBuilds } from "@src/shared/context/BuildsContext";
 import useLogger from "@src/shared/hooks/useLogger";
 import usePopup from "@src/shared/hooks/usePopup";
+import {
+  ErrorWithMessage,
+  parseErrorMessage,
+} from "@src/shared/lib/extractApiError";
 import useBuildsService from "@src/shared/services/useBuildsService";
 import styles from "@src/styles/pages/build.module.css";
 import Popup from "antd-mobile/es/components/popup";
@@ -89,12 +93,11 @@ export default function Boosts() {
       } catch (e) {
         // Possibly, integrate logger.error with the tracker? Or create a new logger method like `criticalError`?
         // Or maybe we don't need this with a error transport? Let's think about it!
-        if (typeof e !== "string") {
-          logger.error("Got a critical error!", e);
-        }
+        if (e instanceof ErrorWithMessage) logger.error(e.message, e.instance);
+        else logger.error(e);
         Toast.show({
           icon: "fail",
-          content: e,
+          content: parseErrorMessage(e),
         });
       }
     } else {

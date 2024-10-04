@@ -1,20 +1,13 @@
-import _object from "lodash/object";
-
 import baseConfig from "./default";
 //eslint-disable-next-line import/no-unresolved
 import localConfig from "./local";
 import prodConfig from "./prod";
 import stageConfig from "./stage";
 
-interface ConfigSettings {
-  env: string; //"local" | "stage" | "prod"
+export interface ConfigSettings {
+  env: "local" | "stage" | "prod";
   features?: { [key: string]: boolean };
-
-  apis: {
-    main: {
-      baseUrl: string;
-    };
-  };
+  apiBaseUrl?: string;
 }
 
 export const Config = ((): ConfigSettings => {
@@ -31,5 +24,5 @@ export const Config = ((): ConfigSettings => {
       break;
   }
 
-  return _object.merge(baseConfig, config);
+  return { ...baseConfig, ...config } as ConfigSettings;
 })();

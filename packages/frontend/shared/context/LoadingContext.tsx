@@ -1,7 +1,7 @@
 "use client";
 
 import { LoadingScreen } from "@src/components/LoadingScreen";
-import { createContext, useContext, useState } from "react";
+import { createContext, Suspense, useContext, useState } from "react";
 
 export interface ILoadingContext {
   shouldShowLoading: boolean;
@@ -21,7 +21,6 @@ export const LoadingContextProvider: React.FC<{
 
   const hideLoading = () => setShouldShowLoading(false);
   const showLoading = () => setShouldShowLoading(true);
-
   return (
     <LoadingContext.Provider
       value={{

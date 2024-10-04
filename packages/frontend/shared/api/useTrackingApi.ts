@@ -1,9 +1,10 @@
 import { MutationKey, useMutation } from "@tanstack/react-query";
 
-import useLogger from "../hooks/useLogger";
 import { ITrackerEvent } from "../hooks/useTracking";
+import { extractApiError } from "../lib/extractApiError";
 import { useMainApiConfig } from "./main/config";
 
+// NOTE: possibly move the mutation to the analytics service, and use a separate axios instance
 export const useTrackingApi = () => {
   const [axios] = useMainApiConfig();
 
@@ -14,12 +15,9 @@ export const useTrackingApi = () => {
           "/v1/analytics/track",
           events,
         );
-        if (response.status !== 200) {
-          throw new Error("Failed to track events");
-        }
         return response.data;
-      } catch (e: unknown) {
-        throw e;
+      } catch (e) {
+        throw extractApiError(e);
       }
     },
     mutationKey: ["analytics"] as MutationKey,

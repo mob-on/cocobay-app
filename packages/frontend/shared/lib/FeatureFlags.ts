@@ -1,6 +1,5 @@
 import { Config } from "@config/index";
-
-import { LocalStorage } from "../LocalStorage";
+import { LocalStorage } from "@src/shared/context/LocalStorageContext";
 
 const FeatureConfig = {
   DEV_MODE: Config.features?.devMode,

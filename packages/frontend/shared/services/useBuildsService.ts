@@ -6,7 +6,7 @@ import { useBuildsApi } from "../api/useBuildsApi";
 import { useBuilds } from "../context/BuildsContext";
 import { useGameState } from "../context/GameStateContext";
 import useLogger from "../hooks/useLogger";
-import extractApiError from "../lib/extractApiError";
+import { extractApiError } from "../lib/extractApiError";
 
 const useBuildsService = () => {
   const logger = useLogger("useBuildsService");
