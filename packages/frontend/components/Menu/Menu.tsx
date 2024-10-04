@@ -18,7 +18,7 @@ const Menu: React.FC = () => {
   const buttons = [
     {
       text: "Home",
-      path: "/",
+      path: "/home",
       iconPath: HomeIcon,
     },
     {
@@ -37,27 +37,16 @@ const Menu: React.FC = () => {
       iconPath: FriendsIcon,
     },
   ];
-
+  console.log(pathname, buttons);
   return (
-    <div
-      style={{ display: allLoaded ? "flex" : "none" }}
-      className={styles.main}
-    >
-      <div className={styles.menu}>
-        {buttons.map((button) => (
-          <MenuButton
-            isSelected={
-              (!(button.path === "/") &&
-                pathname
-                  .replaceAll("/", "")
-                  .startsWith(button.path.replaceAll("/", ""))) ||
-              (isRoot && pathname === button.path)
-            }
-            key={button.text}
-            {...button}
-          />
-        ))}
-      </div>
+    <div className={styles.menu}>
+      {buttons.map((button) => (
+        <MenuButton
+          isSelected={pathname.startsWith(button.path)}
+          key={button.text}
+          {...button}
+        />
+      ))}
     </div>
   );
 };

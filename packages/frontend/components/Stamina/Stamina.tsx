@@ -2,11 +2,9 @@
 
 import { FrontendGameState } from "@shared/src/interfaces";
 import { useGameState } from "@src/shared/context/GameStateContext";
-import styles from "@src/styles/components/main/stamina.module.css";
-import Link from "next/link";
 import React from "react";
 
-import Palm from "../svg/Palm";
+import Battery from "../svg/Battery";
 
 export interface IStaminaData {
   stamina: number;
@@ -19,15 +17,14 @@ const Leveling: React.FC = () => {
   const { energy, maxEnergy } = gameState;
 
   return (
-    <div className={styles.stamina}>
-      <Link href="/boosts/">
-        <Palm style={{ width: "64px", height: "64px" }} />
-      </Link>
-      <p>
-        <span>
-          {energy} / {maxEnergy}
-        </span>
-      </p>
+    <div className="flex flex-col gap-half-inner self-end">
+      <Battery className="w-auto h-[48px]" />
+      <span className="absolute text-white bottom-0">
+        {energy}/{maxEnergy}
+      </span>
+      <span className="opacity-0">
+        {maxEnergy}/{maxEnergy}
+      </span>
     </div>
   );
 };

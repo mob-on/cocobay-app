@@ -1,5 +1,6 @@
 "use client";
 
+import { BoostData } from "@src/components/BoostData";
 import HomeAvatar from "@src/components/HomeAvatar";
 import Leveling from "@src/components/Leveling";
 import Stamina from "@src/components/Stamina";
@@ -43,8 +44,9 @@ export default function PageContent() {
           </section>
         </>
       </TapsEffectsContextProvider>
-      <footer className={styles.footer}>
-        <Leveling />
+      <footer className={styles.footer + " gap-inner-constant"}>
+        <Leveling className="self-end" />
+        <BoostData className="ml-auto" />
         <Stamina />
       </footer>
     </>
