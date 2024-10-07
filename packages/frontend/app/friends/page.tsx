@@ -1,13 +1,13 @@
 "use client";
 
 import CopyOutlined from "@ant-design/icons/CopyOutlined";
+import { useFriends } from "@contexts/Friends";
 import coco from "@media/coco/coco-pink-swag.svg";
 import FriendsList from "@src/components/Friends/FriendsList";
 import Button from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import { ICardVariant } from "@src/components/shared/Card/Card";
 import Cost from "@src/components/shared/Cost";
-import { useFriends } from "@src/shared/context/FriendsContext";
 import styles from "@src/styles/pages/friends.module.css";
 import Image from "next/image";
 import Link from "next/link";

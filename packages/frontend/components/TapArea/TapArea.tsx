@@ -1,5 +1,13 @@
 "use client";
 
+import { useGameState } from "@contexts/GameState";
+import {
+  ITapEvent,
+  TAP_EFFECTS_THROTTLE,
+  TAP_EFFECTS_TIMEOUT,
+  useTapEffects,
+} from "@contexts/TapEffects";
+import useTelegram from "@hooks/useTelegram";
 import lvl1 from "@media/hero/hero-level1.svg";
 import lvl2 from "@media/hero/hero-level2.svg";
 import lvl3 from "@media/hero/hero-level3.svg";
@@ -11,13 +19,6 @@ import lvl8 from "@media/hero/hero-level8.svg";
 import lvl9 from "@media/hero/hero-level9.svg";
 import lvl10 from "@media/hero/hero-level10.svg";
 import { FrontendGameState } from "@shared/src/interfaces";
-import { useGameState } from "@src/shared/context/GameStateContext";
-import {
-  TAP_EFFECTS_THROTTLE,
-  TAP_EFFECTS_TIMEOUT,
-  useTaps,
-} from "@src/shared/context/TapEffectsContext";
-import useTelegram from "@src/shared/hooks/useTelegram";
 import styles from "@src/styles/components/tapArea/tapArea.module.css";
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -39,15 +40,6 @@ const heroAvatars = [
   lvl9,
   lvl10,
 ];
-
-export interface ITapEvent {
-  id: string;
-  x: number;
-  y: number;
-  time: DOMHighResTimeStamp; // Timestamp with high precision
-  timeoutId?: NodeJS.Timeout; // Timeout ID for cancellation (timeout removes the event from the list of taps)
-  pointCount: number;
-}
 
 /**
  * Component that displays a Coco image and triggers tap feedback when clicked.
@@ -88,7 +80,7 @@ const TapArea: React.FC = () => {
     }
   }, [handleTapFeedback]);
 
-  const { taps: visualTaps = [], setTaps: setVisualTaps } = useTaps();
+  const { taps = [], addTap: addTap } = useTapEffects();
   const { gameState = {} as FrontendGameState, dispatchGameState } =
     useGameState();
   const { energy, pointsPerTap } = gameState;
@@ -98,8 +90,8 @@ const TapArea: React.FC = () => {
 
   // We need this for cleanup, so we keep a mutable copy of the taps to prevent recreating effects when possible
   useEffect(() => {
-    visualTapRef.current = visualTaps;
-  }, [visualTaps]);
+    visualTapRef.current = taps;
+  }, [taps]);
 
   const hasEnergyToTap = energy >= pointsPerTap;
 
@@ -125,30 +117,16 @@ const TapArea: React.FC = () => {
         id: tapId,
         x: clientX,
         y: clientY,
-        time: performance.now(),
+        timestamp: performance.now(),
         pointCount: pointsPerTap,
       };
 
       dispatchGameState({ type: "REGISTER_TAP" });
       throttledHandleTapFeedback();
 
-      setVisualTaps((oldTaps) => [...oldTaps, tapEvent]);
-
-      // TODO: Check performance implications of this method. I would assume running Array.filter() on every click is inefficient.
-      // Possible solution would be to group all completed taps into a single array and then filter the completed taps from the list.
-      const timeoutId = setTimeout(() => {
-        setVisualTaps((oldTaps) => oldTaps.filter((tap) => tap.id !== tapId));
-      }, TAP_EFFECTS_TIMEOUT);
-
-      // Store timeout ID for potential cancellation
-      tapEvent.timeoutId = timeoutId;
+      addTap(tapEvent);
     },
-    [
-      dispatchGameState,
-      setVisualTaps,
-      pointsPerTap,
-      throttledHandleTapFeedback,
-    ],
+    [dispatchGameState, pointsPerTap, throttledHandleTapFeedback],
   );
 
   const cleanup = useCallback(() => {
@@ -157,12 +135,10 @@ const TapArea: React.FC = () => {
         "touchstart",
         lastTapHandler.current,
       );
-      visualTapRef.current.forEach((tap) => clearTimeout(tap.timeoutId));
-      setVisualTaps([]);
       clearTimeout(classTimeoutIdRef.current ?? undefined);
       classTimeoutIdRef.current = null;
     }
-  }, [setVisualTaps]);
+  }, []);
 
   // listen for touch events
   useEffect(() => {
@@ -178,7 +154,7 @@ const TapArea: React.FC = () => {
       });
     }
     return cleanup;
-  }, [tapAreaRef, handleTouchStart, setVisualTaps, cleanup]);
+  }, [tapAreaRef, handleTouchStart, cleanup]);
 
   return (
     <div

@@ -1,5 +1,5 @@
-import { useResources } from "@src/shared/context/ResourcesContext";
-import useTapsService from "@src/shared/services/useTapsService";
+import { useResources } from "@contexts/Resources";
+import useTapsService from "@services/useTaps.service";
 import { useEffect } from "react";
 
 /**

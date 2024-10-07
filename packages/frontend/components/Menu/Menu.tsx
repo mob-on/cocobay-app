@@ -1,8 +1,8 @@
+import { useResources } from "@contexts/Resources";
 import BuildIcon from "@media/icons/build.svg";
 import EarnIcon from "@media/icons/earn.svg";
 import FriendsIcon from "@media/icons/friends.svg";
 import HomeIcon from "@media/icons/home.svg";
-import { useResources } from "@src/shared/context/ResourcesContext";
 import styles from "@src/styles/components/menu/menu.module.css";
 import { usePathname } from "next/navigation";
 

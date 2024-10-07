@@ -1,9 +1,9 @@
 "use client";
 
+import useSelfCorrectingTimeout from "@hooks/useSelfCorrectingTimeout";
+import useTelegram from "@hooks/useTelegram";
 import { Boost, Build } from "@shared/src/interfaces";
-import useSelfCorrectingTimeout from "@src/shared/hooks/useSelfCorrectingTimeout";
-import useTelegram from "@src/shared/hooks/useTelegram";
-import TimeFormatter from "@src/shared/lib/TimeFormatter";
+import TimeFormatter from "@src/lib/TimeFormatter";
 import styles from "@src/styles/components/shared/card/card.module.css";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 

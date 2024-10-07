@@ -1,13 +1,22 @@
-import type { Boost, Build, Friend, GameState, Rewards } from "../interfaces";
+import type {
+  GameState,
+  GameData,
+  Boost,
+  Build,
+  Friend,
+  Rewards,
+} from "../interfaces";
+import { Combo } from "../interfaces/Combo.interface";
 import {
   IsBoost,
   IsBuild,
+  IsCombo,
   IsFriend,
   IsGameState,
   IsRewards,
 } from "../validation";
 
-export class GameDataDto {
+export class GameDataDto implements GameData {
   @IsGameState()
   gameState!: GameState;
 
@@ -19,6 +28,9 @@ export class GameDataDto {
 
   @IsFriend({ each: true })
   friends!: Friend[];
+
+  @IsCombo()
+  combo!: Combo;
 
   @IsRewards()
   rewards!: Rewards;

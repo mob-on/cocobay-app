@@ -1,8 +1,8 @@
 "use client";
 
+import { useGameState } from "@contexts/GameState";
 import { FrontendGameState } from "@shared/src/interfaces";
-import { useGameState } from "@src/shared/context/GameStateContext";
-import NumberFormatter from "@src/shared/lib/NumberFormatter";
+import NumberFormatter from "@src/lib/NumberFormatter";
 import styles from "@src/styles/components/tapCounter/tapCounter.module.css";
 import React, { useMemo } from "react";
 

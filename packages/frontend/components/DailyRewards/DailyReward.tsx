@@ -1,4 +1,4 @@
-import NumberFormatter from "@lib/NumberFormatter";
+import NumberFormatter from "@src/lib/NumberFormatter";
 import styles from "@styles/components/dailyRewards/dailyReward.module.css";
 import Image from "next/image";
 

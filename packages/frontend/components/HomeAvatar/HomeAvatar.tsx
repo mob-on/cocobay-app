@@ -1,7 +1,7 @@
 "use client";
 
 import Hero from "@media/coco/coco-pink-swag.svg";
-import { useUserData } from "@src/shared/context/UserContext";
+import useTelegram from "@src/hooks/useTelegram";
 import styles from "@src/styles/components/main/homeAvatar.module.css";
 import Avatar from "antd-mobile/es/components/avatar";
 import React from "react";
@@ -12,12 +12,14 @@ export interface IHomeAvatarData {
 }
 
 const HomeAvatar: React.FC = () => {
-  const { data } = useUserData();
-  const { username, firstName, avatarSrc } = data;
+  const [WebApp] = useTelegram();
+  const { user } = WebApp?.initDataUnsafe;
+  if (!user) return <></>;
+  const { username, photo_url, first_name } = user;
   return (
     <div className={styles.homeAvatar}>
-      <Avatar src={avatarSrc ?? Hero.src} />
-      <p className={styles.name}>{username ?? firstName}</p>
+      <Avatar src={photo_url ?? Hero.src} />
+      <p className={styles.name}>{username ?? first_name}</p>
     </div>
   );
 };

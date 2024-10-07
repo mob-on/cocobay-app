@@ -1,6 +1,6 @@
 "use client";
 
-import { useTaps } from "@src/shared/context/TapEffectsContext";
+import { useTapEffects } from "@contexts/TapEffects";
 import styles from "@src/styles/components/tapEffects/tapEffects.module.css";
 import React from "react";
 
@@ -36,7 +36,7 @@ const TapEffect: React.FC<ITapEffectProps> = ({ tap }) => {
  * @return {JSX.Element} Component that displays a list of tap effects.
  */
 const TapEffects: React.FC = () => {
-  const { taps = [] } = useTaps();
+  const { taps = [] } = useTapEffects();
   return (
     <div className={styles.tapEffects}>
       {taps.map((tap) => (

@@ -4,9 +4,9 @@ import "@styles/globals.css";
 import "@styles/theme.css";
 import "antd-mobile/es/global";
 
-import { LoadingContextProvider } from "@src/shared/context/LoadingContext";
-import { LocalStorageContextProvider } from "@src/shared/context/LocalStorageContext";
-import useTelegram from "@src/shared/hooks/useTelegram";
+import { LocalStorageProvider } from "@contexts/LocalStorage";
+import useTelegram from "@hooks/useTelegram";
+import { LoadingProvider } from "@src/contexts/Loading";
 import { Telegram } from "@twa-dev/types";
 import Head from "next/head";
 import Script from "next/script";
@@ -68,14 +68,14 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
           }}
           strategy="afterInteractive"
         />
-        <LoadingContextProvider>
-          <LocalStorageContextProvider>
+        <LoadingProvider>
+          <LocalStorageProvider>
             {/* we use this suspense to suspend our app until we finish lazy-loading all context providers */}
             <Suspense>
               <LayoutContent>{children}</LayoutContent>
             </Suspense>
-          </LocalStorageContextProvider>
-        </LoadingContextProvider>
+          </LocalStorageProvider>
+        </LoadingProvider>
       </body>
     </html>
   );

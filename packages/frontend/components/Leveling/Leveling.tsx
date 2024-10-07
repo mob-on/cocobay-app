@@ -1,10 +1,9 @@
 "use client";
 
+import { useGameState } from "@contexts/GameState";
 import { FrontendGameState } from "@shared/src/interfaces";
 import ProgressBar from "antd-mobile/es/components/progress-bar";
 import React from "react";
-
-import { useGameState } from "../../shared/context/GameStateContext";
 
 export interface ILevelingData {
   level: number;

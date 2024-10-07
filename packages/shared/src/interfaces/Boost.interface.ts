@@ -14,6 +14,7 @@ interface _Boost extends WithIcon {
   cost: number;
   type: BoostType;
   cooldownUntil?: Date;
+  action: BoostAction;
 }
 
 export interface UpgradeableBoost extends _Boost {
@@ -27,7 +28,6 @@ export interface ClaimableBoost extends _Boost {
   used: number;
   max: number;
   replenishedAt?: Date;
-  action: BoostAction;
 }
 
 export type Boost = UpgradeableBoost | ClaimableBoost;

@@ -1,9 +1,8 @@
+import { GameStateProvider } from "@contexts/GameState";
+import { ResourcesProvider } from "@contexts/Resources";
 import Menu from "@src/components/Menu";
 import Grid from "@src/components/svg/Grid";
 import TapCounterTimer from "@src/components/util/TapCounterTimer";
-import { GameStateContextProvider } from "@src/shared/context/GameStateContext";
-import { ResourcesProvider } from "@src/shared/context/ResourcesContext";
-import { UserContextProvider } from "@src/shared/context/UserContext";
 
 export default function ResourcesProviderContent({
   children,
@@ -12,16 +11,16 @@ export default function ResourcesProviderContent({
 }) {
   return (
     <ResourcesProvider>
-      <GameStateContextProvider>
+      <GameStateProvider>
         <>
           <main id="__main">
             <Grid id="__grid" />
             <TapCounterTimer />
-            <UserContextProvider>{children}</UserContextProvider>
+            {children}
           </main>
           <Menu />
         </>
-      </GameStateContextProvider>
+      </GameStateProvider>
     </ResourcesProvider>
   );
 }

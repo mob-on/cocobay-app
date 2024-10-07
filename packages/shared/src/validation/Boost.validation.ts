@@ -6,6 +6,7 @@ import {
 } from "class-validator";
 import type {
   Boost,
+  BoostAction,
   BoostType,
   ClaimableBoost,
   UpgradeableBoost,
@@ -20,35 +21,35 @@ import {
   SharedValidConstraint,
 } from "./_shared.validation";
 
-const getClaimableBoostFields = () => ({
+const sharedBoostFields = {
   id: pipe(isString, isNotEmpty),
   name: pipe(isString, isNotEmpty),
   description: pipe(isString, isNotEmpty),
   cost: isPositiveNumber,
+  iconSrc: pipe(isString, isNotEmpty),
+  action: isIn<BoostAction>(
+    "REPLENISH_ENERGY",
+    "PERMANENT_TAP_BOOST",
+    "PERMANENT_ENERGY_BOOST",
+  ),
+};
+
+const claimableBoostFields = {
+  ...sharedBoostFields,
   type: isIn<BoostType>("claimable"),
   used: isPositiveNumberOrZero,
   max: isPositiveNumber,
   replenishedAt: optional(isDate),
   cooldownUntil: optional(isDate),
-  iconSrc: pipe(isString, isNotEmpty),
-  action: isIn(
-    "REPLENISH_ENERGY",
-    "PERMANENT_TAP_BOOST",
-    "PERMANENT_ENERGY_BOOST",
-  ),
-});
+};
 
-const getUpgradeableBoostFields = () => ({
-  id: pipe(isString, isNotEmpty),
-  name: pipe(isString, isNotEmpty),
-  description: pipe(isString, isNotEmpty),
-  cost: isPositiveNumber,
+const upgradeableBoostFields = {
+  ...sharedBoostFields,
   type: isIn<BoostType>("upgradeable"),
   cooldownUntil: optional(isDate),
-  iconSrc: pipe(isString, isNotEmpty),
   level: isPositiveNumberOrZero,
   maxLevel: isPositiveNumber,
-});
+};
 
 export function IsClaimableBoost(validationOptions?: ValidationOptions) {
   return function (target: object, propertyName: string) {
@@ -58,7 +59,7 @@ export function IsClaimableBoost(validationOptions?: ValidationOptions) {
       options: validationOptions,
       constraints: [],
       validator: SharedValidConstraint<ClaimableBoost>(
-        getClaimableBoostFields(),
+        claimableBoostFields,
         propertyName,
       ),
     });
@@ -73,7 +74,7 @@ export function IsUpgradeableBoost(validationOptions?: ValidationOptions) {
       options: validationOptions,
       constraints: [],
       validator: SharedValidConstraint<UpgradeableBoost>(
-        getUpgradeableBoostFields(),
+        upgradeableBoostFields,
         propertyName,
       ),
     });
@@ -90,8 +91,8 @@ export function IsBoost(validationOptions?: ValidationOptions) {
       validator: SharedValidConstraint<Boost>(
         (boost: Boost) =>
           boost.type === "claimable"
-            ? getClaimableBoostFields()
-            : getUpgradeableBoostFields(),
+            ? claimableBoostFields
+            : upgradeableBoostFields,
         propertyName,
       ),
     });

@@ -1,7 +1,7 @@
 "use client";
 
+import { useFriends } from "@contexts/Friends";
 import FriendsList from "@src/components/Friends/FriendsList";
-import { useFriends } from "@src/shared/context/FriendsContext";
 import styles from "@src/styles/pages/friends/friends-all.module.css";
 import React from "react";
 

@@ -1,19 +1,16 @@
 "use client";
 
-import { Build } from "@shared/src/interfaces";
+import useLogger from "@hooks/useLogger";
+import usePopup from "@hooks/usePopup";
+import useBuildsService from "@services/useBuilds.service";
+import type { Build } from "@shared/src/interfaces";
 import BuildPopup from "@src/components/Build/BuildPopup";
 import DailyCombo from "@src/components/Build/DailyCombo";
 import Button from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import TapCounter from "@src/components/TapCounter";
-import { useBuilds } from "@src/shared/context/BuildsContext";
-import useLogger from "@src/shared/hooks/useLogger";
-import usePopup from "@src/shared/hooks/usePopup";
-import {
-  ErrorWithMessage,
-  parseErrorMessage,
-} from "@src/shared/lib/extractApiError";
-import useBuildsService from "@src/shared/services/useBuildsService";
+import { useBuilds } from "@src/contexts/Builds";
+import { ErrorWithMessage, parseErrorMessage } from "@src/lib/extractApiError";
 import styles from "@src/styles/pages/build.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import TabBar from "antd-mobile/es/components/tab-bar";

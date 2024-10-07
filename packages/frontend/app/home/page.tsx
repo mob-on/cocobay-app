@@ -1,6 +1,6 @@
 "use client";
 
-import { useLoadingScreen } from "@src/shared/context/LoadingContext";
+import { useLoadingScreen } from "@contexts/Loading";
 import { useEffect } from "react";
 
 import PageContent from "./pageContent";
