@@ -7,7 +7,7 @@ export type BoostAction =
 
 export type BoostType = "upgradeable" | "claimable";
 
-export interface Boost extends WithIcon {
+interface _Boost extends WithIcon {
   id: string;
   name: string;
   description: string;
@@ -16,16 +16,18 @@ export interface Boost extends WithIcon {
   cooldownUntil?: Date;
 }
 
-export interface UpgradeableBoost extends Boost {
+export interface UpgradeableBoost extends _Boost {
   maxLevel: number;
   level: number;
   type: "upgradeable";
 }
 
-export interface ClaimableBoost extends Boost {
+export interface ClaimableBoost extends _Boost {
   type: "claimable";
   used: number;
   max: number;
   replenishedAt?: Date;
   action: BoostAction;
 }
+
+export type Boost = UpgradeableBoost | ClaimableBoost;

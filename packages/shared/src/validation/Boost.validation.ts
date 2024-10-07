@@ -5,6 +5,7 @@ import {
   isDate,
 } from "class-validator";
 import type {
+  Boost,
   BoostType,
   ClaimableBoost,
   UpgradeableBoost,
@@ -86,8 +87,8 @@ export function IsBoost(validationOptions?: ValidationOptions) {
       propertyName: propertyName,
       options: validationOptions,
       constraints: [],
-      validator: SharedValidConstraint<UpgradeableBoost | ClaimableBoost>(
-        (boost: UpgradeableBoost | ClaimableBoost) =>
+      validator: SharedValidConstraint<Boost>(
+        (boost: Boost) =>
           boost.type === "claimable"
             ? getClaimableBoostFields()
             : getUpgradeableBoostFields(),

@@ -1,11 +1,4 @@
-import type {
-  Build,
-  ClaimableBoost,
-  Friend,
-  GameState,
-  Rewards,
-  UpgradeableBoost,
-} from "../interfaces";
+import type { Boost, Build, Friend, GameState, Rewards } from "../interfaces";
 import {
   IsBoost,
   IsBuild,
@@ -19,7 +12,7 @@ export class GameDataDto {
   gameState!: GameState;
 
   @IsBoost({ each: true })
-  boosts!: (UpgradeableBoost | ClaimableBoost)[];
+  boosts!: Boost[];
 
   @IsBuild({ each: true })
   builds!: Build[];
