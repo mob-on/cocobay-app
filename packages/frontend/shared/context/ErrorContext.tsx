@@ -28,12 +28,12 @@ export default ErrorContext;
 export const ErrorContextProvider: React.FC<{
   children: React.JSX.Element;
 }> = ({ children }) => {
-  const [error, setError] = useState<IAppError>({} as IAppError);
+  const [error, setError] = useState<IAppError | null>(null);
   const devMode = Feature.DEV_MODE;
 
   const closeHandler = useMemo(
     () =>
-      error.dismissable
+      error?.dismissable
         ? () => {
             setError({ message: "" } as IAppError);
             if (error.onDismiss) {
@@ -44,7 +44,7 @@ export const ErrorContextProvider: React.FC<{
     [error?.dismissable, error?.onDismiss],
   );
 
-  const showCloseButton = error.dismissable && closeHandler !== null;
+  const showCloseButton = error?.dismissable && closeHandler !== null;
 
   return (
     <ErrorContext.Provider
@@ -57,7 +57,7 @@ export const ErrorContextProvider: React.FC<{
     >
       {devMode ? (
         <>
-          {error.message && (
+          {error?.message && (
             <Popup
               position="bottom"
               visible={error?.message.length > 0}
