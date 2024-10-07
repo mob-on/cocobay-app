@@ -1,5 +1,11 @@
-import { IsInstance } from "class-validator";
-import type { Boost, Build, Friend, GameState, Rewards } from "../interfaces";
+import type {
+  Build,
+  ClaimableBoost,
+  Friend,
+  GameState,
+  Rewards,
+  UpgradeableBoost,
+} from "../interfaces";
 import {
   IsBoost,
   IsBuild,
@@ -7,17 +13,13 @@ import {
   IsGameState,
   IsRewards,
 } from "../validation";
-import { UserDto } from "./user.dto";
 
 export class GameDataDto {
-  @IsInstance(UserDto)
-  user!: UserDto;
-
   @IsGameState()
   gameState!: GameState;
 
   @IsBoost({ each: true })
-  boosts!: Boost[];
+  boosts!: (UpgradeableBoost | ClaimableBoost)[];
 
   @IsBuild({ each: true })
   builds!: Build[];
@@ -30,7 +32,6 @@ export class GameDataDto {
 
   constructor(
     {
-      user,
       gameState,
       boosts,
       builds,
@@ -38,7 +39,6 @@ export class GameDataDto {
       rewards,
     }: GameDataDto = {} as GameDataDto,
   ) {
-    if (user) this.user = user;
     if (gameState) this.gameState = gameState;
     if (boosts) this.boosts = boosts;
     if (builds) this.builds = builds;
