@@ -1,4 +1,4 @@
-import { WithAvatar } from "./_shared";
+import { WithAvatar } from "./_shared.interface";
 
 export interface Friend extends WithAvatar {
   id: string;
