@@ -22,7 +22,7 @@ export class UpgradeBoostDto {
 // Later, we extend this to include boost type, and its validator.
 export type BoostResponse = WithCombo<WithCurrentPoints<{ boost: Boost }>>;
 export class BoostResponseDto implements BoostResponse {
-  boost!: ClaimableBoost | UpgradeableBoost;
+  boost!: Boost;
 
   @IsNumber()
   currentPoints!: number;
