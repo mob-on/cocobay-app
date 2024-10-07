@@ -4,7 +4,7 @@
   --padding-inner: 20px;
   --padding-inner-constant: 20px;
   --padding-menu: 0px;
-  --padding-menu-inner: var(--padding) calc(var(--padding));
+  --padding-menu-inner: var(--padding);
   --menu-bottom: 0px;
   --menu-height: 83px;
   --header-height: 0;
