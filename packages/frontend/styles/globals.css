@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body,
 #__next {
@@ -64,6 +68,10 @@ body {
   .adm-progress-bar-fill {
     background: var(--gradient-primary) !important;
   }
+  .adm-space-item {
+    --gap-vertical: var(--padding-inner) !important;
+    --gap-horizontal: var(--padding-inner) !important;
+  }
   background-color: var(--body-bg);
   color: var(--color-white);
 }
@@ -100,36 +108,4 @@ h4 {
 
 h5 {
   font-size: 16px;
-}
-
-@media screen and (max-width: 400px), (max-height: 720px) {
-  :root {
-    --padding: 10px;
-    --padding-inner: 10px;
-    --tap-ring-width: 5px;
-  }
-
-  p {
-    font-size: 14px;
-  }
-
-  h1 {
-    font-size: 26px;
-  }
-
-  h2 {
-    font-size: 21px;
-  }
-
-  h3 {
-    font-size: 18px;
-  }
-
-  h4 {
-    font-size: 16px;
-  }
-
-  h5 {
-    font-size: 14px;
-  }
 }

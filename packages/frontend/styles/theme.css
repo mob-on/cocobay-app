@@ -2,8 +2,9 @@
 :root {
   --padding: 30px;
   --padding-inner: 20px;
+  --padding-inner-constant: 20px;
   --padding-menu: 0px;
-  --padding-menu-inner: var(--padding) calc(var(--padding) * 2);
+  --padding-menu-inner: var(--padding);
   --menu-bottom: 0px;
   --menu-height: 83px;
   --header-height: 0;
@@ -96,4 +97,36 @@
   --button-height: 64px;
 
   --friend-card-height: 75px;
+}
+
+@media screen and (max-width: 400px), (max-height: 720px) {
+  :root {
+    --padding: 10px;
+    --padding-inner: 5px;
+    --tap-ring-width: 5px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 21px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  h5 {
+    font-size: 14px;
+  }
 }
