@@ -11,7 +11,7 @@ import {
   optional,
   pipe,
   SharedValidConstraint,
-} from "./_shared";
+} from "./_shared.validation";
 
 export function IsFriend(validationOptions?: ValidationOptions) {
   return function (target: object, propertyName: string) {

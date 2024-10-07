@@ -12,7 +12,7 @@ import {
   isPositiveNumberOrZero,
   pipe,
   SharedValidConstraint,
-} from "./_shared";
+} from "./_shared.validation";
 
 export function IsGameState(validationOptions?: ValidationOptions) {
   return function (target: object, propertyName: string) {

@@ -1,14 +1,26 @@
 import {
-  isNumber,
+  isString as _isString,
+  isDate as _isDate,
   isPositive,
   ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from "class-validator";
 
+// Date fields are validated as strings on the backend, because validation happens before interceptors.
+type DateOrStringFields<T> = {
+  [key in keyof T]: T[key] extends Date ? Date | string : T[key];
+};
+
+export type RequiredFields<T> = {
+  [key in keyof Required<DateOrStringFields<T>>]: (value: T[key]) => boolean;
+};
+
 /**
  * A shared validation constraint that checks if the given required fields
- * of the given type are present in the object.
+ * of the given type are present in the object. If we pass a function as the
+ * requiredFields, it will allow you to dynamically change the required fields
+ * based on the object.
  *
  * @param requiredFields - an object with key and type or validation function properties
  * @param name - the name of the validation constraint
@@ -16,7 +28,9 @@ import {
  * @returns a ValidatorConstraint that can be used as a class-validator decorator
  */
 export const SharedValidConstraint = <T>(
-  requiredFields: { [key in keyof T]?: string | ((value: T[key]) => boolean) },
+  requiredFields:
+    | Required<RequiredFields<T>>
+    | ((object: T) => RequiredFields<T>),
   name: string,
 ) => {
   @ValidatorConstraint({ name, async: false })
@@ -26,25 +40,28 @@ export const SharedValidConstraint = <T>(
       if (!value || typeof value !== "object") {
         return false;
       }
-      const isObjectValid = Object.entries(requiredFields).every(
-        ([key, type]) => {
-          const fieldValue = value[key as keyof T];
-          const isValid =
-            typeof type === "string"
-              ? typeof fieldValue === type
-              : typeof type === "function"
-                ? type(fieldValue)
-                : false;
+      const fields =
+        typeof requiredFields === "function"
+          ? requiredFields(value)
+          : requiredFields;
 
-          if (isValid) {
-            return true;
-          }
-          this.errors.push(
-            `${JSON.stringify(fieldValue)} is not a valid key for property "${key}"`,
-          );
-          return false;
-        },
-      );
+      const isObjectValid = Object.entries(fields).every(([key, type]) => {
+        const fieldValue = value[key as keyof T];
+        const isValid =
+          typeof type === "string"
+            ? typeof fieldValue === type
+            : typeof type === "function"
+              ? type(fieldValue)
+              : false;
+
+        if (isValid) {
+          return true;
+        }
+        this.errors.push(
+          `{${JSON.stringify(fieldValue)}} is not a valid key for property "${key}"`,
+        );
+        return false;
+      });
       if (!isObjectValid) {
         this.defaultMessage = (args) => {
           return `Invaid ${args.targetName}: ${this.errors.join(", ")}`;
@@ -76,6 +93,13 @@ export const isIn =
   <T>(...args: T[]) =>
   (value: T): boolean =>
     args.includes(value);
+
+export const isNumber = (value: number) =>
+  typeof value === "number" && !isNaN(value);
+
+export const isString = (value: string) => _isString(value);
+
+export const isDate = (value: Date) => _isDate(value);
 
 export const isPositiveNumber = (value: number) =>
   pipe<number>(isNumber, isPositive)(value);

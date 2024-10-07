@@ -12,7 +12,7 @@ import {
   pipe,
   SharedValidConstraint,
   isIn,
-} from "./_shared";
+} from "./_shared.validation";
 
 export function IsDailyReward(validationOptions?: ValidationOptions) {
   return function (target: object, propertyKey: string) {
