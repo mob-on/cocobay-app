@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { GameDataDto } from "@shared/src/dto/gameData.dto";
-import {
+import type {
   Build,
   ClaimableBoost,
   Friend,
@@ -13,6 +13,9 @@ const getRandomDateInTheNextHour = () =>
     from: Date.now(),
     to: new Date(Date.now() + 1000 * 60 * 60),
   });
+
+const comboCurrent = faker.number.int({ min: 0, max: 3 });
+const comboObjective = 3;
 
 const builds: Build[] = new Array(20).fill(0).map(() => {
   //Remove faker from prod dependencies once this is removed
@@ -62,6 +65,12 @@ let tempGameData: GameDataDto = {
     targetExp: 1000,
     currentExp: 500,
     pointsPerTap: 2,
+  },
+  combo: {
+    current: comboCurrent,
+    objective: comboObjective,
+    cooldownUntil:
+      comboCurrent === comboObjective ? getRandomDateInTheNextHour() : null,
   },
   boosts: [
     {
