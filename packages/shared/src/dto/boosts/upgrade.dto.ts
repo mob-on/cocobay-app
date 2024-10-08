@@ -27,12 +27,20 @@ export class BoostResponseDto implements BoostResponse {
   @IsNumber()
   currentPoints!: number;
 
+  @IsString()
+  pictureSrc!: string;
+
   @IsCombo()
   combo!: Combo;
-
-  constructor({ combo, boost, currentPoints }: Partial<BoostResponseDto> = {}) {
+  constructor({
+    pictureSrc,
+    boost,
+    currentPoints,
+    combo,
+  }: Partial<BoostResponseDto> = {}) {
     if (boost) this.boost = boost;
     if (currentPoints) this.currentPoints = currentPoints;
+    if (pictureSrc) this.pictureSrc = pictureSrc;
     if (combo) this.combo = combo;
   }
 }
@@ -46,11 +54,12 @@ export class UpgradeBoostResponseDto extends BoostResponseDto {
   override boost!: UpgradeableBoost;
 
   constructor({
-    combo,
+    pictureSrc,
     boost,
     currentPoints,
+    combo,
   }: Partial<UpgradeBoostResponseDto> = {}) {
-    super({ combo, boost, currentPoints });
+    super({ pictureSrc, boost, currentPoints, combo });
   }
 }
 
@@ -63,10 +72,11 @@ export class ClaimBoostResponseDto extends BoostResponseDto {
   override boost!: ClaimableBoost;
 
   constructor({
-    combo,
+    pictureSrc,
     boost,
     currentPoints,
+    combo,
   }: Partial<ClaimBoostResponseDto> = {}) {
-    super({ combo, boost, currentPoints });
+    super({ pictureSrc, boost, currentPoints, combo });
   }
 }

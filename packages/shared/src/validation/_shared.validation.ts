@@ -1,19 +1,15 @@
 import {
   isString as _isString,
   isDate as _isDate,
-  isPositive,
   ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  registerDecorator,
+  ValidationOptions,
 } from "class-validator";
 
-// Date fields are validated as strings on the backend, because validation happens before interceptors.
-type DateOrStringFields<T> = {
-  [key in keyof T]: T[key] extends Date ? Date | string : T[key];
-};
-
 export type RequiredFields<T> = {
-  [key in keyof Required<DateOrStringFields<T>>]: (value: T[key]) => boolean;
+  [key in keyof Required<T>]: (value: T[key]) => boolean;
 };
 
 /**
@@ -75,6 +71,23 @@ export const SharedValidConstraint = <T>(
   return SharedValidConstraint;
 };
 
+export const getValidatorDecorator =
+  <T>(
+    requiredFields:
+      | Required<RequiredFields<T>>
+      | ((object: T) => RequiredFields<T>),
+    validationOptions?: ValidationOptions,
+  ) =>
+  (target: object, propertyName: string) => {
+    registerDecorator({
+      target: target?.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: SharedValidConstraint<T>(requiredFields, propertyName),
+    });
+  };
+
 // pipe function for piping validation functions
 export const pipe = <T = unknown>(
   ...fns: ((value: T) => boolean)[]
@@ -90,7 +103,7 @@ export const optional =
 
 // NOTE: We use this isIn instead of class-validator's isIn because it's pipeable.
 export const isIn =
-  <T>(...args: T[]) =>
+  <T extends string>(...args: T[]) =>
   (value: T): boolean =>
     args.includes(value);
 
@@ -102,7 +115,7 @@ export const isString = (value: string) => _isString(value);
 export const isDate = (value: Date) => _isDate(value);
 
 export const isPositiveNumber = (value: number) =>
-  pipe<number>(isNumber, isPositive)(value);
+  value && typeof value === "number" && value > 0 ? true : false;
 
 export const isPositiveNumberOrZero = (value: number) =>
   value && typeof value === "number" && value >= 0 ? true : false;

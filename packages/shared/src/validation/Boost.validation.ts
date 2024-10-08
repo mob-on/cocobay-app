@@ -1,32 +1,31 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-  isNotEmpty,
-  isDate,
-} from "class-validator";
+import { ValidationOptions, isNotEmpty, isDate } from "class-validator";
 import type {
   Boost,
   BoostAction,
+  BoostBase,
   BoostType,
   ClaimableBoost,
   UpgradeableBoost,
 } from "../interfaces/Boost.interface";
 import {
+  getValidatorDecorator,
   isIn,
   isPositiveNumber,
   isPositiveNumberOrZero,
   isString,
   optional,
   pipe,
-  SharedValidConstraint,
+  RequiredFields,
 } from "./_shared.validation";
 
-const sharedBoostFields = {
+const sharedBoostFields: RequiredFields<BoostBase> = {
   id: pipe(isString, isNotEmpty),
   name: pipe(isString, isNotEmpty),
   description: pipe(isString, isNotEmpty),
   cost: isPositiveNumber,
   iconSrc: pipe(isString, isNotEmpty),
+  type: isIn<BoostType>("claimable", "upgradeable"),
+  cooldownUntil: optional(isDate),
   action: isIn<BoostAction>(
     "REPLENISH_ENERGY",
     "PERMANENT_TAP_BOOST",
@@ -34,16 +33,15 @@ const sharedBoostFields = {
   ),
 };
 
-const claimableBoostFields = {
+const claimableBoostFields: RequiredFields<ClaimableBoost> = {
   ...sharedBoostFields,
   type: isIn<BoostType>("claimable"),
   used: isPositiveNumberOrZero,
   max: isPositiveNumber,
   replenishedAt: optional(isDate),
-  cooldownUntil: optional(isDate),
 };
 
-const upgradeableBoostFields = {
+const upgradeableBoostFields: RequiredFields<UpgradeableBoost> = {
   ...sharedBoostFields,
   type: isIn<BoostType>("upgradeable"),
   cooldownUntil: optional(isDate),
@@ -52,49 +50,25 @@ const upgradeableBoostFields = {
 };
 
 export function IsClaimableBoost(validationOptions?: ValidationOptions) {
-  return function (target: object, propertyName: string) {
-    registerDecorator({
-      target: target?.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      constraints: [],
-      validator: SharedValidConstraint<ClaimableBoost>(
-        claimableBoostFields,
-        propertyName,
-      ),
-    });
-  };
+  return getValidatorDecorator<ClaimableBoost>(
+    claimableBoostFields,
+    validationOptions,
+  );
 }
 
 export function IsUpgradeableBoost(validationOptions?: ValidationOptions) {
-  return function (target: object, propertyName: string) {
-    registerDecorator({
-      target: target?.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      constraints: [],
-      validator: SharedValidConstraint<UpgradeableBoost>(
-        upgradeableBoostFields,
-        propertyName,
-      ),
-    });
-  };
+  return getValidatorDecorator<UpgradeableBoost>(
+    upgradeableBoostFields,
+    validationOptions,
+  );
 }
 
 export function IsBoost(validationOptions?: ValidationOptions) {
-  return function (target: object, propertyName: string) {
-    registerDecorator({
-      target: target?.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      constraints: [],
-      validator: SharedValidConstraint<Boost>(
-        (boost: Boost) =>
-          boost.type === "claimable"
-            ? claimableBoostFields
-            : upgradeableBoostFields,
-        propertyName,
-      ),
-    });
-  };
+  return getValidatorDecorator<Boost>(
+    (boost: Boost) =>
+      boost.type === "claimable"
+        ? claimableBoostFields
+        : upgradeableBoostFields,
+    validationOptions,
+  );
 }
