@@ -1,11 +1,9 @@
 import { TelegramJwtDto } from "shared/src/dto/auth/telegram-jwt-dto";
 import { TelegramWebappAuthDto } from "shared/src/dto/auth/telegram-webapp-auth.dto";
 
-import useLogger from "../hooks/useLogger";
 import { useMainApiConfigAnonymous } from "./main/config";
 
 export const useLoginApi = () => {
-  const logger = useLogger("useLoginApi");
   const [axios] = useMainApiConfigAnonymous();
 
   return {
@@ -17,7 +15,6 @@ export const useLoginApi = () => {
         }
         return response.data as TelegramJwtDto;
       } catch (e: unknown) {
-        logger.error("Unable to log in", e);
         throw new Error("Unable to log in");
       }
     },

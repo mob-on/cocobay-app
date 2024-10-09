@@ -44,6 +44,6 @@ export class JwtAuthGuard implements CanActivate {
   }
 
   private static extractJwtFromCookie(req: Request): string | null {
-    return req.cookies ? req.cookies[BACKEND_JWT_COOKIE_NAME] : null;
+    return req.cookies?.[BACKEND_JWT_COOKIE_NAME];
   }
 }

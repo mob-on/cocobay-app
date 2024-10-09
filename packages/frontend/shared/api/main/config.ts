@@ -10,10 +10,8 @@ import { useMemo } from "react";
 const setupLoginInterceptor = (
   axiosInstance: AxiosInstance,
   login: (_?: number) => Promise<UserDto>,
-) => {
+): AxiosInstance => {
   const logger = useLogger("setupLoginInterceptor");
-
-  logger.debug("all ok?");
 
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -40,39 +38,34 @@ const setupLoginInterceptor = (
   return axiosInstance;
 };
 
-const getAxiosDefaultWrapper = (
+const useAxiosWrapper = (
   baseUrl?: string,
-): [string, () => AxiosInstance] => {
+  withPlugins?: (axiosInstance: AxiosInstance) => AxiosInstance,
+): [AxiosInstance] => {
   const [storageApiUrl] = useStoredField("API_BASE_URL");
 
   const apiUrl =
     baseUrl || (Feature.DEV_MODE ? storageApiUrl : Config.apiBaseUrl);
 
-  const options: CreateAxiosDefaults = {
-    baseURL: apiUrl,
-    withCredentials: true,
-  };
+  return useMemo(() => {
+    const options: CreateAxiosDefaults = {
+      baseURL: apiUrl,
+      withCredentials: true,
+    };
 
-  return [
-    storageApiUrl,
-    () => {
-      return axios.create(options);
-    },
-  ];
+    const axiosDefault = axios.create(options);
+    return [withPlugins ? withPlugins(axiosDefault) : axiosDefault];
+  }, [apiUrl, withPlugins]);
 };
 
 export const useMainApiConfig = (baseUrl?: string) => {
-  const [apiUrl, axiosWrapper] = getAxiosDefaultWrapper(baseUrl);
   const { login } = useUserService();
 
-  return useMemo(
-    () => [setupLoginInterceptor(axiosWrapper(), login)],
-    [apiUrl],
+  return useAxiosWrapper(baseUrl, (axios) =>
+    setupLoginInterceptor(axios, login),
   );
 };
 
 export const useMainApiConfigAnonymous = (baseUrl?: string) => {
-  const [apiUrl, axiosWrapper] = getAxiosDefaultWrapper(baseUrl);
-
-  return useMemo(() => [axiosWrapper()], [apiUrl]);
+  return useAxiosWrapper(baseUrl);
 };
