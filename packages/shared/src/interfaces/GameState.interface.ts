@@ -1,5 +1,7 @@
 // Game state interface. The most important part of the app.
 
+import type { GameStateDto } from "../dto/game-state.dto";
+
 // Describes energy, points, taps, leveling and crucial data syncing.
 export interface GameState {
   // energy
@@ -23,11 +25,23 @@ export interface GameState {
   targetExp: number;
   currentExp: number;
   maxLevel: number;
+  lastSyncTime: Date;
 }
 
 // Frontend state, with backend-agnostic fields
 export interface FrontendGameState extends GameState {
   energy: number;
-  tapCountSynced: number;
+  pointCountPending: number;
   tapCountPending: number;
+  tapCountSynced: number;
+  lastServerTime?: string;
+}
+
+export interface SyncResponse {
+  gameState: GameStateDto;
+  serverTime: string; // ISO timestamp
+}
+
+export interface ClientGameState extends FrontendGameState {
+  lastServerTime: string;
 }

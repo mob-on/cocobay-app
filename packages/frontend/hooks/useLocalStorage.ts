@@ -8,6 +8,14 @@ type LocalStorageType<T> = [
   loaded: boolean,
 ];
 
+type LocalStorageStaticType<T> = {
+  get: () => T | null;
+  set: (value: T | ((prev: T | null) => T | null)) => void;
+};
+
+const stringify = (value: unknown): string =>
+  value ? JSON.stringify(value) : "";
+
 /**
  * Creates a React state based on local storage, with the following properties
  *   - value: the local storage value
@@ -67,4 +75,37 @@ export function useLocalStorage<T>(
   }, []);
 
   return [storedValue as T, setValue, storageLoaded];
+}
+
+// We use this to access local storage without setting up a React state
+// This is useful when we don't want to re-render components or update other hooks
+// in real-time when the local storage value changes
+export function useLocalStorageStatic<T>(
+  key: string,
+  initialValue?: T,
+): LocalStorageStaticType<T> {
+  if (initialValue) {
+    const existingValue = localStorage.getItem(key);
+    if (!existingValue) {
+      localStorage.setItem(key, stringify(initialValue));
+    }
+  }
+
+  return {
+    get: (): T | null => {
+      const storedValue = localStorage.getItem(key);
+      return storedValue ? (JSON.parse(storedValue) as T) : null;
+    },
+    set: (value: T | ((prev: T | null) => T | null)) => {
+      const prev = localStorage.getItem(key);
+      const stringifiedValue = stringify(
+        typeof value === "function"
+          ? (value as (prev: T | null) => T)(
+              prev ? (JSON.parse(prev) as T) : null,
+            )
+          : value,
+      );
+      localStorage.setItem(key, stringifiedValue);
+    },
+  };
 }

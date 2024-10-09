@@ -40,6 +40,12 @@ export class BuildsController {
           income: debugBuild.income * 1.5,
           cost: debugBuild.cost * 1.5,
         },
+        combo: {
+          current: 0,
+          objective: 10,
+          cooldownUntil: new Date(),
+          pictureSrc: faker.image.url(),
+        },
         currentPoints: faker.number.int({ min: 1000, max: 10000 }),
       };
     }

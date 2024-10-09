@@ -1,4 +1,4 @@
-import { WithPicture } from "../../../backend/dist/shared/src/interfaces/_shared.interface";
+import { WithPicture } from "./_shared.interface";
 export type ComboAction = "points" | "boost";
 
 // A combo is a random event that can happen randomly. When the comboCount reaches maxComboCount,

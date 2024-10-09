@@ -4,9 +4,11 @@ import { ConfigModule } from "@nestjs/config";
 import "dotenv/config";
 import configuration from "../config/configuration";
 import { AuthModule } from "./auth/auth.module";
+import { BoostsModule } from "./boosts/boosts.module";
 import { BuildsModule } from "./builds/builds.module";
 import { FeatureModule } from "./common/feature-flags/feature-flag.module";
-import { GameDataModule } from "./gamedata/gamedata.module";
+import { GameDataModule } from "./game-data/game-data.module";
+import { GameStateModule } from "./game-state/game-state.module";
 import { HealthModule } from "./healthcheck/health.module";
 import { UserModule } from "./user/user.module";
 
@@ -26,9 +28,10 @@ import { UserModule } from "./user/user.module";
     HealthModule,
     UserModule,
     AuthModule,
-    GameDataModule,
     BuildsModule,
-    TypegooseModule.forRoot(process.env.MONGODB_URI),
+    BoostsModule,
+    GameDataModule,
+    GameStateModule,
   ],
 })
 export class AppModule {}

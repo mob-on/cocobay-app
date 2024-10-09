@@ -100,7 +100,10 @@ const useTapsService: TUseService<FrontendGameState, IMethods> = () => {
 
   // passive income and stamina regen
   const timeoutCallback = useCallback(() => {
-    dispatchGameState({ type: "APPLY_POINT_INCOME" });
+    dispatchGameState({
+      type: "APPLY_POINT_INCOME",
+      payload: { backendPointCount: null },
+    });
     dispatchGameState({ type: "ENERGY_REGEN" });
   }, [pointIncomePerSecond, dispatchGameState]);
 

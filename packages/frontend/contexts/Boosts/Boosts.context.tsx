@@ -1,4 +1,4 @@
-import type { GameDataDto } from "@shared/src/dto/gameData.dto";
+import type { GameDataDto } from "@shared/src/dto/game-data.dto";
 import type { Boost } from "@shared/src/interfaces";
 import { createContext } from "react";
 
@@ -9,6 +9,7 @@ export type BoostsContext = {
 
 export type BoostAction =
   | { type: "DATA_INITIALIZE"; payload: GameDataDto }
-  | { type: "BOOST_UPDATE"; payload: Boost };
+  | { type: "BOOST_UPDATE"; payload: Boost }
+  | { type: "BOOSTS_UPDATE"; payload: Boost[] };
 
 export const BoostsContext = createContext({} as BoostsContext);

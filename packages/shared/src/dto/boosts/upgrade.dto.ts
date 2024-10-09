@@ -62,21 +62,3 @@ export class UpgradeBoostResponseDto extends BoostResponseDto {
     super({ pictureSrc, boost, currentPoints, combo });
   }
 }
-
-export type ClaimBoostResponse = WithCombo<
-  WithCurrentPoints<{ boost: ClaimableBoost }>
->;
-
-export class ClaimBoostResponseDto extends BoostResponseDto {
-  @IsClaimableBoost()
-  override boost!: ClaimableBoost;
-
-  constructor({
-    pictureSrc,
-    boost,
-    currentPoints,
-    combo,
-  }: Partial<ClaimBoostResponseDto> = {}) {
-    super({ pictureSrc, boost, currentPoints, combo });
-  }
-}

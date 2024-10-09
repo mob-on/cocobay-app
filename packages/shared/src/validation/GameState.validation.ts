@@ -1,6 +1,7 @@
 // Game state interface. The most important part of the app.
 
 import {
+  isDate,
   isNotEmpty,
   isString,
   registerDecorator,
@@ -35,6 +36,7 @@ export function IsGameState(validationOptions?: ValidationOptions) {
           currentExp: isPositiveNumberOrZero,
           maxLevel: isPositiveNumber,
           pointsPerTap: isPositiveNumber,
+          lastSyncTime: isDate,
         },
         propertyName,
       ),

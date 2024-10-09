@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 import type { Build } from "../../interfaces";
-import { IsBuild } from "../../validation";
+import type { WithCurrentPoints } from "../../interfaces/_shared.interface";
+import type { Combo, WithCombo } from "../../interfaces/Combo.interface";
+import { IsBuild, IsCombo } from "../../validation";
 
 export class UpgradeBuildDto {
   @IsString()
@@ -12,20 +14,27 @@ export class UpgradeBuildDto {
   }
 }
 
-export interface UpgradeBuildResponse {
-  build: Build;
-  currentPoints: number;
-}
+export type UpgradeBuildResponse = WithCombo<
+  WithCurrentPoints<{ build: Build }>
+>;
 
 export class UpgradeBuildResponseDto implements UpgradeBuildResponse {
   @IsBuild()
-  build!: Build; // The updated building object
+  build!: Build;
 
   @IsNumber()
-  currentPoints!: number; // The user's current points after the upgrade
+  currentPoints!: number;
 
-  constructor({ build, currentPoints }: Partial<UpgradeBuildResponseDto> = {}) {
+  @IsCombo()
+  combo!: Combo;
+
+  constructor({
+    build,
+    currentPoints,
+    combo,
+  }: Partial<UpgradeBuildResponseDto> = {}) {
     if (build) this.build = build;
     if (currentPoints) this.currentPoints = currentPoints;
+    if (combo) this.combo = combo;
   }
 }

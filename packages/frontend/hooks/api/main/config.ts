@@ -9,5 +9,12 @@ export const useMainApiConfig = (baseUrl?: string) => {
   const apiUrl =
     baseUrl || (Feature.DEV_MODE ? storageApiUrl : Config.apiBaseUrl);
 
-  return [useMemo(() => axios.create({ baseURL: apiUrl }), [apiUrl])];
+  return useMemo(
+    () => [
+      axios.create({
+        baseURL: apiUrl,
+      }),
+    ],
+    [apiUrl],
+  );
 };

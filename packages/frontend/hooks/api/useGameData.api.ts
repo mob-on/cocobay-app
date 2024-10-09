@@ -1,6 +1,6 @@
 import { extractApiError } from "@src/lib/extractApiError";
 import { useMemo } from "react";
-import { GameDataDto } from "shared/src/dto/gameData.dto";
+import { GameDataDto } from "shared/src/dto/game-data.dto";
 
 import { useMainApiConfig } from "./main/config";
 
@@ -13,7 +13,7 @@ export const useGameDataApi = () => {
     () => ({
       get: async (): Promise<GameDataDto> => {
         try {
-          const response = await axios.get(`/v1/gamedata/`);
+          const response = await axios.get<GameDataDto>(`/v1/game-data/`);
           if (response.status !== 200) {
             throw new Error(
               `Server responded with unexpected status code. Expected 200, got ${response.status}`,

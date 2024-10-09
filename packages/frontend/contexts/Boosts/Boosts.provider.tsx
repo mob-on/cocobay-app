@@ -1,7 +1,6 @@
 "use client";
 
 import { GAME_DATA_QUERY_KEY } from "@api/useGameData.api";
-import { useResources } from "@contexts/Resources";
 import useLogger from "@hooks/useLogger";
 import type { Boost } from "@shared/src/interfaces";
 import { useResourceInitializer } from "@src/hooks/useResourceInitializer";
@@ -24,6 +23,8 @@ const boostsReducer = (state: Boost[], action: BoostAction): Boost[] => {
         ...state.slice(index + 1),
       ];
     }
+    case "BOOSTS_UPDATE":
+      return action.payload;
     default:
       return state;
   }
@@ -35,12 +36,9 @@ export const BoostsProvider = ({
   children: React.JSX.Element;
 }) => {
   const [boosts, dispatchBoosts] = useReducer(boostsReducer, defaultBoostsData);
-  const { resources = {}, allLoaded } = useResources();
   const logger = useLogger("BoostsProvider");
 
   useResourceInitializer({
-    resources,
-    allLoaded,
     queryKey: GAME_DATA_QUERY_KEY,
     dispatch: dispatchBoosts,
     logger,

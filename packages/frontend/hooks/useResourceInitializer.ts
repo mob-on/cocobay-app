@@ -1,4 +1,5 @@
-import { Resource } from "@contexts/Resources";
+import { Resource, useResources } from "@contexts/Resources";
+import { type Logger } from "pino";
 import { useEffect, useRef } from "react";
 
 type InitializeAction<T> = {
@@ -6,38 +7,32 @@ type InitializeAction<T> = {
   payload: T;
 };
 
-type ResourcesState = {
-  [key: string]: Resource<unknown>;
-};
-
 interface UseResourceInitializerOptions<T> {
-  resources: ResourcesState;
-  allLoaded: boolean;
   queryKey: string;
   dispatch: (action: InitializeAction<T>) => void;
-  logger?: {
-    error: (message: string) => void;
-  };
+  additionalData?: Record<string, unknown>;
+  logger: Logger;
 }
 
 export function useResourceInitializer<T>({
-  resources,
-  allLoaded,
   queryKey,
   dispatch,
-  logger = console,
+  additionalData,
+  logger,
 }: UseResourceInitializerOptions<T>) {
   const initialized = useRef(false);
+  const { resources, allLoaded } = useResources();
   useEffect(() => {
     if (!allLoaded || initialized.current) return;
     const resource = resources[queryKey] as Resource<T> | undefined;
     const { data, status } = resource || {};
 
     if (status !== "loaded" || !data) {
-      return logger.error(`Expected ${queryKey} to be loaded`);
+      return logger.error(
+        `Resource initializer expected ${queryKey} to be loaded`,
+      );
     }
-
-    dispatch({ type: "DATA_INITIALIZE", payload: data });
+    dispatch({ type: "DATA_INITIALIZE", payload: { ...data, additionalData } });
     initialized.current = true;
-  }, [resources, allLoaded, queryKey, dispatch]);
+  }, [resources, allLoaded, queryKey, dispatch, logger]);
 }

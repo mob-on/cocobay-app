@@ -24,6 +24,8 @@ const buildsReducer = (state: Build[], action: BuildAction): Build[] => {
         ...state.slice(index + 1),
       ];
     }
+    case "BUILDS_UPDATE":
+      return action.payload;
     default:
       return state;
   }
@@ -31,11 +33,8 @@ const buildsReducer = (state: Build[], action: BuildAction): Build[] => {
 
 export const BuildsProvider = ({ children }: { children: React.ReactNode }) => {
   const [builds, dispatchBuilds] = useReducer(buildsReducer, defaultBuildsData);
-  const { resources = {}, allLoaded } = useResources();
   const logger = useLogger("BuildsProvider");
   useResourceInitializer({
-    resources,
-    allLoaded,
     queryKey: GAME_DATA_QUERY_KEY,
     dispatch: dispatchBuilds,
     logger,

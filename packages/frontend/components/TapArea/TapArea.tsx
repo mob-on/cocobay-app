@@ -1,10 +1,9 @@
 "use client";
 
-import { useGameState } from "@contexts/GameState";
+import { PendingState, useGameState } from "@contexts/GameState";
 import {
   ITapEvent,
   TAP_EFFECTS_THROTTLE,
-  TAP_EFFECTS_TIMEOUT,
   useTapEffects,
 } from "@contexts/TapEffects";
 import useTelegram from "@hooks/useTelegram";
@@ -19,6 +18,11 @@ import lvl8 from "@media/hero/hero-level8.svg";
 import lvl9 from "@media/hero/hero-level9.svg";
 import lvl10 from "@media/hero/hero-level10.svg";
 import { FrontendGameState } from "@shared/src/interfaces";
+import {
+  PENDING_STATE_KEY,
+  useGameStateService,
+} from "@src/hooks/services/useGameState.service";
+import { useLocalStorageStatic } from "@src/hooks/useLocalStorage";
 import styles from "@src/styles/components/tapArea/tapArea.module.css";
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -81,12 +85,20 @@ const TapArea: React.FC = () => {
   }, [handleTapFeedback]);
 
   const { taps = [], addTap: addTap } = useTapEffects();
-  const { gameState = {} as FrontendGameState, dispatchGameState } =
-    useGameState();
+  const {
+    gameStateService,
+    gameState = {} as FrontendGameState,
+    dispatchGameState,
+  } = useGameState();
   const { energy, pointsPerTap } = gameState;
   const canTap = useRef(true);
   const lastTapHandler = useRef<(e: TouchEvent) => void>(() => {});
   const visualTapRef = useRef<ITapEvent[]>([]);
+
+  const { set: setPendingState } =
+    useLocalStorageStatic<PendingState>(PENDING_STATE_KEY);
+
+  const { debouncedSync } = gameStateService;
 
   // We need this for cleanup, so we keep a mutable copy of the taps to prevent recreating effects when possible
   useEffect(() => {
@@ -121,7 +133,15 @@ const TapArea: React.FC = () => {
         pointCount: pointsPerTap,
       };
 
+      // Add tap, sync with server and trigger tap feedback
+      setPendingState((prev: PendingState | null) => ({
+        ...prev,
+        tapCountPending: (prev?.tapCountPending ?? 0) + 1,
+        pointCountPending: (prev?.pointCountPending ?? 0) + pointsPerTap,
+      }));
+
       dispatchGameState({ type: "REGISTER_TAP" });
+      debouncedSync();
       throttledHandleTapFeedback();
 
       addTap(tapEvent);

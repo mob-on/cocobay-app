@@ -18,6 +18,12 @@ const DynamicQueryClientProvider = lazy(() => {
   }));
 });
 
+const DynamicComboProvider = lazy(() =>
+  import("@contexts/Combo").then((mod) => ({
+    default: mod.ComboProvider,
+  })),
+);
+
 const DynamicTrackingProvider = lazy(() =>
   import("@contexts/Tracking").then((mod) => ({
     default: mod.TrackingProvider,
@@ -56,13 +62,15 @@ export default function LayoutContent({ children }: { children: JSX.Element }) {
         <DynamicTrackingProvider>
           <DynamicErrorContextProvider>
             <DynamicResourcesProvider>
-              <DynamicBoostsContextProvider>
-                <DynamicBuildsContextProvider>
-                  <DynamicFriendsContextProvider>
-                    {children}
-                  </DynamicFriendsContextProvider>
-                </DynamicBuildsContextProvider>
-              </DynamicBoostsContextProvider>
+              <DynamicComboProvider>
+                <DynamicBoostsContextProvider>
+                  <DynamicBuildsContextProvider>
+                    <DynamicFriendsContextProvider>
+                      {children}
+                    </DynamicFriendsContextProvider>
+                  </DynamicBuildsContextProvider>
+                </DynamicBoostsContextProvider>
+              </DynamicComboProvider>
             </DynamicResourcesProvider>
           </DynamicErrorContextProvider>
         </DynamicTrackingProvider>

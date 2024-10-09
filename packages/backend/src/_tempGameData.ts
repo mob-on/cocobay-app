@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { GameDataDto } from "@shared/src/dto/gameData.dto";
+import { GameDataDto } from "@shared/src/dto/game-data.dto";
 import type {
   Build,
   ClaimableBoost,
@@ -14,7 +14,7 @@ const getRandomDateInTheNextHour = () =>
     to: new Date(Date.now() + 1000 * 60 * 60),
   });
 
-const comboCurrent = faker.number.int({ min: 0, max: 3 });
+const comboCurrent = faker.number.int({ min: 0, max: 1 });
 const comboObjective = 3;
 
 const builds: Build[] = new Array(20).fill(0).map(() => {
@@ -55,9 +55,9 @@ let tempGameData: GameDataDto = {
   gameState: {
     maxEnergy: 500,
     energyRecoveryPerSecond: 3,
-    pointCount: 1000,
+    pointCount: 10000,
     pointIncomePerSecond: 5,
-    tapCount: 500,
+    tapCount: 1500,
     lastGameStateSyncTime: faker.date.recent().toISOString(),
     level: 2,
     maxLevel: 10,
@@ -65,16 +65,19 @@ let tempGameData: GameDataDto = {
     targetExp: 1000,
     currentExp: 500,
     pointsPerTap: 2,
+    lastSyncTime: faker.date.recent(),
   },
   combo: {
     current: comboCurrent,
     objective: comboObjective,
     cooldownUntil:
       comboCurrent === comboObjective ? getRandomDateInTheNextHour() : null,
+    pictureSrc: faker.image.urlPicsumPhotos({ width: 128, height: 128 }),
+    message: "You've reached a new combo level!",
   },
   boosts: [
     {
-      id: faker.string.uuid(),
+      id: "f0dcf34c-6f18-472c-9ff2-850c012cb90f", // for easier testing with Postman
       name: "Replenish energy",
       description: "Get your energy back to full, one energy drink at a time",
       iconSrc: faker.image.urlPicsumPhotos({ width: 128, height: 128 }),
