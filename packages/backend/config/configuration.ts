@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
 import { join } from "path";
+import { Logger } from "@nestjs/common";
 import * as yaml from "js-yaml";
 import { merge } from "lodash";
 
@@ -67,6 +68,31 @@ export interface ConfigSettings {
   };
   secrets: ConfigSecrets;
 }
+
+export const validateRequiredEnvVariables = () => {
+  const requirements = [
+    "APP_VERSION",
+    "APP_ENVIRONMENT",
+    "JWT_SECRET",
+    "TELEGRAM_APP_TOKEN",
+    "MONGODB_URI",
+  ];
+  const errors = [];
+
+  for (const req of requirements) {
+    if (process.env[req] === undefined) {
+      errors.push(`${req} ENV variable is required`);
+    }
+  }
+
+  if (errors.length > 0) {
+    const log = new Logger("BackendConfiguration");
+    log.fatal(`Missing required ENV variables:\n${errors.join("\n")}`);
+    process.exit(1);
+  }
+
+  return true;
+};
 
 export default () => {
   return merge(
