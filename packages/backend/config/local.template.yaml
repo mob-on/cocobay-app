@@ -1,3 +1,5 @@
 env: "local"
 features:
   devMode: true
+cors:
+  allowAllOrigins: true

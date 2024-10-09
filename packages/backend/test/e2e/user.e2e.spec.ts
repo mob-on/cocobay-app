@@ -1,8 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { getModelForClass, ReturnModelType } from "@typegoose/typegoose";
 import TestAgent from "supertest/lib/agent";
+import { JwtAuthGuard } from "src/auth/jwt-auth-guard";
 import { User } from "src/user/model/user.model";
 import { UserModule } from "src/user/user.module";
+import { mockJwtAuthGuard } from "test/fixtures/config/mock-jwt-auth";
 import { createValidUserDto } from "test/fixtures/model/user.data";
 import { ApiSetup, setupApi } from "test/setup/setup";
 
@@ -14,9 +16,13 @@ describe("UserController", () => {
   let userModel: ReturnModelType<typeof User>;
 
   beforeAll(async () => {
-    setup = await setupApi({
-      imports: [UserModule],
-    });
+    setup = await setupApi(
+      {
+        imports: [UserModule],
+      },
+      (module) =>
+        module.overrideGuard(JwtAuthGuard).useValue(mockJwtAuthGuard()),
+    );
 
     api = setup.api;
     userModel = getModelForClass(User);

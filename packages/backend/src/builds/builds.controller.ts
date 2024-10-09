@@ -6,12 +6,15 @@ import {
   ForbiddenException,
   Param,
   Put,
+  UseGuards,
 } from "@nestjs/common";
 import { UpgradeBuildResponseDto } from "@shared/src/dto/builds/upgrade.dto";
 import { Build } from "@shared/src/interfaces";
 import { isNotEmpty, isString, isUUID } from "class-validator";
+import { JwtAuthGuard } from "src/auth/jwt-auth-guard";
 
 @Controller("/builds")
+@UseGuards(JwtAuthGuard)
 export class BuildsController {
   constructor() {}
 

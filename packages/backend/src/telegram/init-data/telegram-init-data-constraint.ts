@@ -10,23 +10,17 @@ import {
 @Injectable()
 @ValidatorConstraint({ name: "telegramInitData", async: false })
 export class TelegramInitDataValid implements ValidatorConstraintInterface {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly config: ConfigService) {}
 
   validate(value: string, _validationArguments?: ValidationArguments) {
-    if (this.configService.get<boolean>("features.devMode")) {
+    if (this.config.get<boolean>("features.devMode")) {
       return true; //We trust all telegram data in dev mode
     }
 
     try {
-      initDataValidate(
-        value,
-        this.configService.get<string>("telegram.appToken"),
-        {
-          expiresIn: this.configService.get<number>(
-            "telegram.webappDataExpirySeconds",
-          ),
-        },
-      );
+      initDataValidate(value, this.config.get<string>("telegram.appToken"), {
+        expiresIn: this.config.get<number>("telegram.webappDataExpirySeconds"),
+      });
 
       return true;
     } catch (e: unknown) {

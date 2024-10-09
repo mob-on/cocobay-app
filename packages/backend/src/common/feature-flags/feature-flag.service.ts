@@ -4,9 +4,9 @@ import { Feature } from "@config/features";
 
 @Injectable()
 export class FeatureService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly config: ConfigService) {}
 
   enabled(feature: Feature) {
-    return this.configService.get<boolean>(`features.${feature}`);
+    return this.config.get<boolean>(`features.${feature}`);
   }
 }

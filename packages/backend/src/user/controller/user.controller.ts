@@ -7,18 +7,22 @@ import {
   NotFoundException,
   Param,
   Post,
+  UseGuards,
 } from "@nestjs/common";
 import { UserDto } from "@shared/src/dto/user.dto";
+import { JwtAuthGuard } from "src/auth/jwt-auth-guard";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
 import { UserService } from "../service/user.service";
 
 @Controller("/user")
+@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get("/:id")
   async getUser(@Param("id") id: string) {
+    //TODO: only allow retrieving information about my own user
     try {
       return await this.userService.getUser(id);
     } catch (e: unknown) {
