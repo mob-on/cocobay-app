@@ -80,7 +80,12 @@ describe("AuthController", () => {
       expect(res.cookie).toHaveBeenCalledWith(
         BACKEND_JWT_COOKIE_NAME,
         expect.any(String),
-        expect.any(Object),
+        expect.objectContaining({
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          maxAge: expect.any(Number),
+        }),
       );
       expect(telegramInitDataTransformer.transform).toHaveBeenCalledWith(
         webappAuthDto,

@@ -10,7 +10,7 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { BACKEND_JWT_COOKIE_NAME } from "@shared/src/cookie/auth";
 import { InitData } from "@telegram-apps/init-data-node";
-import { Response } from "express";
+import { CookieOptions, Response } from "express";
 import { TelegramInitDataPipeTransform } from "src/telegram/init-data/telegram-init-data-transform.pipe";
 import { TelegramWebappAuthDtoValid } from "src/telegram/init-data/valid-init-data.dto";
 import { AuthService } from "./auth.service";
@@ -48,12 +48,19 @@ export class AuthController {
       webappInitData,
     );
 
-    res.cookie(BACKEND_JWT_COOKIE_NAME, loginResult.token, {
+    const settings: CookieOptions = {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
       maxAge: this.config.get<number>("session.expiryMinutes") * MINUTE,
-    });
+    };
+
+    if (this.config.get<string>("env") === "local") {
+      settings.secure = false;
+      settings.sameSite = "none";
+    }
+
+    res.cookie(BACKEND_JWT_COOKIE_NAME, loginResult.token, settings);
 
     return loginResult;
   }
