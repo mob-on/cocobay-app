@@ -34,10 +34,10 @@ const useBuildsService = () => {
             payload: response.combo,
           });
         }
-        dispatchGameState({
-          type: "SET_POINT_COUNT",
-          payload: response.currentPoints,
-        });
+        // dispatchGameState({
+        //   type: "SET_POINT_COUNT",
+        //   payload: response.currentPoints,
+        // });
       } catch (e) {
         // pass the error to the builds view
         throw extractApiError(e);

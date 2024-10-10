@@ -1,10 +1,14 @@
 import { Body, Controller, Post, Get } from "@nestjs/common";
-import { GameStateDto, GameStateSyncDto } from "@shared/src/dto/game-state.dto";
+import {
+  GameStateDto,
+  GameStateSyncDto,
+  GameStateSyncResponseDto,
+} from "@shared/src/dto/game-state.dto";
 import {
   calculatePoints,
   calculatePointsWithPending,
 } from "@shared/src/functions/calculatePoints";
-import { getTempGameData, setTempGameData } from "src/_tempGameData";
+import { getTempGameData, setTempGameData } from "../_tempGameData";
 
 @Controller("/game-state")
 export class GameStateController {
@@ -27,7 +31,9 @@ export class GameStateController {
   }
 
   @Post("/sync")
-  async syncGameState(@Body() body: GameStateSyncDto): Promise<GameStateDto> {
+  async syncGameState(
+    @Body() body: GameStateSyncDto,
+  ): Promise<GameStateSyncResponseDto> {
     const gameData = getTempGameData();
     const { tapCountPending } = body;
     const now = new Date();

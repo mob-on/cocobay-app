@@ -25,10 +25,6 @@ const gameStateReducer = (
 ): FrontendGameState => {
   const { pointsPerTap, energy, maxEnergy, energyRecoveryPerSecond } = state;
   switch (action.type) {
-    case "SYNC_START":
-      return {
-        ...state,
-      };
     case "TICK":
       return {
         ...state,
@@ -40,34 +36,20 @@ const gameStateReducer = (
       const { gameState: serverGameState, additionalData } = payload;
       const pendingState = additionalData;
 
-      const pointCount = calculatePointsWithPending(
-        serverGameState.pointCount,
-        serverGameState.pointIncomePerSecond,
-        serverGameState.lastSyncTime,
-        new Date(),
-        serverGameState.pointsPerTap,
-        pendingState?.tapCountPending,
-      );
+      const clientClockStart = new Date();
 
       return {
         ...serverGameState,
         // Frontend-specific fields
         energy: serverGameState.maxEnergy,
-        pointCountSynced: serverGameState.pointCount,
-
+        clientLogicState: {
+          pointCountSynced: serverGameState.pointCount,
+          clientClockStart,
+        },
         tapCount:
           (pendingState?.tapCountPending ?? 0) + serverGameState.tapCount,
-        pointCount,
       };
     }
-    case "APPLY_POINT_INCOME":
-      const { backendPointCount } = action.payload;
-      const clientPointCount = state.pointCount + state.pointIncomePerSecond;
-      let newPointCount = Math.max(backendPointCount || 0, clientPointCount);
-      return {
-        ...state,
-        pointCount: newPointCount,
-      };
     case "SYNC_GAME_STATE":
       const { gameState: serverGameState } = action.payload;
 
@@ -75,7 +57,10 @@ const gameStateReducer = (
         ...state,
         ...action.payload,
         pointCount: state.pointCount, // Keep client value until next game tick
-        pointCountSynced: serverGameState.pointCount,
+        clientLogicState: {
+          pointCountSynced: serverGameState.pointCount,
+          clientClockStart: new Date(),
+        },
         lastSyncTime: serverGameState.lastSyncTime,
       };
     case "REGISTER_TAP":
@@ -83,31 +68,10 @@ const gameStateReducer = (
         ...state,
         pointCount: state.pointCount + pointsPerTap,
       };
-    case "SYNC_FAILURE":
-      return {
-        ...state,
-        pointCount: action.payload.pointCount,
-      };
-
-    case "RESTORE_PENDING_STATE":
-      return {
-        ...state,
-      };
-
     case "ENERGY_CONSUME":
       return {
         ...state,
         energy: Math.max(0, energy - pointsPerTap),
-      };
-    case "ENERGY_REGEN":
-      return {
-        ...state,
-        energy: Math.min(maxEnergy, energy + energyRecoveryPerSecond),
-      };
-    case "SET_POINT_COUNT":
-      return {
-        ...state,
-        pointCount: action.payload,
       };
     default:
       return state;

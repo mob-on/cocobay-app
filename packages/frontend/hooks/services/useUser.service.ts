@@ -1,12 +1,11 @@
+import { useLoginApi } from "@api/useLogin.api";
+import useLogger from "@hooks/useLogger";
+import useTelegram from "@hooks/useTelegram";
 import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth.dto";
 import { UserDto } from "@shared/src/dto/user.dto";
 import { Feature } from "@src/lib/FeatureFlags";
 import { validate } from "class-validator";
 import { useCallback } from "react";
-
-import { useLoginApi } from "@api/useLogin.api";
-import useLogger from "@hooks/useLogger";
-import useTelegram from "@hooks/useTelegram";
 
 export interface IUser {
   firstName?: string;
@@ -61,6 +60,7 @@ const useUserService: () => {
             initDataRaw,
           }),
         );
+        if (!loginDto) throw new Error("LoginDto is undefined");
         const userDto = new UserDto(loginDto.user);
         const userDtoErrors = await validate(userDto);
         if (userDtoErrors.length) {

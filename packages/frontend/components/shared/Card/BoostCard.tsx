@@ -8,7 +8,7 @@ const BoostCard: React.FC<{
   boost: Boost;
   onClick: (id: string) => void;
 }> = ({ boost, onClick }) => {
-  return <div></div>
+  return <div></div>;
   // const isLastLevel = boost.level === boost.maxLevel;
   // return (
   //   <div

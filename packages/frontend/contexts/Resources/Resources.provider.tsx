@@ -1,30 +1,29 @@
 "use client";
 import { GAME_DATA_QUERY_KEY, useGameDataApi } from "@api/useGameData.api";
-import { GameDataDto } from "@shared/src/dto/game-data.dto";
-import {
-  TIME_SYNC_QUERY_KEY,
-  useTimeSyncApi,
-} from "@src/hooks/api/useTimeSync.api";
+import type { GameDataDto } from "@shared/src/dto/game-data.dto";
 import useLogger from "@src/hooks/useLogger";
 import { useEffect, useState } from "react";
 
 import { useErrorContext } from "../Errors/Errors.hooks";
 import { useStoredField } from "../LocalStorage/LocalStorage.hooks";
 import {
-  IResourcesContextResources,
-  IResourcesContextResourceStatus,
+  type IResourcesContextResources,
+  type IResourcesContextResourceStatus,
   ResourcesContext,
-  ResourceToLoad,
+  type ResourceToLoad,
 } from "./Resources.context";
 
-export const ResourcesProvider = ({ children }) => {
+export const ResourcesProvider = ({
+  children,
+}: {
+  children: React.JSX.Element;
+}) => {
   const errorContext = useErrorContext();
   const [mainApiBaseUrl] = useStoredField("API_BASE_URL");
   const [isDataRequested, setIsDataRequested] = useState(false);
   const [resources, setResources] = useState<IResourcesContextResources>({});
   const logger = useLogger("ResourcesProvider");
   const gameDataApi = useGameDataApi();
-  const timeSyncApi = useTimeSyncApi();
 
   const updateResourceStatus = (
     resourceName: string,
@@ -47,6 +46,7 @@ export const ResourcesProvider = ({ children }) => {
     });
   };
 
+  // Main logic for loading resources
   const initializeResources = async (resourceList: ResourceToLoad<any>[]) => {
     const initialResources = resourceList.reduce((acc, resource) => {
       acc[resource.name] = {
@@ -79,6 +79,7 @@ export const ResourcesProvider = ({ children }) => {
     setResources(updatedResources);
   };
 
+  // On load, and whenever mainApiBaseUrl changes, reset the resources and request data again
   useEffect(() => {
     setIsDataRequested(false);
     const apiToLoad: ResourceToLoad<any>[] = [
@@ -87,16 +88,12 @@ export const ResourcesProvider = ({ children }) => {
         name: GAME_DATA_QUERY_KEY,
         errorMessage: "Failed to load game data. Try again later.",
       } as ResourceToLoad<GameDataDto>,
-      {
-        fn: timeSyncApi.getTimeOffset,
-        name: TIME_SYNC_QUERY_KEY,
-        errorMessage: "Failed to sync time with server. Try again later.",
-      } as ResourceToLoad<number>,
     ];
     initializeResources(apiToLoad);
     setIsDataRequested(true);
   }, [mainApiBaseUrl]);
 
+  // Show error screen if any resources failed to load
   useEffect(() => {
     const errors = Object.entries(resources)
       .filter(([, resource]) => resource.status === "errored")
@@ -114,7 +111,7 @@ export const ResourcesProvider = ({ children }) => {
       });
     }
   }, [resources]);
-  console.log(resources);
+
   const allLoaded =
     isDataRequested &&
     Object.values(resources).every((resource) => resource.status === "loaded");

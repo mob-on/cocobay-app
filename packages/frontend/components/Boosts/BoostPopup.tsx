@@ -7,7 +7,7 @@ import Cost from "../shared/Cost";
 
 const BoostPopup: React.FC<{ boost: Boost; onAction: (id: string) => void }> =
   memo(({ boost, onAction }) => {
-     return <></>;
+    return <></>;
     // const isLastLevel = boost === boost.maxLevel;
     // const leftToday = boost.maxToday - boost.usedToday;
     // return (

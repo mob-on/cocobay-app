@@ -8,6 +8,7 @@ import { useCallback } from "react";
 import { useLocalStorage } from "../useLocalStorage";
 import { PENDING_STATE_KEY } from "./useGameState.service";
 
+// TODO: use gameState.pendingState instead of local storage
 export const useResponseDataSync = () => {
   const [pendingState] = useLocalStorage<PendingState>(PENDING_STATE_KEY);
 
@@ -20,11 +21,11 @@ export const useResponseDataSync = () => {
     (data: Partial<GameDataDto>) => {
       if (data.combo)
         dispatchCombo({ type: "COMBO_UPDATE", payload: data.combo });
-      // if (data.gameState)
-      //   dispatchGameState({
-      //     type: "SYNC_GAME_STATE",
-      //     payload: { ...data.gameState, ...pendingState },
-      //   });
+      if (data.gameState)
+        dispatchGameState({
+          type: "SYNC_GAME_STATE",
+          payload: { gameState: data.gameState, pendingState },
+        });
       if (data.builds)
         dispatchBuilds({ type: "BUILDS_UPDATE", payload: data.builds });
       if (data.boosts)

@@ -25,5 +25,8 @@ export interface GameState {
 // Frontend state, with backend-agnostic fields
 export interface FrontendGameState extends GameState {
   energy: number;
-  pointCountSynced: number;
+  clientLogicState: {
+    pointCountSynced: number;
+    clientClockStart: Date;
+  };
 }

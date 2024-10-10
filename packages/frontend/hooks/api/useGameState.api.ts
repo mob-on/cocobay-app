@@ -1,8 +1,7 @@
-import type { PendingState } from "@src/contexts/GameState";
 import { useMutation } from "@tanstack/react-query";
 import type {
-  GameStateDto,
   GameStateSyncDto,
+  GameStateSyncResponseDto,
 } from "shared/src/dto/game-state.dto";
 
 import useLogger from "../useLogger";
@@ -14,14 +13,19 @@ export const useGameStateApi = () => {
   const [axios] = useMainApiConfig();
   const logger = useLogger("useGameState.api");
   return {
-    sync: useMutation<GameStateDto, Error, PendingState>({
+    sync: useMutation<GameStateSyncResponseDto, Error, GameStateSyncDto>({
       mutationFn: async ({
         tapCountPending,
-      }: PendingState & { clientSyncStart: Date }) => {
+        clientCurrentPoints,
+      }: GameStateSyncDto) => {
         logger.info("Syncing game state");
-        const response = await axios.post<GameStateDto>("v1/game-state/sync", {
-          tapCountPending,
-        } as GameStateSyncDto);
+        const response = await axios.post<GameStateSyncResponseDto>(
+          "v1/game-state/sync",
+          {
+            tapCountPending,
+            clientCurrentPoints,
+          },
+        );
         return response.data;
       },
       mutationKey: [GAME_STATE_SYNC_MUTATION_KEY],

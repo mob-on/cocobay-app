@@ -9,7 +9,6 @@ import { useGameStateApi } from "../api/useGameState.api";
 import { useDebounce } from "../useDebounce";
 import useSelfCorrectingTimeout from "../useSelfCorrectingTimeout";
 import { useSyncQueue } from "../useSyncQueue";
-import { useTimeOffset } from "../useTimeOffset";
 
 export const PENDING_STATE_KEY = "pendingGameState";
 export const SYNCED_POINT_COUNT_KEY = "syncedPointCount";
@@ -29,12 +28,11 @@ const useGameStateService = (
   const gameStateApi = useGameStateApi();
   const { get: getPendingState, set: setPendingState } =
     useLocalStorageStatic<PendingState | null>(PENDING_STATE_KEY);
-  const timeOffset = useTimeOffset();
   const queueSync = useSyncQueue();
 
-  const pendingStateRef = useRef(
-    getPendingState() ?? ({} as PendingState | null),
-  );
+  const pendingStateRef = useRef<PendingState>({
+    tapCountPending: getPendingState()?.tapCountPending ?? 0,
+  });
 
   // Keep a ref to the latest game state for the debounced sync
   const gameStateRef = useRef(gameState);
@@ -49,12 +47,16 @@ const useGameStateService = (
 
   const syncWithServer = useCallback(async () => {
     await queueSync(async () => {
-      const preSyncPendingState = pendingStateRef.current;
-      pendingStateRef.current = null;
+      const preSyncPendingState = { ...pendingStateRef.current };
+
+      // skip sync if there's no pending taps
+      if (!preSyncPendingState.tapCountPending) return;
+      pendingStateRef.current = { tapCountPending: 0 };
 
       try {
         const response = await gameStateApi.sync.mutateAsync({
           tapCountPending: preSyncPendingState?.tapCountPending ?? 0,
+          clientCurrentPoints: gameStateRef.current.pointCount,
         });
 
         dispatchGameStateRef.current({
@@ -66,10 +68,13 @@ const useGameStateService = (
         });
       } catch (error) {
         logger.error("Failed to sync game state", error);
-        setPendingState((current) => ({
-          ...current,
-          tapCountPending: preSyncPendingState?.tapCountPending ?? 0,
-        }));
+
+        // merge presync and current pending state
+        setPendingState({
+          tapCountPending:
+            (preSyncPendingState?.tapCountPending ?? 0) +
+            (pendingStateRef.current?.tapCountPending ?? 0),
+        });
       }
     });
   }, [
@@ -90,18 +95,21 @@ const useGameStateService = (
       if (!currentState.tapCount) return;
 
       const currentPendingState = pendingStateRef.current;
-      const now = new Date(Date.now() - timeOffset);
+      const { clientLogicState } = currentState;
 
       // Calculate both synced and pending points
       const calculatedSyncedPoints = calculatePointsWithPending(
-        currentState.pointCountSynced,
+        clientLogicState.pointCountSynced,
         currentState.pointIncomePerSecond,
-        currentState.lastSyncTime,
-        now,
+        clientLogicState.clientClockStart,
+        new Date(),
         currentState.pointsPerTap,
         currentPendingState?.tapCountPending,
       );
-
+      console.log(
+        2,
+        `${clientLogicState.clientClockStart.getMinutes()}:${clientLogicState.clientClockStart.getSeconds()}`,
+      );
       dispatchGameStateRef.current({
         type: "TICK",
         payload: {
@@ -126,15 +134,8 @@ const useGameStateService = (
 
   // Sync on startup
   useEffect(() => {
-    const pendingState = getPendingState();
-    if (pendingState && pendingState.tapCountPending > 0) {
-      dispatchGameStateRef.current({
-        type: "RESTORE_PENDING_STATE",
-        payload: pendingState,
-      });
-    }
     syncWithServerRef.current();
-  }, [dispatchGameStateRef, syncWithServerRef]);
+  }, [syncWithServerRef]);
 
   // Save pending state before unload
   useEffect(() => {

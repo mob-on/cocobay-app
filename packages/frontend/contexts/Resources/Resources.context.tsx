@@ -20,7 +20,7 @@ export interface IResourcesContext {
 }
 
 export interface IResourcesContextResources {
-  [key: string]: Resource<any>;
+  [key: string]: Resource<unknown>;
 }
 
 export interface ResourceToLoad<T> {

@@ -2,14 +2,14 @@ import { Resource, useResources } from "@contexts/Resources";
 import { type Logger } from "pino";
 import { useEffect, useRef } from "react";
 
-type InitializeAction<T> = {
+type ResourceInitializerAction<T> = {
   type: "DATA_INITIALIZE";
   payload: T;
 };
 
-interface UseResourceInitializerOptions<T> {
+interface ResourceInitializerOptions<T> {
   queryKey: string;
-  dispatch: (action: InitializeAction<T>) => void;
+  dispatch: (action: ResourceInitializerAction<T>) => void;
   additionalData?: Record<string, unknown>;
   logger: Logger;
 }
@@ -19,7 +19,7 @@ export function useResourceInitializer<T>({
   dispatch,
   additionalData,
   logger,
-}: UseResourceInitializerOptions<T>) {
+}: ResourceInitializerOptions<T>) {
   const initialized = useRef(false);
   const { resources, allLoaded } = useResources();
   useEffect(() => {
