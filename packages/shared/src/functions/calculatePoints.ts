@@ -16,10 +16,10 @@ export function calculatePointsWithPending(
   startTime: string | Date,
   endTime: string | Date,
   pointsPerTap: number,
-  pendingPoints?: number | null,
+  pendingTaps: number = 0,
 ): number {
   return (
     calculatePoints(basePoints, pointsPerSecond, startTime, endTime) +
-    (pendingPoints || 0) * pointsPerTap
+    pendingTaps * pointsPerTap
   );
 }
