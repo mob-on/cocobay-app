@@ -39,7 +39,7 @@ export const ComboProvider = ({
 
   // Check combo for updates and alert user if they've gotten a combo.
   useEffect(() => {
-    if (!combo.objective) return; // skip when we don't have combo data;
+    if (!combo?.objective) return; // skip when we don't have combo data;
     if (!initialized.current) {
       initialized.current = true;
       return; // Skip the first render

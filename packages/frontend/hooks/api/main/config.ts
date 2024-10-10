@@ -5,14 +5,14 @@ import type { UserDto } from "@shared/src/dto/user.dto";
 import useLogger from "@src/hooks/useLogger";
 import { Feature } from "@src/lib/FeatureFlags";
 import axios, { type AxiosInstance, type CreateAxiosDefaults } from "axios";
+import type { Logger } from "pino";
 import { useMemo } from "react";
 
 const setupLoginInterceptor = (
   axiosInstance: AxiosInstance,
   login: (_?: number) => Promise<UserDto>,
+  logger: Logger,
 ): AxiosInstance => {
-  const logger = useLogger("setupLoginInterceptor");
-
   axiosInstance.interceptors.response.use(
     (response) => {
       return response;
@@ -60,9 +60,9 @@ const useAxiosWrapper = (
 
 export const useMainApiConfig = (baseUrl?: string) => {
   const { login } = useUserService();
-
+  const logger = useLogger("useMainApiConfig");
   return useAxiosWrapper(baseUrl, (axios) =>
-    setupLoginInterceptor(axios, login),
+    setupLoginInterceptor(axios, login, logger),
   );
 };
 

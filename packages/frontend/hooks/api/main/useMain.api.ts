@@ -1,14 +1,14 @@
-import { UserDto } from "@shared/src/dto/user.dto";
 import useLogger from "@hooks/useLogger";
+import { UserDto } from "@shared/src/dto/user.dto";
 
 import { useMainApiConfig } from "./config";
 
 export const useMainApi = (baseUrl?: string) => {
   const [axios] = useMainApiConfig(baseUrl);
+  const logger = useLogger("isHealthy");
 
   return {
     isHealthy: async () => {
-      const logger = useLogger("isHealthy");
       try {
         const response = await axios.get("/v1/health");
         if (response.status === 200) {

@@ -8,6 +8,7 @@ export const useLoginApi = () => {
 
   return {
     login: async (authDto: TelegramWebappAuthDto) => {
+      if (typeof window === "undefined") return;
       try {
         const response = await axios.post(`/v1/auth/telegram/login`, authDto);
         if (response.status !== 200) {
