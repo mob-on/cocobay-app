@@ -29,7 +29,6 @@ export function IsGameState(validationOptions?: ValidationOptions) {
           pointCount: isPositiveNumberOrZero,
           pointIncomePerSecond: isPositiveNumberOrZero,
           tapCount: isPositiveNumberOrZero,
-          lastGameStateSyncTime: pipe(isString, isNotEmpty),
           level: isPositiveNumberOrZero,
           levelName: pipe(isString, isNotEmpty),
           targetExp: isPositiveNumber,

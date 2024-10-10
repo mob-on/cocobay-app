@@ -10,7 +10,4 @@ export class GameStateDto {
 export class GameStateSyncDto {
   @IsNumber()
   tapCountPending!: number;
-
-  @IsNumber()
-  pointCountPending!: number;
 }

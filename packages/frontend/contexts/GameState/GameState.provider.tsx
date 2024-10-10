@@ -3,12 +3,14 @@
 import { GAME_DATA_QUERY_KEY } from "@api/useGameData.api";
 import useLogger from "@hooks/useLogger";
 import type { GameDataDto } from "@shared/src/dto/game-data.dto";
+import { calculatePointsWithPending } from "@shared/src/functions/calculatePoints";
 import type { FrontendGameState } from "@shared/src/interfaces";
 import { useGameStateService } from "@src/hooks/services/useGameState.service";
 import { useLocalStorage } from "@src/hooks/useLocalStorage";
 import { useResourceInitializer } from "@src/hooks/useResourceInitializer";
 import { useEffect, useReducer } from "react";
 
+import { useResources } from "../Resources";
 import {
   GameAction,
   GameStateContext,
@@ -26,68 +28,70 @@ const gameStateReducer = (
     case "SYNC_START":
       return {
         ...state,
-        tapCountPending: 0,
-        pointCountPending: 0,
+      };
+    case "TICK":
+      return {
+        ...state,
+        pointCount: action.payload.pointCount,
+        energy: Math.min(maxEnergy, energy + energyRecoveryPerSecond),
       };
     case "DATA_INITIALIZE": {
       const { payload } = action;
       const { gameState: serverGameState, additionalData } = payload;
       const pendingState = additionalData;
 
+      const pointCount = calculatePointsWithPending(
+        serverGameState.pointCount,
+        serverGameState.pointIncomePerSecond,
+        serverGameState.lastSyncTime,
+        new Date(),
+        serverGameState.pointsPerTap,
+        pendingState?.tapCountPending,
+      );
+
       return {
         ...serverGameState,
         // Frontend-specific fields
         energy: serverGameState.maxEnergy,
-        tapCountSynced: serverGameState.tapCount,
-        tapCountPending: pendingState?.tapCountPending || 0,
+        pointCountSynced: serverGameState.pointCount,
 
-        // If we have pending state, adjust points
-        pointCount:
-          pendingState && pendingState.pointCountPending
-            ? serverGameState.pointCount + pendingState.pointCountPending
-            : serverGameState.pointCount,
-        pointCountPending: pendingState?.pointCountPending || 0,
-        lastSyncTime: serverGameState.lastSyncTime,
+        tapCount:
+          (pendingState?.tapCountPending ?? 0) + serverGameState.tapCount,
+        pointCount,
       };
     }
     case "APPLY_POINT_INCOME":
       const { backendPointCount } = action.payload;
       const clientPointCount = state.pointCount + state.pointIncomePerSecond;
-      console.log("APPLY_POINT_INCOME", backendPointCount, clientPointCount);
       let newPointCount = Math.max(backendPointCount || 0, clientPointCount);
       return {
         ...state,
         pointCount: newPointCount,
       };
     case "SYNC_GAME_STATE":
+      const { gameState: serverGameState } = action.payload;
+
       return {
         ...state,
         ...action.payload,
-        tapCountPending: 0,
-        pointCountPending: 0,
-        tapCountSynced: action.payload.tapCount,
+        pointCount: state.pointCount, // Keep client value until next game tick
+        pointCountSynced: serverGameState.pointCount,
+        lastSyncTime: serverGameState.lastSyncTime,
       };
     case "REGISTER_TAP":
       return {
         ...state,
-        tapCountPending: state.tapCountPending + 1,
         pointCount: state.pointCount + pointsPerTap,
-        pointCountPending: state.pointCountPending + pointsPerTap,
       };
     case "SYNC_FAILURE":
       return {
         ...state,
-        tapCountPending: action.payload.tapCountPending,
-        pointCountPending: action.payload.pointCountPending,
         pointCount: action.payload.pointCount,
       };
 
     case "RESTORE_PENDING_STATE":
       return {
         ...state,
-        tapCountPending: state.tapCountPending + action.payload.tapCountPending,
-        pointCountPending:
-          state.pointCountPending + action.payload.pointCountPending,
       };
 
     case "ENERGY_CONSUME":
@@ -119,6 +123,7 @@ export const GameStateProvider = ({
     gameStateReducer,
     defaultGameData,
   );
+  const { allLoaded } = useResources();
   const logger = useLogger("GameStateContextProvider");
   const [pendingState, setPendingState, pendingStateLoaded] =
     useLocalStorage<PendingState | null>("pendingGameState", null);
@@ -141,9 +146,11 @@ export const GameStateProvider = ({
     logger,
   });
 
+  // start game loop after resources are loaded
   useEffect(() => {
+    if (!allLoaded) return;
     gameStateService.startTimeout();
-  }, [gameStateService.startTimeout]);
+  }, [gameStateService.startTimeout, allLoaded]);
 
   return (
     <GameStateContext.Provider

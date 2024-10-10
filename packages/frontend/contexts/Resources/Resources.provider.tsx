@@ -1,6 +1,10 @@
 "use client";
 import { GAME_DATA_QUERY_KEY, useGameDataApi } from "@api/useGameData.api";
-import { GameDataDto } from "@shared/src/dto/gameData.dto";
+import { GameDataDto } from "@shared/src/dto/game-data.dto";
+import {
+  TIME_SYNC_QUERY_KEY,
+  useTimeSyncApi,
+} from "@src/hooks/api/useTimeSync.api";
 import useLogger from "@src/hooks/useLogger";
 import { useEffect, useState } from "react";
 
@@ -20,6 +24,7 @@ export const ResourcesProvider = ({ children }) => {
   const [resources, setResources] = useState<IResourcesContextResources>({});
   const logger = useLogger("ResourcesProvider");
   const gameDataApi = useGameDataApi();
+  const timeSyncApi = useTimeSyncApi();
 
   const updateResourceStatus = (
     resourceName: string,
@@ -82,6 +87,11 @@ export const ResourcesProvider = ({ children }) => {
         name: GAME_DATA_QUERY_KEY,
         errorMessage: "Failed to load game data. Try again later.",
       } as ResourceToLoad<GameDataDto>,
+      {
+        fn: timeSyncApi.getTimeOffset,
+        name: TIME_SYNC_QUERY_KEY,
+        errorMessage: "Failed to sync time with server. Try again later.",
+      } as ResourceToLoad<number>,
     ];
     initializeResources(apiToLoad);
     setIsDataRequested(true);
@@ -104,7 +114,7 @@ export const ResourcesProvider = ({ children }) => {
       });
     }
   }, [resources]);
-
+  console.log(resources);
   const allLoaded =
     isDataRequested &&
     Object.values(resources).every((resource) => resource.status === "loaded");

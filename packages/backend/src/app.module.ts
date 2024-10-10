@@ -10,6 +10,7 @@ import { FeatureModule } from "./common/feature-flags/feature-flag.module";
 import { GameDataModule } from "./game-data/game-data.module";
 import { GameStateModule } from "./game-state/game-state.module";
 import { HealthModule } from "./healthcheck/health.module";
+import { TimeModule } from "./time/time.module";
 import { UserModule } from "./user/user.module";
 
 //Any updates to global modules must be reflected in the test setup, search of #TEST_SETUP_GLOBAL_MODULES
@@ -32,6 +33,7 @@ import { UserModule } from "./user/user.module";
     BoostsModule,
     GameDataModule,
     GameStateModule,
+    TimeModule,
   ],
 })
 export class AppModule {}

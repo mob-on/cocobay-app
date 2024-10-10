@@ -1,5 +1,9 @@
 import { Body, Controller, Post, Get } from "@nestjs/common";
 import { GameStateDto, GameStateSyncDto } from "@shared/src/dto/game-state.dto";
+import {
+  calculatePoints,
+  calculatePointsWithPending,
+} from "@shared/src/functions/calculatePoints";
 import { getTempGameData, setTempGameData } from "src/_tempGameData";
 
 @Controller("/game-state")
@@ -8,32 +12,46 @@ export class GameStateController {
 
   @Get("/")
   async getGameState(): Promise<GameStateDto> {
-    return { gameState: getTempGameData().gameState };
+    const { gameState } = getTempGameData();
+    return {
+      gameState: {
+        ...gameState,
+        pointCount: calculatePoints(
+          gameState.pointCount,
+          gameState.pointIncomePerSecond,
+          gameState.lastSyncTime,
+          new Date(),
+        ),
+      },
+    };
   }
 
   @Post("/sync")
   async syncGameState(@Body() body: GameStateSyncDto): Promise<GameStateDto> {
     const gameData = getTempGameData();
-    const { tapCountPending, pointCountPending } = body;
+    const { tapCountPending } = body;
     const now = new Date();
-    const secondsSinceLastSync = Math.floor(
-      (now.getTime() - Number(gameData.gameState.lastSyncTime)) / 1000,
-    );
-    const pointsIncomeSinceLastSync = Math.floor(
-      secondsSinceLastSync * gameData.gameState.pointIncomePerSecond,
+
+    const newPointCount = calculatePointsWithPending(
+      gameData.gameState.pointCount,
+      gameData.gameState.pointIncomePerSecond,
+      gameData.gameState.lastSyncTime,
+      now,
+      gameData.gameState.pointsPerTap,
+      tapCountPending,
     );
 
     const newGameState = {
       ...gameData.gameState,
-      pointCount:
-        gameData.gameState.pointCount +
-        pointsIncomeSinceLastSync +
-        pointCountPending,
+      pointCount: newPointCount,
       tapCount: gameData.gameState.tapCount + tapCountPending,
       lastSyncTime: now,
     };
+
     setTempGameData({ ...gameData, gameState: newGameState });
 
-    return { gameState: newGameState };
+    return {
+      gameState: newGameState,
+    };
   }
 }

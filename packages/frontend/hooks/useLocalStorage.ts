@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 import useLogger from "./useLogger";
 
@@ -91,21 +91,24 @@ export function useLocalStorageStatic<T>(
     }
   }
 
-  return {
-    get: (): T | null => {
-      const storedValue = localStorage.getItem(key);
-      return storedValue ? (JSON.parse(storedValue) as T) : null;
-    },
-    set: (value: T | ((prev: T | null) => T | null)) => {
-      const prev = localStorage.getItem(key);
-      const stringifiedValue = stringify(
-        typeof value === "function"
-          ? (value as (prev: T | null) => T)(
-              prev ? (JSON.parse(prev) as T) : null,
-            )
-          : value,
-      );
-      localStorage.setItem(key, stringifiedValue);
-    },
-  };
+  return useMemo(
+    () => ({
+      get: (): T | null => {
+        const storedValue = localStorage.getItem(key);
+        return storedValue ? (JSON.parse(storedValue) as T) : null;
+      },
+      set: (value: T | ((prev: T | null) => T | null)) => {
+        const prev = localStorage.getItem(key);
+        const stringifiedValue = stringify(
+          typeof value === "function"
+            ? (value as (prev: T | null) => T)(
+                prev ? (JSON.parse(prev) as T) : null,
+              )
+            : value,
+        );
+        localStorage.setItem(key, stringifiedValue);
+      },
+    }),
+    [key],
+  );
 }

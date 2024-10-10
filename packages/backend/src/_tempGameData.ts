@@ -58,14 +58,13 @@ let tempGameData: GameDataDto = {
     pointCount: 10000,
     pointIncomePerSecond: 5,
     tapCount: 1500,
-    lastGameStateSyncTime: faker.date.recent().toISOString(),
     level: 2,
     maxLevel: 10,
     levelName: levelName.charAt(0).toUpperCase() + levelName.slice(1) + " Coco",
     targetExp: 1000,
     currentExp: 500,
     pointsPerTap: 2,
-    lastSyncTime: faker.date.recent(),
+    lastSyncTime: new Date(), // creation date right now
   },
   combo: {
     current: comboCurrent,

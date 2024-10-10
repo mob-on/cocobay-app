@@ -8,7 +8,6 @@ export const TAP_EFFECTS_THROTTLE = 50; // min time before triggering ring anima
 
 export interface PendingState {
   tapCountPending: number;
-  pointCountPending: number;
   // pointCount: number;
 }
 
@@ -24,7 +23,7 @@ export type GameAction =
     }
   | {
       type: "SYNC_GAME_STATE";
-      payload: GameState;
+      payload: { gameState: GameState; pendingState: PendingState };
     }
   | {
       type: "SYNC_FAILURE";
@@ -45,7 +44,8 @@ export type GameAction =
     }
   | { type: "ENERGY_CONSUME" }
   | { type: "ENERGY_REGEN" }
-  | { type: "SET_POINT_COUNT"; payload: number };
+  | { type: "SET_POINT_COUNT"; payload: number }
+  | { type: "TICK"; payload: { pointCount: number } };
 
 export type IGameStateContext = {
   gameState: FrontendGameState;

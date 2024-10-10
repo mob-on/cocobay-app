@@ -1,6 +1,6 @@
 "use client";
 
-import { PendingState, useGameState } from "@contexts/GameState";
+import { useGameState } from "@contexts/GameState";
 import {
   ITapEvent,
   TAP_EFFECTS_THROTTLE,
@@ -17,12 +17,7 @@ import lvl7 from "@media/hero/hero-level7.svg";
 import lvl8 from "@media/hero/hero-level8.svg";
 import lvl9 from "@media/hero/hero-level9.svg";
 import lvl10 from "@media/hero/hero-level10.svg";
-import { FrontendGameState } from "@shared/src/interfaces";
-import {
-  PENDING_STATE_KEY,
-  useGameStateService,
-} from "@src/hooks/services/useGameState.service";
-import { useLocalStorageStatic } from "@src/hooks/useLocalStorage";
+import type { FrontendGameState } from "@shared/src/interfaces";
 import styles from "@src/styles/components/tapArea/tapArea.module.css";
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -94,9 +89,7 @@ const TapArea: React.FC = () => {
   const canTap = useRef(true);
   const lastTapHandler = useRef<(e: TouchEvent) => void>(() => {});
   const visualTapRef = useRef<ITapEvent[]>([]);
-
-  const { set: setPendingState } =
-    useLocalStorageStatic<PendingState>(PENDING_STATE_KEY);
+  const { pendingStateRef } = gameStateService;
 
   const { debouncedSync } = gameStateService;
 
@@ -106,7 +99,6 @@ const TapArea: React.FC = () => {
   }, [taps]);
 
   const hasEnergyToTap = energy >= pointsPerTap;
-
   // Block tapping if we don't have enough energy for a tap
   useEffect(() => {
     canTap.current = hasEnergyToTap;
@@ -120,6 +112,7 @@ const TapArea: React.FC = () => {
       e.cancelable && e.preventDefault();
       const touches = e.changedTouches;
       if (!canTap.current) return;
+      dispatchGameState({ type: "ENERGY_CONSUME" });
       // since it's the touchstart event, we only expect one touch to be changed.
       const touch = touches[0];
       const { clientX, clientY } = touch;
@@ -134,11 +127,10 @@ const TapArea: React.FC = () => {
       };
 
       // Add tap, sync with server and trigger tap feedback
-      setPendingState((prev: PendingState | null) => ({
-        ...prev,
-        tapCountPending: (prev?.tapCountPending ?? 0) + 1,
-        pointCountPending: (prev?.pointCountPending ?? 0) + pointsPerTap,
-      }));
+      pendingStateRef.current = {
+        ...(pendingStateRef.current ?? {}),
+        tapCountPending: (pendingStateRef.current?.tapCountPending ?? 0) + 1,
+      };
 
       dispatchGameState({ type: "REGISTER_TAP" });
       debouncedSync();

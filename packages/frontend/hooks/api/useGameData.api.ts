@@ -14,11 +14,6 @@ export const useGameDataApi = () => {
       get: async (): Promise<GameDataDto> => {
         try {
           const response = await axios.get<GameDataDto>(`/v1/game-data/`);
-          if (response.status !== 200) {
-            throw new Error(
-              `Server responded with unexpected status code. Expected 200, got ${response.status}`,
-            );
-          }
           return response.data;
         } catch (e) {
           throw extractApiError(e);
