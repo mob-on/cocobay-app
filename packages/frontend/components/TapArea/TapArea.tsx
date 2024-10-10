@@ -87,7 +87,7 @@ const TapArea: React.FC = () => {
   } = useGameState();
   const { energy, pointsPerTap } = gameState;
   const canTap = useRef(true);
-  const lastTapHandler = useRef<(e: TouchEvent) => void>(() => {});
+  const lastTapHandler = useRef<(e: PointerEvent) => void>(() => {});
   const visualTapRef = useRef<ITapEvent[]>([]);
   const { pendingStateRef } = gameStateService;
 
@@ -104,18 +104,13 @@ const TapArea: React.FC = () => {
     canTap.current = hasEnergyToTap;
   }, [hasEnergyToTap]);
 
-  const handleTouchStart = useCallback(
-    (e: TouchEvent) => {
-      // this makes us able to prevent taps from any unwanted actions
-      // however, it also prevents us from using mouse events.
-      // If we want mouse events, we should preventDefault() in the first touchmove event instead.
+  const handleTapStart = useCallback(
+    (e: PointerEvent) => {
       e.cancelable && e.preventDefault();
-      const touches = e.changedTouches;
       if (!canTap.current) return;
       dispatchGameState({ type: "ENERGY_CONSUME" });
-      // since it's the touchstart event, we only expect one touch to be changed.
-      const touch = touches[0];
-      const { clientX, clientY } = touch;
+
+      const { clientX, clientY } = e;
 
       const tapId = uuidv4();
       const tapEvent: ITapEvent = {
@@ -144,7 +139,7 @@ const TapArea: React.FC = () => {
   const cleanup = useCallback(() => {
     if (tapAreaRef.current) {
       tapAreaRef.current.removeEventListener(
-        "touchstart",
+        "pointerdown",
         lastTapHandler.current,
       );
       clearTimeout(classTimeoutIdRef.current ?? undefined);
@@ -158,15 +153,15 @@ const TapArea: React.FC = () => {
     if (element) {
       // remove old tap handler if it's present
       if (lastTapHandler.current) {
-        element.removeEventListener("touchstart", lastTapHandler.current);
+        element.removeEventListener("pointerdown", lastTapHandler.current);
       }
-      lastTapHandler.current = handleTouchStart;
-      element.addEventListener("touchstart", handleTouchStart, {
+      lastTapHandler.current = handleTapStart;
+      element.addEventListener("pointerdown", handleTapStart, {
         passive: false,
       });
     }
     return cleanup;
-  }, [tapAreaRef, handleTouchStart, cleanup]);
+  }, [tapAreaRef, handleTapStart, cleanup]);
 
   return (
     <div
