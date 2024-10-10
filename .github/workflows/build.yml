@@ -22,8 +22,7 @@ jobs:
     steps:
       - name: Checkout branch
         id: git-checkout
-        # TODO: This should change from "main" to a stable version once commit output is released
-        uses: actions/checkout@main
+        uses: actions/checkout@v4.2.1
         with:
           ref: ${{ github.event.inputs.branch || github.event.pull_request.head.ref || github.ref }}
 
@@ -49,7 +48,7 @@ jobs:
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@main
+        uses: actions/checkout@v4.2.1
         with:
           ref: ${{ github.event.inputs.branch || github.event.pull_request.head.ref || github.ref }}
 
@@ -66,7 +65,7 @@ jobs:
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@main
+        uses: actions/checkout@v4.2.1
         with:
           ref: ${{ github.event.inputs.branch || github.event.pull_request.head.ref || github.ref }}
 
@@ -91,7 +90,7 @@ jobs:
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@main
+        uses: actions/checkout@v4.2.1
         with:
           ref: ${{ github.event.inputs.branch || github.event.pull_request.head.ref || github.ref }}
 
@@ -116,7 +115,7 @@ jobs:
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@main
+        uses: actions/checkout@v4.2.1
         with:
           ref: ${{ github.event.inputs.branch || github.event.pull_request.head.ref || github.ref }}
 
