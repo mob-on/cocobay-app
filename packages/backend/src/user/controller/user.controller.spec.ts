@@ -3,6 +3,8 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { UserDto } from "@shared/src/dto/user.dto";
 import { EntityNotFoundException } from "src/common/exception/db/entity-not-found.exception";
 import { DuplicateEntityException } from "src/common/exception/service/duplicate-user.exception";
+import { mockConfigProvider } from "test/fixtures/config/mock-config-provider";
+import { mockJwtProvider } from "test/fixtures/config/mock-jwt-auth";
 import {
   createValidUser,
   createValidUserDto,
@@ -37,6 +39,8 @@ describe("UserController", () => {
             },
           },
         },
+        mockConfigProvider(),
+        mockJwtProvider(),
       ],
     }).compile();
 

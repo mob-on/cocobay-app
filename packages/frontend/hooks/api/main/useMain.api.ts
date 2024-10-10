@@ -1,6 +1,6 @@
 import { UserDto } from "@shared/src/dto/user.dto";
+import useLogger from "@src/shared/hooks/useLogger";
 
-import useLogger from "../../useLogger";
 import { useMainApiConfig } from "./config";
 
 export const useMainApi = (baseUrl?: string) => {

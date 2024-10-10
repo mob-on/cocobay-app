@@ -28,6 +28,8 @@ services:
     image: ${DOCKER_REGISTRY}/cocobay-app-backend:${APP_VERSION}
     container_name: cocobay-app-backend
     restart: unless-stopped
+    volumes:
+      - ./packages/backend/.env.template:/app/.env:ro
     networks:
       - backend
     links:

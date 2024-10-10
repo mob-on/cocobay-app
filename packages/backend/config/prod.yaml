@@ -1,3 +1,5 @@
 env: "prod"
 features:
   devMode: false
+cors:
+  specificOrigin: https://cocoapp.twinsoft.es

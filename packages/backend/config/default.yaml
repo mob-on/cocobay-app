@@ -3,3 +3,6 @@ features:
   devMode: false
 telegram:
   webappDataExpirySeconds: 3600
+session:
+  expiryMinutes: 30
+cors: #CORS needs to be empty by default to avoid clashes across environments

@@ -1,14 +1,14 @@
 import { faker } from "@faker-js/faker/.";
 import { ConfigService } from "@nestjs/config";
-import { InitDataParsed, sign } from "@telegram-apps/init-data-node";
+import { InitData, sign } from "@telegram-apps/init-data-node";
 
 const testAppTokenSecret = "5768337691:AAH5YkoiEuPk8-FZa32hStHTqXiLPtAEhx8";
-export const configureTelegramForSuccess = (configService: ConfigService) => {
-  configService.set("telegram.webappDataExpirySeconds", 0);
-  configService.set("telegram.appToken", testAppTokenSecret);
+export const configureTelegramForSuccess = (config: ConfigService) => {
+  config.set("telegram.webappDataExpirySeconds", 0);
+  config.set("telegram.appToken", testAppTokenSecret);
 };
 
-const validWebappInitDataStatic: InitDataParsed = {
+const validWebappInitDataStatic: InitData = {
   authDate: new Date(1000),
   canSendAfter: 10000,
   chat: {

@@ -1,3 +1,5 @@
 env: "stage"
 features:
   devMode: true
+cors:
+  allowAllOrigins: true

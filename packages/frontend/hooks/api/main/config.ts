@@ -1,20 +1,71 @@
 import { Config } from "@config/index";
 import { useStoredField } from "@contexts/LocalStorage";
+import useUserService from "@services/useUser.service";
+import type { UserDto } from "@shared/src/dto/user.dto";
+import useLogger from "@src/hooks/useLogger";
 import { Feature } from "@src/lib/FeatureFlags";
-import axios from "axios";
+import axios, { type AxiosInstance, type CreateAxiosDefaults } from "axios";
 import { useMemo } from "react";
 
-export const useMainApiConfig = (baseUrl?: string) => {
+const setupLoginInterceptor = (
+  axiosInstance: AxiosInstance,
+  login: (_?: number) => Promise<UserDto>,
+): AxiosInstance => {
+  const logger = useLogger("setupLoginInterceptor");
+
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    async (error) => {
+      const originalRequest = error.config;
+      if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+
+        try {
+          await login();
+
+          return axios(originalRequest);
+        } catch (e) {
+          logger.error("Unable to log user in, error", e);
+          return Promise.reject(e);
+        }
+      }
+      return Promise.reject(error);
+    },
+  );
+
+  return axiosInstance;
+};
+
+const useAxiosWrapper = (
+  baseUrl?: string,
+  withPlugins?: (axiosInstance: AxiosInstance) => AxiosInstance,
+): [AxiosInstance] => {
   const [storageApiUrl] = useStoredField("API_BASE_URL");
+
   const apiUrl =
     baseUrl || (Feature.DEV_MODE ? storageApiUrl : Config.apiBaseUrl);
 
-  return useMemo(
-    () => [
-      axios.create({
-        baseURL: apiUrl,
-      }),
-    ],
-    [apiUrl],
+  return useMemo(() => {
+    const options: CreateAxiosDefaults = {
+      baseURL: apiUrl,
+      withCredentials: true,
+    };
+
+    const axiosDefault = axios.create(options);
+    return [withPlugins ? withPlugins(axiosDefault) : axiosDefault];
+  }, [apiUrl, withPlugins]);
+};
+
+export const useMainApiConfig = (baseUrl?: string) => {
+  const { login } = useUserService();
+
+  return useAxiosWrapper(baseUrl, (axios) =>
+    setupLoginInterceptor(axios, login),
   );
+};
+
+export const useMainApiConfigAnonymous = (baseUrl?: string) => {
+  return useAxiosWrapper(baseUrl);
 };

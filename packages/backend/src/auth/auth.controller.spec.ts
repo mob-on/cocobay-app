@@ -2,6 +2,8 @@ import { faker } from "@faker-js/faker/.";
 import { BadRequestException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
+import { BACKEND_JWT_COOKIE_NAME } from "@shared/src/cookie/auth";
+import { Response } from "express";
 import { TelegramInitDataPipeTransform } from "src/telegram/init-data/telegram-init-data-transform.pipe";
 import { TelegramWebappAuthDtoValid } from "src/telegram/init-data/valid-init-data.dto";
 import { mockConfigProvider } from "test/fixtures/config/mock-config-provider";
@@ -16,7 +18,7 @@ import { AuthService } from "./auth.service";
 describe("AuthController", () => {
   let authController: AuthController;
   let authService: AuthService;
-  let configService: ConfigService;
+  let config: ConfigService;
   let telegramInitDataTransformer: TelegramInitDataPipeTransform;
 
   beforeEach(async () => {
@@ -37,7 +39,11 @@ describe("AuthController", () => {
     authController = module.get(AuthController);
     authService = module.get(AuthService);
     telegramInitDataTransformer = module.get(TelegramInitDataPipeTransform);
-    configService = module.get(ConfigService);
+    config = module.get(ConfigService);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it("should be defined", () => {
@@ -45,13 +51,17 @@ describe("AuthController", () => {
   });
 
   describe("logIn", () => {
+    const res = {
+      cookie: jest.fn(),
+    } as unknown as Response;
+
     it("should return valid login information", async () => {
       const userId = faker.number.int();
       const { initDataRaw } = createValidWebappInitData();
       const webappAuthDto: TelegramWebappAuthDtoValid = {
         initDataRaw,
       };
-      configureTelegramForSuccess(configService);
+      configureTelegramForSuccess(config);
       const userDto = createValidUserDto({
         id: userId.toString(),
       });
@@ -66,7 +76,17 @@ describe("AuthController", () => {
         .spyOn(authService, "logInWithTelegram")
         .mockResolvedValue(expectedResult);
 
-      expect(await authController.logIn(webappAuthDto)).toBe(expectedResult);
+      await authController.logIn(webappAuthDto, res);
+      expect(res.cookie).toHaveBeenCalledWith(
+        BACKEND_JWT_COOKIE_NAME,
+        expect.any(String),
+        expect.objectContaining({
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          maxAge: expect.any(Number),
+        }),
+      );
       expect(telegramInitDataTransformer.transform).toHaveBeenCalledWith(
         webappAuthDto,
       );
@@ -88,7 +108,7 @@ describe("AuthController", () => {
           throw new Error("Invalid initData");
         });
 
-      await expect(authController.logIn(webappAuthDto)).rejects.toThrow(
+      await expect(authController.logIn(webappAuthDto, res)).rejects.toThrow(
         BadRequestException,
       );
     });
