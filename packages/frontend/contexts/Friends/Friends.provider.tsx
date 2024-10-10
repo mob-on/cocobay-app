@@ -44,8 +44,6 @@ export const FriendsProvider = ({
   const logger = useLogger("FriendsProvider");
 
   useResourceInitializer({
-    resources,
-    allLoaded,
     queryKey: GAME_DATA_QUERY_KEY,
     dispatch: dispatchFriends,
     logger,

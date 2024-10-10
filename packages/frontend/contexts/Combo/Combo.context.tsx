@@ -1,4 +1,4 @@
-import { GameDataDto } from "@shared/src/dto/gameData.dto";
+import { GameDataDto } from "@shared/src/dto/game-data.dto";
 import { Combo } from "@shared/src/interfaces/Combo.interface";
 import { createContext } from "react";
 

@@ -4,9 +4,9 @@ import { Feature } from "@src/lib/FeatureFlags";
 import { validate } from "class-validator";
 import { useCallback } from "react";
 
-import { useLoginApi } from "../api/useLoginApi";
-import useLogger from "../hooks/useLogger";
-import useTelegram from "../hooks/useTelegram";
+import { useLoginApi } from "@api/useLogin.api";
+import useLogger from "@hooks/useLogger";
+import useTelegram from "@hooks/useTelegram";
 
 export interface IUser {
   firstName?: string;

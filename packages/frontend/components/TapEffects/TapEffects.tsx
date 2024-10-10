@@ -1,11 +1,10 @@
 "use client";
 
-import { useTapEffects } from "@contexts/TapEffects";
+import { ITapEvent, useTapEffects } from "@contexts/TapEffects";
 import styles from "@src/styles/components/tapEffects/tapEffects.module.css";
 import React from "react";
 
 import Cost from "../shared/Cost";
-import { ITapEvent } from "../TapArea";
 
 interface ITapEffectProps {
   tap: ITapEvent;

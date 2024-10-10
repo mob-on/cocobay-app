@@ -17,12 +17,10 @@ export const useGameStateApi = () => {
     sync: useMutation<GameStateDto, Error, PendingState>({
       mutationFn: async ({
         tapCountPending,
-        pointCountPending,
       }: PendingState & { clientSyncStart: Date }) => {
         logger.info("Syncing game state");
         const response = await axios.post<GameStateDto>("v1/game-state/sync", {
           tapCountPending,
-          pointCountPending,
         } as GameStateSyncDto);
         return response.data;
       },

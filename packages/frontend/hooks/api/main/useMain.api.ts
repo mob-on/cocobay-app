@@ -1,5 +1,5 @@
 import { UserDto } from "@shared/src/dto/user.dto";
-import useLogger from "@src/shared/hooks/useLogger";
+import useLogger from "@hooks/useLogger";
 
 import { useMainApiConfig } from "./config";
 

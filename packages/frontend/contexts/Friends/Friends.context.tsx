@@ -1,4 +1,4 @@
-import type { GameDataDto } from "@shared/src/dto/gameData.dto";
+import type { GameDataDto } from "@shared/src/dto/game-data.dto";
 import type { Friend } from "@shared/src/interfaces";
 import { createContext } from "react";
 

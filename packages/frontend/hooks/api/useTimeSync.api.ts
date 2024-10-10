@@ -19,20 +19,17 @@ export const useTimeSyncApi = () => {
           // First, try the worldtimeapi
           try {
             throw new Error("Not implemented");
-            const response = await fetch(
-              "http://worldtimeapi.org/api/timezone/Etc/UTC",
-            );
+            // const response = await fetch(
+            //   "http://worldtimeapi.org/api/timezone/Etc/UTC",
+            // );
 
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            // This is very important! We get the client time in between calling fetch and parsing the body.
-            // This is because we don't want the time offset to be affected by network latency, so getting the client time
-            // when fetch returns the headers is crucial.
-            const clientTime = new Date().getTime();
-            const data = (await response.json()) as TimeResponse;
-            const serverTime = new Date(data.utc_datetime).getTime();
-            return clientTime - serverTime;
+            // if (!response.ok) {
+            //   throw new Error(`HTTP error! status: ${response.status}`);
+            // }
+            // const clientTime = new Date().getTime();
+            // const data = (await response.json()) as TimeResponse;
+            // const serverTime = new Date(data.utc_datetime).getTime();
+            // return clientTime - serverTime;
           } catch (worldTimeError) {
             // If worldtimeapi fails, try the fallback endpoint
             const approximateServerTime = new Date().getTime();
