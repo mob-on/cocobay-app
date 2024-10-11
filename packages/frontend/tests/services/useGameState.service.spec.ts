@@ -1,10 +1,15 @@
 import { useGameStateApi } from "@hooks/api/useGameState.api";
 import { useLocalStorageStatic } from "@hooks/useLocalStorage";
 import { useSyncQueue } from "@hooks/useSyncQueue";
-import { useGameStateService } from "@services/useGameState.service";
+import {
+  ENERGY_KEY,
+  PENDING_STATE_KEY,
+  useGameStateService,
+} from "@services/useGameState.service";
 import type { FrontendGameState } from "@shared/src/interfaces";
+import { PendingState } from "@src/contexts/GameData";
 import useLogger from "@src/hooks/useLogger";
-import { act, renderHook } from "@testing-library/react";
+import { act, cleanup, renderHook } from "@testing-library/react";
 import React from "react";
 
 // Mock dependencies
@@ -21,7 +26,7 @@ describe("useGameStateService", () => {
     pointCount: 100,
     pointIncomePerSecond: 1,
     pointsPerTap: 1,
-    maxEnergy: 100,
+    maxEnergy: 150,
     energy: 100,
     energyRecoveryPerSecond: 1,
     level: 1,
@@ -42,8 +47,15 @@ describe("useGameStateService", () => {
   const mockPendingState = { tapCountPending: 5 };
   const mockEmptyPendingState = { tapCountPending: 0 };
 
+  let setLocalStorageMock;
+  let getLocalStorageMock;
+
   beforeEach(() => {
     jest.clearAllMocks();
+
+    setLocalStorageMock = jest.fn();
+    getLocalStorageMock = jest.fn();
+
     mockSync = jest.fn().mockResolvedValue({ gameState: mockGameState });
 
     // Mock game state api
@@ -55,10 +67,15 @@ describe("useGameStateService", () => {
 
     // Mock pending state in localStorage
     (useLocalStorageStatic as jest.Mock).mockReturnValue({
-      get: jest.fn().mockReturnValue(mockPendingState),
-      set: jest.fn(),
+      get: getLocalStorageMock.mockReturnValue(mockPendingState),
+      set: setLocalStorageMock,
     });
     (useSyncQueue as jest.Mock).mockReturnValue(jest.fn((cb) => cb()));
+  });
+
+  afterEach(() => {
+    cleanup();
+    jest.restoreAllMocks();
   });
 
   it("should initialize with correct properties and types", () => {
@@ -187,5 +204,31 @@ describe("useGameStateService", () => {
       "Failed to sync game state",
       syncError,
     );
+  });
+
+  it("should store energy and pending taps in localStorage on unmount and beforeunload", () => {
+    // Mock Date.now
+    jest.spyOn(global.Date, "now").mockImplementation(() => 1234567890);
+
+    // Prevent syncing on startup
+    (useSyncQueue as jest.Mock).mockReturnValue(jest.fn());
+
+    const { result } = renderHook(() =>
+      useGameStateService(mockGameState, mockDispatch),
+    );
+
+    // Simulate beforeunload event
+    act(() => {
+      result.current.pendingStateRef.current = mockPendingState;
+      window.dispatchEvent(new Event("beforeunload"));
+    });
+
+    // Check if we store energy and pending taps in localStorage
+    expect(setLocalStorageMock).toHaveBeenCalledWith({
+      value: mockGameState.energy,
+      lastSyncTime: 1234567890,
+    });
+
+    expect(setLocalStorageMock).toHaveBeenCalledWith(mockPendingState);
   });
 });
