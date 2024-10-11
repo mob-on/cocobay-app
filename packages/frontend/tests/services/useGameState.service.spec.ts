@@ -1,13 +1,8 @@
 import { useGameStateApi } from "@hooks/api/useGameState.api";
 import { useLocalStorageStatic } from "@hooks/useLocalStorage";
 import { useSyncQueue } from "@hooks/useSyncQueue";
-import {
-  ENERGY_KEY,
-  PENDING_STATE_KEY,
-  useGameStateService,
-} from "@services/useGameState.service";
+import { useGameStateService } from "@services/useGameState.service";
 import type { FrontendGameState } from "@shared/src/interfaces";
-import { PendingState } from "@src/contexts/GameData";
 import useLogger from "@src/hooks/useLogger";
 import { act, cleanup, renderHook } from "@testing-library/react";
 import React from "react";
