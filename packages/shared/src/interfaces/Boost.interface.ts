@@ -28,6 +28,7 @@ export interface ClaimableBoost extends BoostBase {
   used: number;
   max: number;
   replenishedAt?: Date;
+  activeUntil?: Date;
 }
 
 export type Boost = UpgradeableBoost | ClaimableBoost;

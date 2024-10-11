@@ -39,6 +39,7 @@ const claimableBoostFields: RequiredFields<ClaimableBoost> = {
   used: isPositiveNumberOrZero,
   max: isPositiveNumber,
   replenishedAt: optional(isDate),
+  activeUntil: optional(isDate),
 };
 
 const upgradeableBoostFields: RequiredFields<UpgradeableBoost> = {

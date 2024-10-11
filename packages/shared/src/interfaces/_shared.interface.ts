@@ -11,3 +11,5 @@ export interface WithAvatar {
 }
 
 export type WithCurrentPoints<T> = T & { currentPoints: number };
+
+export type WithServerTime<T> = T & { serverTime: Date };
