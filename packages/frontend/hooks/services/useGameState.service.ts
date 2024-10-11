@@ -1,8 +1,8 @@
-import type { GameAction, PendingState } from "@contexts/GameState";
 import { useLocalStorageStatic } from "@hooks/useLocalStorage";
 import useLogger from "@hooks/useLogger";
 import { calculatePointsWithPending } from "@shared/src/functions/calculatePoints";
 import type { FrontendGameState } from "@shared/src/interfaces/GameState.interface";
+import type { GameDataAction, PendingState } from "@src/contexts/GameData";
 import { useCallback, useEffect, useRef } from "react";
 
 import { useGameStateApi } from "../api/useGameState.api";
@@ -22,7 +22,7 @@ const UPDATE_INTERVAL = 1000;
  */
 const useGameStateService = (
   gameState: FrontendGameState,
-  dispatchGameState: React.Dispatch<GameAction>,
+  dispatchGameState: React.Dispatch<GameDataAction>,
 ) => {
   const logger = useLogger("useGameStateService");
   const gameStateApi = useGameStateApi();
@@ -72,8 +72,8 @@ const useGameStateService = (
         // merge presync and current pending state
         setPendingState({
           tapCountPending:
-            (preSyncPendingState?.tapCountPending ?? 0) +
-            (pendingStateRef.current?.tapCountPending ?? 0),
+            (preSyncPendingState.tapCountPending ?? 0) +
+            (pendingStateRef.current.tapCountPending ?? 0),
         });
       }
     });
@@ -105,10 +105,6 @@ const useGameStateService = (
         new Date(),
         currentState.pointsPerTap,
         currentPendingState?.tapCountPending,
-      );
-      console.log(
-        2,
-        `${clientLogicState.clientClockStart.getMinutes()}:${clientLogicState.clientClockStart.getSeconds()}`,
       );
       dispatchGameStateRef.current({
         type: "TICK",

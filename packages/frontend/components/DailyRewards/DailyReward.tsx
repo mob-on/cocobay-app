@@ -1,10 +1,10 @@
-import NumberFormatter from "@src/lib/NumberFormatter";
+import NumberFormatter from "@lib/NumberFormatter";
 import styles from "@styles/components/dailyRewards/dailyReward.module.css";
 import Image from "next/image";
 
 import Card from "../shared/Card";
 import Cost from "../shared/Cost";
-import { IDailyReward } from "./DailyRewards";
+import { type IDailyReward } from "./DailyRewards";
 
 const DailyReward: React.FC<{
   reward: IDailyReward;

@@ -3,7 +3,7 @@
 import { useMainApiConfig } from "@api/main/config";
 import { useTrackingApi } from "@api/useTracking.api";
 import { useStoredField } from "@contexts/LocalStorage";
-import toISOString from "@src/lib/toISOString";
+import toISOString from "@lib/toISOString";
 import { useCallback, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 

@@ -2,6 +2,7 @@
 
 import useLogger from "@hooks/useLogger";
 import usePopup from "@hooks/usePopup";
+import { ErrorWithMessage, parseErrorMessage } from "@lib/extractApiError";
 import useBuildsService from "@services/useBuilds.service";
 import type { Build } from "@shared/src/interfaces";
 import BuildPopup from "@src/components/Build/BuildPopup";
@@ -9,8 +10,7 @@ import DailyCombo from "@src/components/Build/DailyCombo";
 import Button from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import TapCounter from "@src/components/TapCounter";
-import { useBuilds } from "@src/contexts/Builds";
-import { ErrorWithMessage, parseErrorMessage } from "@src/lib/extractApiError";
+import { useBuilds } from "@src/contexts/GameData";
 import styles from "@src/styles/pages/build.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import TabBar from "antd-mobile/es/components/tab-bar";
@@ -35,7 +35,7 @@ const tabs = [
 
 export default function Boosts() {
   const buildsService = useBuildsService();
-  const { builds } = useBuilds();
+  const builds = useBuilds();
   const logger = useLogger("Builds");
   const [currentTab, setCurrentTab] = useState(tabs[0].key);
   const [popupState, _showPopup, hidePopup] = usePopup();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useGameState } from "@contexts/GameState";
+import { useGameData } from "@contexts/GameData";
 import {
   ITapEvent,
   TAP_EFFECTS_THROTTLE,
@@ -82,9 +82,9 @@ const TapArea: React.FC = () => {
   const { taps = [], addTap: addTap } = useTapEffects();
   const {
     gameStateService,
-    gameState = {} as FrontendGameState,
-    dispatchGameState,
-  } = useGameState();
+    dispatchGameData,
+    gameData: { gameState = {} as FrontendGameState },
+  } = useGameData();
   const { energy, pointsPerTap } = gameState;
   const canTap = useRef(true);
   const lastTapHandler = useRef<(e: PointerEvent) => void>(() => {});
@@ -108,7 +108,7 @@ const TapArea: React.FC = () => {
     (e: PointerEvent) => {
       e.cancelable && e.preventDefault();
       if (!canTap.current) return;
-      dispatchGameState({ type: "ENERGY_CONSUME" });
+      // dispatchGameState({ type: "ENERGY_CONSUME" });
 
       const { clientX, clientY } = e;
 
@@ -127,13 +127,13 @@ const TapArea: React.FC = () => {
         tapCountPending: (pendingStateRef.current?.tapCountPending ?? 0) + 1,
       };
 
-      dispatchGameState({ type: "REGISTER_TAP" });
+      dispatchGameData({ type: "REGISTER_TAP" });
       debouncedSync();
       throttledHandleTapFeedback();
 
       addTap(tapEvent);
     },
-    [dispatchGameState, pointsPerTap, throttledHandleTapFeedback],
+    [dispatchGameData, pointsPerTap, throttledHandleTapFeedback],
   );
 
   const cleanup = useCallback(() => {

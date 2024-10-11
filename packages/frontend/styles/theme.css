@@ -99,7 +99,7 @@
   --friend-card-height: 75px;
 }
 
-@media screen and (max-width: 400px), (max-height: 720px) {
+@media screen and (max-width: 400px) {
   :root {
     --padding: 10px;
     --padding-inner: 5px;

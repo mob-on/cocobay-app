@@ -1,6 +1,6 @@
-import { extractApiError } from "@src/lib/extractApiError";
+import { extractApiError } from "@lib/extractApiError";
+import type { GameDataDto } from "@shared/src/dto/game-data.dto";
 import { useMemo } from "react";
-import { GameDataDto } from "shared/src/dto/game-data.dto";
 
 import { useMainApiConfig } from "./main/config";
 

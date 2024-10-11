@@ -1,6 +1,6 @@
 "use client";
 
-import { useGameState } from "@contexts/GameState";
+import { useGameData } from "@contexts/GameData";
 import { FrontendGameState } from "@shared/src/interfaces";
 import ProgressBar from "antd-mobile/es/components/progress-bar";
 import React from "react";
@@ -16,7 +16,9 @@ export interface ILevelingData {
 const Leveling: React.FC<Record<string, unknown>> = (
   props: Record<string, unknown>,
 ) => {
-  const { gameState = {} as FrontendGameState } = useGameState();
+  const {
+    gameData: { gameState = {} as FrontendGameState },
+  } = useGameData();
   const { currentExp, targetExp, level, levelName, maxLevel } = gameState;
   const percent = Math.round((currentExp / targetExp) * 100);
 

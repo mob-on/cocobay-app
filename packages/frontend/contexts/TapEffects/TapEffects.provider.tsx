@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 
-import { ITapEvent, TapEffectsContext } from "./TapEffects.context";
+import { type ITapEvent, TapEffectsContext } from "./TapEffects.context";
 
 export const TAP_EFFECTS_TIMEOUT = 1000;
 export const TAP_EFFECTS_THROTTLE = 50;

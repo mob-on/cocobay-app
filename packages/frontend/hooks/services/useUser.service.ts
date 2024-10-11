@@ -1,9 +1,9 @@
 import { useLoginApi } from "@api/useLogin.api";
 import useLogger from "@hooks/useLogger";
 import useTelegram from "@hooks/useTelegram";
+import { Feature } from "@lib/FeatureFlags";
 import { TelegramWebappAuthDto } from "@shared/src/dto/auth/telegram-webapp-auth.dto";
 import { UserDto } from "@shared/src/dto/user.dto";
-import { Feature } from "@src/lib/FeatureFlags";
 import { validate } from "class-validator";
 import { useCallback } from "react";
 

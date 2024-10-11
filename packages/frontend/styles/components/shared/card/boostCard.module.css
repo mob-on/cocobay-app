@@ -1,14 +1,19 @@
+.boostList {
+  display: flex;
+  gap: calc(var(--padding-inner) / 2);
+}
+
 .boost {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0;
-  width: calc(50vw - var(--padding) * 2 - var(--padding-inner));
+  width: calc(50vw - var(--padding) * 2 - var(--padding-inner-constant));
   max-width: 470px;
 }
 
-.boostList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--padding-inner) / 2);
+@media screen and (max-width: 420px) {
+  .boost {
+    width: calc(100vw - var(--padding) * 2);
+  }
 }

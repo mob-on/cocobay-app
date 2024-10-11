@@ -1,8 +1,8 @@
 "use client";
 
 import { SettingOutlined } from "@ant-design/icons";
+import { Feature } from "@lib/FeatureFlags";
 import DevScreen from "@src/components/DevScreen";
-import { Feature } from "@src/lib/FeatureFlags";
 import { useState } from "react";
 
 import { DevSettingsContext } from "./DevSettings.context";

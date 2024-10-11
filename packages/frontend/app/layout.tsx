@@ -4,9 +4,9 @@ import "@styles/globals.css";
 import "@styles/theme.css";
 import "antd-mobile/es/global";
 
+import { LoadingProvider } from "@contexts/Loading";
 import { LocalStorageProvider } from "@contexts/LocalStorage";
 import useTelegram from "@hooks/useTelegram";
-import { LoadingProvider } from "@src/contexts/Loading";
 import { Telegram } from "@twa-dev/types";
 import Head from "next/head";
 import Script from "next/script";

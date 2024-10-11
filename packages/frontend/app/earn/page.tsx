@@ -1,13 +1,13 @@
 "use client";
 
 import usePopup from "@hooks/usePopup";
+import NumberFormatter from "@lib/NumberFormatter";
 import gift from "@media/gift.svg";
 import PopupContents from "@src/components/PopupContents";
 import ButtonComponent from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import Cost from "@src/components/shared/Cost";
 import Coin from "@src/components/svg/Coin";
-import NumberFormatter from "@src/lib/NumberFormatter";
 import styles from "@src/styles/pages/earn.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import { CheckCircleFill, RightOutline } from "antd-mobile-icons";

@@ -1,8 +1,6 @@
-import { useBuilds } from "@contexts/Builds";
-import { useGameState } from "@contexts/GameState";
+import { useBuilds, useGameData } from "@contexts/GameData";
+import { extractApiError } from "@lib/extractApiError";
 import { UpgradeBuildResponseDto } from "@shared/src/dto/builds/upgrade.dto";
-import { useComboContext } from "@src/contexts/Combo";
-import { extractApiError } from "@src/lib/extractApiError";
 import { validate } from "class-validator";
 import { useCallback } from "react";
 
@@ -12,9 +10,8 @@ import useLogger from "../useLogger";
 const useBuildsService = () => {
   const logger = useLogger("useBuildsService");
   const api = useBuildsApi();
-  const { dispatchCombo } = useComboContext();
-  const { dispatchGameState } = useGameState();
-  const { builds, dispatchBuilds } = useBuilds();
+  const builds = useBuilds();
+  const { dispatchGameData } = useGameData();
   const upgrade = useCallback(
     async (id: string) => {
       try {
@@ -27,14 +24,14 @@ const useBuildsService = () => {
           logger.error(`Incorrect "build/${id}/upgrade" response`, errors);
           throw new Error();
         }
-        dispatchBuilds({ type: "BUILD_UPDATE", payload: response.build });
+        dispatchGameData({ type: "BUILD_UPDATE", payload: response.build });
         if (response.combo) {
-          dispatchCombo({
+          dispatchGameData({
             type: "COMBO_UPDATE",
             payload: response.combo,
           });
         }
-        // dispatchGameState({
+        // dispatchGameData({
         //   type: "SET_POINT_COUNT",
         //   payload: response.currentPoints,
         // });
@@ -43,7 +40,7 @@ const useBuildsService = () => {
         throw extractApiError(e);
       }
     },
-    [api, builds, dispatchBuilds, dispatchGameState, logger, dispatchCombo],
+    [api, builds, dispatchGameData, logger],
   );
 
   return { upgrade };

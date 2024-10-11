@@ -1,9 +1,9 @@
 import { Config } from "@config/index";
 import { useStoredField } from "@contexts/LocalStorage";
+import { Feature } from "@lib/FeatureFlags";
 import useUserService from "@services/useUser.service";
 import type { UserDto } from "@shared/src/dto/user.dto";
 import useLogger from "@src/hooks/useLogger";
-import { Feature } from "@src/lib/FeatureFlags";
 import axios, { type AxiosInstance, type CreateAxiosDefaults } from "axios";
 import type { Logger } from "pino";
 import { useMemo } from "react";
@@ -19,7 +19,7 @@ const setupLoginInterceptor = (
     },
     async (error) => {
       const originalRequest = error.config;
-      if (error.response.status === 401 && !originalRequest._retry) {
+      if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
         try {

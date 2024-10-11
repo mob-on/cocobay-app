@@ -1,5 +1,6 @@
 "use client";
 
+import { useErrorContext } from "@contexts/Errors";
 import usePopup from "@hooks/usePopup";
 import type {
   Boost,
@@ -8,16 +9,17 @@ import type {
 } from "@shared/src/interfaces";
 import BoostPopup from "@src/components/Boosts/BoostPopup";
 import Card from "@src/components/shared/Card";
-import { useBoosts } from "@src/contexts/Boosts";
-import { useErrorContext } from "@src/contexts/Errors";
+import { useBoosts } from "@src/contexts/GameData";
+import useBoostsService from "@src/hooks/services/useBoosts.service";
 import styles from "@src/styles/pages/home/boosts.module.css";
 import { Popup, Toast } from "antd-mobile";
 import { useCallback, useMemo } from "react";
 
 export default function Boosts() {
-  const { boosts } = useBoosts();
+  const boosts = useBoosts();
   const errorContext = useErrorContext();
   const [boostPopupState, showBoostPopup, hideBoostPopup] = usePopup();
+  const boostsService = useBoostsService();
   const findBoost = useCallback(
     (id: string) => {
       return boosts.find((boost) => boost.id === id);
@@ -89,7 +91,7 @@ export default function Boosts() {
         if (boost.max - boost.used <= 0) {
           return;
         }
-        // same logic as onUpgrade, but it should be boostService.claimBoost
+        // boostsService.claim(boost.id);
       } else {
         Toast.show({
           icon: "fail",

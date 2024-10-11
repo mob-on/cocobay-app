@@ -2,6 +2,7 @@ import { DevSettingsProvider } from "@contexts/DevSettings";
 import { QueryClient } from "@tanstack/react-query";
 import { lazy } from "react";
 
+// lazy load providers to reduce the time until we show our own loading screen
 const DynamicResourcesProvider = lazy(
   () => import("./resourcesProviderContent"),
 );
@@ -18,38 +19,9 @@ const DynamicQueryClientProvider = lazy(() => {
   }));
 });
 
-const DynamicComboProvider = lazy(() =>
-  import("@contexts/Combo").then((mod) => ({
-    default: mod.ComboProvider,
-  })),
-);
-
 const DynamicTrackingProvider = lazy(() =>
   import("@contexts/Tracking").then((mod) => ({
     default: mod.TrackingProvider,
-  })),
-);
-
-/* The idea is to lazy load all context providers, so that we don't bundle them, 
-and show the loading screen quicker. Then, we don't unmount them, unless the page reloads. 
-All of those contexts get their initial data from resources, fetched during loading 
-and manage their own state afterwards. */
-
-const DynamicBoostsContextProvider = lazy(() =>
-  import("@contexts/Boosts").then((mod) => ({
-    default: mod.BoostsProvider,
-  })),
-);
-
-const DynamicBuildsContextProvider = lazy(() =>
-  import("@contexts/Builds").then((mod) => ({
-    default: mod.BuildsProvider,
-  })),
-);
-
-const DynamicFriendsContextProvider = lazy(() =>
-  import("@contexts/Friends").then((mod) => ({
-    default: mod.FriendsProvider,
   })),
 );
 
@@ -61,17 +33,7 @@ export default function LayoutContent({ children }: { children: JSX.Element }) {
       <DynamicQueryClientProvider client={queryClient}>
         <DynamicTrackingProvider>
           <DynamicErrorContextProvider>
-            <DynamicResourcesProvider>
-              <DynamicComboProvider>
-                <DynamicBoostsContextProvider>
-                  <DynamicBuildsContextProvider>
-                    <DynamicFriendsContextProvider>
-                      {children}
-                    </DynamicFriendsContextProvider>
-                  </DynamicBuildsContextProvider>
-                </DynamicBoostsContextProvider>
-              </DynamicComboProvider>
-            </DynamicResourcesProvider>
+            <DynamicResourcesProvider>{children}</DynamicResourcesProvider>
           </DynamicErrorContextProvider>
         </DynamicTrackingProvider>
       </DynamicQueryClientProvider>

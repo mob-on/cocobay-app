@@ -1,12 +1,12 @@
 "use client";
 
+import { Feature } from "@lib/FeatureFlags";
 import Button from "@src/components/shared/Button";
-import { Feature } from "@src/lib/FeatureFlags";
 import Popup from "antd-mobile/es/components/popup";
 import { CloseCircleFill } from "antd-mobile-icons";
 import { useMemo, useState } from "react";
 
-import { ErrorContext, IAppError } from "./Errors.context";
+import { ErrorContext, type IAppError } from "./Errors.context";
 
 export const ErrorProvider: React.FC<{
   children: React.JSX.Element;

@@ -1,12 +1,12 @@
 "use client";
 
-import { useFriends } from "@contexts/Friends";
 import FriendsList from "@src/components/Friends/FriendsList";
+import { useFriends } from "@src/contexts/GameData";
 import styles from "@src/styles/pages/friends/friends-all.module.css";
 import React from "react";
 
 const FriendsAll = () => {
-  const { friends } = useFriends();
+  const friends = useFriends();
   return (
     <section id="friends-all" className={styles.friends}>
       <h1>Your friends</h1>

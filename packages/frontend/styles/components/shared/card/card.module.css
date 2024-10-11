@@ -3,7 +3,7 @@
   overflow: hidden;
   border-radius: var(--card-b-radius);
   background-color: var(--card-bg-color);
-  padding: var(--padding-inner);
+  padding: var(--padding-inner-constant);
   display: flex;
   gap: var(--padding-inner);
   border: var(--card-border);

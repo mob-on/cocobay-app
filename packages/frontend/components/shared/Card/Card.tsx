@@ -2,9 +2,9 @@
 
 import useSelfCorrectingTimeout from "@hooks/useSelfCorrectingTimeout";
 import useTelegram from "@hooks/useTelegram";
+import TimeFormatter from "@lib/TimeFormatter";
 import { Boost, Build } from "@shared/src/interfaces";
-import TimeFormatter from "@src/lib/TimeFormatter";
-import styles from "@src/styles/components/shared/card/card.module.css";
+import styles from "@styles/components/shared/card/card.module.css";
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import BoostCard from "./BoostCard";

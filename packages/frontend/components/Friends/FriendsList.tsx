@@ -1,5 +1,5 @@
-import { Friend } from "@shared/src/interfaces";
-import NumberFormatter from "@src/lib/NumberFormatter";
+import NumberFormatter from "@lib/NumberFormatter";
+import type { Friend } from "@shared/src/interfaces";
 import styles from "@src/styles/components/friends/friendsList.module.css";
 import Avatar from "antd-mobile/es/components/avatar";
 
