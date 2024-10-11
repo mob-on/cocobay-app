@@ -4,10 +4,14 @@ import type {
   Build,
   Friend,
   FrontendGameState,
+  GameData,
   GameState,
 } from "@shared/src/interfaces";
 import type { Combo } from "@shared/src/interfaces/Combo.interface";
-import type { useGameStateService } from "@src/hooks/services/useGameState.service";
+import type {
+  StoredEnergy,
+  useGameStateService,
+} from "@src/hooks/services/useGameState.service";
 import { createContext } from "react";
 
 export const TAP_EFFECTS_TIMEOUT = 1000;
@@ -20,7 +24,12 @@ export interface PendingState {
 export type GameDataAction =
   | {
       type: "DATA_INITIALIZE";
-      payload: GameDataDto & { additionalData: PendingState };
+      payload: GameDataDto & {
+        additionalData: {
+          pendingState: PendingState;
+          energy: StoredEnergy | null;
+        };
+      };
     }
   | {
       type: "SYNC_GAME_STATE";
@@ -34,7 +43,8 @@ export type GameDataAction =
   | { type: "BUILD_UPDATE"; payload: Build }
   | { type: "BUILDS_UPDATE"; payload: Build[] }
   | { type: "FRIEND_UPDATE"; payload: Friend }
-  | { type: "COMBO_UPDATE"; payload: Combo };
+  | { type: "COMBO_UPDATE"; payload: Combo }
+  | { type: "GAME_DATA_UPDATE"; payload: Partial<GameData> };
 
 export interface GameDataState {
   gameState: FrontendGameState;

@@ -11,10 +11,16 @@ import useSelfCorrectingTimeout from "../useSelfCorrectingTimeout";
 import { useSyncQueue } from "../useSyncQueue";
 
 export const PENDING_STATE_KEY = "pendingGameState";
+export const ENERGY_KEY = "energy";
 export const SYNCED_POINT_COUNT_KEY = "syncedPointCount";
 
 const POINT_SYNC_DEBOUNCE_TIME = 1000;
 const UPDATE_INTERVAL = 1000;
+
+export type StoredEnergy = {
+  value: number;
+  lastSyncTime: number;
+};
 
 /**
  * Service for managing game state.
@@ -26,9 +32,14 @@ const useGameStateService = (
 ) => {
   const logger = useLogger("useGameStateService");
   const gameStateApi = useGameStateApi();
+
   const { get: getPendingState, set: setPendingState } =
     useLocalStorageStatic<PendingState | null>(PENDING_STATE_KEY);
+
   const queueSync = useSyncQueue();
+  const { set: setEnergy } = useLocalStorageStatic<StoredEnergy | null>(
+    ENERGY_KEY,
+  );
 
   const pendingStateRef = useRef<PendingState>({
     tapCountPending: getPendingState()?.tapCountPending ?? 0,
@@ -135,8 +146,13 @@ const useGameStateService = (
 
   // Save pending state before unload
   useEffect(() => {
-    setPendingState(null);
+    localStorage.removeItem(PENDING_STATE_KEY);
+    localStorage.removeItem(ENERGY_KEY);
     const handleBeforeUnload = () => {
+      setEnergy({
+        value: gameStateRef.current.energy,
+        lastSyncTime: Date.now(),
+      });
       if (pendingStateRef.current) {
         setPendingState(pendingStateRef.current);
       }
