@@ -1,5 +1,6 @@
 "use client";
 
+import { useHideLoading } from "@hooks/useHideLoading";
 import usePopup from "@hooks/usePopup";
 import NumberFormatter from "@lib/NumberFormatter";
 import gift from "@media/gift.svg";
@@ -16,7 +17,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-interface IEarnTask {
+type EarnTask = {
   id: string;
   name: string;
   description: string;
@@ -24,9 +25,9 @@ interface IEarnTask {
   reward: number;
   completed?: boolean;
   // TODO: think about other values we might want
-}
+};
 
-const defaultTasks: IEarnTask[] = [
+const defaultTasks: EarnTask[] = [
   {
     id: "0",
     name: "Get to level 2",
@@ -46,6 +47,7 @@ const defaultTasks: IEarnTask[] = [
 ];
 
 export default function Earn() {
+  useHideLoading();
   const [taskList] = useState(defaultTasks);
   const [popupState, _showPopup, hidePopup] = usePopup();
   const router = useRouter();
@@ -59,7 +61,7 @@ export default function Earn() {
 
   const currentTask = useMemo(() => {
     return (
-      taskList.find((task) => task.id === popupState.id) || ({} as IEarnTask)
+      taskList.find((task) => task.id === popupState.id) || ({} as EarnTask)
     );
   }, [taskList, popupState.id]);
 

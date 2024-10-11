@@ -1,11 +1,13 @@
 "use client";
 
+import { useFriends } from "@contexts/GameData";
+import { useHideLoading } from "@hooks/useHideLoading";
 import FriendsList from "@src/components/Friends/FriendsList";
-import { useFriends } from "@src/contexts/GameData";
-import styles from "@src/styles/pages/friends/friends-all.module.css";
+import styles from "@styles/pages/friends/friends-all.module.css";
 import React from "react";
 
 const FriendsAll = () => {
+  useHideLoading();
   const friends = useFriends();
   return (
     <section id="friends-all" className={styles.friends}>

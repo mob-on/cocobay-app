@@ -1,6 +1,9 @@
 "use client";
 
 import { useErrorContext } from "@contexts/Errors";
+import { useBoosts } from "@contexts/GameData";
+import useBoostsService from "@hooks/services/useBoosts.service";
+import { useHideLoading } from "@hooks/useHideLoading";
 import usePopup from "@hooks/usePopup";
 import type {
   Boost,
@@ -9,9 +12,7 @@ import type {
 } from "@shared/src/interfaces";
 import BoostPopup from "@src/components/Boosts/BoostPopup";
 import Card from "@src/components/shared/Card";
-import { useBoosts } from "@src/contexts/GameData";
-import useBoostsService from "@src/hooks/services/useBoosts.service";
-import styles from "@src/styles/pages/home/boosts.module.css";
+import styles from "@styles/pages/home/boosts.module.css";
 import { Popup, Toast } from "antd-mobile";
 import { useCallback, useMemo } from "react";
 
@@ -20,6 +21,7 @@ export default function Boosts() {
   const errorContext = useErrorContext();
   const [boostPopupState, showBoostPopup, hideBoostPopup] = usePopup();
   const boostsService = useBoostsService();
+  useHideLoading();
   const findBoost = useCallback(
     (id: string) => {
       return boosts.find((boost) => boost.id === id);

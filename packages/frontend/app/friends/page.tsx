@@ -8,6 +8,7 @@ import Card from "@src/components/shared/Card";
 import type { ICardVariant } from "@src/components/shared/Card/Card";
 import Cost from "@src/components/shared/Cost";
 import { useFriends } from "@src/contexts/GameData";
+import { useHideLoading } from "@src/hooks/useHideLoading";
 import styles from "@src/styles/pages/friends.module.css";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,15 +17,15 @@ import React, { useEffect, useState } from "react";
 
 const FRIENDS_SHOW_LIMIT = 3;
 
-interface ICard {
+type Card = {
   id: number;
   imgSrc: string;
   title: string;
   reward: number;
   variant?: ICardVariant;
-}
+};
 
-const cards: ICard[] = [
+const cards: Card[] = [
   {
     id: 0,
     imgSrc: coco,
@@ -42,6 +43,7 @@ const cards: ICard[] = [
 ];
 
 export default function Friends() {
+  useHideLoading();
   const friends = useFriends();
   const [hideLastFriend, setHideLastFriend] = useState(false);
   const router = useRouter();
