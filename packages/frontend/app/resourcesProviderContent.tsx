@@ -1,6 +1,6 @@
 import { GameDataProvider } from "@contexts/GameData";
 import { ResourcesProvider } from "@contexts/Resources";
-import { ServiceProvider } from "@contexts/Services/Services.provider";
+import { ServicesProvider } from "@contexts/Services/Services.provider";
 import Menu from "@src/components/Menu";
 import Grid from "@src/components/svg/Grid";
 
@@ -12,7 +12,7 @@ export default function ResourcesProviderContent({
   return (
     <ResourcesProvider>
       <GameDataProvider>
-        <ServiceProvider>
+        <ServicesProvider>
           <>
             <main id="__main">
               <Grid id="__grid" />
@@ -20,7 +20,7 @@ export default function ResourcesProviderContent({
             </main>
             <Menu />
           </>
-        </ServiceProvider>
+        </ServicesProvider>
       </GameDataProvider>
     </ResourcesProvider>
   );

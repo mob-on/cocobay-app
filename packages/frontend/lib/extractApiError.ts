@@ -20,7 +20,6 @@ export class ErrorWithMessage extends Error {
 export function extractApiError(
   error: AxiosError<{ message?: string }> | Error,
 ): ErrorWithMessage {
-  console.log("error", error);
   return new ErrorWithMessage(error);
 }
 

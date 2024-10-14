@@ -1,11 +1,11 @@
 "use client";
 
 import { useBuilds } from "@contexts/GameData";
+import { useBuildsService } from "@hooks/services/useBuilds.service";
 import { useHideLoading } from "@hooks/useHideLoading";
 import useLogger from "@hooks/useLogger";
 import usePopup from "@hooks/usePopup";
 import { ErrorWithMessage, parseErrorMessage } from "@lib/extractApiError";
-import useBuildsService from "@services/useBuilds.service";
 import type { Build } from "@shared/src/interfaces";
 import BuildPopup from "@src/components/Build/BuildPopup";
 import DailyCombo from "@src/components/Build/DailyCombo";

@@ -46,4 +46,4 @@ const useBuildsService = () => {
   return { upgrade };
 };
 
-export default useBuildsService;
+export { useBuildsService };

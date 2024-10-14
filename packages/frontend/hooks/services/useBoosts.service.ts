@@ -1,13 +1,16 @@
 import { useBoosts, useGameData } from "@contexts/GameData";
 import { extractApiError } from "@lib/extractApiError";
-import { UpgradeBoostResponseDto } from "@shared/src/dto/boosts/upgrade.dto";
+import {
+  ClaimBoostResponseDto,
+  UpgradeBoostResponseDto,
+} from "@shared/src/dto/boosts/upgrade.dto";
 import { validate } from "class-validator";
 import { useCallback } from "react";
 
 import { useBoostsApi } from "../api/useBoosts.api";
 import useLogger from "../useLogger";
 
-const useBuildsService = () => {
+const useBoostsService = () => {
   const logger = useLogger("useBoostsService");
   const api = useBoostsApi();
   const { dispatchGameData } = useGameData();
@@ -49,7 +52,7 @@ const useBuildsService = () => {
       if (!response) {
         throw new Error();
       }
-      const errors = await validate(new UpgradeBoostResponseDto(response));
+      const errors = await validate(new ClaimBoostResponseDto(response));
       if (errors.length > 0) {
         logger.error(`Incorrect "boost/${id}/upgrade" response`, errors);
         throw new Error();
@@ -61,4 +64,4 @@ const useBuildsService = () => {
   return { upgrade, claim };
 };
 
-export default useBuildsService;
+export { useBoostsService };

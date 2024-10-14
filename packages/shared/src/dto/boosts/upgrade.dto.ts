@@ -33,14 +33,26 @@ export class BoostResponseDto implements BoostResponse {
 
 export class UpgradeBoostResponseDto extends BoostResponseDto {
   @IsUpgradeableBoost()
-  override boost!: UpgradeableBoost;
+  override boost: UpgradeableBoost;
+
+  constructor({ boost, combo }: Partial<UpgradeBoostResponseDto> = {}) {
+    super({ boost, combo });
+    if (boost) this.boost = boost;
+    else this.boost = {} as UpgradeableBoost;
+  }
 }
 
 export type UpgradeBoostResponse = InstanceType<typeof UpgradeBoostResponseDto>;
 
 export class ClaimBoostResponseDto extends BoostResponseDto {
   @IsClaimableBoost()
-  override boost!: ClaimableBoost;
+  override boost: ClaimableBoost;
+
+  constructor({ boost, combo }: Partial<ClaimBoostResponseDto> = {}) {
+    super({ boost, combo });
+    if (boost) this.boost = boost;
+    else this.boost = {} as ClaimableBoost;
+  }
 }
 
 export type ClaimBoostResponse = InstanceType<typeof ClaimBoostResponseDto>;

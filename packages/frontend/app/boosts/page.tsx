@@ -2,7 +2,7 @@
 
 import { useErrorContext } from "@contexts/Errors";
 import { useBoosts } from "@contexts/GameData";
-import useBoostsService from "@hooks/services/useBoosts.service";
+import { useBoostsService } from "@hooks/services/useBoosts.service";
 import { useHideLoading } from "@hooks/useHideLoading";
 import usePopup from "@hooks/usePopup";
 import type {

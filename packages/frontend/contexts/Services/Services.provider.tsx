@@ -1,12 +1,12 @@
 "use client";
 
-import useBoostsService from "@src/hooks/services/useBoosts.service";
-import useBuildsService from "@src/hooks/services/useBuilds.service";
+import { useBoostsService } from "@hooks/services/useBoosts.service";
+import { useBuildsService } from "@hooks/services/useBuilds.service";
 
 import { useGameStateService } from "../GameData";
-import { ServiceContext } from "./Services.context";
+import { ServicesContext } from "./Services.context";
 
-export const ServiceProvider: React.FC<{
+export const ServicesProvider: React.FC<{
   children: React.JSX.Element;
 }> = ({ children }) => {
   const gameStateService = useGameStateService();
@@ -14,7 +14,7 @@ export const ServiceProvider: React.FC<{
   const buildsService = useBuildsService();
 
   return (
-    <ServiceContext.Provider
+    <ServicesContext.Provider
       value={{
         gameStateService,
         boostsService,
@@ -22,6 +22,6 @@ export const ServiceProvider: React.FC<{
       }}
     >
       {children}
-    </ServiceContext.Provider>
+    </ServicesContext.Provider>
   );
 };
