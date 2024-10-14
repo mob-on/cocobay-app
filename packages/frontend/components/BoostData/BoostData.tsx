@@ -2,6 +2,9 @@ import Link from "next/link";
 
 import Palm from "../svg/Palm";
 
+/**
+ * BoostData component for the home page
+ */
 const BoostData: React.FC<Record<string, unknown>> = (
   props: Record<string, unknown>,
 ) => {

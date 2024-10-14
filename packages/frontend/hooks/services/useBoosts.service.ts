@@ -58,7 +58,7 @@ const useBuildsService = () => {
     [api, logger],
   );
 
-  return { upgrade };
+  return { upgrade, claim };
 };
 
 export default useBuildsService;

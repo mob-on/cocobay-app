@@ -12,6 +12,7 @@ import type {
 } from "@shared/src/interfaces";
 import BoostPopup from "@src/components/Boosts/BoostPopup";
 import Card from "@src/components/shared/Card";
+import useLogger from "@src/hooks/useLogger";
 import styles from "@styles/pages/home/boosts.module.css";
 import { Popup, Toast } from "antd-mobile";
 import { useCallback, useMemo } from "react";
@@ -21,6 +22,7 @@ export default function Boosts() {
   const errorContext = useErrorContext();
   const [boostPopupState, showBoostPopup, hideBoostPopup] = usePopup();
   const boostsService = useBoostsService();
+  const logger = useLogger("Boosts page");
   useHideLoading();
   const findBoost = useCallback(
     (id: string) => {
@@ -65,11 +67,11 @@ export default function Boosts() {
       hideBoostPopup();
       const boost = findBoost(id);
       if (boost) {
-        // TODO: make boosts service and call it.
-        // boostService.upgradeBoost(boost);
-        // lock this boost in the meantime. Wait for server asnwer, call dispatch in the service.
-        // on error, show error popup, otherwise show success animation
+        boostsService.upgrade(id);
       } else {
+        logger.error(
+          `Expected to find a boost with id ${id}, but it was not present`,
+        );
         Toast.show({
           icon: "fail",
           content: "Boost not found!",
@@ -90,10 +92,7 @@ export default function Boosts() {
         });
       }
       if (boost) {
-        if (boost.max - boost.used <= 0) {
-          return;
-        }
-        // boostsService.claim(boost.id);
+        boostsService.claim(id);
       } else {
         Toast.show({
           icon: "fail",
