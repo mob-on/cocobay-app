@@ -1,10 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 
+import { useHideLoading } from "@hooks/useHideLoading";
 import { Container } from "react-bootstrap";
 
 import style from "./privacy-policy.module.css";
 
 export const PrivacyPolicy = () => {
+  useHideLoading();
   return (
     <Container className="p-4">
       <div data-custom-class="body" className={style.privacyPolicy}>

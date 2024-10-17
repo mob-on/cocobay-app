@@ -1,6 +1,9 @@
 import { registerDecorator, ValidationOptions } from "class-validator";
 import type { Rewards } from "../interfaces/Rewards.interface";
-import { isPositiveNumberOrZero, SharedValidConstraint } from "./_shared";
+import {
+  isPositiveNumberOrZero,
+  SharedValidConstraint,
+} from "./_shared.validation";
 import { IsDailyReward } from "./DailyReward.validation";
 
 export function IsRewards(validationOptions?: ValidationOptions) {

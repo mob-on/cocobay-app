@@ -1,11 +1,10 @@
 "use client";
 
-import { useTaps } from "@src/shared/context/TapEffectsContext";
+import { ITapEvent, useTapEffects } from "@contexts/TapEffects";
 import styles from "@src/styles/components/tapEffects/tapEffects.module.css";
 import React from "react";
 
 import Cost from "../shared/Cost";
-import { ITapEvent } from "../TapArea";
 
 interface ITapEffectProps {
   tap: ITapEvent;
@@ -36,7 +35,7 @@ const TapEffect: React.FC<ITapEffectProps> = ({ tap }) => {
  * @return {JSX.Element} Component that displays a list of tap effects.
  */
 const TapEffects: React.FC = () => {
-  const { taps = [] } = useTaps();
+  const { taps = [] } = useTapEffects();
   return (
     <div className={styles.tapEffects}>
       {taps.map((tap) => (

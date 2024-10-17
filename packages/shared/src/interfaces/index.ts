@@ -5,3 +5,5 @@ export * from "./Rewards.interface";
 export * from "./Friend.interface";
 export * from "./User.interface";
 export * from "./GameState.interface";
+export * from "./GameData.interface";
+export * from "./Combo.interface";

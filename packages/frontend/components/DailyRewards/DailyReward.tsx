@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import Card from "../shared/Card";
 import Cost from "../shared/Cost";
-import { IDailyReward } from "./DailyRewards";
+import { type IDailyReward } from "./DailyRewards";
 
 const DailyReward: React.FC<{
   reward: IDailyReward;

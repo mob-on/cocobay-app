@@ -21,14 +21,16 @@
       "@config/*": ["./config/*"],
       "@styles/*": ["./styles/*"],
       "@shared/*": ["../shared/*"],
-      "@lib/*": ["./shared/lib/*"],
+      "@lib/*": ["./lib/*"],
       "@components/*": ["../components/*"],
       "@pages/*": ["../pages/*"],
-      "@hooks/*": ["./shared/hooks/*"],
+      "@hooks/*": ["./hooks/*"],
       "@utils/*": ["../shared/utils/*"],
       "@tests/*": ["../tests/*"],
       "@media/*": ["./public/media/*"],
-      "@api/*": ["./shared/api/*"]
+      "@api/*": ["./hooks/api/*"],
+      "@services/*": ["./hooks/services/*"],
+      "@contexts/*": ["./contexts/*"]
     },
     "plugins": [
       {

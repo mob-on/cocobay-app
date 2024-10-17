@@ -1,10 +1,7 @@
 "use client";
 
-import { useMainApi } from "@api/main/useMainApi";
-import {
-  IFeatures,
-  useStoredField,
-} from "@src/shared/context/LocalStorageContext";
+import { useMainApi } from "@api/main/useMain.api";
+import { type IFeatures, useStoredField } from "@contexts/LocalStorage";
 import styles from "@src/styles/components/devSettings/devSettings.module.css";
 import { Space } from "antd-mobile";
 import Button from "antd-mobile/es/components/button";

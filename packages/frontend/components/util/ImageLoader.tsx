@@ -1,5 +1,5 @@
-import { useResources } from "@src/shared/context/ResourcesContext";
-import useLogger from "@src/shared/hooks/useLogger";
+import { useResources } from "@contexts/Resources";
+import useLogger from "@hooks/useLogger";
 import { useCallback, useEffect } from "react";
 
 interface IImageLoaderProps {

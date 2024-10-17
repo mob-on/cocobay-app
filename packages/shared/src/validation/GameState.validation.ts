@@ -1,6 +1,7 @@
 // Game state interface. The most important part of the app.
 
 import {
+  isDate,
   isNotEmpty,
   isString,
   registerDecorator,
@@ -12,7 +13,7 @@ import {
   isPositiveNumberOrZero,
   pipe,
   SharedValidConstraint,
-} from "./_shared";
+} from "./_shared.validation";
 
 export function IsGameState(validationOptions?: ValidationOptions) {
   return function (target: object, propertyName: string) {
@@ -28,13 +29,13 @@ export function IsGameState(validationOptions?: ValidationOptions) {
           pointCount: isPositiveNumberOrZero,
           pointIncomePerSecond: isPositiveNumberOrZero,
           tapCount: isPositiveNumberOrZero,
-          lastGameStateSyncTime: pipe(isString, isNotEmpty),
           level: isPositiveNumberOrZero,
           levelName: pipe(isString, isNotEmpty),
           targetExp: isPositiveNumber,
           currentExp: isPositiveNumberOrZero,
           maxLevel: isPositiveNumber,
           pointsPerTap: isPositiveNumber,
+          lastSyncTime: isDate,
         },
         propertyName,
       ),

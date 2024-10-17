@@ -1,4 +1,4 @@
-import NumberFormatter from "@src/shared/lib/NumberFormatter";
+import NumberFormatter from "@lib/NumberFormatter";
 import styles from "@src/styles/components/shared/cost.module.css";
 import { ReactElement, useMemo } from "react";
 

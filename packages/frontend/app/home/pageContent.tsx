@@ -1,5 +1,7 @@
 "use client";
 
+import { useResources } from "@contexts/Resources";
+import { TapEffectsProvider } from "@contexts/TapEffects";
 import { BoostData } from "@src/components/BoostData";
 import HomeAvatar from "@src/components/HomeAvatar";
 import Leveling from "@src/components/Leveling";
@@ -7,9 +9,6 @@ import Stamina from "@src/components/Stamina";
 import TapArea from "@src/components/TapArea";
 import TapCounter from "@src/components/TapCounter";
 import TapEffects from "@src/components/TapEffects";
-import { useResources } from "@src/shared/context/ResourcesContext";
-import { TapsEffectsContextProvider } from "@src/shared/context/TapEffectsContext";
-import { UserContextProvider } from "@src/shared/context/UserContext";
 import styles from "@styles/pages/index.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -26,14 +25,12 @@ export default function PageContent() {
 
   return (
     <>
-      <TapsEffectsContextProvider>
+      <TapEffectsProvider>
         <>
           <TapEffects />
           <section id="home" className={styles.home}>
             <div className={styles.avatar}>
-              <UserContextProvider>
-                <HomeAvatar />
-              </UserContextProvider>
+              <HomeAvatar />
             </div>
             <div className={styles.tapCounterWrapper}>
               <TapCounter />
@@ -43,7 +40,7 @@ export default function PageContent() {
             </div>
           </section>
         </>
-      </TapsEffectsContextProvider>
+      </TapEffectsProvider>
       <footer className={styles.footer + " gap-inner-constant"}>
         <Leveling className="self-end" />
         <BoostData className="ml-auto" />

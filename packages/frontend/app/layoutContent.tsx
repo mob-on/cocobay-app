@@ -1,14 +1,15 @@
-import { DevSettingsContextProvider } from "@src/shared/context/DevSettingsContext";
+import { DevSettingsProvider } from "@contexts/DevSettings";
 import { QueryClient } from "@tanstack/react-query";
 import { lazy } from "react";
 
+// lazy load providers to reduce the time until we show our own loading screen
 const DynamicResourcesProvider = lazy(
   () => import("./resourcesProviderContent"),
 );
 
 const DynamicErrorContextProvider = lazy(() =>
-  import("@src/shared/context/ErrorContext").then((mod) => ({
-    default: mod.ErrorContextProvider,
+  import("@contexts/Errors").then((mod) => ({
+    default: mod.ErrorProvider,
   })),
 );
 
@@ -19,31 +20,8 @@ const DynamicQueryClientProvider = lazy(() => {
 });
 
 const DynamicTrackingProvider = lazy(() =>
-  import("@src/shared/context/TrackingContext").then((mod) => ({
+  import("@contexts/Tracking").then((mod) => ({
     default: mod.TrackingProvider,
-  })),
-);
-
-/* The idea is to lazy load all context providers, so that we don't bundle them, 
-and show the loading screen quicker. Then, we don't unmount them, unless the page reloads. 
-All of those contexts get their initial data from resources, fetched during loading 
-and manage their own state afterwards. */
-
-const DynamicBoostsContextProvider = lazy(() =>
-  import("@src/shared/context/BoostsContext").then((mod) => ({
-    default: mod.BoostsContextProvider,
-  })),
-);
-
-const DynamicBuildsContextProvider = lazy(() =>
-  import("@src/shared/context/BuildsContext").then((mod) => ({
-    default: mod.BuildsContextProvider,
-  })),
-);
-
-const DynamicFriendsContextProvider = lazy(() =>
-  import("@src/shared/context/FriendsContext").then((mod) => ({
-    default: mod.FriendsContextProvider,
   })),
 );
 
@@ -51,22 +29,14 @@ const queryClient = new QueryClient();
 
 export default function LayoutContent({ children }: { children: JSX.Element }) {
   return (
-    <DevSettingsContextProvider>
+    <DevSettingsProvider>
       <DynamicQueryClientProvider client={queryClient}>
         <DynamicTrackingProvider>
           <DynamicErrorContextProvider>
-            <DynamicResourcesProvider>
-              <DynamicBoostsContextProvider>
-                <DynamicBuildsContextProvider>
-                  <DynamicFriendsContextProvider>
-                    {children}
-                  </DynamicFriendsContextProvider>
-                </DynamicBuildsContextProvider>
-              </DynamicBoostsContextProvider>
-            </DynamicResourcesProvider>
+            <DynamicResourcesProvider>{children}</DynamicResourcesProvider>
           </DynamicErrorContextProvider>
         </DynamicTrackingProvider>
       </DynamicQueryClientProvider>
-    </DevSettingsContextProvider>
+    </DevSettingsProvider>
   );
 }

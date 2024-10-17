@@ -10,8 +10,10 @@ const LoadingScreen: React.FC = () => {
   return (
     <div className={styles.loadingScreen}>
       <Hero className={styles.hero} />
-      <Logo className={styles.logo} />
-      <h1 className={styles.slogan}>We came to play</h1>
+      <div className="flex flex-col items-center justify-center w-full">
+        <Logo className={styles.logo} />
+        <h1 className={styles.slogan}>We came to play</h1>
+      </div>
       <SpinLoading className={styles.loading} color="primary" />;
       <Grid id="__grid-loading" />
       <div className={styles.clouds}>

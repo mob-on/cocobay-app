@@ -1,5 +1,4 @@
 // Game state interface. The most important part of the app.
-
 // Describes energy, points, taps, leveling and crucial data syncing.
 export interface GameState {
   // energy
@@ -14,20 +13,20 @@ export interface GameState {
   // taps
   tapCount: number;
 
-  // sync data
-  lastGameStateSyncTime: string;
-
   // leveling data
   level: number;
   levelName: string;
   targetExp: number;
   currentExp: number;
   maxLevel: number;
+  lastSyncTime: Date;
 }
 
 // Frontend state, with backend-agnostic fields
 export interface FrontendGameState extends GameState {
   energy: number;
-  tapCountSynced: number;
-  tapCountPending: number;
+  clientLogicState: {
+    pointCountSynced: number;
+    clientClockStart: Date;
+  };
 }

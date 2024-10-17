@@ -4,7 +4,7 @@ import {
   registerDecorator,
   ValidationOptions,
 } from "class-validator";
-import type { Build } from "../interfaces/Build.interface";
+import type { Build, BuildType } from "../interfaces/Build.interface";
 import {
   isIn,
   isPositiveNumber,
@@ -12,7 +12,7 @@ import {
   optional,
   pipe,
   SharedValidConstraint,
-} from "./_shared";
+} from "./_shared.validation";
 
 export function IsBuild(validationOptions?: ValidationOptions) {
   return function (target: object, propertyName: string) {
@@ -29,11 +29,7 @@ export function IsBuild(validationOptions?: ValidationOptions) {
           cost: isPositiveNumber,
           level: isPositiveNumberOrZero,
           maxLevel: isPositiveNumber,
-          type: isIn<"building" | "event" | "employee">(
-            "building",
-            "event",
-            "employee",
-          ),
+          type: isIn<BuildType>("building", "event", "employee"),
           lastBuilt: pipe(isString, isNotEmpty),
           cooldownUntil: optional(isString),
           income: isPositiveNumberOrZero,

@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       color: {
         white: "var(--color-white)",
+        body: "var(--body-bg)",
       },
       spacing: {
         reg: "var(--padding)",
@@ -17,6 +18,7 @@ module.exports = {
         "inner-constant": "var(--padding-inner-constant)",
         "half-inner": "calc(var(--padding-inner) / 2)",
         "quarter-inner": "calc(var(--padding-inner) / 4)",
+        "double-inner": "calc(var(--padding-inner) * 2)",
       },
       screens: {
         sm: "375px",

@@ -1,16 +1,10 @@
 "use client";
 
-import { useLoadingScreen } from "@src/shared/context/LoadingContext";
-import { useEffect } from "react";
+import { useHideLoading } from "@src/hooks/useHideLoading";
 
 import PageContent from "./pageContent";
 
 export default function Home() {
-  const { hideLoading } = useLoadingScreen();
-
-  useEffect(() => {
-    hideLoading();
-  }, [hideLoading]);
-
+  useHideLoading();
   return <PageContent />;
 }

@@ -1,11 +1,12 @@
 "use client";
 
+import { useHideLoading } from "@hooks/useHideLoading";
 import gift from "@media/gift.svg";
-import { IDailyReward, IDailyRewards } from "@src/components/DailyRewards";
+import type { IDailyReward, IDailyRewards } from "@src/components/DailyRewards";
 import DailyReward from "@src/components/DailyRewards/DailyReward";
 import Week from "@src/components/DailyRewards/Week";
 import Button from "@src/components/shared/Button";
-import styles from "@src/styles/pages/daily-rewards.module.css";
+import styles from "@styles/pages/daily-rewards.module.css";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -18,6 +19,7 @@ const defaultDailyRewards: IDailyRewards = {
 };
 
 const DailyRewards: React.FC = () => {
+  useHideLoading();
   const [rewards, setRewards] = useState(defaultDailyRewards);
   useEffect(() => {
     // temporary data

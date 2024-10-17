@@ -1,4 +1,6 @@
-import { WithIcon } from "./_shared";
+import { WithIcon } from "./_shared.interface";
+
+export type BuildType = "building" | "event" | "employee";
 
 export interface Build extends WithIcon {
   id: string;
@@ -7,8 +9,8 @@ export interface Build extends WithIcon {
   cost: number;
   level: number;
   maxLevel: number;
-  type: "building" | "event" | "employee";
+  type: BuildType;
   lastBuilt: string;
-  cooldownUntil?: string;
+  cooldownUntil?: Date;
   income: number;
 }

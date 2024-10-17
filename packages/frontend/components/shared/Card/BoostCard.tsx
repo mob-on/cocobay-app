@@ -8,19 +8,23 @@ const BoostCard: React.FC<{
   boost: Boost;
   onClick: (id: string) => void;
 }> = ({ boost, onClick }) => {
-  const isLastLevel = boost.level === boost.maxLevel;
+  const { type } = boost;
+
+  const canUse =
+    (type === "upgradeable" && boost.level < boost.maxLevel) ||
+    (type === "claimable" && boost.used < boost.max);
   return (
     <div
-      onClick={isLastLevel ? undefined : () => onClick(boost.id)}
+      onClick={canUse ? () => onClick(boost.id) : undefined}
       className={styles.boost}
     >
       <img src={boost.iconSrc} alt={boost.name} width={64} height={64} />
       <p>{boost.name}</p>
-      {boost.type === "daily" && (
-        <span>Left today: {boost.maxToday - boost.usedToday}</span>
+      {type === "claimable" && (
+        <span>Left today: {boost.max - boost.used}</span>
       )}
-      {boost.type === "regular" &&
-        (isLastLevel ? (
+      {type === "upgradeable" &&
+        (boost.level === boost.maxLevel ? (
           <span>Level {boost.level} - maximum</span>
         ) : (
           <Cost cost={boost.cost}>

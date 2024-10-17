@@ -1,6 +1,6 @@
 "use client";
 
-import { useResources } from "@src/shared/context/ResourcesContext";
+import { useResources } from "@contexts/Resources";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 

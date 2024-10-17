@@ -1,20 +1,18 @@
 "use client";
 
-import { Build } from "@shared/src/interfaces";
+import { useBuilds } from "@contexts/GameData";
+import { useBuildsService } from "@hooks/services/useBuilds.service";
+import { useHideLoading } from "@hooks/useHideLoading";
+import useLogger from "@hooks/useLogger";
+import usePopup from "@hooks/usePopup";
+import { ErrorWithMessage, parseErrorMessage } from "@lib/extractApiError";
+import type { Build } from "@shared/src/interfaces";
 import BuildPopup from "@src/components/Build/BuildPopup";
 import DailyCombo from "@src/components/Build/DailyCombo";
 import Button from "@src/components/shared/Button";
 import Card from "@src/components/shared/Card";
 import TapCounter from "@src/components/TapCounter";
-import { useBuilds } from "@src/shared/context/BuildsContext";
-import useLogger from "@src/shared/hooks/useLogger";
-import usePopup from "@src/shared/hooks/usePopup";
-import {
-  ErrorWithMessage,
-  parseErrorMessage,
-} from "@src/shared/lib/extractApiError";
-import useBuildsService from "@src/shared/services/useBuildsService";
-import styles from "@src/styles/pages/build.module.css";
+import styles from "@styles/pages/build.module.css";
 import Popup from "antd-mobile/es/components/popup";
 import TabBar from "antd-mobile/es/components/tab-bar";
 import Toast from "antd-mobile/es/components/toast";
@@ -36,9 +34,10 @@ const tabs = [
   },
 ];
 
-export default function Boosts() {
+export default function Builds() {
+  useHideLoading();
   const buildsService = useBuildsService();
-  const { builds } = useBuilds();
+  const builds = useBuilds();
   const logger = useLogger("Builds");
   const [currentTab, setCurrentTab] = useState(tabs[0].key);
   const [popupState, _showPopup, hidePopup] = usePopup();

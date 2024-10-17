@@ -1,17 +1,29 @@
 "use client";
 
-import { Boost } from "@shared/src/interfaces";
+import { useErrorContext } from "@contexts/Errors";
+import { useBoosts } from "@contexts/GameData";
+import { useBoostsService } from "@hooks/services/useBoosts.service";
+import { useHideLoading } from "@hooks/useHideLoading";
+import usePopup from "@hooks/usePopup";
+import type {
+  Boost,
+  ClaimableBoost,
+  UpgradeableBoost,
+} from "@shared/src/interfaces";
 import BoostPopup from "@src/components/Boosts/BoostPopup";
 import Card from "@src/components/shared/Card";
-import { useBoosts } from "@src/shared/context/BoostsContext";
-import usePopup from "@src/shared/hooks/usePopup";
-import styles from "@src/styles/pages/home/boosts.module.css";
+import useLogger from "@src/hooks/useLogger";
+import styles from "@styles/pages/home/boosts.module.css";
 import { Popup, Toast } from "antd-mobile";
 import { useCallback, useMemo } from "react";
 
 export default function Boosts() {
-  const { boosts } = useBoosts();
+  const boosts = useBoosts();
+  const errorContext = useErrorContext();
   const [boostPopupState, showBoostPopup, hideBoostPopup] = usePopup();
+  const boostsService = useBoostsService();
+  const logger = useLogger("Boosts page");
+  useHideLoading();
   const findBoost = useCallback(
     (id: string) => {
       return boosts.find((boost) => boost.id === id);
@@ -19,22 +31,29 @@ export default function Boosts() {
     [boosts],
   );
 
-  const { daily, regular } = useMemo(() => {
+  const { claimable, upgradeable } = useMemo(() => {
     if (!boosts.length)
       return {
-        daily: [],
-        regular: [],
+        claimable: [],
+        upgradeable: [],
       };
     return boosts.reduce<{
-      daily: Boost[];
-      regular: Boost[];
+      claimable: ClaimableBoost[];
+      upgradeable: UpgradeableBoost[];
       boostToShow: Boost;
     }>(
       (res, next) => {
-        res[next.type].push(next);
+        switch (next.type) {
+          case "claimable":
+            res.claimable.push(next as ClaimableBoost);
+            break;
+          case "upgradeable":
+            res.upgradeable.push(next as UpgradeableBoost);
+            break;
+        }
         return res;
       },
-      { daily: [], regular: [], boostToShow: {} as Boost },
+      { claimable: [], upgradeable: [], boostToShow: {} as Boost },
     );
   }, [boosts]);
 
@@ -48,11 +67,11 @@ export default function Boosts() {
       hideBoostPopup();
       const boost = findBoost(id);
       if (boost) {
-        // TODO: make boosts service and call it.
-        // boostService.upgradeBoost(boost);
-        // lock this boost in the meantime. Wait for server asnwer, call dispatch in the service.
-        // on error, show error popup, otherwise show success animation
+        boostsService.upgrade(id);
       } else {
+        logger.error(
+          `Expected to find a boost with id ${id}, but it was not present`,
+        );
         Toast.show({
           icon: "fail",
           content: "Boost not found!",
@@ -65,12 +84,15 @@ export default function Boosts() {
   const onClaim = useCallback(
     (id: string) => {
       hideBoostPopup();
-      const boost = findBoost(id);
+      const boost: ClaimableBoost = findBoost(id) as ClaimableBoost;
+      if (!(boost.type === "claimable")) {
+        errorContext.showErrorScreen({
+          message: "Something went wrong when claiming boost!",
+          dismissable: true,
+        });
+      }
       if (boost) {
-        if (boost.maxToday - boost.usedToday <= 0) {
-          return;
-        }
-        // same logic as onUpgrade, but it should be boostService.claimBoost
+        boostsService.claim(id);
       } else {
         Toast.show({
           icon: "fail",
@@ -83,12 +105,12 @@ export default function Boosts() {
   return (
     <>
       <section id="boosts" className={styles.boosts}>
-        <h2>Boosts</h2>
-        {daily.length ? (
+        <h1>Boosts</h1>
+        {claimable.length ? (
           <div className={styles.boostType}>
             <h3>Daily Boosts</h3>
             <div className={styles.boostList}>
-              {daily.map((boost) => (
+              {claimable.map((boost) => (
                 <Card
                   onClick={() => showBoostPopup(boost.id)}
                   key={boost.id}
@@ -101,11 +123,11 @@ export default function Boosts() {
         ) : (
           ""
         )}
-        {regular.length ? (
+        {upgradeable.length ? (
           <div className={styles.boostType}>
             <h3>Upgrades</h3>
             <div className={styles.boostList}>
-              {regular.map((boost) => (
+              {upgradeable.map((boost) => (
                 <Card
                   onClick={() => showBoostPopup(boost.id)}
                   key={boost.id}
@@ -128,7 +150,7 @@ export default function Boosts() {
       >
         <BoostPopup
           boost={boostToShow}
-          onAction={boostToShow?.type === "daily" ? onClaim : onUpgrade}
+          onAction={boostToShow?.type === "claimable" ? onClaim : onUpgrade}
         />
       </Popup>
     </>
