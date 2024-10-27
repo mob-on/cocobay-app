@@ -7,6 +7,7 @@ import eslintPluginNext from "@next/eslint-plugin-next";
 import eslintPluginImport from "eslint-plugin-import";
 import eslintPluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import eslintTsParser from "@typescript-eslint/parser";
+import reactCompiler from "eslint-plugin-react-compiler";
 
 export default [
   {
@@ -23,6 +24,7 @@ export default [
     },
     plugins: {
       react: eslintPluginReact,
+      "react-compiler": reactCompiler,
       "react-hooks": eslintPluginReactHooks,
       "jsx-a11y": eslintPluginJsxA11y,
       prettier: eslintPluginPrettier,
@@ -32,6 +34,7 @@ export default [
     },
     rules: {
       // React & JSX
+      "react-compiler/react-compiler": "error",
       "react/react-in-jsx-scope": "off", // Next.js doesn't need React in scope
       "react/prop-types": "off",
       "jsx-a11y/anchor-is-valid": "off", // Next.js' <Link> tag usage

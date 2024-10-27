@@ -15,7 +15,6 @@ const DailyReward: React.FC<{
     throw new Error("Regular cards should have an amount!");
   }
   if (reward.isSpecial && !reward.image) {
-    reward.image = "";
     throw new Error("Special rewards should have an image!");
   }
 
