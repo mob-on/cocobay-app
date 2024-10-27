@@ -1,5 +1,5 @@
-const Color = require("color");
-const fs = require("fs");
+import Color from "color";
+import fs from "fs";
 
 const css = fs.readFileSync("./styles/theme.css", "utf-8");
 
@@ -71,7 +71,7 @@ const getVarColor = (string) => {
   return resolvedVariables[name];
 };
 
-module.exports = {
+export default {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},

@@ -1,5 +1,5 @@
 import { IsNumber } from "class-validator";
-import { GameState } from "../interfaces";
+import type { GameState } from "../interfaces";
 import { IsGameState } from "../validation";
 
 export class GameStateDto {
