@@ -21,22 +21,20 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  output: "export",
+  output: "export" as const,
   reactStrictMode: false,
   trailingSlash: true,
   transpilePackages: ["antd"],
   images: {
     disableStaticImages: false,
   },
-  optimizeFonts: true,
-  swcMinify: true,
+  serverExternalPackages: ["pino", "pino-pretty"],
   experimental: {
     optimizePackageImports: [
       "antd-mobile",
       "antd-mobile-icons",
       "@ant-design/icons",
     ],
-    serverComponentsExternalPackages: ["pino", "pino-pretty"],
     turbo: {
       rules: {
         "*.svg": {

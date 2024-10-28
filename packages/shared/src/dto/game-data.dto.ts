@@ -5,8 +5,8 @@ import type {
   Build,
   Friend,
   Rewards,
+  Combo,
 } from "../interfaces";
-import { Combo } from "../interfaces/Combo.interface";
 import {
   IsBoost,
   IsBuild,

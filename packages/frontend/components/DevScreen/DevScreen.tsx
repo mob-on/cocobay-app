@@ -103,7 +103,7 @@ export const DevScreen = () => {
         <div className={styles.field}>
           <div className={styles.label}>
             <Switch
-              checked={features.tracking}
+              checked={features?.tracking ?? true}
               onChange={() => toggleFeature("tracking")}
             />{" "}
             &nbsp; Tracking

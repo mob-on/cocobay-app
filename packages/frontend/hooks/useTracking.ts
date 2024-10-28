@@ -89,7 +89,8 @@ export const useTracking = (): [
   (event: TrackerEventType, data?: unknown, ...tags: string[]) => void,
   () => Promise<void>,
 ] => {
-  const [{ tracking }] = useStoredField("FEATURES");
+  const [features = { tracking: true }] = useStoredField("FEATURES");
+  const { tracking } = features;
   const logger = useLogger("useTracker");
   const createEvent = useCreateEvent();
   const [axiosInstance] = useMainApiConfig();
